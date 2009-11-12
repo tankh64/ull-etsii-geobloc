@@ -23,8 +23,8 @@ public final class R {
         public static final int EditText02=0x7f050008;
         public static final int EditText03=0x7f05000b;
         public static final int EditText04=0x7f050011;
-        public static final int GPSExampleStartButton=0x7f05001c;
-        public static final int GeoBlocMockupStartButton=0x7f05001d;
+        public static final int GPSExampleStartButton=0x7f05001e;
+        public static final int GeoBlocMockupStartButton=0x7f05001f;
         public static final int LinearLayout01=0x7f050001;
         public static final int LinearLayout02=0x7f050003;
         public static final int LinearLayout03=0x7f050006;
@@ -43,11 +43,12 @@ public final class R {
         public static final int TextView05=0x7f05000d;
         public static final int TextView06=0x7f050010;
         public static final int ToggleButton01=0x7f050014;
-        public static final int label1=0x7f05001b;
-        public static final int outputToFileButton=0x7f050021;
-        public static final int textReaderScrollingText=0x7f05001f;
-        public static final int textReaderText=0x7f050020;
-        public static final int title=0x7f05001e;
+        public static final int getGPSLocationButton=0x7f05001d;
+        public static final int gpsLocationLabel=0x7f05001c;
+        public static final int outputToFileButton=0x7f050022;
+        public static final int textReaderScrollingText=0x7f050020;
+        public static final int textReaderText=0x7f050021;
+        public static final int title=0x7f05001b;
     }
     public static final class layout {
         public static final int geobloc1=0x7f030000;
