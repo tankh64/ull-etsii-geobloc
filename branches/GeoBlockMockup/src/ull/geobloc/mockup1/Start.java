@@ -11,7 +11,7 @@ public class Start extends Activity {
 	private Button startGPSExample;
 	private Button startGeoBlockMockup;
 	
-    /** Called when the activity is first created. */
+    /** Called when the activity is first created. MIO !!! */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
