@@ -1,23 +1,15 @@
 package com.geobloc;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
-import android.graphics.Typeface;
-
 
 /**
  * Actividad que representará un formulario. Cada formulario cargado
@@ -39,6 +31,12 @@ public class QuestionActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        if (savedInstanceState != null) {
+            Toast.makeText(getApplicationContext(),
+            		"No debemos crear el formulario de nuevo",
+                    Toast.LENGTH_SHORT).show();
+        }
         
         setContentView(R.layout.question_form);
         setTitle(getString(R.string.app_name)+ " > " + getString(R.string.list_form));
