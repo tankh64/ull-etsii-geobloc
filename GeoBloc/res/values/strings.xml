@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainMenu!</string>
+    <string name="app_name">GeoBloc-ULL</string>
+	<string name="ButtonMainMenu1">Crear Formulario</string>
+	<string name="create_form">Crear Formulario</string>
+	<string name="list_form">Formularios</string>
+	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
+	<string name="ButtonMainMenu2">Prueba</string>
+	<string name="created_dir">Directorio %s creado correctamente</string>
+<string name="TextView01">Formulario %s cargado</string>
+</resources>
