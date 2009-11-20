@@ -1,0 +1,952 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>Commons IO - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="../../" id="bannerLeft">
+    
+                                    <img src="http://jakarta.apache.org/images/original-jakarta-logo.gif" alt="" />
+    
+            </a>
+                        <a href="index.html" id="bannerRight">
+    
+                                            <img src="images/io-logo-white.png" alt="" />
+    
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+            <div class="xleft">
+        Last Published: 27 June 2007
+                      </div>
+            <div class="xright">      <a href="http://www.apache.org">Apache</a>
+          |
+          <a href="../../">Jakarta</a>
+          |
+          <a href="../">Commons</a>
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+                   <h5>Commons IO</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">Overview</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://jakarta.apache.org/site/downloads/downloads_commons-io.cgi">Download</a>
+        </li>
+              
+    <li class="none">
+              <a href="description.html">User guide</a>
+        </li>
+              
+    <li class="none">
+              <a href="bestpractices.html">Best practices</a>
+        </li>
+              
+    <li class="none">
+              <a href="api-release/index.html">Javadoc (latest release)</a>
+        </li>
+          </ul>
+          <h5>Development</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="building.html">Building</a>
+        </li>
+              
+    <li class="none">
+              <a href="mail-lists.html">Mailing lists</a>
+        </li>
+              
+    <li class="none">
+              <a href="issue-tracking.html">Issue Tracking</a>
+        </li>
+              
+    <li class="none">
+              <a href="team-list.html">Team</a>
+        </li>
+              
+    <li class="none">
+              <a href="tasks.html">Tasks</a>
+        </li>
+              
+    <li class="none">
+              <a href="proposal.html">Proposal</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/io/trunk/">SVN repository</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/index.html">Javadoc (SVN latest)</a>
+        </li>
+          </ul>
+          <h5>Project Documentation</h5>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">Project Information</a>
+              </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+            
+            
+      
+            
+      
+            
+      
+            
+      
+              
+            <li class="expanded">
+              <a href="project-reports.html">Project Reports</a>
+                <ul>
+                  
+    <li class="none">
+              <a href="changes-report.html">Changes Report</a>
+        </li>
+                  
+    <li class="none">
+              <a href="apidocs/index.html">JavaDocs</a>
+        </li>
+                  
+    <li class="none">
+              <a href="jdepend-report.html">JDepend</a>
+        </li>
+                  
+    <li class="none">
+              <strong>Jira Report</strong>
+        </li>
+                  
+    <li class="none">
+              <a href="surefire-report.html">Maven Surefire Report</a>
+        </li>
+                  
+    <li class="none">
+              <a href="rat-report.html">RAT Report</a>
+        </li>
+                  
+    <li class="none">
+              <a href="xref/index.html">Source Xref</a>
+        </li>
+                  
+    <li class="none">
+              <a href="xref-test/index.html">Test Source Xref</a>
+        </li>
+              </ul>
+        </li>
+          </ul>
+          <h5>Commons</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="../">Home</a>
+        </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../components.html">Components</a>
+              </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../sandbox/index.html">Sandbox</a>
+              </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../dormant/index.html">Dormant</a>
+              </li>
+              
+    <li class="none">
+              <a href="../volunteering.html">Volunteering</a>
+        </li>
+              
+    <li class="none">
+              <a href="../patches.html">Contributing Patches</a>
+        </li>
+              
+    <li class="none">
+              <a href="../building.html">Building Components</a>
+        </li>
+              
+    <li class="none">
+              <a href="../releases/index.html">Releasing Components</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://wiki.apache.org/jakarta-commons/FrontPage">Wiki</a>
+        </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <h2>Jira Report</h2><table class="bodyTable"><tr class="a"><th>Key</th><th>Summary</th><th>Status</th><th>Resolution</th><th>By</th></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-116
+">IO-116
+<img src="images/external.png" /></td><td>Replace static FileCleaner methods
+</td><td>Resolved
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-101
+">IO-101
+<img src="images/external.png" /></td><td>The method EndianUtils.writeSwappedDouble() and EndianUtils.readSwappedDouble() do not match!
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-99
+">IO-99
+<img src="images/external.png" /></td><td>FileCleaner thread never ends and cause memory leak in AS
+</td><td>Closed
+</td><td>Fixed
+</td><td>Stephen Colebourne
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-8
+">IO-8
+<img src="images/external.png" /></td><td>org.apache.commons.io.FileUtils.copyFile shouldn
+'
+t allow to copy a file on itself
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-118
+">IO-118
+<img src="images/external.png" /></td><td>Change forceDelete API to return the boolean success
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-117
+">IO-117
+<img src="images/external.png" /></td><td>EndianUtils.readSwappedUnsignedInteger() may return a negative number
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-115
+">IO-115
+<img src="images/external.png" /></td><td>FileUtilsCleanDirectoryTestCase fails on Windoes if command chmod is available
+</td><td>Resolved
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-113
+">IO-113
+<img src="images/external.png" /></td><td>FileUtils.readFileToString is not static
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-112
+">IO-112
+<img src="images/external.png" /></td><td>NPE in FileUtils.openOutputStream(File) when file has no parent in path.
+</td><td>Closed
+</td><td>Fixed
+</td><td>Gary Gregory
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-110
+">IO-110
+<img src="images/external.png" /></td><td>FileSystemUtils.freeSpaceKb does not work on AIX
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-109
+">IO-109
+<img src="images/external.png" /></td><td>FileSystemUtils freeSpaceUnix does not work for HP-UX 11
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-108
+">IO-108
+<img src="images/external.png" /></td><td>Add default encoding overrides for FileUtils methods
+</td><td>Closed
+</td><td>Fixed
+</td><td>Henri Yandell
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-107
+">IO-107
+<img src="images/external.png" /></td><td>FileUtils.openOutputStream
+</td><td>Closed
+</td><td>Fixed
+</td><td>Stephen Colebourne
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-105
+">IO-105
+<img src="images/external.png" /></td><td>Add a FileUtils.copyDirectoryStructure method
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-104
+">IO-104
+<img src="images/external.png" /></td><td>copyFileToDirectory(File, File, boolean) is missing
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-103
+">IO-103
+<img src="images/external.png" /></td><td>commons-io cannot be deployed with Maven 2
+</td><td>Closed
+</td><td>Fixed
+</td><td>Henri Yandell
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-100
+">IO-100
+<img src="images/external.png" /></td><td>FileUtils.touch should raise an IOException if I may not modify the file
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-97
+">IO-97
+<img src="images/external.png" /></td><td>Trivial performance improvements to ByteArrayOutputStream
+</td><td>Closed
+</td><td>Fixed
+</td><td>Stephen Colebourne
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-93
+">IO-93
+<img src="images/external.png" /></td><td>FileSystemUtils needs to call Process.destroy() on exec
+'
+d processes
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-92
+">IO-92
+<img src="images/external.png" /></td><td>Add DeferredPeriodicOutputStream
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-91
+">IO-91
+<img src="images/external.png" /></td><td>FileSystemUtils.freeSpace does not work on Sun Solaris
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-90
+">IO-90
+<img src="images/external.png" /></td><td>Infinite loop in FileSystemUtils.freeSpaceWindows if share directory empty
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-88
+">IO-88
+<img src="images/external.png" /></td><td>Add isFileOlder() methods to FileUtils (counterparts to existing isFileNewer() methods)
+</td><td>Closed
+</td><td>Fixed
+</td><td>Niall Pemberton
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-86
+">IO-86
+<img src="images/external.png" /></td><td>Add DirectoryWalker based on FileFinder
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-84
+">IO-84
+<img src="images/external.png" /></td><td>Many classes are limited to length of stream
+<
+2 GB, and behave incorrectly on larger streams
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-83
+">IO-83
+<img src="images/external.png" /></td><td>Bug with
+'
+df
+'
+command on AIX 5.3
+</td><td>Closed
+</td><td>Fixed
+</td><td>Stephen Colebourne
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-82
+">IO-82
+<img src="images/external.png" /></td><td>Test takes a long time to run in Mustang
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-18
+">IO-18
+<img src="images/external.png" /></td><td>[io] FileUtils needs a toString that takes a filename and returns its contents as a string
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-25
+">IO-25
+<img src="images/external.png" /></td><td>[io] LockableFileWriter issues
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-38
+">IO-38
+<img src="images/external.png" /></td><td>[io] Tests Fail on Windows 2000
+</td><td>Closed
+</td><td>Incomplete
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-34
+">IO-34
+<img src="images/external.png" /></td><td>[io] FileSystemUtils returns incorrect free space on Linux
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-37
+">IO-37
+<img src="images/external.png" /></td><td>[io] Tests fail on Windows 2000 due to File lastModified() behaviour
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-32
+">IO-32
+<img src="images/external.png" /></td><td>[io][PATCH]
+Iterate over the lines in a file and the files in a directory
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-14
+">IO-14
+<img src="images/external.png" /></td><td>[io] Usage of dir /c instead of dir /-c in FileSystemUtils.freeSpaceWindows
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-44
+">IO-44
+<img src="images/external.png" /></td><td>[io] Enhance LockableFileWriter to handle different character endocings.
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-22
+">IO-22
+<img src="images/external.png" /></td><td>[io] FileUtils.cleanDirectory throws NullPointerException when File.list() fails
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-35
+">IO-35
+<img src="images/external.png" /></td><td>[io] Updated FileSystemUtils to address issues before release
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-1
+">IO-1
+<img src="images/external.png" /></td><td>[io] API doc of FileUtils.forceMkdir(File) should mention that parent dirs are created if required
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-17
+">IO-17
+<img src="images/external.png" /></td><td>[io] delete in FileUtils sometimes fails on Windows
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-27
+">IO-27
+<img src="images/external.png" /></td><td>[io] FileUtils.toFile(URL) does not unescape %xx characters
+</td><td>Closed
+</td><td>Duplicate
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-39
+">IO-39
+<img src="images/external.png" /></td><td>[io] NullPointerException in FileUtils.listFiles
+</td><td>Closed
+</td><td>Cannot Reproduce
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-42
+">IO-42
+<img src="images/external.png" /></td><td>[io] Binary download includes jar that does not the FilenameUtils
+</td><td>Closed
+</td><td>Incomplete
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-23
+">IO-23
+<img src="images/external.png" /></td><td>[io] CountingInputStream doesn
+'
+t implement skip()
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-10
+">IO-10
+<img src="images/external.png" /></td><td>[io] Synchronized methods in NullOutputStream
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-12
+">IO-12
+<img src="images/external.png" /></td><td>[io] CountingInputStream.getCount() often returns invalid values
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-26
+">IO-26
+<img src="images/external.png" /></td><td>[io] Method wildcardMatch of FilenameUtils fail with recurent patterns
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-20
+">IO-20
+<img src="images/external.png" /></td><td>[io] IOFileFilter created by FileFilterUtils.makeCVSAware(IOFileFilter) only accept directory
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-33
+">IO-33
+<img src="images/external.png" /></td><td>[io] Addition of FileSystemUtils class
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-36
+">IO-36
+<img src="images/external.png" /></td><td>[io] FileUtils does not have a method for recursively copying a directory
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-9
+">IO-9
+<img src="images/external.png" /></td><td>Add cancel() to Finder
+</td><td>Closed
+</td><td>Duplicate
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-31
+">IO-31
+<img src="images/external.png" /></td><td>Add cancel() to Finder
+</td><td>Closed
+</td><td>Duplicate
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-30
+">IO-30
+<img src="images/external.png" /></td><td>[io] FileUtils.toFile() drops drive letter on windows
+</td><td>Closed
+</td><td>Incomplete
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-16
+">IO-16
+<img src="images/external.png" /></td><td>DirectoryFileFilter does not work, the AbstractFileFilter bug
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-6
+">IO-6
+<img src="images/external.png" /></td><td>[io] Problem with copyFileToDirectory(File, File)
+</td><td>Closed
+</td><td>Cannot Reproduce
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-45
+">IO-45
+<img src="images/external.png" /></td><td>FileUtils.touch() replaces file with an empty file.
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-43
+">IO-43
+<img src="images/external.png" /></td><td>[io] FilenameUtils#removeExtension and FilenameUtils#getExtension don
+'
+t handle all cases.
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-29
+">IO-29
+<img src="images/external.png" /></td><td>[io] NPE in FileUtils.listFiles(dir, extensions, recursive)
+</td><td>Closed
+</td><td>Cannot Reproduce
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-19
+">IO-19
+<img src="images/external.png" /></td><td>FileUtils missing path-related methods
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-5
+">IO-5
+<img src="images/external.png" /></td><td>Fi
+</td><td>Closed
+</td><td>Incomplete
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-11
+">IO-11
+<img src="images/external.png" /></td><td>[io] FilenameUtils.catPath shouldn
+'
+t use the system separator
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-3
+">IO-3
+<img src="images/external.png" /></td><td>[IO] Last modified date not preserved in FileUtils.copyFile()
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-2
+">IO-2
+<img src="images/external.png" /></td><td>[IO] FilenameUtils.catPath cannot handle
+"
+\
+"
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-41
+">IO-41
+<img src="images/external.png" /></td><td>[io] FileUtils.listFiles(File, String[]
+, boolean) throws NullPointerException when the second parameter is null
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-123
+">IO-123
+<img src="images/external.png" /></td><td>LineIterator should call close on itself when hasNext() returns false.
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-122
+">IO-122
+<img src="images/external.png" /></td><td>[IO] [PATCH]
+Helper classes for controlling closing of streams
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-120
+">IO-120
+<img src="images/external.png" /></td><td>Improve IOFileFilter toString() methods
+</td><td>Resolved
+</td><td>Fixed
+</td><td>Niall Pemberton
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-119
+">IO-119
+<img src="images/external.png" /></td><td>Convenience
+"
+Builder
+"
+for creating complex FileFilter conditions
+</td><td>Open
+</td><td>Unresolved
+</td><td>Niall Pemberton
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-111
+">IO-111
+<img src="images/external.png" /></td><td>FileSystemUtils.freeDiskSpaceUnix does not work if df is not in the shell path
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-106
+">IO-106
+<img src="images/external.png" /></td><td>Convenience Writer for XML
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-102
+">IO-102
+<img src="images/external.png" /></td><td>Potential unread bytes in readSwappedLong(InputStream)
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-96
+">IO-96
+<img src="images/external.png" /></td><td>Test case misuses read(byte[]) and read(char[]
+)
+</td><td>Closed
+</td><td>Fixed
+</td><td>Stephen Colebourne
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-95
+">IO-95
+<img src="images/external.png" /></td><td>New NullWriter implementation
+</td><td>Closed
+</td><td>Fixed
+</td><td>Niall Pemberton
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-94
+">IO-94
+<img src="images/external.png" /></td><td>New NullnputStream
+&
+NullReader implementations
+</td><td>Closed
+</td><td>Fixed
+</td><td>Niall Pemberton
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-89
+">IO-89
+<img src="images/external.png" /></td><td>Inconsistency in SizeFileFilter and AgeFileFilter implementations
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-87
+">IO-87
+<img src="images/external.png" /></td><td>Provide a convenience mehod in FileFilterUtils to create a Size Range filter
+</td><td>Closed
+</td><td>Fixed
+</td><td>Niall Pemberton
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-85
+">IO-85
+<img src="images/external.png" /></td><td>IOFileFilter implementations for File.canRead(), File.canWrite(), File.isHidden() and empty files/directories
+</td><td>Closed
+</td><td>Fixed
+</td><td>Niall Pemberton
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-81
+">IO-81
+<img src="images/external.png" /></td><td>WildcardFilter should use wildcardMatch(filename,wildcard,***BOOLEAN***)
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-80
+">IO-80
+<img src="images/external.png" /></td><td>LineIterator should implement java.util.Iterator
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-54
+">IO-54
+<img src="images/external.png" /></td><td>[io] File checksum
+</td><td>Closed
+</td><td>Fixed
+</td><td>Stephen Colebourne
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-46
+">IO-46
+<img src="images/external.png" /></td><td>[io] Find file in classpath
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-74
+">IO-74
+<img src="images/external.png" /></td><td>[io] A new file filter - RegexFilter
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-28
+">IO-28
+<img src="images/external.png" /></td><td>[io] Fix CheckStyle Issues
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-79
+">IO-79
+<img src="images/external.png" /></td><td>[IO][PATCH]
+- file and directory pollers
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-15
+">IO-15
+<img src="images/external.png" /></td><td>[io] Parameter check in ByteArrayOutputStream should be narrowed
+</td><td>Closed
+</td><td>Incomplete
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-24
+">IO-24
+<img src="images/external.png" /></td><td>[IO] Online API docs for 1.0 point to 1.1 docs
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-76
+">IO-76
+<img src="images/external.png" /></td><td>[io] Utility to change file access permissions
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-49
+">IO-49
+<img src="images/external.png" /></td><td>[io] File filters with size and age for acceptance criteria
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-67
+">IO-67
+<img src="images/external.png" /></td><td>[io] create memory efficient ThreadableInputStream
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-73
+">IO-73
+<img src="images/external.png" /></td><td>[io] Add recursive directory copy
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-72
+">IO-72
+<img src="images/external.png" /></td><td>[io] Add methods to read a FIle/Stream/Reader by lines
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-71
+">IO-71
+<img src="images/external.png" /></td><td>[io] PipedUtils
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-65
+">IO-65
+<img src="images/external.png" /></td><td>[io] move Location and Locator to commons io
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-53
+">IO-53
+<img src="images/external.png" /></td><td>[io][patch]
+Trivial cleanup of EndianUtils and FileUtils
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-77
+">IO-77
+<img src="images/external.png" /></td><td>[io] add a convenience FileUtils.move(File src, File dest)
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-64
+">IO-64
+<img src="images/external.png" /></td><td>[io][patch]
+add DeferredFileOutputStream.writeTo() + test
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-56
+">IO-56
+<img src="images/external.png" /></td><td>[io] FileCleaner - delete non empty directories
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-21
+">IO-21
+<img src="images/external.png" /></td><td>[io] IOUtils does not provide methods for converting a String to an InputStream
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-66
+">IO-66
+<img src="images/external.png" /></td><td>[IO] FilenameFilter that uses regular expressions (upload)
+</td><td>Open
+</td><td>Unresolved
+</td><td>Unassigned
+</td></tr><tr class="b"><td><a href="http://issues.apache.org/jira/browse/IO-13
+">IO-13
+<img src="images/external.png" /></td><td>[IO] FileUtils.toFile( URL ) doesn
+'
+t deal with URL encoding
+</td><td>Closed
+</td><td>Fixed
+</td><td>Unassigned
+</td></tr><tr class="a"><td><a href="http://issues.apache.org/jira/browse/IO-50
+">IO-50
+<img src="images/external.png" /></td><td>[io] Use java.nio for copyFile(File source, File destination)
+</td><td>Closed
+</td><td>Won
+'
+t Fix
+</td><td>Unassigned
+</td></tr></table>
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2002-2007
+    
+          The Apache Software Foundation
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

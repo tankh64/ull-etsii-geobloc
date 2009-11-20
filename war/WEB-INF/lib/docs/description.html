@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>Commons IO - 
+  User guide</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="
+  Commons Documentation Team" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="../../" id="bannerLeft">
+    
+                                    <img src="http://jakarta.apache.org/images/original-jakarta-logo.gif" alt="" />
+    
+            </a>
+                        <a href="index.html" id="bannerRight">
+    
+                                            <img src="images/io-logo-white.png" alt="" />
+    
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+            <div class="xleft">
+        Last Published: 27 June 2007
+                      </div>
+            <div class="xright">      <a href="http://www.apache.org">Apache</a>
+          |
+          <a href="../../">Jakarta</a>
+          |
+          <a href="../">Commons</a>
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+                   <h5>Commons IO</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">Overview</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://jakarta.apache.org/site/downloads/downloads_commons-io.cgi">Download</a>
+        </li>
+              
+    <li class="none">
+              <strong>User guide</strong>
+        </li>
+              
+    <li class="none">
+              <a href="bestpractices.html">Best practices</a>
+        </li>
+              
+    <li class="none">
+              <a href="api-release/index.html">Javadoc (latest release)</a>
+        </li>
+          </ul>
+          <h5>Development</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="building.html">Building</a>
+        </li>
+              
+    <li class="none">
+              <a href="mail-lists.html">Mailing lists</a>
+        </li>
+              
+    <li class="none">
+              <a href="issue-tracking.html">Issue Tracking</a>
+        </li>
+              
+    <li class="none">
+              <a href="team-list.html">Team</a>
+        </li>
+              
+    <li class="none">
+              <a href="tasks.html">Tasks</a>
+        </li>
+              
+    <li class="none">
+              <a href="proposal.html">Proposal</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/io/trunk/">SVN repository</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/index.html">Javadoc (SVN latest)</a>
+        </li>
+          </ul>
+          <h5>Project Documentation</h5>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">Project Information</a>
+              </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-reports.html">Project Reports</a>
+              </li>
+          </ul>
+          <h5>Commons</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="../">Home</a>
+        </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../components.html">Components</a>
+              </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../sandbox/index.html">Sandbox</a>
+              </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../dormant/index.html">Dormant</a>
+              </li>
+              
+    <li class="none">
+              <a href="../volunteering.html">Volunteering</a>
+        </li>
+              
+    <li class="none">
+              <a href="../patches.html">Contributing Patches</a>
+        </li>
+              
+    <li class="none">
+              <a href="../building.html">Building Components</a>
+        </li>
+              
+    <li class="none">
+              <a href="../releases/index.html">Releasing Components</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://wiki.apache.org/jakarta-commons/FrontPage">Wiki</a>
+        </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        
+ 
+  
+
+    <a name="User guide"></a><div class="section"><h2>User guide</h2>
+        <p>
+            Commons-IO contains
+            <a href="#Utility classes">utility classes</a>,
+            <a href="#Endian classes">endian classes</a>,
+            <a href="#Line iterator">line iterator</a>,
+            <a href="#File filters">file filters</a> and
+            <a href="#Streams">stream implementations</a>.
+        </p>
+
+        <p>
+            For a more detailed descriptions, take a look at the
+            <a href="api-release/index.html">javadocs</a>.
+        </p>
+    </div>
+
+    <a name="Utility classes"></a><div class="section"><h2>Utility classes</h2>
+        <a name="IOUtils"></a><div class="section"><h3>IOUtils</h3>
+            <p>
+                <a href="api-release/index.html?org/apache/commons/io/IOUtils.html">IOUtils</a>
+                contains utility methods dealing with reading, writing and copying.
+                The methods work on InputStream, OutputStream, Reader and Writer.
+            </p>
+            <p>
+                As an example, consider the task of reading bytes
+                from a URL, and printing them. This would typically done like this:
+            </p>
+
+            <div class="source"><pre>
+ InputStream in = new URL( &quot;http://jakarta.apache.org&quot; ).openStream();
+ try {
+   InputStreamReader inR = new InputStreamReader( in );
+   BufferedReader buf = new BufferedReader( inR );
+   String line;
+   while ( ( line = buf.readLine() ) != null ) {
+     System.out.println( line );
+   }
+ } finally {
+   in.close();
+ }</pre></div>
+
+            <p>
+                With the IOUtils class, that could be done with:
+            </p>
+
+            <div class="source"><pre>
+ InputStream in = new URL( &quot;http://jakarta.apache.org&quot; ).openStream();
+ try {
+   System.out.println( IOUtils.toString( in ) );
+ } finally {
+   IOUtils.closeQuietly(in);
+ }</pre></div>
+
+            <p>
+                In certain application domains, such IO operations are
+                common, and this class can save a great deal of time. And you can
+                rely on well-tested code.
+            </p>
+            <p>
+                For utility code such as this, flexibility and speed are of primary importance.
+                However you should also understand the limitations of this approach.
+                Using the above technique to read a 1GB file would result in an
+                attempt to create a 1GB String object!
+            </p>
+
+        </div>
+
+        <a name="FileUtils"></a><div class="section"><h3>FileUtils</h3>
+            <p>
+                The <a href="api-release/index.html?org/apache/commons/io/FileUtils.html">FileUtils</a>
+                class contains utility methods for working with File objects.
+                These include reading, writing, copying and comparing files.
+            </p>
+            <p>
+                For example to read an entire file line by line you could use:
+            </p>
+            <div class="source"><pre>
+ File file = new File(&quot;/commons/io/project.properties&quot;);
+ List lines = FileUtils.readLines(file, &quot;UTF-8&quot;);</pre></div>
+        </div>
+
+        <a name="FilenameUtils"></a><div class="section"><h3>FilenameUtils</h3>
+            <p>
+                The <a href="api-release/index.html?org/apache/commons/io/FilenameUtils.html">FilenameUtils</a>
+                class contains utility methods for working with filenames <i>without</i>
+                using File objects. The class aims to be consistent
+                between Unix and Windows, to aid transitions between these
+                environments (such as moving from development to production).
+            </p>
+            <p>
+                For example to normalize a filename removing double dot segments:
+            </p>
+            <div class="source"><pre>
+ String filename = &quot;C:/commons/io/../lang/project.xml&quot;;
+ String normalized = FilenameUtils.normalize(filename);
+ // result is &quot;C:/commons/lang/project.xml&quot;</pre></div>
+        </div>
+
+        <a name="FileSystemUtils"></a><div class="section"><h3>FileSystemUtils</h3>
+            <p>
+                The <a href="api-release/index.html?org/apache/commons/io/FileSystemUtils.html">FileSystemUtils</a>
+                class contains
+                utility methods for working with the file system
+                to access functionality not supported by the JDK.
+                Currently, the only method is to get the free space on a drive.
+                Note that this uses the command line, not native code.
+            </p>
+            <p>
+                For example to find the free space on a drive:
+            </p>
+            <div class="source"><pre>
+ long freeSpace = FileSystemUtils.freeSpace(&quot;C:/&quot;);</pre></div>
+        </div>
+
+    </div>
+
+    <a name="Endian classes"></a><div class="section"><h2>Endian classes</h2>
+        <p>
+            Different computer architectures adopt different
+            conventions for byte ordering. In so-called
+            &quot;Little Endian&quot; architectures (eg Intel), the low-order
+            byte is stored in memory at the lowest address, and
+            subsequent bytes at higher addresses. For &quot;Big Endian&quot;
+            architectures (eg Motorola), the situation is reversed.
+        </p>
+
+        <p>
+        There are two classes in this package of relevance:
+        </p>
+
+        <ul>
+           <li>
+           The <a href="api-release/index.html?org/apache/commons/io/EndianUtils.html">EndianUtils</a>
+           class contains static methods for swapping the Endian-ness
+           of Java primitives and streams.
+           </li>
+
+           <li>
+           The <a href="api-release/index.html?org/apache/commons/io/input/SwappedDataInputStream.html">SwappedDataInputStream</a>
+           class is an implementation of the <code>DataInput</code> interface. With
+           this, one can read data from files of non-native Endian-ness.
+           </li>
+        </ul>
+
+        
+            For more information, see
+            <a href="http://www.cs.umass.edu/~verts/cs32/endian.html">http://www.cs.umass.edu/~verts/cs32/endian.html</a>
+         
+
+    </div>
+
+    <a name="Line iterator"></a><div class="section"><h2>Line iterator</h2>
+        
+			The <code>org.apache.commons.io.LineIterator</code> class
+			provides a flexible way for working with a line-based file.
+			An instance can be created directly, or via factory methods on
+			<code>FileUtils</code> or <code>IOUtils</code>.
+			The recommended usage pattern is:
+        
+        <div class="source"><pre>
+ LineIterator it = FileUtils.lineIterator(file, &quot;UTF-8&quot;);
+ try {
+   while (it.hasNext()) {
+     String line = it.nextLine();
+     /// do something with line
+   }
+ } finally {
+   LineIterator.closeQuietly(iterator);
+ }</pre></div>
+    </div>
+
+    <a name="File filters"></a><div class="section"><h2>File filters</h2>
+        <p>
+            The <code>org.apache.commons.io.filefilter</code>
+            package defines an interface
+            (<a href="api-release/index.html?org/apache/commons/io/filefilter/IOFileFilter.html">IOFileFilter</a>)
+            that combines both <code>java.io.FileFilter</code> and
+            <code>java.io.FilenameFilter</code>. Besides
+            that the package offers a series of ready-to-use
+            implementations of the <code>IOFileFilter</code>
+            interface including
+            implementation that allow you to combine other such filters.
+
+            These filters can be used to list files or in FileDialog, for example.
+        </p>
+        <p>
+            See the
+            <a href="api-release/index.html?org/apache/commons/io/filefilter/package-summary.html">filefilter</a>
+            package javadoc for more details.
+        </p>
+    </div>
+
+    <a name="Streams"></a><div class="section"><h2>Streams</h2>
+        <p>
+            The <code>org.apache.commons.io.input</code> and
+            <code>org.apache.commons.io.output</code> packages
+            contain various useful implementations of streams.
+            These include:
+            <ul>
+            <li>Null output stream - that silently absorbs all data sent to it</li>
+            <li>Tee output stream - that sends output data to two streams instead of one</li>
+            <li>Byte array output stream - that is a faster version of the JDK class</li>
+            <li>Counting streams - that count the number of bytes passed</li>
+            <li>Proxy streams - that delegate to the correct method in the proxy</li>
+            <li>Lockable writer - that provides synchronization of writes using a lock file</li>
+            </ul>
+        
+        
+            See the
+            <a href="api-release/index.html?org/apache/commons/io/input/package-summary.html">input</a> or
+            <a href="api-release/index.html?org/apache/commons/io/output/package-summary.html">output</a>
+            package javadoc for more details.
+        
+    </div>
+
+  
+
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2002-2007
+    
+          The Apache Software Foundation
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

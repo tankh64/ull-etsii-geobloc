@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html>
+  <head>
+    <title>Commons IO - 
+  Best practices</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+          <meta name="author" content="
+  Commons Documentation Team" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="../../" id="bannerLeft">
+    
+                                    <img src="http://jakarta.apache.org/images/original-jakarta-logo.gif" alt="" />
+    
+            </a>
+                        <a href="index.html" id="bannerRight">
+    
+                                            <img src="images/io-logo-white.png" alt="" />
+    
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+            <div class="xleft">
+        Last Published: 27 June 2007
+                      </div>
+            <div class="xright">      <a href="http://www.apache.org">Apache</a>
+          |
+          <a href="../../">Jakarta</a>
+          |
+          <a href="../">Commons</a>
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+                   <h5>Commons IO</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="index.html">Overview</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://jakarta.apache.org/site/downloads/downloads_commons-io.cgi">Download</a>
+        </li>
+              
+    <li class="none">
+              <a href="description.html">User guide</a>
+        </li>
+              
+    <li class="none">
+              <strong>Best practices</strong>
+        </li>
+              
+    <li class="none">
+              <a href="api-release/index.html">Javadoc (latest release)</a>
+        </li>
+          </ul>
+          <h5>Development</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="building.html">Building</a>
+        </li>
+              
+    <li class="none">
+              <a href="mail-lists.html">Mailing lists</a>
+        </li>
+              
+    <li class="none">
+              <a href="issue-tracking.html">Issue Tracking</a>
+        </li>
+              
+    <li class="none">
+              <a href="team-list.html">Team</a>
+        </li>
+              
+    <li class="none">
+              <a href="tasks.html">Tasks</a>
+        </li>
+              
+    <li class="none">
+              <a href="proposal.html">Proposal</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/io/trunk/">SVN repository</a>
+        </li>
+              
+    <li class="none">
+              <a href="apidocs/index.html">Javadoc (SVN latest)</a>
+        </li>
+          </ul>
+          <h5>Project Documentation</h5>
+        <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-info.html">Project Information</a>
+              </li>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+              <a href="project-reports.html">Project Reports</a>
+              </li>
+          </ul>
+          <h5>Commons</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="../">Home</a>
+        </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../components.html">Components</a>
+              </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../sandbox/index.html">Sandbox</a>
+              </li>
+              
+                
+              
+      
+              
+        <li class="collapsed">
+              <a href="../dormant/index.html">Dormant</a>
+              </li>
+              
+    <li class="none">
+              <a href="../volunteering.html">Volunteering</a>
+        </li>
+              
+    <li class="none">
+              <a href="../patches.html">Contributing Patches</a>
+        </li>
+              
+    <li class="none">
+              <a href="../building.html">Building Components</a>
+        </li>
+              
+    <li class="none">
+              <a href="../releases/index.html">Releasing Components</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://wiki.apache.org/jakarta-commons/FrontPage">Wiki</a>
+        </li>
+          </ul>
+                                       <a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        
+ 
+  
+
+    <a name="Best practices"></a><div class="section"><h2>Best practices</h2>
+        <p>
+            This document presents a number of 'best practices' in the IO area.
+        </p>
+    </div>
+
+    <a name="java.io.File"></a><div class="section"><h2>java.io.File</h2>
+    
+        <p>
+            Often, you have to deal with files and filenames. There are many
+            things that can go wrong:
+        </p>
+        <ul>
+            <li>A class works in Unix but doesn't on Windows (or vice versa)</li>
+            <li>Invalid filenames due to double or missing path separators</li>
+            <li>UNC filenames (on Windows) don't work with my home-grown filename utility function</li>
+            <li>etc. etc.</li>
+        </ul>
+        
+            These are good reasons not to work with filenames as Strings.
+            Using java.io.File instead handles many of the above cases nicely.
+            Thus, our best practice recommendation is to use java.io.File
+            instead of String for filenames to avoid platform dependencies.
+        
+        
+            <i>
+            Version 1.1 of commons-io now includes a dedicated filename
+            handling class - <a href="api-release/index.html?org/apache/commons/io/FilenameUtils.html">FilenameUtils</a>.
+            This does handle many of these filename issues, however we still
+            recommend, wherever possible, that you use java.io.File objects.
+            </i>
+        
+        
+            Let's look at an example.
+        
+        <div class="source"><pre>
+ public static String getExtension(String filename) {
+   int index = filename.lastIndexOf('.');
+   if (index == -1) {
+     return &quot;&quot;;
+   } else {
+     return filename.substring(index + 1);
+   }
+ }</pre></div>
+        
+            Easy enough? Right, but what happens if someone passes in a full path 
+            instead of only a filename? Consider the following, perfectly legal path:
+            &quot;C:\Temp\documentation.new\README&quot;.
+            The method as defined above would return &quot;new\README&quot; - definitely
+            not what you wanted.
+        
+        <p>
+            Please use java.io.File for filenames instead of Strings.
+            The functionality that the class provides is well tested.
+            In FileUtils you will find other useful utility functions
+            around java.io.File.
+        </p>
+        <p>
+            Instead of:
+        </p>
+        <div class="source"><pre>
+ String tmpdir = &quot;/var/tmp&quot;;
+ String tmpfile = tmpdir + System.getProperty(&quot;file.separator&quot;) + &quot;test.tmp&quot;;
+ InputStream in = new java.io.FileInputStream(tmpfile);</pre></div>
+        <p>
+            ...write:
+        </p>
+        <div class="source"><pre>
+ File tmpdir = new File(&quot;/var/tmp&quot;);
+ File tmpfile = new File(tmpdir, &quot;test.tmp&quot;);
+ InputStream in = new java.io.FileInputStream(tmpfile);</pre></div>
+
+    </div>
+    
+    <a name="Buffering streams"></a><div class="section"><h2>Buffering streams</h2>
+        <p>
+            IO performance depends a lot from the buffering strategy. Usually, it's 
+            quite fast to read packets with the size of 512 or 1024 bytes because
+            these sizes match well with the packet sizes used on harddisks in 
+            file systems or file system caches. But as soon as you have to read only 
+            a few bytes and that many times performance drops significantly.
+        </p>
+        <p>
+            Make sure you're properly buffering streams when reading or writing 
+            streams, especially when working with files. Just decorate your 
+            FileInputStream with a BufferedInputStream:
+        </p>
+        <div class="source"><pre>
+ InputStream in = new java.io.FileInputStream(myfile);
+ try {
+   in = new java.io.BufferedInputStream(in);
+   
+   in.read(.....
+ } finally {
+   IOUtils.closeQuietly(in);
+ }</pre></div>
+        <p>
+            Pay attention that you're not buffering an already buffered stream. Some
+            components like XML parsers may do their own buffering so decorating
+            the InputStream you pass to the XML parser does nothing but slowing down
+            your code. If you use our CopyUtils or IOUtils you don't need to 
+            additionally buffer the streams you use as the code in there already
+            buffers the copy process. Always check the Javadocs for information. 
+            Another case where buffering is unnecessary is when you write to a 
+            ByteArrayOutputStream since you're writing to memory only.
+        </p>
+    </div>
+
+  
+
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2002-2007
+    
+          The Apache Software Foundation
+          
+  
+
+  
+    
+  
+  
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+-classpath 'c:/Workspace/commons-io/target/classes' -protected
+-sourcepath
+'c:/Workspace/commons-io/src/java'
+-author
+-bottom
+'Copyright &copy; 2002-2007 <a href="http://www.apache.org/">The Apache Software Foundation</a>. All Rights Reserved.'
+-charset
+'ISO-8859-1'
+-d
+'c:/Workspace/commons-io/target/site/apidocs'
+-doctitle
+'Commons IO 1.3.2 API'
+-use
+-version
+-windowtitle
+'Commons IO 1.3.2 API'
