@@ -12,6 +12,24 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>GeoBloc_Server1</servlet-name>
 		<url-pattern>/geobloc_server1</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ClearBasicFormsFromDatastoreServlet</servlet-name>
+		<servlet-class>dh.geobloc.appengine.server.ClearBasicFormsFromDatastoreServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClearBasicFormsFromDatastoreServlet</servlet-name>
+		<url-pattern>/clear_basicforms</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ShowBasicForm</servlet-name>
+		<servlet-class>dh.geobloc.appengine.server.ShowBasicForm</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShowBasicForm</servlet-name>
+		<url-pattern>/show_basicform</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>main.jsp</welcome-file>
 	</welcome-file-list>

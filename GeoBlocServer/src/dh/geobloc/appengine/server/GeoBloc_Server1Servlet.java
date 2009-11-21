@@ -4,6 +4,7 @@ package dh.geobloc.appengine.server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
@@ -17,24 +18,36 @@ import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
-import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Text;
 
 @SuppressWarnings("serial")
 public class GeoBloc_Server1Servlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		resp.setContentType("text/plain");
-		resp.getWriter().println("Hello, world");
+		resp.setContentType("text/html");
+		resp.getWriter().println("<p>Hello, world</p>");
+		String param = req.getParameter("firstname");
+		resp.getWriter().println("<p>Parameter: " + param + "</p>");
+		
+		resp.getWriter().println();
+		resp.getWriter().println("<p><a href=/main.jsp>Back to main</a></p>");
 	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		UserService userService = UserServiceFactory.getUserService();
+        User user = userService.getCurrentUser();
+		
 		try {
 			ServletFileUpload upload = new ServletFileUpload();
 			// 50KB
 			upload.setSizeMax(50000);
 			res.setContentType("text/plain");
 			PrintWriter out = res.getWriter();
-
+			
 			try {
 				FileItemIterator iterator = upload.getItemIterator(req);
 				while (iterator.hasNext()) {
@@ -44,33 +57,39 @@ public class GeoBloc_Server1Servlet extends HttpServlet {
 					if (item.isFormField()) {
 						out.println("Got a form field: " + item.getFieldName());
 					} else {
-						/*
+						
 						String fieldName = item.getFieldName();
 						String fileName = item.getName();
 						String contentType = item.getContentType();
 
-						out.println("--------------");
-						out.println("fileName = " + fileName);
-						out.println("field name = " + fieldName);
-						out.println("contentType = " + contentType);
-
 						String fileContents = null;
 						try {
 							fileContents = IOUtils.toString(in);
+							Text text = new Text(fileContents);
 							out.println("length: " + fileContents.length());
-							out.println(fileContents);
+							if (fileContents.length() < 1)
+								out.println("No content.");
+							else {
+								out.println("--------------");
+								out.println("fileName = " + fileName);
+								out.println("field name = " + fieldName);
+								out.println("contentType = " + contentType);
+								//out.println(fileContents);
+								
+								BasicForm form = new BasicForm(user, fileName, text, new Date());
+								PersistenceManager pm = PMF.get().getPersistenceManager();
+								try {
+									pm.makePersistent(form);
+								}
+								finally {
+									pm.close();
+								}
+								
+								out.println(form.getKey());
+								out.println(form.getXml());
+							}
 						} finally {
 							IOUtils.closeQuietly(in);
-						}
-						*/
-						Blob uploadedFile = new Blob(IOUtils.toByteArray(in));
-						
-						PersistenceManager pm = PMF.get().getPersistenceManager();
-						try {
-							pm.makePersistent(in.toString());
-						}
-						finally {
-							pm.close();
 						}
 
 					}

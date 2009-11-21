@@ -9,6 +9,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import com.google.appengine.api.datastore.Text;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BasicForm {
@@ -20,14 +21,18 @@ public class BasicForm {
 	private User author;
 	
 	@Persistent
-	private String xml;
+	private String name;
+	
+	@Persistent
+	private Text xml;
 
 	@Persistent
 	private Date date;
 	
-	public BasicForm(User author, String xml, Date date)
+	public BasicForm(User author, String name, Text xml, Date date)
 	{
 		this.author = author;
+		this.name = name;
 		this.xml = xml;
 		this.date = date;	
 	}
@@ -48,11 +53,19 @@ public class BasicForm {
 		this.author = author;
 	}
 
-	public String getXml() {
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Text getXml() {
 		return xml;
 	}
 
-	public void setXml(String xml) {
+	public void setXml(Text xml) {
 		this.xml = xml;
 	}
 
