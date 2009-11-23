@@ -13,6 +13,13 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Not being used in this build; code from GeoBloc_Server1Servlet will be refactored here later.
+ * 
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
+
 public class UploadBasicFormServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(UploadBasicFormServlet.class.getName());
 

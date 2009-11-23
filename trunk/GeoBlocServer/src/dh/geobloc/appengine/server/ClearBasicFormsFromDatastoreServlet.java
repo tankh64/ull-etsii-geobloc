@@ -8,6 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * A simple servlet used to delete all forms from the datastore, used to clean the datastore 
+ * from files uploaded for testing.
+ * 
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
+
 public class ClearBasicFormsFromDatastoreServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException {

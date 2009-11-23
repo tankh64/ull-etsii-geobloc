@@ -8,11 +8,27 @@
 <%@ page import="dh.geobloc.appengine.server.BasicForm" %>
 <%@ page import="dh.geobloc.appengine.server.PMF;" %>
 
+<%
+/**
+ * This jsp currently allows a signed in user (through a Google Account) to upload files and see the contents of
+ * the uploaded files. However, the servlet which handles this request saves the files as text wrapped inside a 
+ * BasicForm, so the server is only ready to receive XML files at the moment. 
+ * 
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
+%>
 
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>Hello App Engine</title>
+    <style type="text/css">
+  		body {
+    		color: purple;
+    		background-color: white;
+    		}
+  	</style>
   </head>
 
   <body>
@@ -30,7 +46,7 @@
 	%>
 	<p>Hello!
 	<a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
-	to include your name with greetings you post.</p>
+	to upload files and see a list with the most recent uploaded files.</p>
 	<%
     	}
 	%>
@@ -52,7 +68,7 @@
   	if (user != null) {
   %>
   	<%
-  		out.println("<p><a href=/main.jsp>Back to main</a></p>");
+  		out.println("<p><a href=/main.jsp>Refresh</a></p>");
   		PersistenceManager pm = PMF.get().getPersistenceManager();
     	String query = "select from " + BasicForm.class.getName() + " order by date desc range 0,5";
     	List<BasicForm> forms = (List<BasicForm>) pm.newQuery(query).execute();
@@ -90,9 +106,7 @@
   <%
   	} else {
   %>
-  		<p> Please 
-  		<a href="<%= userService.createLoginURL(request.getRequestURI()) %>">sign in</a>
-		, so that you can upload files to the server..</p>
+		<p> Cannot display element until user signs in.</p>
   <%
   	}
   %>
