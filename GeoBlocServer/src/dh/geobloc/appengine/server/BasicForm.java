@@ -11,6 +11,16 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Text;
 
+/**
+ * This is a JavaBean or POJO (Plain Old Java Object), representing the first form the GeoBloc Client in 
+ * the Android device will upload. Right now, it only stores author, a name and text, which is not 
+ * saved as a string because strings in the datastore are limited to 500 chars. It is currently being used 
+ * in the server to store uploaded files.
+ * 
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class BasicForm {
 	@PrimaryKey

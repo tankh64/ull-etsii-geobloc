@@ -23,6 +23,17 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Text;
 
+/**
+ * Basic servlet, used primarily for testing and learning.
+ * 	doGet -> Used to test passing parameters to the servlet through an html link.
+ * 	doPost -> Servlet receives a form and saves the data as BasicForms into the datastore. Note: Every file is 
+ * 		saved as a new BasicForm instead of treating all the uploaded files as a whole package; 
+ * 		this will be corrected in later revisions.
+ * 
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
+
 @SuppressWarnings("serial")
 public class GeoBloc_Server1Servlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
