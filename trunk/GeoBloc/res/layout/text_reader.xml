@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView
+			android:id="@+id/title"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content" 
+    		android:text="@string/hello"
+    		android:textColor="#FFFFFF"
+    		android:background="#660066">
+    </TextView>
+    <ScrollView
+    	android:id="@+id/textReaderScrollingText"
+    	android:layout_width="fill_parent"
+    	android:layout_height="300dp"
+    	android:layout_below="@id/title">
+    	<TextView
+    		android:id="@+id/textReaderText"
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent">
+    	</TextView>
+    </ScrollView>
+    <Button
+    	android:id="@+id/outputToFileButton"
+    	android:text="Output to File"
+    	android:onClick="outputToFileOnClickHandler"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/textReaderScrollingText">
+    </Button>
+</RelativeLayout>
+<!-- 
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	
+	<LinearLayout	
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<TextView  
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content" 
+    		android:text="@string/hello"
+    		android:textColor="#FFFFFF"
+    		android:background="#660066">
+    	</TextView>
+    	<TextView
+    		android:id="@+id/textReaderText"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:minLines="25">
+    	</TextView>
+	</LinearLayout>
+	-->
+	
+	 <!-- 
+	<TextView
+    		android:id="@+id/textReaderText"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		>
+    	</TextView>
+    -->

@@ -8,5 +8,7 @@
 	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
 	<string name="ButtonMainMenu2">Prueba</string>
 	<string name="created_dir">Directorio %s creado correctamente</string>
-<string name="TextView01">Formulario %s cargado</string>
+	<string name="TextView01">Formulario %s cargado</string>
+	<!-- Nombres de botones de la Actividad Menú Principal -->
+	<string name="staticFormStartButtonText">Test Formulario Estático</string>
 </resources>
