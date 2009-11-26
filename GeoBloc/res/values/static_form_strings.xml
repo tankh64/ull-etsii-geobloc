@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources> 
+    <string name="GPSExampleStartButtonText">GPS Example</string>
+    <string name="GeoBlockMuckupStartButtonText">GeoBloc Mockup</string>
+    
+    <string name="formulario">Nº Formulario: </string>
+    <string name="inspector">Inspector: </string>
+    <string name="visita">Visita nº: </string>
+    <string name="inspeccion">Tipo Inspección: </string>
+    <string name="observaciones">Observaciones: </string>
+    <string name="propietario">Propietario Presente</string>
+    <string name="foto">Foto</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="enviar">Enviar</string>
+    <string name="gps">GPS</string>
+    <string name="gpson">Enabled GPS</string>
+    <string name="gpsoff">Disabled GPS</string>
+</resources>

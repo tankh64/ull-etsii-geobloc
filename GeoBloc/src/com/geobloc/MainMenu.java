@@ -1,6 +1,7 @@
 package com.geobloc;
 
 import com.geobloc.FormList;
+import com.geobloc.activities.StaticFormPrototype;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,5 +55,12 @@ public class MainMenu extends Activity {
             }
         });
 
+    }
+    
+    public void staticFormStartButtonOnClickHandler(View target)
+    {
+    	// start GeoBlocStaticForm Activity here
+    	Intent i = new Intent(this, StaticFormPrototype.class);
+    	startActivity(i);
     }
 }
