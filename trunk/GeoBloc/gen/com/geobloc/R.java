@@ -43,7 +43,8 @@ public final class R {
         public static final int TextView05=0x7f050010;
         public static final int TextView06=0x7f050013;
         public static final int ToggleButton01=0x7f050017;
-        public static final int outputToFileButton=0x7f050021;
+        public static final int outputToFileButton=0x7f050022;
+        public static final int outputToServerButton=0x7f050021;
         public static final int staticFormStartButton=0x7f050003;
         public static final int textReaderScrollingText=0x7f05001f;
         public static final int textReaderText=0x7f050020;
