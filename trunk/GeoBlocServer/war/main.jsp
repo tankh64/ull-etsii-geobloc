@@ -81,7 +81,7 @@
         		String key = KeyFactory.keyToString(form.getKey());
     	        if (form.getAuthor() == null) {
 	%>
-	<p>An anonymous person uploaded: -<%= form.getKey()%></p>
+	<p>An anonymous person uploaded: - <a href="show_basicform?key=<%=key%>"> <%= form.getName() %>  </a></p>
 	<%
     	        } else {
 	%>
