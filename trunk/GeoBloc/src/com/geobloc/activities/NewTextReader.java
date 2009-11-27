@@ -12,11 +12,12 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.R;
-import com.geobloc.internet.SimpleHttpGet;
+import com.geobloc.internet.HttpFileMultipartPost;
 import com.geobloc.persistance.SDFilePersistance;
 
 /**
@@ -32,8 +33,14 @@ public class NewTextReader extends Activity implements Runnable {
 	public static String __TEXT_READER_TEXT__ = "textToBeDisplayedByTextReader";
 	public static String __TEXT_READER_OUTPUT__ = "/TextReader/";
 	
+	
 	private String serverResponse = "No Response";
 	private ProgressDialog pd;
+	
+	private String formDirectory;
+	private boolean written;
+	
+	private Button outputToServerButton;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,9 @@ public class NewTextReader extends Activity implements Runnable {
 	
 	private void initialConfig() {
 		text = (TextView) findViewById(R.id.textReaderText);
+		outputToServerButton = (Button) findViewById(R.id.outputToServerButton);
+		// disable unless file has been written
+		outputToServerButton.setEnabled(false);
 	}
 	
 	public void outputToFileOnClickHandler(View target) {
@@ -63,23 +73,24 @@ public class NewTextReader extends Activity implements Runnable {
 		//SDFilePersistance.createDirectory(NewTextReader.__TEXT_READER_OUTPUT__);
 		
 		Calendar cal = Calendar.getInstance();
-		String formDirectory = Environment.getExternalStorageDirectory() + NewTextReader.__TEXT_READER_OUTPUT__+"form_";
+		formDirectory = Environment.getExternalStorageDirectory() + NewTextReader.__TEXT_READER_OUTPUT__+"form_";
 		formDirectory += cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.YEAR) 
 						+ "_" + cal.get(Calendar.HOUR_OF_DAY) + "-" + cal.get(Calendar.MINUTE) 
 						+ "-" + cal.get(Calendar.SECOND)+"/";
 		SDFilePersistance.createDirectory(formDirectory);
 		
-		boolean written = SDFilePersistance.writeToFile(formDirectory, fileName, text);
+		written = SDFilePersistance.writeToFile(formDirectory, fileName, text);
 		
 		CharSequence toastText;
-		if (written)
+		if (written) {
 			toastText = "File saved!";
+			outputToServerButton.setEnabled(true);
+		}
 		else
 			toastText = "Error! File could not be saved";
 		int duration = Toast.LENGTH_SHORT;
 		Toast toast = Toast.makeText(getApplicationContext(), toastText, duration);
 		toast.show();
-		
 		
 	}
 	
@@ -95,10 +106,22 @@ public class NewTextReader extends Activity implements Runnable {
 	// thread code
 	public void run() {
 		// HttpGet
+		/*
 		SimpleHttpGet get = new SimpleHttpGet();
 		String url = "http://ull-etsii-geobloc.appspot.com/geobloc_server1?firstname=AndroidClient";
 		try {
 			serverResponse = get.ExecuteHttpGet(url);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			serverResponse = e.toString();
+		}
+        handler.sendEmptyMessage(0);
+        */
+		HttpFileMultipartPost post = new HttpFileMultipartPost();
+		String url = "http://ull-etsii-geobloc.appspot.com/geobloc_server1";
+		try {
+			serverResponse = post.executeMultipartPost(formDirectory, "form.xml", url);
 		}
 		catch (Exception e){
 			e.printStackTrace();

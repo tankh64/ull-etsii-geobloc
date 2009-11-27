@@ -11,6 +11,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+/**
+ * Main Menu class; used to connect parts of the app in development.
+ * 
+ * @author Jorge Carballo (jelcaf@gmail.com)
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
+
 public class MainMenu extends Activity {
 	
 	// For result from Activity
