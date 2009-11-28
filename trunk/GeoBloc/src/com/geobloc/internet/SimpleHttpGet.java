@@ -23,14 +23,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
  *
  */
 public class SimpleHttpGet {
-	public String ExecuteHttpGet(String url) throws Exception {
+	public String ExecuteHttpGet(String url, HttpClient httpClient) throws Exception {
 		String respString = "Error!";
 		BufferedReader in = null;
 		try {
-			HttpClient client = new DefaultHttpClient();
+			//HttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet();
 			request.setURI((new URI(url)));
-			HttpResponse response = client.execute(request);
+			HttpResponse response = httpClient.execute(request);
 			in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			StringBuffer sb = new StringBuffer("");
 			String line = "";
@@ -40,7 +40,8 @@ public class SimpleHttpGet {
 			}
 			in.close();
 			
-			respString = sb.toString();			
+			respString = sb.toString();
+			httpClient.getConnectionManager().closeExpiredConnections();
 		}
 		finally {
 			if (in != null)
