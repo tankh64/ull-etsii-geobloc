@@ -5,6 +5,8 @@ package com.geobloc.activities;
 
 import java.util.Calendar;
 
+import org.apache.http.client.HttpClient;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.geobloc.ApplicationEx;
 import com.geobloc.R;
 import com.geobloc.internet.HttpFileMultipartPost;
 import com.geobloc.persistance.SDFilePersistance;
@@ -110,7 +113,10 @@ public class NewTextReader extends Activity implements Runnable {
 		SimpleHttpGet get = new SimpleHttpGet();
 		String url = "http://ull-etsii-geobloc.appspot.com/geobloc_server1?firstname=AndroidClient";
 		try {
-			serverResponse = get.ExecuteHttpGet(url);
+			/ get httpClient from ApplicationEx
+			ApplicationEx app = (ApplicationEx)this.getApplication();
+			HttpClient httpClient = app.getHttpClient();
+			serverResponse = get.ExecuteHttpGet(url, httpClient);
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -121,7 +127,10 @@ public class NewTextReader extends Activity implements Runnable {
 		HttpFileMultipartPost post = new HttpFileMultipartPost();
 		String url = "http://ull-etsii-geobloc.appspot.com/geobloc_server1";
 		try {
-			serverResponse = post.executeMultipartPost(formDirectory, "form.xml", url);
+			// get httpClient from ApplicationEx
+			ApplicationEx app = (ApplicationEx)this.getApplication();
+			HttpClient httpClient = app.getHttpClient();
+			serverResponse = post.executeMultipartPost(formDirectory, "form.xml", url, httpClient);
 		}
 		catch (Exception e){
 			e.printStackTrace();

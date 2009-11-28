@@ -28,13 +28,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
  */
 public class HttpFileMultipartPost {
 	//public void executeMultipartPost(List<String> files, String url)throws Exception     {
-	public String executeMultipartPost(String fileDirectory, String file, String url)throws Exception     {
+	public String executeMultipartPost(String fileDirectory, String file, String url, HttpClient httpClient)throws Exception     {
 		String stringResponse = "Error!";
 		BufferedReader in = null;
 		try {
 			InputStream is = new FileInputStream(fileDirectory+file);
 			//InputStream is = this.getAssets().open("data.xml");
-			HttpClient httpClient = new DefaultHttpClient();
+			//HttpClient httpClient = new DefaultHttpClient();
 			//HttpPost postRequest = new HttpPost("http://192.178.10.131/WS2/Upload.aspx");
 			HttpPost postRequest = new HttpPost(url);
 			byte[] data = IOUtils.toByteArray(is);
@@ -58,6 +58,7 @@ public class HttpFileMultipartPost {
 			
             stringResponse = sb.toString();
             
+            httpClient.getConnectionManager().closeExpiredConnections();
             //res.getEntity().consumeContent();
             //res.getEntity().getContent().close();
         } 

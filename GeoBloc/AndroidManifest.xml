@@ -3,7 +3,10 @@
       package="com.geobloc"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <application 
+    	android:icon="@drawable/icon"
+    	android:label="@string/app_name"
+    	android:name="ApplicationEx" android:debuggable="true">
         <activity android:name=".MainMenu"
                   android:label="@string/app_name">
             <intent-filter>
@@ -20,11 +23,13 @@
         </activity>
         <activity
         	android:name=".activities.StaticFormPrototype"
-        	android:label="GeoBloc Static Form Prototyoe">
+        	android:label="GeoBloc Static Form Prototyoe"
+        	android:theme="@android:style/Theme.NoTitleBar">
         </activity>
 		<activity
 			android:name=".activities.NewTextReader"
-			android:label="NewTextReader">
+			android:label="NewTextReader"
+			android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
 	</application>
     <uses-sdk android:minSdkVersion="4" />
