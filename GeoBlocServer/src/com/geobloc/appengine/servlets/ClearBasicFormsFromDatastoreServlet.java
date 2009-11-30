@@ -1,4 +1,4 @@
-package dh.geobloc.appengine.server;
+package com.geobloc.appengine.servlets;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,6 +7,9 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.geobloc.appengine.forms.BasicForm;
+import com.geobloc.appengine.server.PMF;
 
 /**
  * A simple servlet used to delete all forms from the datastore, used to clean the datastore 

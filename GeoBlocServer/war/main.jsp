@@ -5,8 +5,8 @@
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
-<%@ page import="dh.geobloc.appengine.server.BasicForm" %>
-<%@ page import="dh.geobloc.appengine.server.PMF;" %>
+<%@ page import="com.geobloc.appengine.forms.BasicForm" %>
+<%@ page import="com.geobloc.appengine.server.PMF;" %>
 
 <%
 /**

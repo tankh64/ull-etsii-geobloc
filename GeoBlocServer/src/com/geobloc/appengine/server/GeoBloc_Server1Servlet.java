@@ -1,4 +1,4 @@
-package dh.geobloc.appengine.server;
+package com.geobloc.appengine.server;
 
 
 import java.io.IOException;
@@ -18,10 +18,11 @@ import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 
+import com.geobloc.appengine.forms.BasicForm;
+import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.api.datastore.Text;
 
 /**
  * Basic servlet, used primarily for testing and learning.
@@ -75,6 +76,7 @@ public class GeoBloc_Server1Servlet extends HttpServlet {
 
 						String fileContents = null;
 						try {
+							//byte[] file = IOUtils.toByteArray(in);
 							fileContents = IOUtils.toString(in);
 							Text text = new Text(fileContents);
 							out.println("length: " + fileContents.length());

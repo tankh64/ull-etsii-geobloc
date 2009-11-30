@@ -1,4 +1,4 @@
-package dh.geobloc.appengine.server;
+package com.geobloc.appengine.server;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

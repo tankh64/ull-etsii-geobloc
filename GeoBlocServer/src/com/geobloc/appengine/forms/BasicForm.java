@@ -1,4 +1,4 @@
-package dh.geobloc.appengine.server;
+package com.geobloc.appengine.forms;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.users.User;
