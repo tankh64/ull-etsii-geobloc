@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>GeoBloc_Server1</servlet-name>
-		<servlet-class>dh.geobloc.appengine.server.GeoBloc_Server1Servlet</servlet-class>
+		<servlet-class>com.geobloc.appengine.server.GeoBloc_Server1Servlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>GeoBloc_Server1</servlet-name>
@@ -15,7 +15,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet>
 		<servlet-name>ClearBasicFormsFromDatastoreServlet</servlet-name>
-		<servlet-class>dh.geobloc.appengine.server.ClearBasicFormsFromDatastoreServlet</servlet-class>
+		<servlet-class>com.geobloc.appengine.servlets.ClearBasicFormsFromDatastoreServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ClearBasicFormsFromDatastoreServlet</servlet-name>
@@ -24,7 +24,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet>
 		<servlet-name>ShowBasicForm</servlet-name>
-		<servlet-class>dh.geobloc.appengine.server.ShowBasicForm</servlet-class>
+		<servlet-class>com.geobloc.appengine.servlets.ShowBasicForm</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ShowBasicForm</servlet-name>

@@ -1,4 +1,4 @@
-package dh.geobloc.appengine.server;
+package com.geobloc.appengine.servlets;
 
 import java.io.IOException;
 import java.util.Date;
