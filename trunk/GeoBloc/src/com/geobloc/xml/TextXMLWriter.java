@@ -19,7 +19,7 @@ import android.util.Xml;
  */
 public class TextXMLWriter implements IXMLWriter {
 
-	@Override
+	//@Override
 	public String WriteXML(List<ITextField> fields) {
 		XmlSerializer serializer = Xml.newSerializer();
 	    StringWriter writer = new StringWriter();
