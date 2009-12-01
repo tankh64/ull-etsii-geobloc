@@ -77,6 +77,8 @@ public final class R {
         public static final int inspeccion=0x7f040005;
         public static final int inspector=0x7f040003;
         public static final int list_form=0x7f040013;
+        public static final int menu_question_view_save=0x7f040019;
+        public static final int menu_question_view_save_and_send=0x7f04001a;
         public static final int observaciones=0x7f040006;
         public static final int propietario=0x7f040007;
         /**  Nombres de botones de la Actividad Menú Principal 

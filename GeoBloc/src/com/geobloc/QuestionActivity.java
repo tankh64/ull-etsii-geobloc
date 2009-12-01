@@ -3,6 +3,8 @@ package com.geobloc;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -20,13 +22,16 @@ import android.widget.Toast;
 public class QuestionActivity extends Activity {
 	private final String t = "QuestionActivity";
 	
+	/** Opciones del menu */
+	private static final int MENU_SAVE = Menu.FIRST;
+	private static final int MENU_SAVE_AND_SEND = MENU_SAVE+1;
+	
 	enum TextType{STRING, INT, FLOAT};
 
 	private FormDef formDef;
 	private FormHandler formHandler;
 	
 	private LinearLayout linearLayout;
-	//private View vista;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,13 +39,21 @@ public class QuestionActivity extends Activity {
         
         if (savedInstanceState != null) {
             Toast.makeText(getApplicationContext(),
-            		"No debemos crear el formulario de nuevo",
+            		"Regreso",
                     Toast.LENGTH_SHORT).show();
+            		return;
         }
         
         setContentView(R.layout.question_form);
         setTitle(getString(R.string.app_name)+ " > " + getString(R.string.list_form));
-      
+    
+        FillForm();
+    }
+	
+	/**
+	 * Rellena el formulario (por ahora directamete, sin utilizar ningún archivo)
+	 */
+	private void FillForm () {
         linearLayout = (LinearLayout) findViewById (R.id.LinearLayout01);
         
         if (linearLayout == null) {
@@ -58,7 +71,38 @@ public class QuestionActivity extends Activity {
         	AddText("Tres");
         	AddButton("Otro Boton con Mas Texto del que cabe, o eso espero ... a ver q sale");
         }
-    }
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu (Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		menu.add(0, QuestionActivity.MENU_SAVE, 0,
+				R.string.menu_question_view_save).setIcon(android.R.drawable.ic_menu_save);
+		menu.add(0, QuestionActivity.MENU_SAVE_AND_SEND, 0,
+				R.string.menu_question_view_save_and_send).setIcon(android.R.drawable.ic_menu_send);
+		return true;
+	}
+	
+	@Override
+	public boolean onMenuItemSelected (int featureId, MenuItem item) {
+		CharSequence toastText;
+		switch (item.getItemId()) {
+		case MENU_SAVE:
+			toastText = "Guardado";
+			break;
+		case MENU_SAVE_AND_SEND:
+			toastText = "Gardado y Enviado";
+			break;
+			default:
+				toastText = "No se que hacer";
+		}
+        Toast.makeText(getApplicationContext(),
+        		toastText,
+                Toast.LENGTH_SHORT).show();
+		return true;
+	}
 	
 	/**
 	 * Añade un TextView al formulario

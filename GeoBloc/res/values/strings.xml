@@ -11,4 +11,6 @@
 	<string name="TextView01">Formulario %s cargado</string>
 	<!-- Nombres de botones de la Actividad Menú Principal -->
 	<string name="staticFormStartButtonText">Test Formulario Estático</string>
+<string name="menu_question_view_save">Guardar</string>
+<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
 </resources>
