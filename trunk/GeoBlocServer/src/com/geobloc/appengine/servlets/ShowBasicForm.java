@@ -15,15 +15,14 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
 
 /**
- * This servlet outputs a BasicForm from the datastore as html to the user. The BasicForm to be outputted is 
- * searched thanks to the key, which must be passed as a paremeter to the servlet. Currently, this servlet is 
- * called to show the uploaded files, since all of them are saved as BasicForms.
+ * 
  * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
 
 public class ShowBasicForm extends HttpServlet {
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException {
 		resp.setContentType("text/html");

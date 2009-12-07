@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.geobloc.appengine.forms.BasicForm;
+import com.geobloc.appengine.forms.BasicPackageForm;
 import com.geobloc.appengine.server.PMF;
 
 /**
@@ -19,14 +19,14 @@ import com.geobloc.appengine.server.PMF;
  *
  */
 
-public class ClearBasicFormsFromDatastoreServlet extends HttpServlet {
+public class ClearBasicPackageFormsFromDatastoreServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {			
-    		String query = "select from " + BasicForm.class.getName();
-    		List<BasicForm> forms = (List<BasicForm>) pm.newQuery(query).execute();
+    		String query = "select from " + BasicPackageForm.class.getName();
+    		List<BasicPackageForm> forms = (List<BasicPackageForm>) pm.newQuery(query).execute();
     		pm.deletePersistentAll(forms);
 		}
 		finally {
