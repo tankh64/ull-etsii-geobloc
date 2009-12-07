@@ -4,6 +4,9 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	
+	<!-- Training servlet. Currently handles uploading of BasicForms. -->
+
 	<servlet>
 		<servlet-name>GeoBloc_Server1</servlet-name>
 		<servlet-class>com.geobloc.appengine.server.GeoBloc_Server1Servlet</servlet-class>
@@ -12,6 +15,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>GeoBloc_Server1</servlet-name>
 		<url-pattern>/geobloc_server1</url-pattern>
 	</servlet-mapping>
+	
+	<!-- Servlet which, upon a doGet, erases all BasicForms in the datastore. -->
 	
 	<servlet>
 		<servlet-name>ClearBasicFormsFromDatastoreServlet</servlet-name>
@@ -22,6 +27,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/clear_basicforms</url-pattern>
 	</servlet-mapping>
 	
+		<!-- Servlet which, upon a doGet, erases all BasicPackageForms in the datastore. -->
+	
+	<servlet>
+		<servlet-name>ClearBasicPackageFormsFromDatastoreServlet</servlet-name>
+		<servlet-class>com.geobloc.appengine.servlets.ClearBasicPackageFormsFromDatastoreServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClearBasicPackageFormsFromDatastoreServlet</servlet-name>
+		<url-pattern>/clear_basicpackageforms</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Servlet for displaying the contents of a BasicForm -->
 	<servlet>
 		<servlet-name>ShowBasicForm</servlet-name>
 		<servlet-class>com.geobloc.appengine.servlets.ShowBasicForm</servlet-class>
@@ -30,6 +47,37 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>ShowBasicForm</servlet-name>
 		<url-pattern>/show_basicform</url-pattern>
 	</servlet-mapping>
+	
+	<!-- New servlet for handling BasicPackageForm uploads -->
+	<servlet>
+		<servlet-name>UploadBasicPackageFormServlet</servlet-name>
+		<servlet-class>com.geobloc.appengine.servlets.UploadBasicPackageFormServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadBasicPackageFormServlet</servlet-name>
+		<url-pattern>/upload_basicpackageform</url-pattern>
+	</servlet-mapping>
+	
+		<!-- Servlet for displaying the contents of a BasicPackageForm -->
+	<servlet>
+		<servlet-name>ShowBasicPackageForm</servlet-name>
+		<servlet-class>com.geobloc.appengine.servlets.ShowBasicPackageForm</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShowBasicPackageForm</servlet-name>
+		<url-pattern>/show_basicpackageform</url-pattern>
+	</servlet-mapping>	
+	
+			<!-- Servlet which returns the requested file from a BasicPackageForm -->
+	<servlet>
+		<servlet-name>GetBasicPackageFormFile</servlet-name>
+		<servlet-class>com.geobloc.appengine.servlets.GetBasicPackageFormFile</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetBasicPackageFormFile</servlet-name>
+		<url-pattern>/get_basicpackageformfile</url-pattern>
+	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>main.jsp</welcome-file>
 	</welcome-file-list>

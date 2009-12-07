@@ -5,14 +5,14 @@
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
-<%@ page import="com.geobloc.appengine.forms.BasicPackageForm" %>
+<%@ page import="com.geobloc.appengine.forms.BasicForm" %>
 <%@ page import="com.geobloc.appengine.server.PMF;" %>
 
 <%
 /**
  * This jsp currently allows a signed in user (through a Google Account) to upload files and see the contents of
- * the uploaded files. The servlet which handles this request saves the files as text wrapped inside a 
- * BasicPackageForm, allowing packages up to 5MB with files of any kind.
+ * the uploaded files. However, the servlet which handles this request saves the files as text wrapped inside a 
+ * BasicForm, so the server is only ready to receive XML files at the moment. 
  * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
@@ -39,7 +39,7 @@
     	User user = userService.getCurrentUser();
     	if (user != null) {
 	%>
-	<p>Hello, <%= user.getNickname() %> from packageFormsMain! (You can
+	<p>Hello, <%= user.getNickname() %>! (You can
 	<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 	<%
     	} else {
@@ -59,7 +59,7 @@
         <td><a href="geobloc_server1?firstname=John"/>GeoBloc_Server1</td>
       </tr>
       <tr>
-      	<td><a href="clear_basicpackageforms"/>ClearBasicPackageFormsFromDatastoreServlet</td>
+      	<td><a href="clear_basicforms"/>ClearBasicFormsFromDatastoreServlet</td>
       </tr>
     </table>
   </body>
@@ -70,22 +70,22 @@
   	<%
   		out.println("<p><a href=/main.jsp>Refresh</a></p>");
   		PersistenceManager pm = PMF.get().getPersistenceManager();
-    	String query = "select from " + BasicPackageForm.class.getName() + " order by date desc range 0,5";
-    	List<BasicPackageForm> forms = (List<BasicPackageForm>) pm.newQuery(query).execute();
+    	String query = "select from " + BasicForm.class.getName() + " order by date desc range 0,5";
+    	List<BasicForm> forms = (List<BasicForm>) pm.newQuery(query).execute();
     	if (forms.isEmpty()) {
 	%>
 	<p>No forms have been uploaded yet.</p>
 	<%
     	} else {
-        	for (BasicPackageForm form : forms) {
+        	for (BasicForm form : forms) {
         		String key = KeyFactory.keyToString(form.getKey());
     	        if (form.getAuthor() == null) {
 	%>
-	<p>An anonymous person uploaded: - <a href="show_basicpackageform?key=<%=key%>"> <%= form.getName() %>  </a></p>
+	<p>An anonymous person uploaded: - <a href="show_basicform?key=<%=key%>"> <%= form.getName() %>  </a></p>
 	<%
     	        } else {
 	%>
-	<p><b><%= form.getAuthor().getNickname() %></b> uploaded: - <a href="show_basicpackageform?key=<%=key%>"> <%= form.getName() %>  </a></p>
+	<p><b><%= form.getAuthor().getNickname() %></b> uploaded: - <a href="show_basicform?key=<%=key%>"> <%= form.getName() %>  </a></p>
 	<%
     	        }
 	%>
@@ -97,7 +97,7 @@
 	%>
   
   
-  	<form name="filesForm" action="upload_basicpackageform" method="post" enctype="multipart/form-data">
+  	<form name="filesForm" action="geobloc_server1" method="post" enctype="multipart/form-data">
     	File 1:<input type="file" name="file1"><br>
     	File 2:<input type="file" name="file2"><br>
     	File 3:<input type="file" name="file3"><br>
