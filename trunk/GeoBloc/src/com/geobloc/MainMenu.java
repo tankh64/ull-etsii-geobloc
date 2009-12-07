@@ -39,16 +39,16 @@ public class MainMenu extends Activity {
         mCreateFormButton.setText(getString(R.string.ButtonMainMenu1));
         mCreateFormButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                 
-                /*Toast.makeText(getApplicationContext(),
-                		getString(R.string.create_form),
-                        Toast.LENGTH_SHORT).show();*/
                 
             	Intent i = new Intent (getApplicationContext(), FormList.class);
-                startActivity(i);
+                //startActivity(i);
+                startActivityForResult(i, LIST_FORM);
+                
                 //startActivity(new Intent (getApplicationContext(), FormList.class));
             	//startActivityForResult(i, LIST_FORM);
             }
+            
+ 
         });
         
      // Create Test Button
@@ -62,6 +62,40 @@ public class MainMenu extends Activity {
 
             }
         });
+
+    }
+    
+    //@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	
+    	
+    	
+    	if (requestCode == LIST_FORM) {
+        	
+        	if(resultCode == RESULT_OK){
+        		Bundle extras = data.getExtras();
+        		String filename = extras.getString (FormList.FILE_NAME);
+        		String filepath = extras.getString (FormList.FILE_PATH);
+        		Toast.makeText(getApplicationContext(),
+        				getString(R.string.selected_file, filepath),
+                        Toast.LENGTH_SHORT).show();
+        		//TextView tv = (TextView) this.findViewById(R.id.tvResult);
+        		//tv.setText(data.getStringExtra("SCAN_RESULT"));
+        	}
+        	else {
+        		Toast.makeText(getApplicationContext(),
+                		"Actividad NO devuelve correctamente",
+                        Toast.LENGTH_SHORT).show();
+        	}
+    	}
+    	else {
+    		Toast.makeText(getApplicationContext(),
+            		"Actividad desconocida",
+                    Toast.LENGTH_SHORT).show();	
+    	}
+    	
+        
 
     }
     
