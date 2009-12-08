@@ -5,10 +5,12 @@ package com.geobloc.internet;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -16,8 +18,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.InputStreamBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.geobloc.persistance.GeoBlocPackageManager;
 
 /**
  * Class developed for testing; all internet connections to the server should be separated from the client's 
@@ -70,6 +72,68 @@ public class HttpFileMultipartPost {
 				catch (IOException e) {
 					e.printStackTrace();
 				}
+		}
+        return stringResponse;
+    }
+	
+	public String executeMultipartPackagePost(String packageDirectory, String url, HttpClient httpClient) 
+	throws Exception     {
+		String stringResponse = "Error!";
+		BufferedReader in = null;
+		GeoBlocPackageManager toDeliver = new GeoBlocPackageManager();
+		toDeliver.openPackage(packageDirectory);
+		if (toDeliver.OK()) {
+			try {
+
+				List<String> filenames = toDeliver.getAllFilenames();
+				List<File> files = toDeliver.getAllFiles();
+				HttpPost postRequest = new HttpPost(url);
+				MultipartEntity multipartContent = new MultipartEntity();
+			
+				InputStream is;
+				InputStreamBody isb;
+				byte[] data;
+				for (int i = 0; i < files.size(); i++) {
+					is = new FileInputStream(files.get(i));
+					data = IOUtils.toByteArray(is);
+					isb = new InputStreamBody(new ByteArrayInputStream(data), filenames.get(i));
+					multipartContent.addPart(filenames.get(i), isb);
+				}
+			
+				//InputStream is = this.getAssets().open("data.xml");
+				//HttpClient httpClient = new DefaultHttpClient();
+				//HttpPost postRequest = new HttpPost("http://192.178.10.131/WS2/Upload.aspx");
+			
+            
+				postRequest.setEntity(multipartContent);
+				HttpResponse res = httpClient.execute(postRequest);
+				in = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+				StringBuffer sb = new StringBuffer("");
+				String line = "";
+				String NL = System.getProperty("line.separator");
+				while ((line = in.readLine()) != null) {
+					sb.append(line + NL);
+				}
+				in.close();
+			
+				stringResponse = sb.toString();
+            
+				httpClient.getConnectionManager().closeExpiredConnections();
+				//res.getEntity().consumeContent();
+				//res.getEntity().getContent().close();
+			} 
+			finally {
+				if (in != null)
+					try {
+						in.close();
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+		}
+		else {
+			stringResponse = "Error! Could not open package.";
 		}
         return stringResponse;
     }

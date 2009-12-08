@@ -5,6 +5,7 @@ package com.geobloc.persistance;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -44,6 +45,23 @@ public class SDFilePersistance extends Activity {
 		        BufferedWriter out = new BufferedWriter(writer);
 		        out.write(text);
 		        out.close();
+		    }
+		} catch (IOException e) {
+		    Log.e("IOException", "Could not write file " + e.getMessage());
+		}
+		return success;
+	}
+	
+	public static boolean writeToFile(String directoryPath, String fileName, byte[] data) {
+		boolean success = false;
+		try {
+			File directory = new File(directoryPath);
+		    if (directory.canWrite()){
+		    	success = true;
+		        File file = new File(directory, fileName);
+		        FileOutputStream fouts = new FileOutputStream(file);
+		        fouts.write(data);
+		        fouts.close();
 		    }
 		} catch (IOException e) {
 		    Log.e("IOException", "Could not write file " + e.getMessage());

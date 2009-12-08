@@ -31,12 +31,4 @@
     	android:layout_height="wrap_content"
     	android:layout_below="@id/textReaderScrollingText">
     </Button>
-        <Button
-    	android:id="@+id/outputToFileButton"
-    	android:text="Output to File"
-    	android:onClick="outputToFileOnClickHandler"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@id/outputToServerButton">
-    </Button>
 </RelativeLayout>
