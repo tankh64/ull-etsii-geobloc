@@ -80,6 +80,7 @@ public final class R {
         public static final int menu_question_view_save=0x7f040019;
         public static final int menu_question_view_save_and_send=0x7f04001a;
         public static final int observaciones=0x7f040006;
+        public static final int parsed_file_ok=0x7f04001c;
         public static final int propietario=0x7f040007;
         public static final int selected_file=0x7f04001b;
         /**  Nombres de botones de la Actividad Menú Principal 

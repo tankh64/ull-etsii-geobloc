@@ -14,4 +14,5 @@
 <string name="menu_question_view_save">Guardar</string>
 <string name="menu_question_view_save_and_send">Guardar y Enviar</string>
 <string name="selected_file">Ha seleccionado el archivo %s</string>
+<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
 </resources>

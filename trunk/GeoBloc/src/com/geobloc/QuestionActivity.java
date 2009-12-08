@@ -22,6 +22,8 @@ import android.widget.Toast;
 public class QuestionActivity extends Activity {
 	private final String t = "QuestionActivity";
 	
+	public static final String FILE_NAME = "filename";
+	
 	/** Opciones del menu */
 	private static final int MENU_SAVE = Menu.FIRST;
 	private static final int MENU_SAVE_AND_SEND = MENU_SAVE+1;
@@ -33,21 +35,37 @@ public class QuestionActivity extends Activity {
 	
 	private LinearLayout linearLayout;
 	
-	@Override
+	//@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (savedInstanceState != null) {
+        /*if (savedInstanceState != null) {
             Toast.makeText(getApplicationContext(),
             		"Regreso",
                     Toast.LENGTH_SHORT).show();
             		return;
-        }
+        }*/
         
         setContentView(R.layout.question_form);
         setTitle(getString(R.string.app_name)+ " > " + getString(R.string.list_form));
     
-        FillForm();
+        //FillForm();
+        
+        // Aqui debemos conocer el nombre del fichero
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+        	String filename = bundle.getString(QuestionActivity.FILE_NAME);
+        	Toast.makeText(getApplicationContext(),
+            		"Ojo con "+filename,
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+        	Toast.makeText(getApplicationContext(),
+            		"No se ha seleccionado fichero",
+                    Toast.LENGTH_SHORT).show();
+        	finish();
+        }
+        
     }
 	
 	/**
