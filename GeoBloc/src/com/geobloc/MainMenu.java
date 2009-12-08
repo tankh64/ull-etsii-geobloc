@@ -2,6 +2,7 @@ package com.geobloc;
 
 import com.geobloc.FormList;
 import com.geobloc.activities.StaticFormPrototype;
+//import com.geobloc.QuestionActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +24,8 @@ public class MainMenu extends Activity {
 	
 	// For result from Activity
 	private static final int LIST_FORM = 0;
+	private static final int QUESTION_FORM = LIST_FORM + 1;
+	private static final int PARSING_XML = LIST_FORM + 2;
 	
 	// Buttons
 	private Button mCreateFormButton;
@@ -43,9 +46,6 @@ public class MainMenu extends Activity {
             	Intent i = new Intent (getApplicationContext(), FormList.class);
                 //startActivity(i);
                 startActivityForResult(i, LIST_FORM);
-                
-                //startActivity(new Intent (getApplicationContext(), FormList.class));
-            	//startActivityForResult(i, LIST_FORM);
             }
             
  
@@ -58,8 +58,8 @@ public class MainMenu extends Activity {
             public void onClick(View v) {
                 
             	Intent i = new Intent (getApplicationContext(), QuestionActivity.class);
-                startActivity(i);
-
+                //startActivity(i);
+                startActivityForResult(i, QUESTION_FORM);
             }
         });
 
@@ -69,30 +69,54 @@ public class MainMenu extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
     	
+    	switch (requestCode) {
     	
-    	
-    	if (requestCode == LIST_FORM) {
-        	
-        	if(resultCode == RESULT_OK){
-        		Bundle extras = data.getExtras();
-        		String filename = extras.getString (FormList.FILE_NAME);
-        		String filepath = extras.getString (FormList.FILE_PATH);
-        		Toast.makeText(getApplicationContext(),
+    		case LIST_FORM:
+
+    			if(resultCode == RESULT_OK){
+    				Bundle extras = data.getExtras();
+    				String filename = extras.getString (FormList.FILE_NAME);
+    				String filepath = extras.getString (FormList.FILE_PATH);
+    				/*Toast.makeText(getApplicationContext(),
         				getString(R.string.selected_file, filepath),
-                        Toast.LENGTH_SHORT).show();
-        		//TextView tv = (TextView) this.findViewById(R.id.tvResult);
-        		//tv.setText(data.getStringExtra("SCAN_RESULT"));
-        	}
-        	else {
-        		Toast.makeText(getApplicationContext(),
+                        Toast.LENGTH_SHORT).show();*/
+    				
+    				Intent i = new Intent (getApplicationContext(), ParsingXML.class);
+    				i.putExtra(ParsingXML.FILE_NAME, filepath);
+    				startActivityForResult(i, PARSING_XML);
+    			}
+    			else {
+    				Toast.makeText(getApplicationContext(),
                 		"Actividad NO devuelve correctamente",
                         Toast.LENGTH_SHORT).show();
-        	}
-    	}
-    	else {
-    		Toast.makeText(getApplicationContext(),
-            		"Actividad desconocida",
-                    Toast.LENGTH_SHORT).show();	
+    			}
+    			break;
+    		
+    		case QUESTION_FORM:
+    			if(resultCode == RESULT_OK){
+    				Toast.makeText(getApplicationContext(),
+        				"Actividad devuelve correctamente",
+                        Toast.LENGTH_SHORT).show();
+    			}
+    			else {
+    				Toast.makeText(getApplicationContext(),
+                		"Actividad NO devuelve correctamente",
+                        Toast.LENGTH_SHORT).show();
+    			}
+    			break;
+    			
+    		case PARSING_XML:
+    			/*if(resultCode == RESULT_OK){
+    				Toast.makeText(getApplicationContext(),
+        				"Actividad devuelve correctamente",
+                        Toast.LENGTH_SHORT).show();
+    			}
+    			else {
+    				Toast.makeText(getApplicationContext(),
+                		"Actividad NO devuelve correctamente",
+                        Toast.LENGTH_SHORT).show();
+    			}*/
+    			break;
     	}
     	
         

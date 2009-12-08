@@ -88,10 +88,6 @@ public class FormList extends ListActivity {
         
         File archivo = new File(elementos.get(IDFilaSeleccionada));
         
-        /*Toast.makeText(getApplicationContext(),
-        		getString(R.string.selected_file, archivo.getName()),
-                Toast.LENGTH_SHORT).show();*/
-        
         Intent result = new Intent();
         result.putExtra(FormList.FILE_NAME, archivo.getName());
         result.putExtra(FormList.FILE_PATH, __GEOBLOC_FORMS_DIRECTORY__+"/"+archivo.getName());
