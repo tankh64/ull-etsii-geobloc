@@ -1,16 +1,18 @@
 package com.geobloc;
 
-import com.geobloc.FormList;
-import com.geobloc.activities.StaticFormPrototype;
-//import com.geobloc.QuestionActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.geobloc.activities.SecondStaticFormPrototype;
+import com.geobloc.activities.StaticFormPrototype;
+import com.geobloc.shared.Utilities;
 
 /**
  * Main Menu class; used to connect parts of the app in development.
@@ -30,6 +32,9 @@ public class MainMenu extends Activity {
 	// Buttons
 	private Button mCreateFormButton;
 	private Button mTestButton;
+	
+	// Spinner
+	private Spinner staticFormSelectionSpinner;
 	
     /** Called when the activity is first created. */
     @Override
@@ -63,6 +68,13 @@ public class MainMenu extends Activity {
             }
         });
 
+        // Set Spinner contents
+        staticFormSelectionSpinner = (Spinner) findViewById(R.id.staticFormSelectionSpinner);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(
+                this, R.array.static_forms, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        staticFormSelectionSpinner.setAdapter(adapter);
+        staticFormSelectionSpinner.setSelection(0);
     }
     
     //@Override
@@ -126,7 +138,22 @@ public class MainMenu extends Activity {
     public void staticFormStartButtonOnClickHandler(View target)
     {
     	// start GeoBlocStaticForm Activity here
-    	Intent i = new Intent(this, StaticFormPrototype.class);
-    	startActivity(i);
+    	int id = staticFormSelectionSpinner.getSelectedItemPosition();
+    	Intent i;
+    	switch (id) {
+    	case 0: 
+    		i = new Intent(this, StaticFormPrototype.class);
+    		startActivity(i);
+    		//Utilities.showToast(getApplicationContext(), "Got ID:" + id, Toast.LENGTH_SHORT);
+    		break;
+    	case 1:
+    		i = new Intent(this, SecondStaticFormPrototype.class);
+    		startActivity(i);
+    		//Utilities.showToast(getApplicationContext(), "Got ID:" + id, Toast.LENGTH_SHORT);
+    		break;
+    	default:
+    		Utilities.showToast(getApplicationContext(), "Error! Unspecified behaviour for this item", Toast.LENGTH_SHORT);
+    		break;
+    	}
     }
 }

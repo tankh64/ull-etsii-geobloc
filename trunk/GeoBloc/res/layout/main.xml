@@ -17,6 +17,11 @@
 		android:layout_width="fill_parent"
 		android:id="@+id/ButtonMainMenu2">
 	</Button>
+	<Spinner
+		android:id="@+id/staticFormSelectionSpinner"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:prompt="@string/staticFormSelectionSpinnerText"/>
 	<Button
 		android:id="@+id/staticFormStartButton"
 		android:text="@string/staticFormStartButtonText"

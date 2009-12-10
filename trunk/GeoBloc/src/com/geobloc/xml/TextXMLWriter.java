@@ -20,7 +20,7 @@ import android.util.Xml;
 public class TextXMLWriter implements IXMLWriter {
 
 	//@Override
-	public String WriteXML(List<ITextField> fields) {
+	public String WriteXML(List<IField> fields) {
 		XmlSerializer serializer = Xml.newSerializer();
 	    StringWriter writer = new StringWriter();
 	    try {
@@ -36,18 +36,10 @@ public class TextXMLWriter implements IXMLWriter {
 	        }
 	        */
 	        //serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true); 
-	        serializer.startTag("", "fields");
-	        serializer.attribute("", "number", String.valueOf(fields.size()));
-	        serializer.text("\n");
-	        for (ITextField field: fields){
-	        	serializer.text(""+'\t');
-	        	serializer.startTag("", "field");
-	        	serializer.attribute("", "name", field.getFieldName());
-	        	serializer.attribute("", "value", field.getFieldValue());
-	        	serializer.endTag("", "field");
-	        	serializer.text("\n");
+	              
+	        for (IField field: fields){
+	        	field.toXML(serializer);
 	        }
-	        serializer.endTag("", "fields");
 	        serializer.endDocument();
 	        serializer.flush();
 	        return writer.toString();
