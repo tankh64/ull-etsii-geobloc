@@ -9,10 +9,13 @@
 	<string name="ButtonMainMenu2">Prueba</string>
 	<string name="created_dir">Directorio %s creado correctamente</string>
 	<string name="TextView01">Formulario %s cargado</string>
+	
+	
 	<!-- Nombres de botones de la Actividad Menú Principal -->
+	<string name="staticFormSelectionSpinnerText">Seleccione Formulario:</string>
 	<string name="staticFormStartButtonText">Test Formulario Estático</string>
-<string name="menu_question_view_save">Guardar</string>
-<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
-<string name="selected_file">Ha seleccionado el archivo %s</string>
-<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
+	<string name="menu_question_view_save">Guardar</string>
+	<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
+	<string name="selected_file">Ha seleccionado el archivo %s</string>
+	<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
 </resources>

@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface IXMLWriter {
 
-	public String WriteXML(List<ITextField> fields);
+	public String WriteXML(List<IField> fields);
 }

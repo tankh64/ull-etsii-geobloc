@@ -26,6 +26,11 @@
         	android:label="GeoBloc Static Form Prototyoe"
         	android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        <activity
+        	android:name=".activities.SecondStaticFormPrototype"
+        	android:label="GeoBloc Second Static Form Prototyoe"
+        	android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
 		<activity
 			android:name=".activities.NewTextReader"
 			android:label="NewTextReader"
@@ -40,6 +45,7 @@
  	<uses-feature android:name="android.hardware.camera.autofocus" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest> 
