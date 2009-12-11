@@ -11,7 +11,12 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import com.geobloc.shared.GBSharedPreferences;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 
 /**
  * A new class designed to take care over the files which make up a package. In this way, activities 
@@ -19,6 +24,8 @@ import android.os.Environment;
  * will make it persistent and allow you to access all the files within the package.
  * 
  * Currently, there will be no database implementation to handle the packages inside the file system. 
+ * NOTE: Context is required in the second constructor, since this one creates a folder and requires the 
+ * activity context to search in the SharedPreferences
  * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
@@ -29,11 +36,6 @@ public class GeoBlocPackageManager {
 	
 	// we need to hold the directory
 	private File directory;
-
-	// package directory
-	public static String __PACKAGE_DIRECTORY__ = "/GeoBloc/packages/";
-	public static String __DEFAULT_PACKAGE_MANIFEST_FILENAME__ = "manifest.xml";
-	public static String __DEFAULT_FORM_FILENAME__ = "form.xml";
 	
 	// absolute package directory
 	private String packageDirectory;
@@ -44,9 +46,10 @@ public class GeoBlocPackageManager {
 		ok = false;
 	}
 	
-	public GeoBlocPackageManager(String name) {
-		packageDirectory = Environment.getExternalStorageDirectory() + 
-			GeoBlocPackageManager.__PACKAGE_DIRECTORY__ + name;
+	public GeoBlocPackageManager(Context context, String name) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		packageDirectory = prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, 
+				GBSharedPreferences.__DEFAULT_PACKAGES_PATH__) + name;
 		directory = new File(packageDirectory);
 		directory.mkdirs();
 		if (directory.isDirectory())
@@ -60,6 +63,7 @@ public class GeoBlocPackageManager {
 		return ok;
 	}
 	
+	// opens a directory, doesn't create it
 	public boolean openPackage(String fullpath) {
 		packageDirectory = fullpath;
 		directory = new File(fullpath);

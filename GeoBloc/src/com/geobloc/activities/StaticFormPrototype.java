@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.geobloc.R;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.persistance.GeoBlocPackageManifestBuilder;
+import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 import com.geobloc.xml.FormTextField;
 import com.geobloc.xml.IField;
@@ -56,11 +57,11 @@ public class StaticFormPrototype extends Activity {
     	packageName = "geobloc_pk_" + date + "_" + cal.get(Calendar.HOUR_OF_DAY) 
     		+ "-" + cal.get(Calendar.MINUTE) 
 			+ "-" + cal.get(Calendar.SECOND)+"/";
-    	formPackage = new GeoBlocPackageManager(packageName);
+    	formPackage = new GeoBlocPackageManager(getApplicationContext(), packageName);
     	
     	// build manifest
     	manifestBuilder = new GeoBlocPackageManifestBuilder(packageName, "GeoBloc Package", 
-    			"es", "application/octet", date);
+    			"static/1", "es", "application/octet", date);
     	
     	if (!formPackage.OK()) {
     		enviar.setEnabled(false);
@@ -68,7 +69,7 @@ public class StaticFormPrototype extends Activity {
     	}
     	else {
     		// we add the default form file
-    		manifestBuilder.addFile(GeoBlocPackageManager.__DEFAULT_FORM_FILENAME__, "text/xml");
+    		manifestBuilder.addFile(GBSharedPreferences.__DEFAULT_FORM_FILENAME__, "text/xml");
     	}
     }
     
@@ -123,11 +124,11 @@ public class StaticFormPrototype extends Activity {
     	String xml = writer.WriteXML(this.getFields());
     	
     	// add form.xml
-    	boolean xmlOk = formPackage.addFile(GeoBlocPackageManager.__DEFAULT_FORM_FILENAME__, xml);
+    	boolean xmlOk = formPackage.addFile(GBSharedPreferences.__DEFAULT_FORM_FILENAME__, xml);
     	
     	// add manifest.xml
     	xml = manifestBuilder.toXml();
-    	xmlOk = formPackage.addFile(GeoBlocPackageManager.__DEFAULT_PACKAGE_MANIFEST_FILENAME__, xml);
+    	xmlOk = formPackage.addFile(GBSharedPreferences.__DEFAULT_PACKAGE_MANIFEST_FILENAME__, xml);
     	
     	Intent i = new Intent(this, NewTextReader.class);
     	i.putExtra(NewTextReader.__TEXT_READER_TEXT__, xml);

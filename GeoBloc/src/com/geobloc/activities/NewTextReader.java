@@ -3,25 +3,23 @@
  */
 package com.geobloc.activities;
 
-import java.util.Calendar;
-
 import org.apache.http.client.HttpClient;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
 import com.geobloc.internet.HttpFileMultipartPost;
-import com.geobloc.persistance.SDFilePersistance;
+import com.geobloc.shared.GBSharedPreferences;
 
 /**
  * Activity for Development purposes, designed to display XML files during testing before 
@@ -101,7 +99,11 @@ public class NewTextReader extends Activity implements Runnable {
         handler.sendEmptyMessage(0);
         */
 		HttpFileMultipartPost post = new HttpFileMultipartPost();
-		String url = "http://ull-etsii-geobloc.appspot.com/upload_basicpackageform";
+		
+		// get servlet address from shared preferences
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		String url = prefs.getString(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__, 
+				GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
 		try {
 			// get httpClient from ApplicationEx
 			ApplicationEx app = (ApplicationEx)this.getApplication();

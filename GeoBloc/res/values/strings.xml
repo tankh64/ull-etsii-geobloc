@@ -18,4 +18,15 @@
 	<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
 	<string name="selected_file">Ha seleccionado el archivo %s</string>
 	<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
+	
+	<!-- SharedPreferences -->
+	<string name="sharedPreferencesTitle">Preferencias</string>
+	<string name="sharedInternetPreferencesTitle">Preferencias de internet</string>
+	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
+	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
+	<string name="uploadPackagesServletAddressDescription">Dirección del servlet para subir paquetes</string>
+	<string name="packagesPath">Directorio de paquetes</string>
+	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
+	<string name="formsPath">Directorio de formularios</string>
+	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
 </resources>

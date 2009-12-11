@@ -3,6 +3,9 @@ package com.geobloc;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import com.geobloc.activities.SecondStaticFormPrototype;
 import com.geobloc.activities.StaticFormPrototype;
+import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 
 /**
@@ -35,6 +39,8 @@ public class MainMenu extends Activity {
 	
 	// Spinner
 	private Spinner staticFormSelectionSpinner;
+	
+	//
 	
     /** Called when the activity is first created. */
     @Override
@@ -155,5 +161,27 @@ public class MainMenu extends Activity {
     		Utilities.showToast(getApplicationContext(), "Error! Unspecified behaviour for this item", Toast.LENGTH_SHORT);
     		break;
     	}
+    }
+    
+    /* --> Menu <-- */
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.menu, menu);
+    	return true;
+    }
+    
+    @Override 
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case (R.id.mainMenuSettings):
+    		Intent i = new Intent(this, GBSharedPreferences.class);
+			startActivity(i);
+			break;
+    	// More items go here (if any) ...
+    	}
+    	return false; 
     }
 }
