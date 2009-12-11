@@ -26,7 +26,7 @@ public class GeoBlocPackageManifestBuilder {
 		private MultiField pk_metadata;
 	
 	public GeoBlocPackageManifestBuilder(String title, 
-			String description, String language, String type, String date) {
+			String description, String form_Schema, String language, String type, String date) {
 		packageMultiField = new MultiField();
 		packageMultiField.setFieldTag("package");
 		
@@ -40,6 +40,8 @@ public class GeoBlocPackageManifestBuilder {
 		field = new FormTextField("field", "Title", title);
 		pk_metadata.addField(field);
 		field = new FormTextField("field", "Description", description);
+		pk_metadata.addField(field);
+		field = new FormTextField("field", "Form Schema", form_Schema);
 		pk_metadata.addField(field);
 		field = new FormTextField("field", "Language", language);
 		pk_metadata.addField(field);
