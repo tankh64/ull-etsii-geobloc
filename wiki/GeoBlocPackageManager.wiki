@@ -14,10 +14,16 @@ First, and foremost, note that there are two constructors, one without parameter
 
 Necessary methods:
 
- -> public GeoBlocPackageManager();
+{{{
+public GeoBlocPackageManager();
+}}}
+
 This constructor does not write any contents to the SD Card, it only initializes its intenral state. 
 
- -> public boolean isOK();
+{{{
+public boolean isOK();
+}}}
+
 This method tells us if the instance is ready to read/write files. It might not be ready, for example, if there is no bulk storage in the device. 
 
  -> public boolean openPackage(fullPath)
