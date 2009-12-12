@@ -39,7 +39,7 @@ fields.addField(field);
 field = new FormTextField("field", "observaciones", observaciones.getText().toString());
 fields.addField(field);
 
-// now, we simply ask a IXMLWriter to give us the fields as a String
+// now, we simply ask a IXMLWriter to give us the fields as a XML String
 IXMLWriter writer = new TextXMLWriter();
 String xml = writer.WriteXML(myFields);
 
@@ -51,4 +51,3 @@ String xml = writer.WriteXML(myFields);
 }}}
 
 Easy and simple.
-
