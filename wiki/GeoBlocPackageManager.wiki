@@ -28,6 +28,7 @@ This method associates the GeoBlocPackageManager instance to a directory in the 
 This method provides you with a list of all filenames in the current directory. Works the same if you're creating a package/directory or reading one.
 
  -> public List<byte[]> getAllByteFiles();
+
  -> public List<File> getAllFiles();
 Both methods return the actual files in the current directory. This class was not designed to alter or delete files in a directory, only to store files and read them.
 
@@ -39,6 +40,7 @@ Both methods return the actual files in the current directory. This class was no
 As its name implies, you use this to create a package and associate it to the instance. Notice that the full path is not required, since it uses the path from SharedPreferences for packages, only the package name. It is highly recommended to check with the isOK() method beofre performing any other operations.
 
  -> public boolean addFile(fileName, text);
+
  -> public boolean addFile(fileName, data);
 These two methods allow you to add a file to the package/directory through this class. You can either add a text file with the first method, or any kind of file using a byte array (byte[]). Of course, files added will immediately show up if you perform a getAllFiles() or similar call.
 
@@ -50,6 +52,7 @@ GeoBlocFormPackage = formPackage = new GeoBlocPackageManager(getApplicationConte
 
 // add files
 formPackage.addFile("manifest.xml", text);
+
 formPackage.addFile("image.jpeg", data);
 
 // get files
