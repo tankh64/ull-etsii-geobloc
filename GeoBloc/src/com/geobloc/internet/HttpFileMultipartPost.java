@@ -23,7 +23,7 @@ import com.geobloc.persistance.GeoBlocPackageManager;
 
 /**
  * Class developed for testing; all internet connections to the server should be separated from the client's 
- * code because the server can change in the future. This class should be able to send an xml file to the server.
+ * code because the server can change in the future. This class should be able to files to the server.
  * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
@@ -99,11 +99,6 @@ public class HttpFileMultipartPost {
 					isb = new InputStreamBody(new ByteArrayInputStream(data), filenames.get(i));
 					multipartContent.addPart(filenames.get(i), isb);
 				}
-			
-				//InputStream is = this.getAssets().open("data.xml");
-				//HttpClient httpClient = new DefaultHttpClient();
-				//HttpPost postRequest = new HttpPost("http://192.178.10.131/WS2/Upload.aspx");
-			
             
 				postRequest.setEntity(multipartContent);
 				HttpResponse res = httpClient.execute(postRequest);
