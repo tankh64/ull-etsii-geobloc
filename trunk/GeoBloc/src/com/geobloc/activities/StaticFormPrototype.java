@@ -19,6 +19,7 @@ import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 import com.geobloc.xml.FormTextField;
 import com.geobloc.xml.IField;
+import com.geobloc.xml.IXMLWriter;
 import com.geobloc.xml.MultiField;
 import com.geobloc.xml.TextXMLWriter;
 
@@ -104,7 +105,7 @@ public class StaticFormPrototype extends Activity {
     
     private void XMLExample1() {
     	
-    	TextXMLWriter writer = new TextXMLWriter();
+    	IXMLWriter writer = new TextXMLWriter();
     	String xml = writer.WriteXML(this.getFields());
     	
     	//TextForm tf = new TextForm();

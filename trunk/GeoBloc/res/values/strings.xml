@@ -25,6 +25,8 @@
 	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
 	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
 	<string name="uploadPackagesServletAddressDescription">Dirección del servlet para subir paquetes</string>
+	<string name="numberOfInternetAttempts">Intentos de conexión</string>
+	<string name="numberOfInternetAttemptsDescription">Nº de veces que se intentarán las operaciones de Internet</string>
 	<string name="packagesPath">Directorio de paquetes</string>
 	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
 	<string name="formsPath">Directorio de formularios</string>

@@ -6,11 +6,10 @@ package com.geobloc.activities;
 import org.apache.http.client.HttpClient;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +17,9 @@ import android.widget.TextView;
 
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
-import com.geobloc.internet.HttpFileMultipartPost;
 import com.geobloc.shared.GBSharedPreferences;
+import com.geobloc.tasks.UploadPackageTask;
+import com.google.listeners.IUploadPackageTaskListener;
 
 /**
  * Activity for Development purposes, designed to display XML files during testing before 
@@ -28,19 +28,17 @@ import com.geobloc.shared.GBSharedPreferences;
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
-public class NewTextReader extends Activity implements Runnable {
+//public class NewTextReader extends Activity implements Runnable {
+public class NewTextReader extends Activity implements IUploadPackageTaskListener {
 	
 	private TextView text;
 	public static String __TEXT_READER_TEXT__ = "textToBeDisplayedByTextReader";
 	public static String __TEXT_READER_PACKAGE_LOCATION__ = "locationOfPackageToBeSentByTextReader";
 	public static String __TEXT_READER_OUTPUT__ = "/TextReader/";
 	
-	
-	private String serverResponse = "No Response";
 	private ProgressDialog pd;
 	
 	private String packageDirectory;
-	private boolean written;
 	
 	private Button outputToServerButton;
 	
@@ -73,57 +71,111 @@ public class NewTextReader extends Activity implements Runnable {
 	
 	public void outputToServerOnClickHandler(View target) {
 		// Display ProgressDialog and start thread
-		pd = ProgressDialog.show(this, "Working", "Uploading package to Server...", true,
-                false);
- 
+		
+		/*
         Thread thread = new Thread(this);
         thread.start();
+        */
+		
+		pd = ProgressDialog.show(this, "Working", "Uploading package to Server...");
+		pd.setIndeterminate(false);
+		pd.setCancelable(false);
+		pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		//pd.setMax(100);
+		//pd.setProgress(0);
+		
+		UploadPackageTask task = new UploadPackageTask();
+		task.setContext(getApplicationContext());
+		// get httpClient from ApplicationEx
+		ApplicationEx app = (ApplicationEx)this.getApplication();
+		HttpClient httpClient = app.getHttpClient();
+		task.setHttpClient(httpClient);
+		task.setListener(this);
+		task.execute(packageDirectory);
+		
 	}
-	
+	/*
 	// thread code
 	public void run() {
 		// HttpGet
-		/*
-		SimpleHttpGet get = new SimpleHttpGet();
-		String url = "http://ull-etsii-geobloc.appspot.com/geobloc_server1?firstname=AndroidClient";
-		try {
-			/ get httpClient from ApplicationEx
-			ApplicationEx app = (ApplicationEx)this.getApplication();
-			HttpClient httpClient = app.getHttpClient();
-			serverResponse = get.ExecuteHttpGet(url, httpClient);
-		}
-		catch (Exception e){
-			e.printStackTrace();
-			serverResponse = e.toString();
-		}
-        handler.sendEmptyMessage(0);
-        */
-		HttpFileMultipartPost post = new HttpFileMultipartPost();
+		
 		
 		// get servlet address from shared preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		String url = prefs.getString(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__, 
 				GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
-		try {
-			// get httpClient from ApplicationEx
-			ApplicationEx app = (ApplicationEx)this.getApplication();
-			HttpClient httpClient = app.getHttpClient();
-			//serverResponse = post.executeMultipartPost(formDirectory, "form.xml", url, httpClient);
-			serverResponse = post.executeMultipartPackagePost(packageDirectory, url, httpClient);
+		
+		HttpFileMultipartPost post;
+		
+		
+		// boolean to check for Exception
+		boolean exception = false;
+
+		// boolean to exit loop (success or failrue)
+		boolean done = false;
+		
+		for (int i = 1; (!exception && !done && (i <= 3)); i++) {
+			post = new HttpFileMultipartPost();
+			// tell the handler in which attempt we are
+			handler.sendEmptyMessage(i);
+			try {
+				// get httpClient from ApplicationEx
+				ApplicationEx app = (ApplicationEx)this.getApplication();
+				HttpClient httpClient = app.getHttpClient();
+				//serverResponse = post.executeMultipartPost(formDirectory, "form.xml", url, httpClient);
+				serverResponse = post.executeMultipartPackagePost(packageDirectory, url, httpClient);
+				
+				// should be enough to check
+				if (serverResponse.contains((CharSequence)GBSharedPreferences.__OK_SIGNATURE__)) {
+					done = true;
+				}
+			}
+			catch (Exception e){
+				// if exception, exit loop
+				exception = true;
+				e.printStackTrace();
+				serverResponse = e.toString();
+			}
 		}
-		catch (Exception e){
-			e.printStackTrace();
-			serverResponse = e.toString();
-		}
+
+		// tell the handler to dismiss the dialog; we're done
         handler.sendEmptyMessage(0);
     }
- 
+	*/
+	/*
 	// thread handler code (activated when thread is finished)
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            pd.dismiss();
-            text.setText(serverResponse);
+        	switch (msg.what) {
+        	case 0:
+        		// message 0, exit
+        		pd.dismiss();
+                text.setText(serverResponse);
+        		break;
+        	default:
+        		// else, we're trying
+        		pd.setTitle("Attempt " + msg.what);
+        		break;
+        	}
         }
     };
+    */
+
+	@Override
+	public void downloadingComplete(String result) {
+		if (pd != null)
+			pd.dismiss();
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);  
+		alert.setTitle("Package Report");  
+		alert.setMessage(result);
+		alert.setPositiveButton("OK", null);
+		alert.show();
+	}
+
+	@Override
+	public void progressUpdate(int progress, int total) {
+		// no update in ProgressDialog for now
+	}
 }

@@ -10,6 +10,12 @@
   		android:title="@string/uploadPackagesServletAdress"
   		android:summary="@string/uploadPackagesServletAddressDescription">
   	</EditTextPreference>
+  	<EditTextPreference
+  		android:key="numberOfInternetConnectionAttempts"
+  		android:name="numberOfInternetAttempts"
+  		android:title="@string/numberOfInternetAttempts"
+  		android:summary="@string/numberOfInternetAttemptsDescription">
+  	</EditTextPreference>
   </PreferenceCategory>
   <PreferenceCategory
   	android:title="@string/sharedPersistancePreferencesTitle">

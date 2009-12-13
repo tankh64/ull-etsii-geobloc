@@ -23,6 +23,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditTextPreference uploadPackagesServletAddress;
 	private EditTextPreference packagesPath;
 	private EditTextPreference formsPath;
+	private EditTextPreference numberOfInternetAttempts;
 	
 	private EditText et;
 	private SharedPreferences prefs;
@@ -30,6 +31,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__ = "uploadPackagesServletAddress";
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
 	public static String __FORMS_PATH_KEY__ = "formsPath";
+	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
 	
 	// default internet addresses
 	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/upload_basicpackageform";
@@ -40,7 +42,10 @@ public class GBSharedPreferences extends PreferenceActivity {
 	// default filenames
 	public static String __DEFAULT_PACKAGE_MANIFEST_FILENAME__ = "manifest.xml";
 	public static String __DEFAULT_FORM_FILENAME__ = "form.xml";
+	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
 	
+	// server OK Signature
+	public static String __OK_SIGNATURE__ = "12122009_ALL_OK";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +59,15 @@ public class GBSharedPreferences extends PreferenceActivity {
 		uploadPackagesServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__);
 		formsPath = (EditTextPreference) findPreference(GBSharedPreferences.__FORMS_PATH_KEY__);
 		packagesPath = (EditTextPreference) findPreference(GBSharedPreferences.__PACKAGES_PATH_KEY__);
+		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
 		
 		// default uploadPackagesServletAddress
 		if ((uploadPackagesServletAddress.getText() == null) || (uploadPackagesServletAddress.getText() == ""))
 			uploadPackagesServletAddress.setText(GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
+		
+		// default numberOfInternetAttempts
+		if ((numberOfInternetAttempts.getText() == null) || (numberOfInternetAttempts.getText() == ""))
+			numberOfInternetAttempts.setText(GBSharedPreferences.__DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__);
 		
 		// default forms path
 		if ((formsPath.getText() == null) || (formsPath.getText().length() == 0))
