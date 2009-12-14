@@ -23,12 +23,20 @@ public class XMLHandler extends DefaultHandler {
 	/** El layout a Devolver */
 	private LinearLayout linearLayout;
 	
+	/** Tags válidos del XML */
+	private String GB_FORM = "gb_form";
+	private String GB_BUTTON = "gb_button";
+	private String GB_LABEL = "gb_label";
+	private String GB_STRING = "gb_string";
+	private String GB_INT = "gb_INT";
+	//private String GB_ = "gb_";
+	
 	// Campos
-	private boolean in_form = false;
-	private boolean in_button = false;
-	private boolean in_name = false;
-	private boolean in_string = false;
-	private boolean in_int = false;
+	private boolean in_gb_form = false;
+	private boolean in_gb_button = false;
+	private boolean in_gb_label = false;
+	private boolean in_gb_string = false;
+	private boolean in_gb_int = false;
 	
 	private Context myContext;
 
@@ -98,20 +106,16 @@ public class XMLHandler extends DefaultHandler {
 		
 		/* Contendrá el Texto y el EditText */
 		LinearLayout mView = new LinearLayout(myContext);
-		//mView.setLayoutParams (new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		mView.setPadding(5, 5, 5, 5);
 		mView.setOrientation(LinearLayout.HORIZONTAL);
 		
 		/* Texto antes del EditText */
 		TextView Text = new TextView(myContext);
 		Text.setText(text+":  ");
-		//Text.setPadding(0, 15, 0, 0);
 		Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
-		//Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 3));
 		
 		EditText ed = new EditText(myContext);
 		ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
-		//ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 2));
 		
 		switch (Tt) {
 			case INT:
@@ -154,16 +158,16 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void startElement(String namespaceURI, String localName,
               String qName, Attributes atts) throws SAXException {
-         if (localName.equals("form")) {
-             this.in_form = true;
-         }else if (localName.equals("button")) {
-             this.in_button = true;
-         }else if (localName.equals("name")) {
-             this.in_name = true;
-         }else if (localName.equals("string")) {
-        	 this.in_string = true;
-         }else if (localName.equals("int")) {
-        	 this.in_int = true;
+         if (localName.equals(GB_FORM)) {
+             this.in_gb_form = true;
+         }else if (localName.equals(GB_BUTTON)) {
+             this.in_gb_button = true;
+         }else if (localName.equals(GB_LABEL)) {
+             this.in_gb_label = true;
+         }else if (localName.equals(GB_STRING)) {
+        	 this.in_gb_string = true;
+         }else if (localName.equals(GB_INT)) {
+        	 this.in_gb_int = true;
          }
          
          //////////////// Aqui se muestra como extraer atributos
@@ -187,16 +191,16 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
               throws SAXException {
-        if (localName.equals("form")) {
-            this.in_form = false;
-        }else if (localName.equals("button")) {
-            this.in_button = false;
-        }else if (localName.equals("name")) {
-            this.in_name = false;
-        }else if (localName.equals("string")) {
-       	 	this.in_string = false;
-        }else if (localName.equals("int")) {
-       	 	this.in_int = false;
+        if (localName.equals(GB_FORM)) {
+            this.in_gb_form = false;
+        }else if (localName.equals(GB_BUTTON)) {
+            this.in_gb_button = false;
+        }else if (localName.equals(GB_LABEL)) {
+            this.in_gb_label = false;
+        }else if (localName.equals(GB_STRING)) {
+       	 	this.in_gb_string = false;
+        }else if (localName.equals(GB_INT)) {
+       	 	this.in_gb_int = false;
         }
     } 
     
@@ -204,23 +208,19 @@ public class XMLHandler extends DefaultHandler {
      * <tag>characters</tag> */
     @Override
    public void characters(char ch[], int start, int length) {
-         if(this.in_form){
-        	 myParsedXMLDataSet.setForm(new String(ch, start, length));        	 
+         if(this.in_gb_form){
+        	         	 
          }
-         if(this.in_button){
-        	 myParsedXMLDataSet.setButton(new String(ch, start, length));
+         if(this.in_gb_button){        	 
         	 AddButton(new String(ch, start, length));
          }
-         if(this.in_name){
-        	 myParsedXMLDataSet.setName(new String(ch, start, length));
+         if(this.in_gb_label){
         	 AddText(new String(ch, start, length));
          }
-         if(this.in_string){
-        	 myParsedXMLDataSet.setMyString(new String(ch, start, length));
+         if(this.in_gb_string){
         	 AddEditText(TextType.STRING, new String(ch, start, length));
          }
-         if(this.in_int){
-        	 myParsedXMLDataSet.setInt(new String(ch, start, length));
+         if(this.in_gb_int){
         	 AddEditText(TextType.INT, new String(ch, start, length));
          }         
    } 
