@@ -8,6 +8,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import com.geobloc.shared.Utilities;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -33,15 +35,14 @@ public class ParsingXML extends Activity {
         	filename = bundle.getString(ParsingXML.FILE_NAME);
         }
         else {
-        	Toast.makeText(getApplicationContext(),
+        	Utilities.showToast(getApplicationContext(),
             		"No se ha seleccionado fichero",
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT);
         	finish();
         }
 		
-		
         /* Create a new TextView to display the parsing result later. */
-        TextView tv = new TextView(this);
+        TextView tv = new TextView(getApplicationContext());
         
         LinearLayout linear = new LinearLayout (getApplicationContext());
 		
@@ -53,32 +54,30 @@ public class ParsingXML extends Activity {
         	/* Creamos un SAXParser. */
             SAXParserFactory spf = SAXParserFactory.newInstance();
             SAXParser sp = spf.newSAXParser();
-            /* Cogemos el XMLReader del SAXParser que hemos creado. */
-            XMLReader xr = sp.getXMLReader();
-            /* Creamos un nuevo ContentHandler y lo aplicamos al XML-Reader*/
+
+            /* Creamos un nuevo ContentHandler */
             XMLHandler myXMLHandler = new XMLHandler();
             Context contexto = getApplicationContext();
             myXMLHandler.Initialize(contexto);
-            xr.setContentHandler(myXMLHandler);
             
             sp.parse(new File(filename), myXMLHandler);
             /* Acaba el tratamiento. */
 
-            /* Ponemos los datos por pantalla con el XMLHandler. */
+            /* Obtenemos el layout generado por el Handler */
             linear = myXMLHandler.getParsedData(contexto);
             
-			Toast.makeText(getApplicationContext(),
-			getString(R.string.parsed_file_ok, filename),
-            Toast.LENGTH_SHORT).show();
+            Utilities.showToast(getApplicationContext(),
+					getString(R.string.parsed_file_ok, filename),
+					Toast.LENGTH_SHORT);
         	
             setContentView(linear);
             
         } catch (Exception e) {
             /* Mostramos el Error. */
             tv.setText("Error: " + e.getMessage());
-        	Toast.makeText(getApplicationContext(),
+            Utilities.showToast(getApplicationContext(),
             		"Error de fichero " + filename + ": "+ e.getMessage(),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT);
 
         	this.setContentView(tv);
         }

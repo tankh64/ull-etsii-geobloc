@@ -55,7 +55,6 @@ public class MainMenu extends Activity {
             public void onClick(View v) {
                 
             	Intent i = new Intent (getApplicationContext(), FormList.class);
-                //startActivity(i);
                 startActivityForResult(i, LIST_FORM);
             }
             
@@ -69,7 +68,6 @@ public class MainMenu extends Activity {
             public void onClick(View v) {
                 
             	Intent i = new Intent (getApplicationContext(), QuestionActivity.class);
-                //startActivity(i);
                 startActivityForResult(i, QUESTION_FORM);
             }
         });
@@ -95,45 +93,32 @@ public class MainMenu extends Activity {
     				Bundle extras = data.getExtras();
     				String filename = extras.getString (FormList.FILE_NAME);
     				String filepath = extras.getString (FormList.FILE_PATH);
-    				/*Toast.makeText(getApplicationContext(),
-        				getString(R.string.selected_file, filepath),
-                        Toast.LENGTH_SHORT).show();*/
     				
     				Intent i = new Intent (getApplicationContext(), ParsingXML.class);
     				i.putExtra(ParsingXML.FILE_NAME, filepath);
     				startActivityForResult(i, PARSING_XML);
     			}
     			else {
-    				Toast.makeText(getApplicationContext(),
-                		"Actividad NO devuelve correctamente",
-                        Toast.LENGTH_SHORT).show();
+    				Utilities.showToast(getApplicationContext(),
+    							"Actividad NO devuelve correctamente",
+    							Toast.LENGTH_SHORT);
     			}
     			break;
     		
     		case QUESTION_FORM:
     			if(resultCode == RESULT_OK){
-    				Toast.makeText(getApplicationContext(),
-        				"Actividad devuelve correctamente",
-                        Toast.LENGTH_SHORT).show();
+    				Utilities.showToast(getApplicationContext(),
+							"Actividad devuelve correctamente",
+							Toast.LENGTH_SHORT);
     			}
     			else {
-    				Toast.makeText(getApplicationContext(),
-                		"Actividad NO devuelve correctamente",
-                        Toast.LENGTH_SHORT).show();
+    				Utilities.showToast(getApplicationContext(),
+							"Actividad NO devuelve correctamente",
+							Toast.LENGTH_SHORT);
     			}
     			break;
     			
     		case PARSING_XML:
-    			/*if(resultCode == RESULT_OK){
-    				Toast.makeText(getApplicationContext(),
-        				"Actividad devuelve correctamente",
-                        Toast.LENGTH_SHORT).show();
-    			}
-    			else {
-    				Toast.makeText(getApplicationContext(),
-                		"Actividad NO devuelve correctamente",
-                        Toast.LENGTH_SHORT).show();
-    			}*/
     			break;
     	}
     	
