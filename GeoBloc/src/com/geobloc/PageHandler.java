@@ -1,8 +1,5 @@
 package com.geobloc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -19,56 +16,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-public class XMLHandler extends DefaultHandler {
+public class PageHandler extends DefaultHandler {
 	
 	/** El layout a Devolver */
 	private LinearLayout linearLayout;
 	
-	private String pageActual = "";	// Texto que está en la página actual
-	
-	List<FormPage> listPages;	// Lista de páginas del formulario
-	
-	FormPage myPage;	// Página actual
-	
-	/** Tags válidos del XML */
-	private String GB_FORM = "gb_form";
-	private String GB_PAGE = "gb_page";
-	/*private String GB_BUTTON = "gb_button";
+	/** Tags válidos de la Página */
+	private String GB_BUTTON = "gb_button";
 	private String GB_LABEL = "gb_label";
 	private String GB_STRING = "gb_string";
-	private String GB_INT = "gb_int";*/
+	private String GB_INT = "gb_INT";
 	//private String GB_ = "gb_";
 	
 	// Campos
-	private boolean in_gb_form = false;
-	private boolean in_gb_page = false;
-	/*private boolean in_gb_button = false;
+	private boolean in_gb_button = false;
 	private boolean in_gb_label = false;
 	private boolean in_gb_string = false;
-	private boolean in_gb_int = false;*/
+	private boolean in_gb_int = false;
 	
-	private Context myContext;
-
-	/* Por si queremos guardar los datos para usarlos d otra forma*/
-    private ParsedXMLDataSet myParsedXMLDataSet = new ParsedXMLDataSet(); 	
-    
-    
-    public XMLHandler ()
-    {
-    	super();
-    	
-    	myPage = new FormPage();
-    	listPages = new ArrayList<FormPage>();
-    }
-    
-    /**
-     * 
-     * @return Lista de FormPages del Formulario
-     */
-    public List<FormPage> getListPages () {
-    	return listPages;
-    }
+	private Context myContext;	
 
     /** Devuelve el LinearLayout que contiene el Formulario */
     public LinearLayout getParsedData(Context contexto) {
@@ -103,14 +69,74 @@ public class XMLHandler extends DefaultHandler {
 		linearLayout.addView(tv);
 	}
 	
-
+	/**
+	 * Añade un boton al formulario, y un evento, que al ser pulsado el botón,
+	 * mostrará el texto que tiene en pantalla
+	 * @param texto El texto que contendrá el botón
+	 */
+	private void AddButton (String texto) {
+		final Button but = new Button(myContext);
+		but.setText(texto);
+		but.setPadding(3,3,3,3);
+		
+        but.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+            	Toast.makeText(myContext,
+            			but.getText(),
+            			Toast.LENGTH_SHORT).show();
+            }
+        });
+		
+		linearLayout.addView(but);
+	}
+	
+	/**
+	 * Añade un campo para insertar texto en el formulario
+	 * @param Tt Tipo de texto a insertar
+	 * @param text Texto que acompañará al EditText
+	 */
+	private void AddEditText (TextType Tt, String text) {
+		
+		/* Contendrá el Texto y el EditText */
+		LinearLayout mView = new LinearLayout(myContext);
+		mView.setPadding(5, 5, 5, 5);
+		mView.setOrientation(LinearLayout.HORIZONTAL);
+		
+		/* Texto antes del EditText */
+		TextView Text = new TextView(myContext);
+		Text.setText(text+":  ");
+		Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+		
+		EditText ed = new EditText(myContext);
+		ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
+		
+		switch (Tt) {
+			case INT:
+				ed.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
+				break;
+			case FLOAT:
+				ed.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+	    				break;
+			case STRING:
+				ed.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+	    				break;
+				default:
+					break;
+		}
+		
+		mView.addView(Text);
+		mView.addView(ed);
+	
+		linearLayout.addView(mView);
+	}
+	
 
     // ===========================================================
     // Metodos
     // ===========================================================
     @Override
     public void startDocument() throws SAXException {
-         this.myParsedXMLDataSet = new ParsedXMLDataSet();
+         //this.myParsedXMLDataSet = new ParsedXMLDataSet();
     }
 
     @Override
@@ -125,17 +151,7 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void startElement(String namespaceURI, String localName,
               String qName, Attributes atts) throws SAXException {
-         if (localName.equals(GB_FORM)) {
-             this.in_gb_form = true;
-         } else if (localName.equals(GB_PAGE)) {
-        	 this.in_gb_page = true;
-        	 //AddText ("Init pagina");
-         }
-         else {
-        	 addTextToPage ("<"+localName+">");
-         }
-         /*else if (localName.equals(GB_BUTTON)) {
-         
+    	if (localName.equals(GB_BUTTON)) {
              this.in_gb_button = true;
          }else if (localName.equals(GB_LABEL)) {
              this.in_gb_label = true;
@@ -143,7 +159,7 @@ public class XMLHandler extends DefaultHandler {
         	 this.in_gb_string = true;
          }else if (localName.equals(GB_INT)) {
         	 this.in_gb_int = true;
-         }*/
+         }
          
          //////////////// Aqui se muestra como extraer atributos
          /*else if (localName.equals("numero")) {
@@ -166,24 +182,7 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
               throws SAXException {
-        if (localName.equals(GB_FORM)) {
-            this.in_gb_form = false;
-        } else if (localName.equals(GB_PAGE)) {
-            this.in_gb_page = false;
-            //AddText ("Cierra pagina");
-
-            
-            myPage.setCodeXML(pageActual);
-            listPages.add(myPage);
-            
-            AddText ("Pagina "+listPages.size()+" es:");
-            AddText (listPages.get(listPages.size()-1).getCodeXML());
-            
-            pageActual = "";
-        } else {
-        	addTextToPage ("</"+localName+">");
-        }
-        	/*else if (localName.equals(GB_BUTTON)) {
+        if (localName.equals(GB_BUTTON)) {
             this.in_gb_button = false;
         }else if (localName.equals(GB_LABEL)) {
             this.in_gb_label = false;
@@ -191,62 +190,25 @@ public class XMLHandler extends DefaultHandler {
        	 	this.in_gb_string = false;
         }else if (localName.equals(GB_INT)) {
        	 	this.in_gb_int = false;
-        }*/
+        }
     } 
     
     /** Se ejecuta cuando se encuentra con la siguiente estructura:
      * <tag>characters</tag> */
     @Override
    public void characters(char ch[], int start, int length) {
-         if(this.in_gb_form){
-        	 if(this.in_gb_page) {
-        		 addTextToPage(new String(ch, start, length));
-        	 }
-         }
-         /*if(this.in_gb_button){        	 
+         if(this.in_gb_button){        	 
         	 AddButton(new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_BUTTON+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_BUTTON+">\n");
-        	 }
          }
          if(this.in_gb_label){
         	 AddText(new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_LABEL+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_LABEL+">\n");
-        	 }
          }
          if(this.in_gb_string){
         	 AddEditText(TextType.STRING, new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_STRING+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_STRING+">\n");
-        	 }
          }
          if(this.in_gb_int){
         	 AddEditText(TextType.INT, new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_STRING+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_STRING+">\n");
-        	 }
-         }     */    
+         }         
    } 
 	
-
-    private void addTextToPage (String text) {
-    	pageActual += text;
-    }
 }

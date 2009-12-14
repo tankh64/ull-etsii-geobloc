@@ -46,7 +46,7 @@ public class QuestionActivity extends Activity {
             		return;
         }*/
         
-        setContentView(R.layout.question_form);
+        setContentView(R.layout.question_2_button);
         setTitle(getString(R.string.app_name)+ " > " + getString(R.string.list_form));
     
         //FillForm();
