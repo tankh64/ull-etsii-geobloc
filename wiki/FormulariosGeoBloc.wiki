@@ -1,0 +1,44 @@
+#summary One-sentence summary of this page.
+
+= DTD Formularios =
+
+El DTD del formulario GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
+
+= Code Example =
+
+{{{
+
+<!ELEMENT gb_form (gb_name, gb_page+)>
+
+<!ELEMENT gb_name (#PCDATA)>
+<!ELEMENT gb_page (gb_button|gb_string|gb_label|gb_int)+>
+
+<!ELEMENT gb_button (#PCDATA)>
+<!ELEMENT gb_string (#PCDATA)>
+<!ELEMENT gb_int (#PCDATA)>
+<!ELEMENT gb_label (#PCDATA)>
+
+}}}
+
+= Ejemplo =
+
+Un ejemplo de formulario con 2 páginas.
+
+= Code Example =
+
+{{{
+
+<?xml version="1.0"?>
+<!DOCTYPE gb_form SYSTEM "gb_form.dtd">
+<gb_form>
+  <gb_name>Formulario La Laguna</gb_name>
+  <gb_page>
+	<gb_button>Boton</gb_button>
+	<gb_string>Texto 1</gb_string>
+  </gb_page>
+  <gb_page>
+	<gb_label>Texto</gb_label>
+  </gb_page>
+</gb_form>
+
+}}}
