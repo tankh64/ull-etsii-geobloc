@@ -162,7 +162,7 @@ public class NewTextReader extends Activity implements IUploadPackageTaskListene
     };
     */
 
-	@Override
+	//@Override
 	public void downloadingComplete(String result) {
 		if (pd != null)
 			pd.dismiss();
@@ -174,7 +174,7 @@ public class NewTextReader extends Activity implements IUploadPackageTaskListene
 		alert.show();
 	}
 
-	@Override
+	//@Override
 	public void progressUpdate(int progress, int total) {
 		// no update in ProgressDialog for now
 	}
