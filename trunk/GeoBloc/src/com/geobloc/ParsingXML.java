@@ -52,38 +52,38 @@ public class ParsingXML extends Activity {
 		
 		//setContentView(R.layout.question_form);
 		setContentView(R.layout.question_2_button);
-		//setTitle(getString(R.string.app_name)+ " > Parseado ");
+		setTitle(getString(R.string.app_name)+ " > Parseado ");
         
-     //   try {
+        try {
 
         	
         	/* Creamos un SAXParser. */
-     //       SAXParserFactory spf = SAXParserFactory.newInstance();
-     //       SAXParser sp = spf.newSAXParser();
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            SAXParser sp = spf.newSAXParser();
 
             /* Creamos un nuevo ContentHandler */
-     //       XMLHandler myXMLHandler = new XMLHandler();
-     //       Context contexto = getApplicationContext();
-     //       myXMLHandler.Initialize(contexto);
+            XMLHandler myXMLHandler = new XMLHandler();
+            Context contexto = getApplicationContext();
+            myXMLHandler.Initialize(contexto);
             
-     //       sp.parse(new File(filename), myXMLHandler);
+            sp.parse(new File(filename), myXMLHandler);
             /* Acaba el tratamiento. */
             
             // Obtenemos la lista de Paginas del formulario
-     //       listPages = myXMLHandler.getListPages();
+            listPages = myXMLHandler.getListPages();
 
      //       linear = (LinearLayout) findViewById (R.id.LinearLayout02);
             
             /* Obtenemos el layout generado por el Handler */
      //       linear = myXMLHandler.getParsedData(contexto);
             
-     //       Utilities.showToast(getApplicationContext(),
+    //        Utilities.showToast(getApplicationContext(),
 	//				"El formulario tiene "+listPages.size()+" paginas",
 	//				Toast.LENGTH_SHORT);
             
-     //       Utilities.showToast(getApplicationContext(),
-	//				getString(R.string.parsed_file_ok, filename),
-	//				Toast.LENGTH_SHORT);
+            Utilities.showToast(getApplicationContext(),
+					getString(R.string.parsed_file_ok, filename),
+					Toast.LENGTH_SHORT);
         	
             //setContentView(R.layout.question_2_button);  
             //setContentView(linear);
@@ -91,15 +91,15 @@ public class ParsingXML extends Activity {
         					"El formulario tiene "+listPages.size()+" paginas",
        				Toast.LENGTH_SHORT);
             
-   //     } catch (Exception e) {
+        } catch (Exception e) {
             /* Mostramos el Error. */
-    //        tv.setText("Error: " + e.getMessage());
-    //        Utilities.showToast(getApplicationContext(),
-    //        		"Error de fichero " + filename + ": "+ e.getMessage(),
-    //                Toast.LENGTH_SHORT);
+            tv.setText("Error: " + e.getMessage());
+            Utilities.showToast(getApplicationContext(),
+            		"Error de fichero " + filename + ": "+ e.getMessage(),
+                    Toast.LENGTH_SHORT);
 
-    //    	this.setContentView(tv);
-    //    }
+        	this.setContentView(tv);
+        }
 
 
 	}
