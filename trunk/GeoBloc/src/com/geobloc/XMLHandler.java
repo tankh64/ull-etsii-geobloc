@@ -34,6 +34,7 @@ public class XMLHandler extends DefaultHandler {
 	/** Tags válidos del XML */
 	private String GB_FORM = "gb_form";
 	private String GB_PAGE = "gb_page";
+	private String GB_NAME = "gb_name";
 	/*private String GB_BUTTON = "gb_button";
 	private String GB_LABEL = "gb_label";
 	private String GB_STRING = "gb_string";
@@ -43,6 +44,7 @@ public class XMLHandler extends DefaultHandler {
 	// Campos
 	private boolean in_gb_form = false;
 	private boolean in_gb_page = false;
+	private boolean in_gb_name = false;
 	/*private boolean in_gb_button = false;
 	private boolean in_gb_label = false;
 	private boolean in_gb_string = false;
@@ -131,6 +133,9 @@ public class XMLHandler extends DefaultHandler {
         	 this.in_gb_page = true;
         	 //AddText ("Init pagina");
          }
+         else if (localName.equals(GB_NAME)) {
+        	 this.in_gb_name = true;
+         }
          else {
         	 addTextToPage ("<"+localName+">");
          }
@@ -168,6 +173,8 @@ public class XMLHandler extends DefaultHandler {
               throws SAXException {
         if (localName.equals(GB_FORM)) {
             this.in_gb_form = false;
+        } else if (localName.equals(GB_NAME)) {
+        	this.in_gb_name = false;
         } else if (localName.equals(GB_PAGE)) {
             this.in_gb_page = false;
             //AddText ("Cierra pagina");
@@ -201,6 +208,11 @@ public class XMLHandler extends DefaultHandler {
          if(this.in_gb_form){
         	 if(this.in_gb_page) {
         		 addTextToPage(new String(ch, start, length));
+        	 }
+        	 else {
+        		 if (this.in_gb_name) {
+        			 // Debemos establecer el nombre del formulario
+        		 }
         	 }
          }
          /*if(this.in_gb_button){        	 
