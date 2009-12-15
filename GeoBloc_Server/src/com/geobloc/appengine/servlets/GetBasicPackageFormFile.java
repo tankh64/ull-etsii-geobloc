@@ -50,6 +50,8 @@ public class GetBasicPackageFormFile extends HttpServlet {
 				resp.setHeader("Content-Disposition", "attachment; filename=" + fileNames.get(fileId));
 				OutputStream outs = resp.getOutputStream();
 				outs.write(file.getBytes());
+				outs.flush();
+				outs.close();
 			}
 			else {
 				// file not found

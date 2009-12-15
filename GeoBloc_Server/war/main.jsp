@@ -1,12 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="javax.jdo.PersistenceManager" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
+<%@ page import="com.geobloc.appengine.server.DatastoreQueries" %>
 <%@ page import="com.geobloc.appengine.forms.BasicPackageForm" %>
-<%@ page import="com.geobloc.appengine.server.PMF;" %>
 
 <%
 /**
@@ -69,9 +68,9 @@
   %>
   	<%
   		out.println("<p><a href=/main.jsp>Refresh</a></p>");
-  		PersistenceManager pm = PMF.get().getPersistenceManager();
-    	String query = "select from " + BasicPackageForm.class.getName() + " order by date desc range 0,5";
-    	List<BasicPackageForm> forms = (List<BasicPackageForm>) pm.newQuery(query).execute();
+  		out.println("<p><a href=/basicFormsMain.jsp>Input Forms</a></p>");
+    	DatastoreQueries datastoreQueries = new DatastoreQueries();
+    	List<BasicPackageForm> forms = datastoreQueries.getListOfBasicPackageForms();
     	if (forms.isEmpty()) {
 	%>
 	<p>No forms have been uploaded yet.</p>
@@ -93,7 +92,7 @@
 	<%
         	}
     	}
-    	pm.close();
+    	datastoreQueries.closeConnection();
 	%>
   
   

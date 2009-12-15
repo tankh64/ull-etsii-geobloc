@@ -1,18 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="javax.jdo.PersistenceManager" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory" %>
+<%@ page import="com.geobloc.appengine.server.DatastoreQueries;" %>
 <%@ page import="com.geobloc.appengine.forms.BasicForm" %>
-<%@ page import="com.geobloc.appengine.server.PMF;" %>
 
 <%
 /**
- * This jsp currently allows a signed in user (through a Google Account) to upload files and see the contents of
- * the uploaded files. However, the servlet which handles this request saves the files as text wrapped inside a 
- * BasicForm, so the server is only ready to receive XML files at the moment. 
+ * This jsp currently allows a signed in user (through a Google Account) to upload forms.
  * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
@@ -25,7 +22,7 @@
     <title>Hello App Engine</title>
     <style type="text/css">
   		body {
-    		color: purple;
+    		color: blue;
     		background-color: white;
     		}
   	</style>
@@ -46,7 +43,7 @@
 	%>
 	<p>Hello!
 	<a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
-	to upload files and see a list with the most recent uploaded files.</p>
+	to upload forms.</p>
 	<%
     	}
 	%>
@@ -68,10 +65,13 @@
   	if (user != null) {
   %>
   	<%
-  		out.println("<p><a href=/main.jsp>Refresh</a></p>");
-  		PersistenceManager pm = PMF.get().getPersistenceManager();
-    	String query = "select from " + BasicForm.class.getName() + " order by date desc range 0,5";
-    	List<BasicForm> forms = (List<BasicForm>) pm.newQuery(query).execute();
+  		out.println("<p><a href=/basicFormsMain.jsp>Refresh</a></p>");
+  		out.println("<p><a href=/main.jsp>Back to Packages</a></p>");
+  		//PersistenceManager pm = PMF.get().getPersistenceManager();
+    	//String query = "select from " + BasicForm.class.getName() + " order by date desc range 0,5";
+    	//List<BasicForm> forms = (List<BasicForm>) pm.newQuery(query).execute();
+    	DatastoreQueries datastoreQueries = new DatastoreQueries();
+    	List<BasicForm> forms = datastoreQueries.getListOfBasicForms();
     	if (forms.isEmpty()) {
 	%>
 	<p>No forms have been uploaded yet.</p>
@@ -93,11 +93,11 @@
 	<%
         	}
     	}
-    	pm.close();
+    	datastoreQueries.closeConnection();
 	%>
   
   
-  	<form name="filesForm" action="geobloc_server1" method="post" enctype="multipart/form-data">
+  	<form name="filesForm" action="upload_basicform" method="post" enctype="multipart/form-data">
     	File 1:<input type="file" name="file1"><br>
     	File 2:<input type="file" name="file2"><br>
     	File 3:<input type="file" name="file3"><br>
