@@ -34,7 +34,7 @@ public class FormClass {
 	}
 	
 	public FormPage getPage (int index) {
-		return listPages.get(index);
+		return (listPages.get(index));
 	}
 	
 	public String getName () {

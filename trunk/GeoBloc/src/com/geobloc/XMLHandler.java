@@ -1,16 +1,21 @@
 package com.geobloc;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import org.xmlpull.v1.XmlSerializer;
 
 import com.geobloc.QuestionActivity.TextType;
+import com.geobloc.shared.Utilities;
+import com.geobloc.xml.IField;
 
 import android.content.Context;
 import android.text.InputType;
+import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -53,15 +58,32 @@ public class XMLHandler extends DefaultHandler {
 	private Context myContext;
 
 	/* Por si queremos guardar los datos para usarlos d otra forma*/
-    private ParsedXMLDataSet myParsedXMLDataSet = new ParsedXMLDataSet(); 	
+    private ParsedXMLDataSet myParsedXMLDataSet = new ParsedXMLDataSet();
+    
+    XmlSerializer serializer;
+    StringWriter writer;
+    
+    List<IField> fields;
+    
     
     
     public XMLHandler ()
     {
     	super();
     	
-    	myPage = new FormPage();
+    	//myPage = new FormPage();
     	listPages = new ArrayList<FormPage>();
+    	
+    	// Para escribir el XML mejor
+        serializer = Xml.newSerializer();
+        /*writer = new StringWriter();
+        
+        try {
+            serializer.setOutput(writer);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } */
+        
     }
     
     /**
@@ -132,12 +154,26 @@ public class XMLHandler extends DefaultHandler {
          } else if (localName.equals(GB_PAGE)) {
         	 this.in_gb_page = true;
         	 //AddText ("Init pagina");
+        	 myPage = new FormPage();
+        	 writer = new StringWriter();
+             
+             try {
+                 serializer.setOutput(writer);
+             } catch (Exception e) {
+                 throw new RuntimeException(e);
+             } 
          }
          else if (localName.equals(GB_NAME)) {
         	 this.in_gb_name = true;
          }
          else {
         	 addTextToPage ("<"+localName+">");
+        	 
+             try {
+            	 serializer.startTag("", localName);
+             } catch (Exception e) {
+                 throw new RuntimeException(e);
+             } 
          }
          /*else if (localName.equals(GB_BUTTON)) {
          
@@ -179,6 +215,19 @@ public class XMLHandler extends DefaultHandler {
             this.in_gb_page = false;
             //AddText ("Cierra pagina");
 
+            try {
+            	serializer.endDocument();
+            	serializer.flush();
+            	pageActual = writer.toString();
+            	
+            	
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } 
+            
+			Utilities.showToast(myContext,
+	        		"Pagina: \n"+pageActual,
+	                Toast.LENGTH_LONG);
             
             myPage.setCodeXML(pageActual);
             listPages.add(myPage);
@@ -188,7 +237,17 @@ public class XMLHandler extends DefaultHandler {
             
             pageActual = "";
         } else {
+        	localName.trim();
         	addTextToPage ("</"+localName+">");
+        	
+        	try {
+                serializer.endTag("", localName);
+                serializer.text("\n");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } 
+        	
+        	
         }
         	/*else if (localName.equals(GB_BUTTON)) {
             this.in_gb_button = false;
@@ -207,7 +266,17 @@ public class XMLHandler extends DefaultHandler {
    public void characters(char ch[], int start, int length) {
          if(this.in_gb_form){
         	 if(this.in_gb_page) {
-        		 addTextToPage(new String(ch, start, length));
+        		 // TODO: No es eficiente
+        		 String cadena = new String(ch, start, length).trim();
+        		 if (cadena.length() > 1) {
+        			 addTextToPage(cadena);
+        			 
+        			 try {
+                         serializer.text(cadena);
+                     } catch (Exception e) {
+                         throw new RuntimeException(e);
+                     } 
+        		 }
         	 }
         	 else {
         		 if (this.in_gb_name) {
@@ -259,6 +328,6 @@ public class XMLHandler extends DefaultHandler {
 	
 
     private void addTextToPage (String text) {
-    	pageActual += text;
+    	//pageActual += text;
     }
 }
