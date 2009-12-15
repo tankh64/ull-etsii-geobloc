@@ -25,7 +25,7 @@ public class PageHandler extends DefaultHandler {
 	private String GB_BUTTON = "gb_button";
 	private String GB_LABEL = "gb_label";
 	private String GB_STRING = "gb_string";
-	private String GB_INT = "gb_INT";
+	private String GB_INT = "gb_int";
 	//private String GB_ = "gb_";
 	
 	// Campos

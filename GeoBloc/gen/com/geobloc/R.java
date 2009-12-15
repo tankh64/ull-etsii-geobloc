@@ -17,29 +17,29 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
-        public static final int Button01=0x7f070009;
-        public static final int Button02=0x7f07000a;
+        public static final int Button01=0x7f070003;
+        public static final int Button02=0x7f070004;
         public static final int Button03=0x7f070021;
         public static final int Button04=0x7f070016;
-        public static final int ButtonMainMenu1=0x7f070001;
-        public static final int ButtonMainMenu2=0x7f070002;
+        public static final int ButtonMainMenu1=0x7f070006;
+        public static final int ButtonMainMenu2=0x7f070007;
         public static final int CheckBox01=0x7f07001e;
         public static final int EditText01=0x7f07000c;
         public static final int EditText02=0x7f07000e;
         public static final int EditText03=0x7f070011;
         public static final int EditText04=0x7f07001c;
-        public static final int LinearLayout01=0x7f070005;
-        public static final int LinearLayout02=0x7f070007;
-        public static final int LinearLayout03=0x7f070008;
+        public static final int LinearLayout01=0x7f07000a;
+        public static final int LinearLayout02=0x7f070002;
+        public static final int LinearLayout03=0x7f070001;
         public static final int LinearLayout04=0x7f07000f;
         public static final int LinearLayout05=0x7f070017;
         public static final int LinearLayout06=0x7f07001a;
         public static final int LinearLayout07=0x7f07001d;
         public static final int LinearLayout08=0x7f070020;
         public static final int LinearLayout09=0x7f070015;
-        public static final int ScrollView01=0x7f070006;
+        public static final int ScrollView01=0x7f070000;
         public static final int Spinner01=0x7f070019;
-        public static final int TextView01=0x7f070000;
+        public static final int TextView01=0x7f070005;
         public static final int TextView02=0x7f07000b;
         public static final int TextView03=0x7f07000d;
         public static final int TextView04=0x7f070010;
@@ -51,21 +51,22 @@ public final class R {
         public static final int gpsLongitude=0x7f070012;
         public static final int mainMenuSettings=0x7f070026;
         public static final int outputToServerButton=0x7f070025;
-        public static final int staticFormSelectionSpinner=0x7f070003;
-        public static final int staticFormStartButton=0x7f070004;
+        public static final int staticFormSelectionSpinner=0x7f070008;
+        public static final int staticFormStartButton=0x7f070009;
         public static final int textReaderScrollingText=0x7f070023;
         public static final int textReaderText=0x7f070024;
         public static final int title=0x7f070022;
     }
     public static final class layout {
-        public static final int list_form=0x7f030000;
-        public static final int main=0x7f030001;
-        public static final int question_2_button=0x7f030002;
-        public static final int question_form=0x7f030003;
-        public static final int second_static_form_prototype=0x7f030004;
-        public static final int settings=0x7f030005;
-        public static final int static_form_prototype=0x7f030006;
-        public static final int text_reader=0x7f030007;
+        public static final int form_question=0x7f030000;
+        public static final int list_form=0x7f030001;
+        public static final int main=0x7f030002;
+        public static final int question_2_button=0x7f030003;
+        public static final int question_form=0x7f030004;
+        public static final int second_static_form_prototype=0x7f030005;
+        public static final int settings=0x7f030006;
+        public static final int static_form_prototype=0x7f030007;
+        public static final int text_reader=0x7f030008;
     }
     public static final class menu {
         public static final int menu=0x7f060000;

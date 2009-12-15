@@ -23,18 +23,15 @@ public class FormPage {
 		valor = new ArrayList<String>();
 	}
 	
-	/** 
-	 * Devuelve el XML desde el cual se genera la página
-	 * @return
-	 */
-	public String getCode() {
-		return codeXML;
-	}
 	
 	public void setCodeXML (String code) {
 		codeXML = code;
 	}
 	
+	/** 
+	 * Devuelve el XML desde el cual se genera la página
+	 * @return
+	 */
 	public String getCodeXML () {
 		return codeXML;
 	}

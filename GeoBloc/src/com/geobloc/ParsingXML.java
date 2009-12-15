@@ -50,10 +50,8 @@ public class ParsingXML extends Activity {
 		
         /* Create a new TextView to display the parsing result later. */
         TextView tv = new TextView(getApplicationContext());
-        
-        //LinearLayout linear = new LinearLayout (getApplicationContext());
-		
-		setContentView(R.layout.question_2_button);
+
+        setContentView(R.layout.form_question);
 		setTitle(getString(R.string.app_name)+ " > Parseado ");
         
         try {
@@ -72,6 +70,8 @@ public class ParsingXML extends Activity {
             
             // Obtenemos la lista de Paginas del formulario
             listPages = myXMLHandler.getListPages();
+            
+            formulario = new FormClass ("Formulario", listPages);
 
      //       linear = (LinearLayout) findViewById (R.id.LinearLayout02);
             
@@ -95,7 +95,7 @@ public class ParsingXML extends Activity {
         }
 
         // Debemos añadir las páginas al formulario para luego imprimirlas
-        //printPage (0);
+        printPage (0);
 
 	}
 	
@@ -105,37 +105,44 @@ public class ParsingXML extends Activity {
 	 * 
 	 * @param page Página a mostrar en el formulario
 	 */
-	private void printPage (FormPage page) {
+	private void printPage (FormPage page, int index) {
 		try {
 			/* Creamos un SAXParser. */
-			//SAXParserFactory spf = SAXParserFactory.newInstance();
-			//SAXParser sp = spf.newSAXParser();
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			SAXParser sp = spf.newSAXParser();
 
 			/* Creamos un nuevo ContentHandler */
-			//PageHandler myPageHandler = new PageHandler();
-			//Context contexto = getApplicationContext();
-			//myPageHandler.Initialize(contexto);
+			PageHandler myPageHandler = new PageHandler();
+			Context contexto = getApplicationContext();
+			myPageHandler.Initialize(contexto);
         
-			//sp.parse( new InputSource( new StringReader(page.getCodeXML())), myPageHandler);
+			sp.parse( new InputSource( new StringReader(page.getCodeXML())), myPageHandler);
 			/* Acaba el tratamiento. */
 			
 			Utilities.showToast(getApplicationContext(),
 	        		"Ahora mostramos la página",
 	                Toast.LENGTH_SHORT);
 			
-			 /* Create a new TextView to display the parsing result later. */
-	        //TextView tv = new TextView(getApplicationContext());
-	        //tv.setText(page.getCodeXML());
-	        //this.setContentView(tv);
+			
 	        
-			//pageLayout = (LinearLayout) findViewById (R.id.LinearLayout02);
+			pageLayout = (LinearLayout) findViewById (R.id.LinearLayout03);
 			//pageLayout = myPageHandler.getParsedData(contexto);
+			
+			 /* Create a new TextView to display the parsing result later. */
+	        TextView tv = new TextView(getApplicationContext());
+	        tv.setText(page.getCodeXML());
+	        pageLayout.addView(tv);
+	        //this.setContentView(tv);
 			
 		} catch (Exception e) {
 			/* Mostramos el Error. */
 			Utilities.showToast(getApplicationContext(),
-        		"Error de fichero " + filename + ": "+ e.getMessage(),
+        		"Error al parsear PAGINA: "+ index+": "+e.getMessage(),
                 Toast.LENGTH_SHORT);
+			TextView tv = new TextView(getApplicationContext());
+			tv.setText("---"+index+":\n"+page.getCodeXML()+"\n----\n"+e.getMessage());
+			//tv.setText(e.getMessage());
+			setContentView (tv);
 		}
 	}
 	
@@ -145,7 +152,12 @@ public class ParsingXML extends Activity {
 	 */
 	private void printPage (int index) {
 		if (index < formulario.getNumPages()) {
-			printPage (formulario.getPage(index));
+			FormPage myPage = formulario.getPage(index);
+			printPage (myPage, index);
+			
+			Utilities.showToast(getApplicationContext(),
+	        		"Parseo la pagina: "+ index +": "+myPage.getCodeXML(),
+	                Toast.LENGTH_LONG);
 		}
 		else {
 			// Error
