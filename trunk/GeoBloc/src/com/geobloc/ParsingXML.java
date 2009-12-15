@@ -28,6 +28,7 @@ public class ParsingXML extends Activity {
 	private FormClass formulario;
 	
 	LinearLayout pageLayout;
+	List<FormPage> listPages;
 	
 	private String filename;
 	
@@ -70,7 +71,7 @@ public class ParsingXML extends Activity {
             /* Acaba el tratamiento. */
             
             // Obtenemos la lista de Paginas del formulario
-            List<FormPage> listPages = myXMLHandler.getListPages();
+            listPages = myXMLHandler.getListPages();
 
      //       linear = (LinearLayout) findViewById (R.id.LinearLayout02);
             
@@ -93,7 +94,8 @@ public class ParsingXML extends Activity {
         	this.setContentView(tv);
         }
 
-        printPage (0);
+        // Debemos añadir las páginas al formulario para luego imprimirlas
+        //printPage (0);
 
 	}
 	
@@ -106,15 +108,15 @@ public class ParsingXML extends Activity {
 	private void printPage (FormPage page) {
 		try {
 			/* Creamos un SAXParser. */
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			SAXParser sp = spf.newSAXParser();
+			//SAXParserFactory spf = SAXParserFactory.newInstance();
+			//SAXParser sp = spf.newSAXParser();
 
 			/* Creamos un nuevo ContentHandler */
-			PageHandler myPageHandler = new PageHandler();
-			Context contexto = getApplicationContext();
-			myPageHandler.Initialize(contexto);
+			//PageHandler myPageHandler = new PageHandler();
+			//Context contexto = getApplicationContext();
+			//myPageHandler.Initialize(contexto);
         
-			sp.parse( new InputSource( new StringReader(page.getCodeXML())), myPageHandler);
+			//sp.parse( new InputSource( new StringReader(page.getCodeXML())), myPageHandler);
 			/* Acaba el tratamiento. */
 			
 			Utilities.showToast(getApplicationContext(),
