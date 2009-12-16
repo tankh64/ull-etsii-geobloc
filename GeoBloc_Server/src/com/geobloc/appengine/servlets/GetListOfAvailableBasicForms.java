@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.geobloc.appengine.forms.BasicForm;
 import com.geobloc.appengine.server.DatastoreQueries;
 import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.datastore.KeyFactory;
 
 /**
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
@@ -31,10 +32,12 @@ public class GetListOfAvailableBasicForms extends HttpServlet {
     {
 		DatastoreQueries datastoreQueries = new DatastoreQueries();
 		Hashtable<String, String> map = new Hashtable();
+		String key;
 		try {
     		List<BasicForm> forms = datastoreQueries.getListOfBasicForms();
     		for (BasicForm form : forms) {
-    			map.put(form.getName(), form.getKey().toString());
+    			key = KeyFactory.keyToString(form.getKey());
+    			map.put(form.getName(), key);
     		}
     		
     	    ByteArrayOutputStream bs = new ByteArrayOutputStream();
