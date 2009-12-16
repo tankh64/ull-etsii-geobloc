@@ -4,8 +4,6 @@
 
 El DTD del formulario GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
 
-= Code Example =
-
 {{{
 
 <!ELEMENT gb_form (gb_name, gb_page+)>
@@ -24,8 +22,6 @@ El DTD del formulario GeoBloc. Por ahora es una versión muy simplificada (se ir
 
 Un ejemplo de formulario con 2 páginas.
 
-= Code Example =
-
 {{{
 
 <?xml version="1.0"?>
@@ -40,5 +36,40 @@ Un ejemplo de formulario con 2 páginas.
 	<gb_label>Texto</gb_label>
   </gb_page>
 </gb_form>
+
+}}}
+
+== Fichero de ejemplo con tres páginas y varios tipos de Widgets ==
+
+{{{
+
+<?xml version="1.0"?>
+
+<gb_form>
+	<gb_name>Formulario Completo con 3 paginas</gb_name>
+	<gb_page>
+		<gb_label>Pagina 1 con Scroll</gb_label>
+		<gb_string>Campo 1</gb_string>
+		<gb_string>Campo 2</gb_string>
+		<gb_string>Campo 3</gb_string>
+		<gb_string>Campo 4</gb_string>
+		<gb_string>Campo 5</gb_string>
+		<gb_string>Campo 6</gb_string>
+		<gb_string>Campo 7</gb_string>
+		<gb_string>Campo 8</gb_string>
+		<gb_button>Boton 1</gb_button>
+	</gb_page>
+	<gb_page>
+		<gb_label>Pagina 2</gb_label>
+		<gb_int>Entero</gb_int>
+		<gb_button>Boton 2</gb_button>
+	</gb_page>
+	<gb_page>
+		<gb_label>Pagina 3</gb_label>
+		<gb_string>Inserta texto</gb_string>
+		<gb_button>Boton 3</gb_button>
+	</gb_page>
+</gb_form>
+
 
 }}}
