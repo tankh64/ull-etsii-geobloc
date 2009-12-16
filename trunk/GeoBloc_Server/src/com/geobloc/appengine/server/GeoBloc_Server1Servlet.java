@@ -2,27 +2,15 @@ package com.geobloc.appengine.server;
 
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-
 import com.geobloc.appengine.forms.BasicForm;
-import com.google.appengine.api.datastore.Text;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.KeyFactory;
 
 /**
  * Basic servlet, used primarily for testing and learning.
@@ -41,12 +29,34 @@ public class GeoBloc_Server1Servlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/html");
+		
 		resp.getWriter().println("<p>Hello, world</p>");
 		String param = req.getParameter("firstname");
 		resp.getWriter().println("<p>Parameter: " + param + "</p>");
 		
 		resp.getWriter().println();
 		resp.getWriter().println("<p><a href=/main.jsp>Back to main</a></p>");
+		
+		
+		// Hashtable test lab
+		Hashtable<String, String> map = new Hashtable();
+		DatastoreQueries datastoreQueries = new DatastoreQueries();
+		String key;
+		try {
+    		List<BasicForm> forms = datastoreQueries.getListOfBasicForms();
+    		for (BasicForm form : forms) {
+    			key = KeyFactory.keyToString(form.getKey());
+    			map.put(form.getName(), key);
+    		}
+		}
+		finally {
+			datastoreQueries.closeConnection();
+		}
+		
+		for (int i = 0; i < map.size(); i++) {
+			resp.getWriter().println(map.toString());
+		}
+		
 	}
 
 }
