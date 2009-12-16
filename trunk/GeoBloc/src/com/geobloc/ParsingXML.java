@@ -15,9 +15,14 @@ import com.geobloc.shared.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +32,10 @@ public class ParsingXML extends Activity {
 	
 	private FormClass formulario;
 	
-	LinearLayout pageLayout;
+	ScrollView  pageLayout;
 	List<FormPage> listPages;
+	
+	private int pageActual;
 	
 	private String filename;
 	
@@ -73,16 +80,9 @@ public class ParsingXML extends Activity {
             
             formulario = new FormClass ("Formulario", listPages);
 
-     //       linear = (LinearLayout) findViewById (R.id.LinearLayout02);
-            
-            /* Obtenemos el layout generado por el Handler */
-     //       linear = myXMLHandler.getParsedData(contexto);
-        	
-            //setContentView(R.layout.question_2_button);  
-            //setContentView(linear);
-                   Utilities.showToast(getApplicationContext(),
-        					"El formulario tiene "+listPages.size()+" paginas",
-       				Toast.LENGTH_SHORT);
+            Utilities.showToast(getApplicationContext(),
+        				"El formulario tiene "+listPages.size()+" paginas",
+        				Toast.LENGTH_SHORT);
             
         } catch (Exception e) {
             /* Mostramos el Error. */
@@ -94,11 +94,49 @@ public class ParsingXML extends Activity {
         	this.setContentView(tv);
         }
 
-        // Debemos añadir las páginas al formulario para luego imprimirlas
-        printPage (0);
+        // Establecemos la funcionalidad a los botones (Atrás y Adelante)
+        initButtons ();
+        pageActual = 0;
+        printPage (pageActual);
 
 	}
 	
+	private void initButtons () {
+		
+		Button button_back = (Button) findViewById (R.id.Button01);
+
+        button_back.setText(getString(R.string.button_back));
+        button_back.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	if (pageActual > 0) {
+            		pageLayout.removeAllViewsInLayout();
+            		
+            		pageActual--;
+            		printPage (pageActual);
+            	}
+            	else {
+            		// Avisar que no existen paginas anteriores
+            	}
+            }
+        });
+        
+		Button button_next = (Button) findViewById (R.id.Button02);
+
+        button_next.setText(getString(R.string.button_next));
+        button_next.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	if (pageActual < (formulario.getNumPages()-1)) {
+            		pageLayout.removeAllViewsInLayout();
+            		
+            		pageActual++;
+            		printPage (pageActual);
+            	}
+            	else {
+            		// Avisar que no existen paginas anteriores
+            	}
+            }
+        });
+	}
 	
 	/**
 	 * Dibuja la página del formulario 
@@ -117,23 +155,20 @@ public class ParsingXML extends Activity {
 			myPageHandler.Initialize(contexto);
         
 			sp.parse( new InputSource( new StringReader(page.getCodeXML())), myPageHandler);
-			/* Acaba el tratamiento. */
+			/* Acaba el tratamiento. */		
 			
-			Utilities.showToast(getApplicationContext(),
-	        		"Ahora mostramos la página",
-	                Toast.LENGTH_SHORT);
+			pageLayout = (ScrollView) findViewById (R.id.ScrollView01);
 			
-			
-	        
-			pageLayout = (LinearLayout) findViewById (R.id.LinearLayout03);
-			//pageLayout = myPageHandler.getParsedData(contexto);
-			
+			LinearLayout linear = myPageHandler.getParsedData(contexto);
+
 			 /* Create a new TextView to display the parsing result later. */
 	        TextView tv = new TextView(getApplicationContext());
 	        tv.setText(page.getCodeXML());
-	        pageLayout.addView(tv);
-	        //this.setContentView(tv);
-			
+	        
+	        
+	        
+	        pageLayout.addView(linear);
+	        
 		} catch (Exception e) {
 			/* Mostramos el Error. */
 			Utilities.showToast(getApplicationContext(),
@@ -141,10 +176,10 @@ public class ParsingXML extends Activity {
                 Toast.LENGTH_SHORT);
 			TextView tv = new TextView(getApplicationContext());
 			tv.setText("---"+index+":\n"+page.getCodeXML()+"\n----\n"+e.getMessage());
-			//tv.setText(e.getMessage());
 			setContentView (tv);
 		}
 	}
+	
 	
 	/**
 	 * Dibuja la página del formulario 
@@ -154,10 +189,6 @@ public class ParsingXML extends Activity {
 		if (index < formulario.getNumPages()) {
 			FormPage myPage = formulario.getPage(index);
 			printPage (myPage, index);
-			
-			Utilities.showToast(getApplicationContext(),
-	        		"Parseo la pagina: "+ index +": "+myPage.getCodeXML(),
-	                Toast.LENGTH_LONG);
 		}
 		else {
 			// Error

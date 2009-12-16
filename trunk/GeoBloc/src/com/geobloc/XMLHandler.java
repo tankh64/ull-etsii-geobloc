@@ -40,20 +40,13 @@ public class XMLHandler extends DefaultHandler {
 	private String GB_FORM = "gb_form";
 	private String GB_PAGE = "gb_page";
 	private String GB_NAME = "gb_name";
-	/*private String GB_BUTTON = "gb_button";
-	private String GB_LABEL = "gb_label";
-	private String GB_STRING = "gb_string";
-	private String GB_INT = "gb_int";*/
-	//private String GB_ = "gb_";
+
 	
 	// Campos
 	private boolean in_gb_form = false;
 	private boolean in_gb_page = false;
 	private boolean in_gb_name = false;
-	/*private boolean in_gb_button = false;
-	private boolean in_gb_label = false;
-	private boolean in_gb_string = false;
-	private boolean in_gb_int = false;*/
+
 	
 	private Context myContext;
 
@@ -70,19 +63,11 @@ public class XMLHandler extends DefaultHandler {
     public XMLHandler ()
     {
     	super();
-    	
-    	//myPage = new FormPage();
+
     	listPages = new ArrayList<FormPage>();
     	
     	// Para escribir el XML mejor
         serializer = Xml.newSerializer();
-        /*writer = new StringWriter();
-        
-        try {
-            serializer.setOutput(writer);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } */
         
     }
     
@@ -153,12 +138,14 @@ public class XMLHandler extends DefaultHandler {
              this.in_gb_form = true;
          } else if (localName.equals(GB_PAGE)) {
         	 this.in_gb_page = true;
-        	 //AddText ("Init pagina");
+
         	 myPage = new FormPage();
         	 writer = new StringWriter();
              
              try {
                  serializer.setOutput(writer);
+                 serializer.startTag("", GB_PAGE);
+                 serializer.text("\n");
              } catch (Exception e) {
                  throw new RuntimeException(e);
              } 
@@ -175,31 +162,7 @@ public class XMLHandler extends DefaultHandler {
                  throw new RuntimeException(e);
              } 
          }
-         /*else if (localName.equals(GB_BUTTON)) {
-         
-             this.in_gb_button = true;
-         }else if (localName.equals(GB_LABEL)) {
-             this.in_gb_label = true;
-         }else if (localName.equals(GB_STRING)) {
-        	 this.in_gb_string = true;
-         }else if (localName.equals(GB_INT)) {
-        	 this.in_gb_int = true;
-         }*/
-         
-         //////////////// Aqui se muestra como extraer atributos
-         /*else if (localName.equals("numero")) {
-             // Extraemos el atributo
-             String attrValue = atts.getValue("numerodecalle");
-             int i = Integer.parseInt(attrValue);
-             myParsedXMLDataSet.setNumCalle(i);        	 
-         }else if (localName.equals("ciudad")) {
-        	 this.in_ciudad = true;
-         }else if (localName.equals("categoria")) {
-             // Extraemos el atributo
-             String attrValue = atts.getValue("lang");
-             myParsedXMLDataSet.setCategoria(attrValue);       
 
-         }*/
     } 
     
     /** Se ejecuta en tags de cierre:
@@ -216,6 +179,8 @@ public class XMLHandler extends DefaultHandler {
             //AddText ("Cierra pagina");
 
             try {
+            	serializer.endTag("", GB_PAGE);
+            	serializer.text("\n");
             	serializer.endDocument();
             	serializer.flush();
             	pageActual = writer.toString();
@@ -224,10 +189,6 @@ public class XMLHandler extends DefaultHandler {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             } 
-            
-			Utilities.showToast(myContext,
-	        		"Pagina: \n"+pageActual,
-	                Toast.LENGTH_LONG);
             
             myPage.setCodeXML(pageActual);
             listPages.add(myPage);
@@ -249,15 +210,6 @@ public class XMLHandler extends DefaultHandler {
         	
         	
         }
-        	/*else if (localName.equals(GB_BUTTON)) {
-            this.in_gb_button = false;
-        }else if (localName.equals(GB_LABEL)) {
-            this.in_gb_label = false;
-        }else if (localName.equals(GB_STRING)) {
-       	 	this.in_gb_string = false;
-        }else if (localName.equals(GB_INT)) {
-       	 	this.in_gb_int = false;
-        }*/
     } 
     
     /** Se ejecuta cuando se encuentra con la siguiente estructura:
@@ -284,46 +236,6 @@ public class XMLHandler extends DefaultHandler {
         		 }
         	 }
          }
-         /*if(this.in_gb_button){        	 
-        	 AddButton(new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_BUTTON+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_BUTTON+">\n");
-        	 }
-         }
-         if(this.in_gb_label){
-        	 AddText(new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_LABEL+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_LABEL+">\n");
-        	 }
-         }
-         if(this.in_gb_string){
-        	 AddEditText(TextType.STRING, new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_STRING+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_STRING+">\n");
-        	 }
-         }
-         if(this.in_gb_int){
-        	 AddEditText(TextType.INT, new String(ch, start, length));
-        	 
-        	 // Si estamos dentro de una página
-        	 if (this.in_gb_page) {
-        		 addTextToPage("<"+GB_STRING+">"
-        			 		+ new String(ch, start, length)
-        	 				+ "</"+GB_STRING+">\n");
-        	 }
-         }     */    
    } 
 	
 
