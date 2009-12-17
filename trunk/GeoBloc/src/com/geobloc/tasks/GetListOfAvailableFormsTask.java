@@ -3,8 +3,7 @@
  */
 package com.geobloc.tasks;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Hashtable;
 
 import org.apache.http.client.HttpClient;
 
@@ -13,7 +12,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
-import com.geobloc.internet.HttpFileMultipartPost;
+import com.geobloc.ApplicationEx;
+import com.geobloc.internet.SimpleHttpPost;
 import com.geobloc.shared.GBSharedPreferences;
 import com.google.listeners.IStandardTaskListener;
 
@@ -21,14 +21,14 @@ import com.google.listeners.IStandardTaskListener;
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
-public class UploadPackageTask extends AsyncTask<String, Integer, String> {
+public class GetListOfAvailableFormsTask extends
+		AsyncTask<String, Integer, Hashtable<String, String>> {
 
 	private Context context;
 	private String serverAddress = "";
 	private int attempts;
 	private HttpClient httpClient;
 	
-	private List<String> report;
 	
 	private IStandardTaskListener listener;
 	
@@ -44,39 +44,25 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 		this.listener = listener;
 	}
 	
-	/* 
-	 * Runs on GUI Thread
-	 */
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		report = new ArrayList<String>();
-	}
-	
 	/*
 	 * Runs on Background Thread
 	 */
 	@Override
-	protected String doInBackground(String... packagePaths) {
+	protected Hashtable<String, String> doInBackground(String... packagePaths) {
 		int count = packagePaths.length;
-		String results = "";
+		Hashtable<String, String> data = null;
 		if ((httpClient != null) && (context != null)) {
 			initConfig();
-			for (int i = 0; i < count; i++) {
-				// sendPackage updates the report ArrayList
-				sendPackage(packagePaths[i]);
-				publishProgress((int) ((i / (float) count) * 100), count);
-			}
-			for (String res : report)
-				results += res;
+			data = getHashtable(packagePaths[0]);
 		}
+		/*
 		else {
 			results =  "Error! Could not perform task due to missing parameters.";
 		}
-		
-		return results;
+		*/
+		return data;
 	}
-		
+	
 	private void initConfig() {
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -88,43 +74,34 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 				GBSharedPreferences.__DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__));
 	}
 	
-	private String sendPackage(String packagePath) {
-		HttpFileMultipartPost post;
-		
-		String serverResponse = "Error!";
-		
+	private Hashtable<String, String> getHashtable(String url) {
 		// boolean to check for Exception
 		boolean exception = false;
 
-		// boolean to exit loop (success or failure)
+		// boolean to exit loop (success or failrue)
 		boolean done = false;
 		
-		// i less than... preference
-		for (int i = 1; (!exception && !done && (i <= attempts)); i++) {
-			post = new HttpFileMultipartPost();
+		SimpleHttpPost post;
+		Hashtable<String, String> response = null;
+		
+		for (int i = 1; (!exception && !done && (i <= 3)); i++) {
+			post = new SimpleHttpPost();
+			// tell the handler in which attempt we are
+			//handler.sendEmptyMessage(i);
 			try {
-				
-				// we got HttpClient in the constructor
-				serverResponse = post.executeMultipartPackagePost(packagePath, serverAddress, httpClient);
-				
+				response = post.executeHttpPostAvailableForms(url, httpClient);
 				// should be enough to check
-				if (serverResponse.contains((CharSequence)GBSharedPreferences.__OK_SIGNATURE__)) {
+				if (response != null)
 					done = true;
-				}
 			}
 			catch (Exception e){
 				// if exception, exit loop
 				exception = true;
 				e.printStackTrace();
-				serverResponse = e.toString();
+				response = null;
 			}
 		}
-		// fill in reports
-		if (done)
-			report.add("Package " + packagePath + " was succesfully delivered.");
-		else // exception or error
-			report.add("Package " + packagePath + " failed to be delievered.");
-		return serverResponse;	
+		return response;
 	}
 	
 	/*
@@ -142,7 +119,7 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 	 * Runs on UI Thread
 	 */
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(Hashtable<String, String> result) {
 		if (listener != null) {
 			listener.downloadingComplete(result);
 		}

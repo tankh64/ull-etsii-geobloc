@@ -3,6 +3,7 @@
  */
 package com.geobloc.shared;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -22,6 +23,19 @@ public class Utilities {
 	public static void showToast(Context context, String message, int duration) {
 		Toast toast = Toast.makeText(context, message, duration);
 		toast.show();
+	}
+	
+	/*
+	 * Displays a simple Dialog with an OK button. Used fot the common task of giving some information to the 
+	 * user without switching to another Activity. Needs Activity context, ApplicationContext will make 
+	 * the caller crash.
+	 */
+	public static void showTitleAndMessageDialog(Context context, String title, String message) {
+		AlertDialog.Builder alert = new AlertDialog.Builder(context);  
+		alert.setTitle(title);  
+		alert.setMessage(message);
+		alert.setPositiveButton("OK", null);
+		alert.show();
 	}
 
 }

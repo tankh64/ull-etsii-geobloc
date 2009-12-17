@@ -18,8 +18,9 @@ import android.widget.TextView;
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
 import com.geobloc.shared.GBSharedPreferences;
+import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.UploadPackageTask;
-import com.google.listeners.IUploadPackageTaskListener;
+import com.google.listeners.IStandardTaskListener;
 
 /**
  * Activity for Development purposes, designed to display XML files during testing before 
@@ -29,7 +30,7 @@ import com.google.listeners.IUploadPackageTaskListener;
  *
  */
 //public class NewTextReader extends Activity implements Runnable {
-public class NewTextReader extends Activity implements IUploadPackageTaskListener {
+public class NewTextReader extends Activity implements IStandardTaskListener {
 	
 	private TextView text;
 	public static String __TEXT_READER_TEXT__ = "textToBeDisplayedByTextReader";
@@ -163,15 +164,12 @@ public class NewTextReader extends Activity implements IUploadPackageTaskListene
     */
 
 	//@Override
-	public void downloadingComplete(String result) {
+	public void downloadingComplete(Object result) {
 		if (pd != null)
 			pd.dismiss();
 		
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);  
-		alert.setTitle("Package Report");  
-		alert.setMessage(result);
-		alert.setPositiveButton("OK", null);
-		alert.show();
+		String res = (String) result;
+		Utilities.showTitleAndMessageDialog(this, "Package Report", res);
 	}
 
 	//@Override

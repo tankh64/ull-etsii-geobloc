@@ -41,6 +41,10 @@
 			android:label="NewTextReader"
 			android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
+		<activity
+			android:name=".activities.FormsDownloader"
+			android:label="Forms Downloader">
+		</activity>
 	<activity android:name="ParsingXML"></activity>
 </application>
     <uses-sdk android:minSdkVersion="4" />
