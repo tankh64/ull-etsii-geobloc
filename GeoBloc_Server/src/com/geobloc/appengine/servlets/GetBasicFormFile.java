@@ -45,6 +45,7 @@ public class GetBasicFormFile extends HttpServlet {
 			outs.write(bytes);
 			outs.flush();
 			outs.close();
+
 		}
 		finally {
 			pm.close();
