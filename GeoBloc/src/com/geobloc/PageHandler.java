@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class PageHandler extends DefaultHandler {
 	private String GB_LABEL = "gb_label";
 	private String GB_STRING = "gb_string";
 	private String GB_INT = "gb_int";
+	private String GB_CHECKBOX = "gb_checkbox";
 	//private String GB_ = "gb_";
 	
 	// Campos
@@ -33,6 +35,7 @@ public class PageHandler extends DefaultHandler {
 	private boolean in_gb_label = false;
 	private boolean in_gb_string = false;
 	private boolean in_gb_int = false;
+	private boolean in_gb_checkbox = false;
 	
 	private Context myContext;	
 
@@ -130,6 +133,17 @@ public class PageHandler extends DefaultHandler {
 		linearLayout.addView(mView);
 	}
 	
+	/**
+	 * Añade un CheckBox al formulario
+	 * @param text Texto que contendrá el checkbox
+	 */
+	private void AddCheckBox (String text) {
+        CheckBox box = new CheckBox(myContext);
+        box.setText(text);
+      		
+		linearLayout.addView(box);
+	}
+	
 
     // ===========================================================
     // Metodos
@@ -159,6 +173,8 @@ public class PageHandler extends DefaultHandler {
         	 this.in_gb_string = true;
          }else if (localName.equals(GB_INT)) {
         	 this.in_gb_int = true;
+         }else if (localName.equals(GB_CHECKBOX)) {
+        	 this.in_gb_checkbox = true;
          }
          
          //////////////// Aqui se muestra como extraer atributos
@@ -190,6 +206,8 @@ public class PageHandler extends DefaultHandler {
        	 	this.in_gb_string = false;
         }else if (localName.equals(GB_INT)) {
        	 	this.in_gb_int = false;
+        }else if (localName.equals(GB_CHECKBOX)) {
+       	 	this.in_gb_checkbox = false;
         }
     } 
     
@@ -208,7 +226,10 @@ public class PageHandler extends DefaultHandler {
          }
          if(this.in_gb_int){
         	 AddEditText(TextType.INT, new String(ch, start, length));
-         }         
+         }
+         if(this.in_gb_checkbox) {
+        	 AddCheckBox(new String(ch, start, length));
+         }
    } 
 	
 }
