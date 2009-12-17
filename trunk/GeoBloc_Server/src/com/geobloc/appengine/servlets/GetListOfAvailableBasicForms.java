@@ -26,12 +26,16 @@ import com.google.appengine.api.datastore.KeyFactory;
  *
  */
 public class GetListOfAvailableBasicForms extends HttpServlet {
+	
+	// required for safe serializing 
+	static final long serialVersionUID = 6376503374069212249L;
+	
 	@Override 
 	public void doPost(HttpServletRequest request, HttpServletResponse resp)
     throws ServletException, IOException
     {
 		DatastoreQueries datastoreQueries = new DatastoreQueries();
-		Hashtable<String, String> map = new Hashtable();
+		Hashtable<String, String> map = new Hashtable<String, String>();
 		String key;
 		try {
     		List<BasicForm> forms = datastoreQueries.getListOfBasicForms();
@@ -43,14 +47,14 @@ public class GetListOfAvailableBasicForms extends HttpServlet {
     	    ByteArrayOutputStream bs = new ByteArrayOutputStream();
     	    ObjectOutputStream os = new ObjectOutputStream (bs);
     	    os.writeObject((Object)map);
-    	    os.close();
     	    byte[] bytes =  bs.toByteArray(); // returns byte[]
-    	    
+    	    os.close();
     	    
     	    ServletOutputStream souts = resp.getOutputStream();
 			souts.write(bytes);
 			souts.flush();
 			souts.close();
+			bs.close();
 		}
 		catch (Exception e) {
 			resp.setContentType("text/plain");

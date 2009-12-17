@@ -39,7 +39,7 @@ public class GeoBloc_Server1Servlet extends HttpServlet {
 		
 		
 		// Hashtable test lab
-		Hashtable<String, String> map = new Hashtable();
+		Hashtable<String, String> map = new Hashtable<String, String>();
 		DatastoreQueries datastoreQueries = new DatastoreQueries();
 		String key;
 		try {
@@ -53,9 +53,7 @@ public class GeoBloc_Server1Servlet extends HttpServlet {
 			datastoreQueries.closeConnection();
 		}
 		
-		for (int i = 0; i < map.size(); i++) {
-			resp.getWriter().println(map.toString());
-		}
+		resp.getWriter().println(map.toString());
 		
 	}
 
