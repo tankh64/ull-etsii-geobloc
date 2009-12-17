@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+  <!-- Top of the screen -->
+  <TextView
+  	android:id="@+id/forms_downloaderTextView"
+  	android:text="@string/forms_downloaderTextViewText"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:paddingTop="5dp">
+  </TextView>
+  
+  <!-- Bottom of the screen -->
+  <Button
+  	android:id="@+id/forms_downloaderEraseButton"
+  	android:text="@string/forms_downloaderEraseButtonText"
+  	android:layout_alignParentBottom="true"
+  	android:layout_alignParentLeft="true"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  </Button>
+  <Button
+  	android:id="@+id/forms_downloaderDownloadButton"
+  	android:text="@string/forms_downloaderDownloadButtonText"
+  	android:layout_alignParentBottom="true"
+  	android:layout_alignParentRight="true"
+  	android:layout_toRightOf="@id/forms_downloaderEraseButton"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content">
+  </Button>
+  	
+  <!-- In the middle (most important part! -->
+  <ListView
+  	android:id="@+id/forms_downloaderListView"
+  	android:layout_below="@id/forms_downloaderTextView"
+  	android:layout_above="@id/forms_downloaderDownloadButton"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent">
+  </ListView>
+  
+</RelativeLayout>

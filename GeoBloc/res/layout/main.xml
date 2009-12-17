@@ -17,6 +17,13 @@
 		android:layout_width="fill_parent"
 		android:id="@+id/ButtonMainMenu2">
 	</Button>
+	<Button
+		android:id="@+id/formsDownloaderButton"
+		android:text="@string/formsDownloaderButtonText"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:onClick="formsDownloaderButtonOnClickHandler">
+	</Button>
 	<Spinner
 		android:id="@+id/staticFormSelectionSpinner"
 		android:layout_height="wrap_content"

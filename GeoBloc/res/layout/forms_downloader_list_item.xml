@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+  <!-- Left side of the item -->
+  <CheckBox
+  	android:id="@+id/forms_downloader_list_itemCb"
+  	android:layout_alignParentLeft="true"
+  	android:layout_width="48dip"
+    android:layout_height="48dip">
+  </CheckBox>
+  <!-- Right side of the item, the form name and below, the version -->
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormNameTextView"
+  	android:layout_toRightOf="@id/forms_downloader_list_itemCb"
+  	android:layout_alignParentTop="true"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:textSize="18sp"
+  	android:textStyle="bold">
+  </TextView>
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormVersionTextView"
+  	android:text="@string/forms_downloader_list_item_FormVersionTextViewText"
+  	android:layout_toRightOf="@id/forms_downloader_list_itemCb"
+  	android:layout_below="@id/forms_downloader_list_itemFormNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content"
+  	android:textStyle="italic">
+  </TextView>
+  
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormVersionNumberTextView"
+  	android:layout_toRightOf="@id/forms_downloader_list_itemFormVersionTextView"
+  	android:layout_below="@id/forms_downloader_list_itemFormNameTextView"
+  	android:paddingLeft="2dp"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content"
+  	android:textStyle="italic">
+  </TextView>
+  
+</RelativeLayout>

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.geobloc.activities.FormsDownloader;
 import com.geobloc.activities.SecondStaticFormPrototype;
 import com.geobloc.activities.StaticFormPrototype;
 import com.geobloc.shared.GBSharedPreferences;
@@ -146,6 +147,12 @@ public class MainMenu extends Activity {
     		Utilities.showToast(getApplicationContext(), "Error! Unspecified behaviour for this item", Toast.LENGTH_SHORT);
     		break;
     	}
+    }
+    
+    public void formsDownloaderButtonOnClickHandler(View target)
+    {
+    	Intent i = new Intent(this, FormsDownloader.class);
+    	startActivity(i);
     }
     
     /* --> Menu <-- */

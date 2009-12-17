@@ -18,6 +18,7 @@
 	<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
 	<string name="selected_file">Ha seleccionado el archivo %s</string>
 	<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
+	<string name="formsDownloaderButtonText">Descarga de Formularios</string>
 	
 	<!-- SharedPreferences -->
 	<string name="sharedPreferencesTitle">Preferencias</string>
@@ -25,12 +26,22 @@
 	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
 	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
 	<string name="uploadPackagesServletAddressDescription">Dirección del servlet para subir paquetes</string>
+	<string name="getAvailableFormsListFromServletAddress">Servlet lista de formularios</string>
+	<string name="getAvailableFormsListFromServletAddressDescription">Dirección del servlet que permite obtener la lista de formularios.</string>
 	<string name="numberOfInternetAttempts">Intentos de conexión</string>
 	<string name="numberOfInternetAttemptsDescription">Nº de veces que se intentarán las operaciones de Internet</string>
 	<string name="packagesPath">Directorio de paquetes</string>
 	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
 	<string name="formsPath">Directorio de formularios</string>
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
-<string name="button_back">Atrás</string>
-<string name="button_next">Adelante</string>
+	
+	<!-- FormPages -->
+	<string name="button_back">AtrÃ¡s</string>
+	<string name="button_next">Adelante</string>
+	
+	<!-- FormsDownloader Layout -->
+	<string name="forms_downloaderTextViewText">Lista de formularios disponibles</string>
+	<string name="forms_downloaderEraseButtonText">Eliminar</string>
+	<string name="forms_downloaderDownloadButtonText">Descargar</string>
+	<string name="forms_downloader_list_item_FormVersionTextViewText">Versión: </string>
 </resources>

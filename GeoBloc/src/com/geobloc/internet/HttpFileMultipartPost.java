@@ -30,7 +30,8 @@ import com.geobloc.persistance.GeoBlocPackageManager;
  */
 public class HttpFileMultipartPost {
 	//public void executeMultipartPost(List<String> files, String url)throws Exception     {
-	public String executeMultipartPost(String fileDirectory, String file, String url, HttpClient httpClient)throws Exception     {
+	public String executeMultipartPost(String fileDirectory, String file, String url, HttpClient httpClient)
+	throws Exception     {
 		String stringResponse = "Error!";
 		BufferedReader in = null;
 		try {
