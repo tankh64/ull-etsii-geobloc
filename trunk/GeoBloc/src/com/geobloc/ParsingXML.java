@@ -83,6 +83,11 @@ public class ParsingXML extends Activity {
             Utilities.showToast(getApplicationContext(),
         				"El formulario tiene "+listPages.size()+" paginas",
         				Toast.LENGTH_SHORT);
+
+         // Establecemos la funcionalidad a los botones (Atrás y Adelante)
+            initButtons ();
+            pageActual = 0;
+            printPage (pageActual);
             
         } catch (Exception e) {
             /* Mostramos el Error. */
@@ -94,10 +99,7 @@ public class ParsingXML extends Activity {
         	this.setContentView(tv);
         }
 
-        // Establecemos la funcionalidad a los botones (Atrás y Adelante)
-        initButtons ();
-        pageActual = 0;
-        printPage (pageActual);
+        
 
 	}
 	
