@@ -9,12 +9,13 @@ El DTD del formulario GeoBloc. Por ahora es una versión muy simplificada (se ir
 <!ELEMENT gb_form (gb_name, gb_page+)>
 
 <!ELEMENT gb_name (#PCDATA)>
-<!ELEMENT gb_page (gb_button|gb_string|gb_label|gb_int)+>
+<!ELEMENT gb_page (gb_button|gb_string|gb_label|gb_int|gb_checkbox)+>
 
 <!ELEMENT gb_button (#PCDATA)>
 <!ELEMENT gb_string (#PCDATA)>
 <!ELEMENT gb_int (#PCDATA)>
 <!ELEMENT gb_label (#PCDATA)>
+<!ELEMENT gb_checkbox (#PCDATA)>
 
 }}}
 
@@ -63,6 +64,7 @@ Un ejemplo de formulario con 2 páginas.
 		<gb_label>Pagina 2</gb_label>
 		<gb_int>Entero</gb_int>
 		<gb_button>Boton 2</gb_button>
+                <gb_checkbox>Propietario presente</gb_checkbox>
 	</gb_page>
 	<gb_page>
 		<gb_label>Pagina 3</gb_label>
