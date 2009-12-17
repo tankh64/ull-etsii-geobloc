@@ -69,12 +69,11 @@ public class UploadBasicFormServlet extends HttpServlet {
 						String fileName = item.getName();
 						String contentType = item.getContentType();
 
-						String fileContents = null;
 						try {
-							fileContents = IOUtils.toString(in);
-							Text text = new Text(fileContents);
-							out.println("length: " + fileContents.length());
-							if (fileContents.length() < 1)
+							Blob blob = new Blob(IOUtils.toByteArray(in));
+							byte[] array = blob.getBytes();							
+							out.println("length: " + array.length);
+							if (array.length < 1)
 								out.println("No content.");
 							else {
 								out.println("--------------");
@@ -83,7 +82,7 @@ public class UploadBasicFormServlet extends HttpServlet {
 								out.println("contentType = " + contentType);
 								//out.println(fileContents);
 								
-								BasicForm form = new BasicForm(user, fileName, text, new Date());
+								BasicForm form = new BasicForm(user, fileName, blob, new Date());
 								PersistenceManager pm = PMF.get().getPersistenceManager();
 								try {
 									pm.makePersistent(form);
@@ -93,7 +92,7 @@ public class UploadBasicFormServlet extends HttpServlet {
 								}
 								
 								out.println(form.getKey());
-								out.println(form.getXml());
+								//out.println(form.getXml());
 							}
 						} finally {
 							IOUtils.closeQuietly(in);
@@ -102,7 +101,7 @@ public class UploadBasicFormServlet extends HttpServlet {
 					}
 				}
 			} catch (SizeLimitExceededException e) {
-				out.println("You exceeded the maximu size ("
+				out.println("You exceeded the maximum size ("
 						+ e.getPermittedSize() + ") of the file ("
 						+ e.getActualSize() + ")");
 			}

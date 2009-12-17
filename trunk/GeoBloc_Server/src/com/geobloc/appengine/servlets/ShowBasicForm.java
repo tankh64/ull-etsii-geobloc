@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.geobloc.appengine.forms.BasicForm;
 import com.geobloc.appengine.server.PMF;
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
@@ -40,10 +41,12 @@ public class ShowBasicForm extends HttpServlet {
     		out.println("<p>--------------</p>");
 			out.println("<p>fileName = " + form.getName() + "</p>");
 			out.println("<p>fileAuthor = " + form.getAuthor() + "</p>");
-			out.println("<p>contentLength = " + form.getXml().getValue().length()+ "</p>");
-			Text text = form.getXml();
-			out.println("<p><a href=../main.jsp>Back to main</a></p>");
-			out.println("<p><PLAINTEXT>"+form.getXml().getValue());
+			Blob blob = form.getFile();
+			byte[] array = blob.getBytes();
+			out.println("<p>contentLength = " + array.length + "</p>");
+			//Text text = form.getXml();
+			out.println("<p><a href=../basicFormsMain.jsp>Back to basicFormsMain</a></p>");
+			//out.println("<p><PLAINTEXT>"+form.getXml().getValue());
 			
 		}
 		finally {
