@@ -2,8 +2,8 @@
 <resources>
     <string name="hello">Hello World, MainMenu!</string>
     <string name="app_name">GeoBloc-ULL</string>
-	<string name="ButtonMainMenu1">Crear Formulario</string>
-	<string name="create_form">Generar Formulario</string>
+	<string name="ButtonMainMenu1">Generar Formulario</string>
+	
 	<string name="list_form">Formularios</string>
 	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
 	<string name="ButtonMainMenu2">Prueba</string>

@@ -118,7 +118,7 @@ public class PageHandler extends DefaultHandler {
 				ed.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
 	    				break;
 			case STRING:
-				ed.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+				ed.setInputType(InputType.TYPE_CLASS_TEXT);
 	    				break;
 				default:
 					break;

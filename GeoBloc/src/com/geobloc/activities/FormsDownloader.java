@@ -247,7 +247,7 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
     };
     */
 
-	@Override
+	//@Override
 	public void downloadingComplete(Object result) {
 		pd.dismiss();
 		Hashtable<String, String> data = (Hashtable<String, String>)result;
@@ -268,7 +268,7 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
         */
 	}
 
-	@Override
+	//@Override
 	public void progressUpdate(int progress, int total) {
 		// TODO Auto-generated method stub
 		
