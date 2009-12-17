@@ -51,7 +51,6 @@ public class MainMenu extends Activity {
         
         // Create Form Button
         mCreateFormButton = (Button) findViewById(R.id.ButtonMainMenu1);
-        mCreateFormButton.setText(getString(R.string.ButtonMainMenu1));
         mCreateFormButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 

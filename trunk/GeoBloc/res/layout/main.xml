@@ -10,7 +10,7 @@
 	<Button 
 		android:layout_height="wrap_content" 
 		android:layout_width="fill_parent" 
-		android:id="@+id/ButtonMainMenu1">
+		android:id="@+id/ButtonMainMenu1" android:text="@string/ButtonMainMenu1">
 	</Button>
 	<Button 
 		android:layout_height="wrap_content"
