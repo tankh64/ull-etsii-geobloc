@@ -1,15 +1,17 @@
 package com.geobloc.appengine.forms;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
-
 import java.util.Date;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.users.User;
 
 /**
  * This is a JavaBean or POJO (Plain Old Java Object), representing the first form the GeoBloc Client in 
@@ -34,16 +36,16 @@ public class BasicForm {
 	private String name;
 	
 	@Persistent
-	private Text xml;
+	private Blob file;
 
 	@Persistent
 	private Date date;
 	
-	public BasicForm(User author, String name, Text xml, Date date)
+	public BasicForm(User author, String name, Blob file, Date date)
 	{
 		this.author = author;
 		this.name = name;
-		this.xml = xml;
+		this.file = file;
 		this.date = date;	
 	}
 
@@ -71,12 +73,12 @@ public class BasicForm {
 		this.name = name;
 	}
 
-	public Text getXml() {
-		return xml;
+	public Blob getFile() {
+		return file;
 	}
 
-	public void setXml(Text xml) {
-		this.xml = xml;
+	public void setFile(Blob file) {
+		this.file = file;
 	}
 
 	public Date getDate() {

@@ -26,13 +26,29 @@ public class DatastoreQueries {
 	}
 	
 	/*
-	 *  Get all the BasicForms(XML Strings) from the Datastore
+	 *  Get the last 5 BasicForms(XML Strings) from the Datastore
 	 */	
 	public List<BasicForm> getListOfBasicForms() {
 		List<BasicForm> forms = new ArrayList<BasicForm>();
 		try {
 			pm = PMF.get().getPersistenceManager();
 			String query = "select from " + BasicForm.class.getName() + " order by date desc range 0,5";
+			forms = (List<BasicForm>) pm.newQuery(query).execute();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return forms;
+	}
+	
+	/*
+	 *  Get all the BasicForms(XML Strings) from the Datastore
+	 */	
+	public List<BasicForm> getListOfAllBasicForms() {
+		List<BasicForm> forms = new ArrayList<BasicForm>();
+		try {
+			pm = PMF.get().getPersistenceManager();
+			String query = "select from " + BasicForm.class.getName() + " order by date desc";
 			forms = (List<BasicForm>) pm.newQuery(query).execute();
 		}
 		catch (Exception e) {

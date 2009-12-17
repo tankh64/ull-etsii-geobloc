@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.geobloc.appengine.forms.BasicForm;
 import com.geobloc.appengine.server.PMF;
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -23,10 +24,10 @@ import com.google.appengine.api.datastore.KeyFactory;
 public class GetBasicFormFile extends HttpServlet {
 
 	// required for safe serializing
-	private static final long serialVersionUID = 2253850561530384157L;
+	//private static final long serialVersionUID = 2253850561530384157L;
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException {		
 		
 		String parameter = req.getParameter("key");
@@ -37,9 +38,8 @@ public class GetBasicFormFile extends HttpServlet {
 		try {
     		
 			BasicForm form = pm.getObjectById(BasicForm.class, key);
-			com.google.appengine.api.datastore.Text text = form.getXml();
-			String s = text.toString();
-			byte[] bytes = s.getBytes();
+			Blob blob = form.getFile();
+			byte[] bytes = blob.getBytes();
 			
 			OutputStream outs = resp.getOutputStream();
 			outs.write(bytes);

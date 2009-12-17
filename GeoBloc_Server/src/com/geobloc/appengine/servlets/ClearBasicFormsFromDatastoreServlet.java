@@ -32,6 +32,6 @@ public class ClearBasicFormsFromDatastoreServlet extends HttpServlet {
 		finally {
 			pm.close();
 		}
-		resp.sendRedirect("/main.jsp");
+		resp.sendRedirect("/basicFormsMain.jsp");
 	}
 }
