@@ -38,7 +38,7 @@ public class GetListOfAvailableBasicForms extends HttpServlet {
 		Hashtable<String, String> map = new Hashtable<String, String>();
 		String key;
 		try {
-    		List<BasicForm> forms = datastoreQueries.getListOfBasicForms();
+    		List<BasicForm> forms = datastoreQueries.getListOfAllBasicForms();
     		for (BasicForm form : forms) {
     			key = KeyFactory.keyToString(form.getKey());
     			map.put(form.getName(), key);
