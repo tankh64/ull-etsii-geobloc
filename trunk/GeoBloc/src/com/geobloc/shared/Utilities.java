@@ -16,6 +16,11 @@ import android.widget.Toast;
  */
 public class Utilities {
 
+	/*
+	 * Type for the "Widget"
+	 */
+	public enum WidgetType {LABEL, STRING, INT, BUTTON, CHECKBOX};
+	
 	/* 
 	 * Displays a Toast. The context parameter is filled with getApplicationContext() from the Activity 
 	 * you're calling this from. Duration is with Toast.LENGTH_SHORT or Toast.LENGTH_LONG

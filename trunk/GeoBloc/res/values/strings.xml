@@ -38,7 +38,7 @@
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
 	
 	<!-- FormPages -->
-	<string name="button_back">AtrÃ¡s</string>
+	<string name="button_back">Atrás</string>
 	<string name="button_next">Adelante</string>
 	
 	<!-- FormsDownloader Layout -->

@@ -17,6 +17,7 @@ import android.content.Context;
 import android.text.InputType;
 import android.util.Xml;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,8 +59,7 @@ public class XMLHandler extends DefaultHandler {
     
     List<IField> fields;
     
-    
-    
+      
     public XMLHandler ()
     {
     	super();
@@ -76,7 +76,7 @@ public class XMLHandler extends DefaultHandler {
      * @return Lista de FormPages del Formulario
      */
     public List<FormPage> getListPages () {
-    	return listPages;
+        return listPages;
     }
 
     /** Devuelve el LinearLayout que contiene el Formulario */
@@ -242,4 +242,5 @@ public class XMLHandler extends DefaultHandler {
     private void addTextToPage (String text) {
     	//pageActual += text;
     }
+    
 }
