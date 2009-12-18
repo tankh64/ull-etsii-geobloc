@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -166,10 +167,25 @@ public class ParsingXML extends Activity {
 			 /* Create a new TextView to display the parsing result later. */
 	        TextView tv = new TextView(getApplicationContext());
 	        tv.setText(page.getCodeXML());
-	        
-	        
-	        
+	             
 	        pageLayout.addView(linear);
+	        
+	        
+			/**
+			 * If this page is the first page of the form, return the data necessary
+			 * to send the completed form to the server.
+			 */
+			if (index == 0) {
+				/** NOTA: En la variable "linear" (como un LinearLayout)
+				 */
+				List<Utilities.WidgetType> dataType = new ArrayList<Utilities.WidgetType>();
+				myPageHandler.getInfoToSend(dataType);
+				
+				// Falta lo del paquete
+			}
+			/** Evidentemente ésto no va a ir aqui, es solo un "parche" para mostrarlo
+			 * en la gerencia
+			 */
 	        
 		} catch (Exception e) {
 			/* Mostramos el Error. */
