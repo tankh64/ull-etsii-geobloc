@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
+import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.UploadPackageTask;
-import com.google.listeners.IStandardTaskListener;
 
 /**
  * Activity for Development purposes, designed to display XML files during testing before 

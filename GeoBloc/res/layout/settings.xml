@@ -17,6 +17,12 @@
   		android:summary="@string/getAvailableFormsListFromServletAddressDescription">
   	</EditTextPreference>
   	<EditTextPreference
+  		android:key="downloadFormsServletAddress"
+  		android:name="downloadFormsServlet"
+  		android:title="@string/downloadFormsServletAddress"
+  		android:summary="@string/downloadFormsServletAddressDescription">
+  	</EditTextPreference>
+  	<EditTextPreference
   		android:key="numberOfInternetConnectionAttempts"
   		android:name="numberOfInternetAttempts"
   		android:title="@string/numberOfInternetAttempts"

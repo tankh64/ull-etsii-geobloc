@@ -14,17 +14,20 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.geobloc.internet.HttpFileMultipartPost;
+import com.geobloc.internet.SimpleHttpPost;
 import com.geobloc.listeners.IStandardTaskListener;
+import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.GBSharedPreferences;
 
 /**
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
-public class UploadPackageTask extends AsyncTask<String, Integer, String> {
-
+public class DownloadFormsTask extends AsyncTask<String, Integer, String> {
+	
 	private Context context;
 	private String serverAddress = "";
+	private String formsPath;
 	private int attempts;
 	private HttpClient httpClient;
 	
@@ -53,19 +56,17 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 		report = new ArrayList<String>();
 	}
 	
-	/*
-	 * Runs on Background Thread
-	 */
 	@Override
-	protected String doInBackground(String... packagePaths) {
-		int count = packagePaths.length;
+	protected String doInBackground(String... files) {
+		int count = files.length;
 		String results = "";
 		if ((httpClient != null) && (context != null)) {
 			initConfig();
-			for (int i = 0; i < count; i++) {
+			// files[i] == file key (server request), files[i+] == filename (for writing to SDCard)
+			for (int i = 0; i < count; i+=2) {
 				// sendPackage updates the report ArrayList
-				sendPackage(packagePaths[i]);
-				publishProgress((int) ((i / (float) count) * 100), count);
+				fetchFile(files[i], files[i+1]);
+				publishProgress((int) ((i*2 / (float) count) * 100), count);
 			}
 			for (String res : report)
 				results += res;
@@ -76,22 +77,25 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 		
 		return results;
 	}
-		
+	
 	private void initConfig() {
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		serverAddress = prefs.getString(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__, 
-				GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
+		serverAddress = prefs.getString(GBSharedPreferences.__DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__, 
+				GBSharedPreferences.__DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__);
 		
 		//this.serverAddress = address;
 		attempts = Integer.parseInt(prefs.getString(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__, 
 				GBSharedPreferences.__DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__));
+		
+		formsPath = prefs.getString(GBSharedPreferences.__FORMS_PATH_KEY__, 
+				GBSharedPreferences.__DEFAULT_FORMS_PATH__);
 	}
 	
-	private String sendPackage(String packagePath) {
-		HttpFileMultipartPost post;
+	private void fetchFile(String fileKey, String filename) {
+		SimpleHttpPost post;
 		
-		String serverResponse = "Error!";
+		byte[] serverResponse = null;
 		
 		// boolean to check for Exception
 		boolean exception = false;
@@ -101,14 +105,13 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 		
 		// i less than... preference
 		for (int i = 1; (!exception && !done && (i <= attempts)); i++) {
-			post = new HttpFileMultipartPost();
+			post = new SimpleHttpPost();
 			try {
-				
 				// we got HttpClient in the constructor
-				serverResponse = post.executeMultipartPackagePost(packagePath, serverAddress, httpClient);
+				serverResponse = post.executeHttpPostFetchFile(fileKey, serverAddress, httpClient);
 				
 				// should be enough to check
-				if (serverResponse.contains((CharSequence)GBSharedPreferences.__OK_SIGNATURE__)) {
+				if (serverResponse != null) {
 					done = true;
 				}
 			}
@@ -116,15 +119,22 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 				// if exception, exit loop
 				exception = true;
 				e.printStackTrace();
-				serverResponse = e.toString();
 			}
 		}
+		
+		GeoBlocPackageManager pm = new GeoBlocPackageManager();
+		pm.openPackage(formsPath);
+		if (pm.OK()) {
+			pm.addFile(filename, serverResponse);
+		}
+		else
+			exception = true;
 		// fill in reports
 		if (done)
-			report.add("Package " + packagePath + " was succesfully delivered.");
+			report.add("File " + filename + " was succesfully downloaded.\n");
 		else // exception or error
-			report.add("Package " + packagePath + " failed to be delievered.");
-		return serverResponse;	
+			report.add("File " + filename + " failed to be downloaded\n");
+		//return serverResponse;	
 	}
 	
 	/*
@@ -147,4 +157,5 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 			listener.downloadingComplete(result);
 		}
     }
+
 }

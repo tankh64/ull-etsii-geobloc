@@ -45,14 +45,27 @@ public class SimpleHttpPost {
 		ois.close();
 		is.close();
 		bs.close();
-		/*
-		try {
-			data = (Hashtable<String, String>)ois.readObject();
-		} catch (ClassNotFoundException e) {
-			data = null;
-			e.printStackTrace();
-		}
-		*/
+
+		return data;
+	}
+	
+	public byte[] executeHttpPostFetchFile(String key, String url, HttpClient httpClient) 
+	throws Exception {
+		byte[] data = null;
+		HttpPost postRequest = new HttpPost(url);
+		//  verification info should be added to this formEntity
+		// dummy info in formEntity
+		List<NameValuePair> postParameters = new ArrayList<NameValuePair>(); 
+		postParameters.add(new BasicNameValuePair("device", "DEVICE_IMEI"));
+		// key
+		postParameters.add(new BasicNameValuePair("key", key));
+		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
+		postRequest.setEntity(formEntity);
+		HttpResponse response = httpClient.execute(postRequest);
+		InputStream is = response.getEntity().getContent();
+		data = IOUtils.toByteArray(is);
+		
+		is.close();
 		return data;
 	}
 }

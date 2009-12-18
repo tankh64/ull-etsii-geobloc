@@ -14,8 +14,8 @@ import android.preference.PreferenceManager;
 
 import com.geobloc.ApplicationEx;
 import com.geobloc.internet.SimpleHttpPost;
+import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
-import com.google.listeners.IStandardTaskListener;
 
 /**
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
@@ -25,7 +25,6 @@ public class GetListOfAvailableFormsTask extends
 		AsyncTask<String, Integer, Hashtable<String, String>> {
 
 	private Context context;
-	private String serverAddress = "";
 	private int attempts;
 	private HttpClient httpClient;
 	
@@ -66,9 +65,6 @@ public class GetListOfAvailableFormsTask extends
 	private void initConfig() {
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		serverAddress = prefs.getString(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__, 
-				GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
-		
 		//this.serverAddress = address;
 		attempts = Integer.parseInt(prefs.getString(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__, 
 				GBSharedPreferences.__DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__));
