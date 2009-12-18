@@ -71,7 +71,7 @@
     	//String query = "select from " + BasicForm.class.getName() + " order by date desc range 0,5";
     	//List<BasicForm> forms = (List<BasicForm>) pm.newQuery(query).execute();
     	DatastoreQueries datastoreQueries = new DatastoreQueries();
-    	List<BasicForm> forms = datastoreQueries.getListOfBasicForms();
+    	List<BasicForm> forms = datastoreQueries.getListOfAllBasicForms();
     	if (forms.isEmpty()) {
 	%>
 	<p>No forms have been uploaded yet.</p>
