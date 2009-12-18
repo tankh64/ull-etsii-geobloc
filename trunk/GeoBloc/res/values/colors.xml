@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="Transparent">#00000000</color>
+	<color name="White">#FFFFFFFF</color>
+	<color name="CandyRed">#E62626FF</color>
+	<color name="SoftGreen">#FF76E626</color>
+	<color name="LightYellow">#FF76E626</color>
+</resources>

@@ -74,6 +74,18 @@ public class GeoBlocPackageManager {
 		return ok;
 	}
 	
+	// same as openPackage, but builds the directory if necessary
+	public boolean openOrBuildPackage(String fullpath) {
+		packageDirectory = fullpath;
+		directory = new File(fullpath);
+		directory.mkdirs();
+		if (directory.isDirectory())
+			ok = true;
+		else
+			ok = false;
+		return ok;
+	}
+	
 	public String getPackageFullpath() {
 		return packageDirectory;
 	}

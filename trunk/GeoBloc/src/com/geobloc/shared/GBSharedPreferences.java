@@ -21,7 +21,8 @@ import com.geobloc.R;
 public class GBSharedPreferences extends PreferenceActivity {
 	
 	private EditTextPreference uploadPackagesServletAddress;
-	private EditTextPreference listOfAvailableFormsAddress;
+	private EditTextPreference listOfAvailableFormsServletAddress;
+	private EditTextPreference downloadFormsServletAddress;
 	private EditTextPreference packagesPath;
 	private EditTextPreference formsPath;
 	private EditTextPreference numberOfInternetAttempts;
@@ -30,6 +31,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private SharedPreferences prefs;
 	
 	public static String __UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__ = "uploadPackagesServletAddress";
+	public static String __DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__ = "downloadFormsServletAddress";
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
 	public static String __FORMS_PATH_KEY__ = "formsPath";
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
@@ -37,7 +39,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 	
 	// default internet addresses
 	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/upload_basicpackageform";
-	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS = "http://ull-etsii-geobloc.appspot.com/get_listofavailablebasicforms";
+	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/get_listofavailablebasicforms";
+	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "http://ull-etsii-geobloc.appspot.com/get_basicformfile";
 	// default directory paths
 	public static String __DEFAULT_FORMS_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/forms/";
 	public static String __DEFAULT_PACKAGES_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/packages/";
@@ -60,7 +63,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 		addPreferencesFromResource(R.layout.settings);
 		
 		uploadPackagesServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__);
-		listOfAvailableFormsAddress = (EditTextPreference) findPreference(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__);
+		listOfAvailableFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__);
+		downloadFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__);
 		formsPath = (EditTextPreference) findPreference(GBSharedPreferences.__FORMS_PATH_KEY__);
 		packagesPath = (EditTextPreference) findPreference(GBSharedPreferences.__PACKAGES_PATH_KEY__);
 		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
@@ -70,8 +74,12 @@ public class GBSharedPreferences extends PreferenceActivity {
 				GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
 		
 		// default listOfAvailableFormsAddress
-		setEditTextDefaultConfig(listOfAvailableFormsAddress, 
-				GBSharedPreferences.__DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS);
+		setEditTextDefaultConfig(listOfAvailableFormsServletAddress, 
+				GBSharedPreferences.__DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__);
+		
+		// default downloadFormsServletAddress
+		setEditTextDefaultConfig(downloadFormsServletAddress,
+				GBSharedPreferences.__DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__);
 		
 		// default numberOfInternetAttempts
 		setEditTextDefaultConfig(numberOfInternetAttempts, 

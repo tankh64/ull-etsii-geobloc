@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -24,12 +25,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
+import com.geobloc.listeners.IStandardTaskListener;
+import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.GBSharedPreferences;
+import com.geobloc.shared.Utilities;
+import com.geobloc.tasks.DownloadFormsTask;
 import com.geobloc.tasks.GetListOfAvailableFormsTask;
-import com.google.listeners.IStandardTaskListener;
 
 /**
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
@@ -59,7 +64,7 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
          */
         public int getCount() {
             //return DATA.length;
-        	return formsNameArrayList.size();
+        	return formFilenames.size();
         }
 
         /**
@@ -106,8 +111,8 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
                 holder.cb = (CheckBox) convertView.findViewById(R.id.forms_downloader_list_itemCb);
                 holder.formName = (TextView) convertView.findViewById(R.id.forms_downloader_list_itemFormNameTextView);
                 holder.formVersion = (TextView) convertView.findViewById(R.id.forms_downloader_list_itemFormVersionNumberTextView);
-                //holder.text = (TextView) convertView.findViewById(R.id.text);
-                //holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+                holder.status = (TextView) convertView.findViewById(R.id.forms_downloader_list_itemFormStatusInfoTextView);
+                holder.background = (ViewGroup) convertView.findViewById(R.id.forms_downloader_list_itemParentView);
 
                 convertView.setTag(holder);
             } else {
@@ -117,10 +122,23 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
             }
 
             // Bind the data efficiently with the holder.
-            holder.formName.setText(formsNameArrayList.get(position));
+            holder.formName.setText(formFilenames.get(position));
             holder.formVersion.setText("1");
-            //holder.text.setText(DATA[position]);
-            //holder.icon.setImageBitmap((position & 1) == 1 ? mIcon1 : mIcon2);
+            
+            // depending on form's state
+            if (downloadedFormFilenames.contains(formFilenames.get(position))) {
+            	// form has been downloaded
+            	// disable (currently only support downloaded or new)
+            	holder.cb.setEnabled(false);
+            	holder.status.setText(R.string.forms_downloader_list_itemFormStatusCurrent);
+            	holder.status.setTextColor(Color.CYAN);
+            	holder.background.setBackgroundColor(Color.DKGRAY);
+            }
+            else {
+            	// new form
+            	holder.status.setText(R.string.forms_downloader_list_itemFormStatusNew);
+            	holder.status.setTextColor(Color.GREEN);
+            }
 
             return convertView;
         }
@@ -129,18 +147,64 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
         	CheckBox cb;
         	TextView formName;
         	TextView formVersion;
-            //TextView text;
-            //ImageView icon;
+        	TextView status;
+        	ViewGroup background;
         }
-
     }
 	
-	private ListView listView;
-	private Button eraseButton;
-	private static List<String> formsNameArrayList = new ArrayList<String>();
-	private static List<String> formsKeyArrayList = new ArrayList<String>();
+	private static class FormsDownloader_DownloadFormsTaskListener implements IStandardTaskListener {
+
+		private Context callerContext;
+		private Context appContext;
+		
+		public FormsDownloader_DownloadFormsTaskListener(Context appContext, Context callerContext) {
+			this.callerContext = callerContext;
+			this.appContext = appContext;
+		}
+		
+		@Override
+		public void downloadingComplete(Object result) {
+			// TODO Auto-generated method stub
+			Enumeration<String> filenames = data.keys();
+			formFilenames.clear();
+			downloadedFormFilenames.clear();
+			GeoBlocPackageManager pm = new GeoBlocPackageManager();
+			pm.openOrBuildPackage(formsPath);
+			if (pm.OK()) {
+				downloadedFormFilenames = pm.getAllFilenames();
+				while (filenames.hasMoreElements()) {
+					formFilenames.add(filenames.nextElement());
+				}
+				listView.setAdapter(new EfficientAdapter(appContext));
+				pd.dismiss();
+				String res = (String)result;
+				Utilities.showTitleAndMessageDialog(callerContext, "Report", res);
+			}
+			else {
+				pd.dismiss();
+				Utilities.showToast(callerContext, "Error! Could not I/O from SDCard.", Toast.LENGTH_LONG);
+			}			
+		}
+
+		@Override
+		public void progressUpdate(int progress, int total) {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
 	
-	private ProgressDialog pd;
+	private static ListView listView;
+	private Button eraseButton;
+	private static List<String> formFilenames = new ArrayList<String>();
+	private static List<String> downloadedFormFilenames = new ArrayList<String>();
+	private static List<String> formKeys = new ArrayList<String>();
+	
+	private SharedPreferences prefs;
+	private static String formsPath;
+	private static ProgressDialog pd;
+	
+	private static Hashtable<String, String> data;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -155,27 +219,24 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
 		// for now (behaviour will be added later to eraseButton)
 		eraseButton = (Button) findViewById(R.id.forms_downloaderEraseButton);
 		eraseButton.setEnabled(false);
+
 		
-		// for testing
-		/*
-		formsNameArrayList.add("Form1.xml");
-		formsNameArrayList.add("Forms2.xml");
-		*/
+		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		formsPath = prefs.getString(GBSharedPreferences.__FORMS_PATH_KEY__, 
+				GBSharedPreferences.__DEFAULT_FORMS_PATH__);
 		
 		listView.setAdapter(new EfficientAdapter(getApplicationContext()));
 		
 		listView.setItemsCanFocus(false);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
-		pd = ProgressDialog.show(this, "Working", "Fetching files from server...");
+		pd = ProgressDialog.show(this, "Working", "Fetching filelist from server...");
 		pd.setIndeterminate(false);
 		pd.setCancelable(false);
-		
-		//Thread thread = new Thread(this);
-		//thread.start();
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		String url = prefs.getString(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__, 
-				GBSharedPreferences.__DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS);
+				GBSharedPreferences.__DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__);
 		
 		GetListOfAvailableFormsTask task = new GetListOfAvailableFormsTask();
 		task.setContext(getApplicationContext());
@@ -187,85 +248,82 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
 		task.execute(url);
 		
 	}
-	/*
-	// thread code
-	public void run() {
-		// HttpGet
+	
+	public void forms_downloaderDownloadButtonOnClickHandler(View target) {
 		
+		// this is supposed to be more efficient, but how?? it returns null
+		//SparseBooleanArray sba = listView.getCheckedItemPositions();
 		
-		// get servlet address from shared preferences
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		String url = prefs.getString(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__, 
-				GBSharedPreferences.__DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS);
-		
-		SimpleHttpPost post;
-		
-		
-		// boolean to check for Exception
-		boolean exception = false;
-
-		// boolean to exit loop (success or failrue)
-		boolean done = false;
-		
-		Hashtable<String, String> response;
-		
-		for (int i = 1; (!exception && !done && (i <= 3)); i++) {
-			post = new SimpleHttpPost();
-			// tell the handler in which attempt we are
-			//handler.sendEmptyMessage(i);
-			try {
+		if (data != null) {
+			pd = ProgressDialog.show(this, "Working", "Preparing operation...");
+			pd.setIndeterminate(false);
+			pd.setCancelable(false);
+			
+			//store key of files in toDownload
+			List<String> toDownload = new ArrayList<String>();
+			String report = "";
+			int listItemCount = listView.getChildCount();
+			// alternative to getCheckedItemPositions()
+			// go through each and every View of the listView and check if the checkbox is checked
+			for( int i=0;i<listItemCount;i++ ) { 
+				TextView tv = (TextView) ((View)listView.getChildAt(i).findViewById
+						(R.id.forms_downloader_list_itemFormNameTextView));
+		    	CheckBox cbox = (CheckBox) ((View)listView.getChildAt(i)).findViewById 
+		    			(R.id.forms_downloader_list_itemCb); 
+		    	if( cbox.isChecked()) {
+		    		toDownload.add(data.get(tv.getText().toString()));
+		    		toDownload.add(tv.getText().toString());
+		    		report += tv.getText().toString() + " " + data.get(tv.getText().toString()) + "\n";
+		    	}
+			}
+			if (toDownload.size() > 0) {
+				pd.setMessage("Downloading files...");
+				String[] taskParam = new String[toDownload.size()];
+				for (int i = 0 ; i < toDownload.size(); i++)
+					taskParam[i] = toDownload.get(i);
+				DownloadFormsTask task = new DownloadFormsTask();
+				task.setContext(getApplicationContext());
 				// get httpClient from ApplicationEx
 				ApplicationEx app = (ApplicationEx)this.getApplication();
 				HttpClient httpClient = app.getHttpClient();
-				//serverResponse = post.executeMultipartPost(formDirectory, "form.xml", url, httpClient);
-				response = post.executeHttpPostAvailableForms(url, httpClient);
-				
-				// should be enough to check
-				if (response != null)
-					done = true;
+				task.setHttpClient(httpClient);
+				task.setListener(new FormsDownloader_DownloadFormsTaskListener(getApplicationContext(), this));
+				task.execute(taskParam);
 			}
-			catch (Exception e){
-				// if exception, exit loop
-				exception = true;
-				e.printStackTrace();
-				response = null;
+			else {
+				pd.dismiss();
+				Utilities.showToast(this, "Could not perform operation. No forms have been selected.", Toast.LENGTH_SHORT);
 			}
 		}
-
-		// tell the handler to dismiss the dialog; we're done
-        handler.sendEmptyMessage(0);
-    }
-	*/
-	/*
-	// thread handler code (activated when thread is finished)
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-        	pd.dismiss();
-        	
-        }
-    };
-    */
+		else
+			Utilities.showToast(this, "Could not perform operation. Internal Error", Toast.LENGTH_LONG);
+	}
+	
 
 	//@Override
 	public void downloadingComplete(Object result) {
-		pd.dismiss();
-		Hashtable<String, String> data = (Hashtable<String, String>)result;
+		
+		if (data != null)
+			data.clear();
+		data = (Hashtable<String, String>)result;
 		Enumeration<String> filenames = data.keys();
 		
-		formsNameArrayList.clear();
-		// build the List checking whether the filename is already in forms path
-		while (filenames.hasMoreElements()) {
-			formsNameArrayList.add(filenames.nextElement());
+		formFilenames.clear();
+		downloadedFormFilenames.clear();
+		GeoBlocPackageManager pm = new GeoBlocPackageManager();
+		pm.openOrBuildPackage(formsPath);
+		if (pm.OK()) {
+			downloadedFormFilenames = pm.getAllFilenames();
+			while (filenames.hasMoreElements()) {
+				formFilenames.add(filenames.nextElement());
+			}
+			listView.setAdapter(new EfficientAdapter(getApplicationContext()));
+			pd.dismiss();
 		}
-		
-		listView.setAdapter(new EfficientAdapter(getApplicationContext()));
-    	/*
-    	listView.setAdapter(new EfficientAdapter(getApplicationContext()));
-		
-		listView.setItemsCanFocus(false);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        */
+		else {
+			pd.dismiss();
+			Utilities.showToast(this, "Error! Could not I/O from SDCard.", Toast.LENGTH_LONG);
+		}		
 	}
 
 	//@Override

@@ -27,6 +27,7 @@
   	android:layout_alignParentBottom="true"
   	android:layout_alignParentRight="true"
   	android:layout_toRightOf="@id/forms_downloaderEraseButton"
+  	android:onClick="forms_downloaderDownloadButtonOnClickHandler"
   	android:layout_width="fill_parent"
   	android:layout_height="wrap_content">
   </Button>
