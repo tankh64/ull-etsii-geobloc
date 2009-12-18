@@ -30,6 +30,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditText et;
 	private SharedPreferences prefs;
 	
+	// preference keys
 	public static String __UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__ = "uploadPackagesServletAddress";
 	public static String __DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__ = "downloadFormsServletAddress";
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
@@ -48,7 +49,10 @@ public class GBSharedPreferences extends PreferenceActivity {
 	// default filenames
 	public static String __DEFAULT_PACKAGE_MANIFEST_FILENAME__ = "manifest.xml";
 	public static String __DEFAULT_FORM_FILENAME__ = "form.xml";
+	
+	// other
 	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
+	public final static int __DEFAULT__ANIMATION_TIME__ = 2500;
 	
 	// server OK Signature
 	public static String __OK_SIGNATURE__ = "12122009_ALL_OK";

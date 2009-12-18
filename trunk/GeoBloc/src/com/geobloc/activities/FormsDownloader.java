@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
+import com.geobloc.animations.FormsDownloaderListViewAnimation;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.GBSharedPreferences;
@@ -299,6 +300,9 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
 			Utilities.showToast(this, "Could not perform operation. Internal Error", Toast.LENGTH_LONG);
 	}
 	
+	private void animateListView()     {
+		listView.startAnimation(new FormsDownloaderListViewAnimation());
+	}
 
 	//@Override
 	public void downloadingComplete(Object result) {
@@ -319,6 +323,7 @@ public class FormsDownloader extends Activity implements IStandardTaskListener {
 			}
 			listView.setAdapter(new EfficientAdapter(getApplicationContext()));
 			pd.dismiss();
+			animateListView();
 		}
 		else {
 			pd.dismiss();
