@@ -50,11 +50,11 @@ public class PageHandler extends DefaultHandler {
     /** Devuelve el LinearLayout que contiene el Formulario */
     public LinearLayout getParsedData(Context contexto) {
     	
-        TextView tv = new TextView(contexto);
+        /*TextView tv = new TextView(contexto);
         tv.setText("Final del Parseado");
         tv.setPadding(5, 5, 0, 5);
       		
-		linearLayout.addView(tv);
+		linearLayout.addView(tv);*/
     	
         return linearLayout;
     }
