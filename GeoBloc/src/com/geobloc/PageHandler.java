@@ -27,6 +27,7 @@ public class PageHandler extends DefaultHandler {
 	
 	/** El layout a Devolver */
 	private LinearLayout linearLayout;
+	private LinearLayout pageToSend;
 	
 	List<WidgetType> listTypes;	// List containing the types of widgets
 	
@@ -59,6 +60,10 @@ public class PageHandler extends DefaultHandler {
         return linearLayout;
     }
     
+    public LinearLayout getPageToSend () {
+    	return pageToSend;
+    }
+    
     
     /**
      * Method that returns the information necessary to send form data
@@ -84,6 +89,8 @@ public class PageHandler extends DefaultHandler {
     	myContext = contexto;
     	
     	linearLayout.setOrientation(LinearLayout.VERTICAL);
+    	
+    	pageToSend = new LinearLayout (contexto);
     }
     
     
@@ -118,6 +125,8 @@ public class PageHandler extends DefaultHandler {
         });
 		
 		linearLayout.addView(but);
+		
+		pageToSend.addView(but);
 	}
 	
 	/**
@@ -158,6 +167,9 @@ public class PageHandler extends DefaultHandler {
 		mView.addView(ed);
 	
 		linearLayout.addView(mView);
+		
+		pageToSend.addView(Text);
+		pageToSend.addView(ed);
 	}
 	
 	/**
@@ -169,6 +181,8 @@ public class PageHandler extends DefaultHandler {
         box.setText(text);
       		
 		linearLayout.addView(box);
+		
+		pageToSend.addView(box);
 	}
 	
 

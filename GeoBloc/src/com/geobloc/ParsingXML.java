@@ -205,7 +205,8 @@ public class ParsingXML extends Activity {
 				//dataType = new ArrayList<WidgetType>();
 				dataType = myPageHandler.getInfoToSend();
 				
-				pageToSend = linear;
+				//pageToSend = linear;
+				pageToSend = myPageHandler.getPageToSend();
 				
 				Utilities.showToast(getApplicationContext(),
 		        		"Campos = "+dataType.size()+"\n"+pageToSend,
