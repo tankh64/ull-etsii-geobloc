@@ -9,6 +9,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.geobloc.QuestionActivity.TextType;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
 import android.content.Context;
 import android.text.InputType;
@@ -27,7 +28,7 @@ public class PageHandler extends DefaultHandler {
 	/** El layout a Devolver */
 	private LinearLayout linearLayout;
 	
-	List<Utilities.WidgetType> listTypes;	// List containing the types of widgets
+	List<WidgetType> listTypes;	// List containing the types of widgets
 	
 	/** Tags válidos de la Página */
 	private String GB_BUTTON = "gb_button";
@@ -62,22 +63,22 @@ public class PageHandler extends DefaultHandler {
     /**
      * Method that returns the information necessary to send form data
      */
-    public void getInfoToSend (List<Utilities.WidgetType> dataType) {
-    	dataType = listTypes;
+    public List<WidgetType> getInfoToSend () {
+    	return listTypes;
     }
     
     /**
      * Returns the list containing the types of widgets in the current form page
      * @return list containing the types of widgets
      */
-    public List<Utilities.WidgetType> getListTypes () {
+    public List<WidgetType> getListTypes () {
     	return listTypes;
     }
     
     /** Inicializamos el linearLayout y el Contexto */
     public void Initialize (Context contexto) {
     	
-    	listTypes = new ArrayList<Utilities.WidgetType>();
+    	listTypes = new ArrayList<WidgetType>();
     	
     	linearLayout = new LinearLayout(contexto);
     	myContext = contexto;
@@ -243,27 +244,27 @@ public class PageHandler extends DefaultHandler {
    public void characters(char ch[], int start, int length) {
          if(this.in_gb_button){        	 
         	 AddButton(new String(ch, start, length));
-        	 addTypeToList (Utilities.WidgetType.BUTTON);
+        	 addTypeToList (WidgetType.BUTTON);
          }
          if(this.in_gb_label){
         	 AddText(new String(ch, start, length));
-        	 addTypeToList (Utilities.WidgetType.LABEL);
+        	 addTypeToList (WidgetType.LABEL);
          }
          if(this.in_gb_string){
         	 AddEditText(TextType.STRING, new String(ch, start, length));
-        	 addTypeToList (Utilities.WidgetType.STRING);
+        	 addTypeToList (WidgetType.STRING);
          }
          if(this.in_gb_int){
         	 AddEditText(TextType.INT, new String(ch, start, length));
-        	 addTypeToList (Utilities.WidgetType.INT);
+        	 addTypeToList (WidgetType.INT);
          }
          if(this.in_gb_checkbox) {
         	 AddCheckBox(new String(ch, start, length));
-        	 addTypeToList (Utilities.WidgetType.CHECKBOX);
+        	 addTypeToList (WidgetType.CHECKBOX);
          }
    }
     
-   private void addTypeToList (Utilities.WidgetType type) {
+   private void addTypeToList (WidgetType type) {
 	   listTypes.add(type);
    }
 	
