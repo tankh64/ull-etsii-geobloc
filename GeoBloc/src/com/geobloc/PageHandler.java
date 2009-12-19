@@ -126,7 +126,7 @@ public class PageHandler extends DefaultHandler {
 		
 		linearLayout.addView(but);
 		
-		pageToSend.addView(but);
+		//pageToSend.addView(but);
 	}
 	
 	/**
@@ -163,13 +163,16 @@ public class PageHandler extends DefaultHandler {
 					break;
 		}
 		
-		mView.addView(Text);
+		/*mView.addView(Text);
 		mView.addView(ed);
 	
-		linearLayout.addView(mView);
+		linearLayout.addView(mView);*/
 		
-		pageToSend.addView(Text);
-		pageToSend.addView(ed);
+		linearLayout.addView(Text);
+		linearLayout.addView(ed);
+		
+		//pageToSend.addView(Text);
+		//pageToSend.addView(ed);
 	}
 	
 	/**
@@ -182,7 +185,7 @@ public class PageHandler extends DefaultHandler {
       		
 		linearLayout.addView(box);
 		
-		pageToSend.addView(box);
+		//pageToSend.addView(box);
 	}
 	
 
