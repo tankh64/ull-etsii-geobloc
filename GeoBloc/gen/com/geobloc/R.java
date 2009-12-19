@@ -94,66 +94,67 @@ public final class R {
     }
     public static final class string {
         public static final int ButtonMainMenu1=0x7f060011;
-        public static final int ButtonMainMenu2=0x7f060014;
+        public static final int ButtonMainMenu2=0x7f060015;
         public static final int GPSExampleStartButtonText=0x7f060000;
         public static final int GeoBlockMuckupStartButtonText=0x7f060001;
-        public static final int TextView01=0x7f060016;
+        public static final int TextView01=0x7f060017;
         public static final int app_name=0x7f060010;
         public static final int audio=0x7f06000a;
         /**  FormPages 
          */
-        public static final int button_back=0x7f06002d;
-        public static final int button_next=0x7f06002e;
-        public static final int created_dir=0x7f060015;
-        public static final int downloadFormsServletAddress=0x7f060025;
-        public static final int downloadFormsServletAddressDescription=0x7f060026;
+        public static final int button_back=0x7f06002e;
+        public static final int button_next=0x7f06002f;
+        public static final int created_dir=0x7f060016;
+        public static final int downloadFormsServletAddress=0x7f060026;
+        public static final int downloadFormsServletAddressDescription=0x7f060027;
         public static final int enviar=0x7f06000b;
-        public static final int formsDownloaderButtonText=0x7f06001d;
-        public static final int formsPath=0x7f06002b;
-        public static final int formsPathDescription=0x7f06002c;
-        public static final int forms_downloaderDownloadButtonText=0x7f060031;
-        public static final int forms_downloaderEraseButtonText=0x7f060030;
+        public static final int formsDownloaderButtonText=0x7f06001e;
+        public static final int formsPath=0x7f06002c;
+        public static final int formsPathDescription=0x7f06002d;
+        public static final int forms_downloaderDownloadButtonText=0x7f060032;
+        public static final int forms_downloaderEraseButtonText=0x7f060031;
         /**  FormsDownloader Layout 
          */
-        public static final int forms_downloaderTextViewText=0x7f06002f;
-        public static final int forms_downloader_list_itemFormStatusCurrent=0x7f060036;
-        public static final int forms_downloader_list_itemFormStatusNew=0x7f060035;
-        public static final int forms_downloader_list_itemFormStatusTextViewText=0x7f060033;
-        public static final int forms_downloader_list_itemFormStatusUpdate=0x7f060034;
-        public static final int forms_downloader_list_item_FormVersionTextViewText=0x7f060032;
+        public static final int forms_downloaderTextViewText=0x7f060030;
+        public static final int forms_downloader_list_itemFormStatusCurrent=0x7f060037;
+        public static final int forms_downloader_list_itemFormStatusNew=0x7f060036;
+        public static final int forms_downloader_list_itemFormStatusTextViewText=0x7f060034;
+        public static final int forms_downloader_list_itemFormStatusUpdate=0x7f060035;
+        public static final int forms_downloader_list_item_FormVersionTextViewText=0x7f060033;
         public static final int formulario=0x7f060002;
         public static final int foto=0x7f060008;
-        public static final int getAvailableFormsListFromServletAddress=0x7f060023;
-        public static final int getAvailableFormsListFromServletAddressDescription=0x7f060024;
+        public static final int getAvailableFormsListFromServletAddress=0x7f060024;
+        public static final int getAvailableFormsListFromServletAddressDescription=0x7f060025;
         public static final int gps=0x7f06000c;
         public static final int gpsoff=0x7f06000e;
         public static final int gpson=0x7f06000d;
         public static final int hello=0x7f06000f;
         public static final int inspeccion=0x7f060005;
         public static final int inspector=0x7f060003;
-        public static final int list_form=0x7f060012;
-        public static final int menu_question_view_save=0x7f060019;
-        public static final int menu_question_view_save_and_send=0x7f06001a;
-        public static final int numberOfInternetAttempts=0x7f060027;
-        public static final int numberOfInternetAttemptsDescription=0x7f060028;
+        public static final int list_form=0x7f060013;
+        public static final int menu_question_view_save=0x7f06001a;
+        public static final int menu_question_view_save_and_send=0x7f06001b;
+        public static final int menu_send_form=0x7f060012;
+        public static final int numberOfInternetAttempts=0x7f060028;
+        public static final int numberOfInternetAttemptsDescription=0x7f060029;
         public static final int observaciones=0x7f060006;
-        public static final int packagesPath=0x7f060029;
-        public static final int packagesPathDescription=0x7f06002a;
-        public static final int parsed_file_ok=0x7f06001c;
+        public static final int packagesPath=0x7f06002a;
+        public static final int packagesPathDescription=0x7f06002b;
+        public static final int parsed_file_ok=0x7f06001d;
         public static final int propietario=0x7f060007;
-        public static final int selected_file=0x7f06001b;
-        public static final int sharedInternetPreferencesTitle=0x7f06001f;
-        public static final int sharedPersistancePreferencesTitle=0x7f060020;
+        public static final int selected_file=0x7f06001c;
+        public static final int sharedInternetPreferencesTitle=0x7f060020;
+        public static final int sharedPersistancePreferencesTitle=0x7f060021;
         /**  SharedPreferences 
          */
-        public static final int sharedPreferencesTitle=0x7f06001e;
+        public static final int sharedPreferencesTitle=0x7f06001f;
         /**  Nombres de botones de la Actividad Menú Principal 
          */
-        public static final int staticFormSelectionSpinnerText=0x7f060017;
-        public static final int staticFormStartButtonText=0x7f060018;
-        public static final int uncreated_dir=0x7f060013;
-        public static final int uploadPackagesServletAddressDescription=0x7f060022;
-        public static final int uploadPackagesServletAdress=0x7f060021;
+        public static final int staticFormSelectionSpinnerText=0x7f060018;
+        public static final int staticFormStartButtonText=0x7f060019;
+        public static final int uncreated_dir=0x7f060014;
+        public static final int uploadPackagesServletAddressDescription=0x7f060023;
+        public static final int uploadPackagesServletAdress=0x7f060022;
         public static final int video=0x7f060009;
         public static final int visita=0x7f060004;
     }

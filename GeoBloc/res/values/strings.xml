@@ -3,6 +3,7 @@
     <string name="hello">Hello World, MainMenu!</string>
     <string name="app_name">GeoBloc-ULL</string>
 	<string name="ButtonMainMenu1">Generar Formulario</string>
+	<string name="menu_send_form">Enviar</string>
 	
 	<string name="list_form">Formularios</string>
 	<string name="uncreated_dir">No se pudo crear el directorio %s</string>

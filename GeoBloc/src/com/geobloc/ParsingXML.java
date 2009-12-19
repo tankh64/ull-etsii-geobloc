@@ -8,16 +8,23 @@ import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.http.client.HttpClient;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import com.geobloc.persistance.GeoBlocPackageManager;
+import com.geobloc.shared.UploadPackageHelper;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -31,6 +38,8 @@ public class ParsingXML extends Activity {
 	
 	public static final String FILE_NAME = "filename";
 	
+	private static final int MENU_SEND = Menu.FIRST;
+	
 	private FormClass formulario;
 	
 	ScrollView  pageLayout;
@@ -39,6 +48,13 @@ public class ParsingXML extends Activity {
 	private int pageActual;
 	
 	private String filename;
+	
+	List<Utilities.WidgetType> dataType;
+	GeoBlocPackageManager formPackage;
+	HttpClient httpClient;
+	ApplicationEx app;
+	LinearLayout pageToSend;
+	UploadPackageHelper uploadHelper;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -84,6 +100,14 @@ public class ParsingXML extends Activity {
             Utilities.showToast(getApplicationContext(),
         				"El formulario tiene "+listPages.size()+" paginas",
         				Toast.LENGTH_SHORT);
+            
+            //////////////////////////////////////////////////////
+            // Para el envío del formulario
+			// initialize UploadPackageHelper
+			// get httpClient from ApplicationEx
+			app = (ApplicationEx)this.getApplication();
+			httpClient = app.getHttpClient();
+			////////////////////////////////////////////////////////
 
          // Establecemos la funcionalidad a los botones (Atrás y Adelante)
             initButtons ();
@@ -178,10 +202,24 @@ public class ParsingXML extends Activity {
 			if (index == 0) {
 				/** NOTA: En la variable "linear" (como un LinearLayout)
 				 */
-				List<Utilities.WidgetType> dataType = new ArrayList<Utilities.WidgetType>();
-				myPageHandler.getInfoToSend(dataType);
+				//dataType = new ArrayList<WidgetType>();
+				dataType = myPageHandler.getInfoToSend();
 				
-				// Falta lo del paquete
+				pageToSend = linear;
+				
+				Utilities.showToast(getApplicationContext(),
+		        		"Campos = "+dataType.size()+"\n"+pageToSend,
+		                Toast.LENGTH_SHORT);
+				
+
+				formPackage = new GeoBlocPackageManager(getApplicationContext(), filename);
+				uploadHelper = new UploadPackageHelper(this, httpClient,
+						      formPackage,
+						      (ViewGroup) pageToSend,
+						      dataType);
+				
+				
+
 			}
 			/** Evidentemente ésto no va a ir aqui, es solo un "parche" para mostrarlo
 			 * en la gerencia
@@ -211,6 +249,38 @@ public class ParsingXML extends Activity {
 		else {
 			// Error
 		}
+	}
+	
+	
+	//////////////// MENU
+	@Override
+	public boolean onCreateOptionsMenu (Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		menu.add(0, ParsingXML.MENU_SEND, 0,
+				R.string.menu_send_form).setIcon(android.R.drawable.ic_menu_save);
+		return true;
+	}
+	
+	@Override
+	public boolean onMenuItemSelected (int featureId, MenuItem item) {
+		CharSequence toastText;
+		switch (item.getItemId()) {
+		case MENU_SEND:
+			toastText = "Guardado";
+			try {
+				uploadHelper.packAndSend();
+			} catch (Exception e) {
+				toastText = e.getMessage();
+			}
+			break;
+		default:
+			toastText = "No se que hacer";
+		}
+        Toast.makeText(getApplicationContext(),
+        		toastText,
+                Toast.LENGTH_LONG).show();
+		return true;
 	}
 
 }
