@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -33,6 +34,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+/**
+ * Most important activity; it renders the parsed file and allows the user to send the package.
+ * 
+ * @author Jorge Carballo
+ * @author Dinesh Harjani (goldrunner192287@gmail.com)
+ *
+ */
 
 public class ParsingXML extends Activity {
 	
@@ -212,11 +221,17 @@ public class ParsingXML extends Activity {
 		        		"Campos = "+dataType.size()+"\n"+pageToSend,
 		                Toast.LENGTH_SHORT);
 				
-
-				formPackage = new GeoBlocPackageManager(getApplicationContext(), filename);
+				// build package
+		    	Calendar cal = Calendar.getInstance();
+		    	String date = cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH)+1) 
+					+ "-" + cal.get(Calendar.YEAR);
+		    	String packagename = "geobloc_pk_" + date + "_" + cal.get(Calendar.HOUR_OF_DAY) 
+		    		+ "-" + cal.get(Calendar.MINUTE) 
+					+ "-" + cal.get(Calendar.SECOND)+"/";
+				formPackage = new GeoBlocPackageManager(getApplicationContext(), packagename);
 				uploadHelper = new UploadPackageHelper(this, httpClient,
 						      formPackage,
-						      (ViewGroup) pageToSend,
+						      (ViewGroup) linear,
 						      dataType);
 				
 				
@@ -259,7 +274,7 @@ public class ParsingXML extends Activity {
 		super.onCreateOptionsMenu(menu);
 		
 		menu.add(0, ParsingXML.MENU_SEND, 0,
-				R.string.menu_send_form).setIcon(android.R.drawable.ic_menu_save);
+				R.string.menu_send_form).setIcon(android.R.drawable.ic_menu_upload);
 		return true;
 	}
 	
@@ -272,7 +287,7 @@ public class ParsingXML extends Activity {
 			try {
 				uploadHelper.packAndSend();
 			} catch (Exception e) {
-				toastText = e.getMessage();
+				toastText = e.toString();
 			}
 			break;
 		default:

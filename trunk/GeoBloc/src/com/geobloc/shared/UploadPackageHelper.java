@@ -13,8 +13,8 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import com.geobloc.ApplicationEx;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.Utilities.WidgetType;
@@ -104,18 +104,27 @@ public class UploadPackageHelper implements IStandardTaskListener {
 		FormTextField field;
     	MultiField fields = new MultiField("form-fields");
 		// now, for every widget in ViewGroup
+    	int enumCount = list.size();
+    	int childFlag = 0;
     	int childCount = vg.getChildCount();
     	String name = "Widget not found";
     	String value = "Widget not found";
-    	for (int i = 0; i < childCount; i++) {
-    		if ((list.get(i) == WidgetType.LABEL) || (list.get(i) == WidgetType.INT) 
-    				|| (list.get(i) == WidgetType.STRING)) {
-    			EditText et = (EditText) vg.getChildAt(i);
-    			name = et.toString();
+    	for (int i = 0; ((i < enumCount) && (childFlag < childCount)); i++) {
+    		if (list.get(i) == WidgetType.LABEL) {
+    			TextView tv = (TextView) vg.getChildAt(childFlag);
+    			name = tv.toString();
+    			value = tv.getText().toString();
+    		}
+    		if ((list.get(i) == WidgetType.INT) || (list.get(i) == WidgetType.STRING)) {
+    			TextView tv = (TextView) vg.getChildAt(childFlag);
+    			childFlag++; // These two WidgetTypes combine an EditText & a TextView
+    			EditText et = (EditText) vg.getChildAt(childFlag);
+    			
+    			name = tv.getText().toString();
     			value = et.getText().toString();
     		}
     		if (list.get(i) == WidgetType.CHECKBOX) {
-    			CheckBox cb = (CheckBox) vg.getChildAt(i);
+    			CheckBox cb = (CheckBox) vg.getChildAt(childFlag);
     			name = cb.toString();
     			if (cb.isChecked())
     				value = "TRUE";
@@ -123,6 +132,8 @@ public class UploadPackageHelper implements IStandardTaskListener {
     				value = "FALSE";
     		}
     		field = new FormTextField("widget", name, value);
+    		fields.addField(field);
+    		childFlag++;
     	}
     	// add MultiField
     	myFields.add(fields);
