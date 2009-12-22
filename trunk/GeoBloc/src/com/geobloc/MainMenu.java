@@ -39,7 +39,6 @@ public class MainMenu extends Activity {
 	private Button mTestButton;
 	
 	// Spinner
-	private Spinner staticFormSelectionSpinner;
 	
 	//
 	
@@ -71,14 +70,6 @@ public class MainMenu extends Activity {
                 startActivityForResult(i, QUESTION_FORM);
             }
         });
-
-        // Set Spinner contents
-        staticFormSelectionSpinner = (Spinner) findViewById(R.id.staticFormSelectionSpinner);
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(
-                this, R.array.static_forms, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        staticFormSelectionSpinner.setAdapter(adapter);
-        staticFormSelectionSpinner.setSelection(0);
     }
     
     //@Override
@@ -121,37 +112,17 @@ public class MainMenu extends Activity {
     		case PARSING_XML:
     			break;
     	}
-    	
-        
+    }
 
-    }
-    
-    public void staticFormStartButtonOnClickHandler(View target)
-    {
-    	// start GeoBlocStaticForm Activity here
-    	int id = staticFormSelectionSpinner.getSelectedItemPosition();
-    	Intent i;
-    	switch (id) {
-    	case 0: 
-    		i = new Intent(this, StaticFormPrototype.class);
-    		startActivity(i);
-    		//Utilities.showToast(getApplicationContext(), "Got ID:" + id, Toast.LENGTH_SHORT);
-    		break;
-    	case 1:
-    		i = new Intent(this, SecondStaticFormPrototype.class);
-    		startActivity(i);
-    		//Utilities.showToast(getApplicationContext(), "Got ID:" + id, Toast.LENGTH_SHORT);
-    		break;
-    	default:
-    		Utilities.showToast(getApplicationContext(), "Error! Unspecified behaviour for this item", Toast.LENGTH_SHORT);
-    		break;
-    	}
-    }
     
     public void formsDownloaderButtonOnClickHandler(View target)
     {
     	Intent i = new Intent(this, FormsDownloader.class);
     	startActivity(i);
+    }
+    
+    public void formsSenderButtonOnClickHandler(View target) {
+    	Utilities.showToast(this, "Merry XMas!!", Toast.LENGTH_LONG);
     }
     
     /* --> Menu <-- */

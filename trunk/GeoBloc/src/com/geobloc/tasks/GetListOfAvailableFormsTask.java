@@ -117,7 +117,7 @@ public class GetListOfAvailableFormsTask extends
 	@Override
 	protected void onPostExecute(Hashtable<String, String> result) {
 		if (listener != null) {
-			listener.downloadingComplete(result);
+			listener.taskComplete(result);
 		}
     }
 }

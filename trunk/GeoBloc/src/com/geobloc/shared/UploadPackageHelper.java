@@ -141,7 +141,7 @@ public class UploadPackageHelper implements IStandardTaskListener {
 	}
 
 	@Override
-	public void downloadingComplete(Object result) {
+	public void taskComplete(Object result) {
 		if (pd != null)
 			pd.dismiss();
 		

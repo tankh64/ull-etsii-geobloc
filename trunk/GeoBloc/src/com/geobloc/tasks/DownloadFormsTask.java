@@ -154,7 +154,7 @@ public class DownloadFormsTask extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onPostExecute(String result) {
 		if (listener != null) {
-			listener.downloadingComplete(result);
+			listener.taskComplete(result);
 		}
     }
 

@@ -6,24 +6,38 @@
 	<TextView  
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
-    	android:text="@string/hello"/>
+    	android:text="@string/hello"
+    	android:paddingBottom="30dp"/>
 	<Button 
 		android:layout_height="wrap_content" 
 		android:layout_width="fill_parent" 
-		android:id="@+id/ButtonMainMenu1" android:text="@string/ButtonMainMenu1">
+		android:id="@+id/ButtonMainMenu1" 
+		android:text="@string/ButtonMainMenu1"
+		android:padding="30dp">
 	</Button>
 	<Button 
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
-		android:id="@+id/ButtonMainMenu2">
+		android:id="@+id/ButtonMainMenu2"
+		android:padding="30dp">
 	</Button>
 	<Button
 		android:id="@+id/formsDownloaderButton"
 		android:text="@string/formsDownloaderButtonText"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
+		android:padding="30dp"
 		android:onClick="formsDownloaderButtonOnClickHandler">
 	</Button>
+	<Button
+		android:id="@+id/formsSenderButton"
+		android:text="@string/formsSenderButtonText"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:padding="30dp"
+		android:onClick="formsSenderButtonOnClickHandler">
+	</Button>
+	<!-- 
 	<Spinner
 		android:id="@+id/staticFormSelectionSpinner"
 		android:layout_height="wrap_content"
@@ -36,5 +50,6 @@
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent">
 	</Button>
+	-->
 </LinearLayout>
 

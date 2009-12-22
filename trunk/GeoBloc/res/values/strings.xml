@@ -20,6 +20,7 @@
 	<string name="selected_file">Ha seleccionado el archivo %s</string>
 	<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
 	<string name="formsDownloaderButtonText">Descarga de Formularios</string>
+	<string name="formsSenderButtonText">Envío de formularios</string>
 	
 	<!-- SharedPreferences -->
 	<string name="sharedPreferencesTitle">Preferencias</string>
@@ -44,8 +45,10 @@
 	
 	<!-- FormsDownloader Layout -->
 	<string name="forms_downloaderTextViewText">Lista de formularios disponibles</string>
-	<string name="forms_downloaderEraseButtonText">Eliminar</string>
-	<string name="forms_downloaderDownloadButtonText">Descargar</string>
+	<string name="forms_downloaderActionDLButtonText">Descargar</string>
+	<string name="forms_downloaderActionERButtonText">Eliminar</string>
+	<string name="forms_downloaderEraseModeButtonTextOn">Modo Borrar</string>
+	<string name="forms_downloaderEraseModeButtonTextOff">Modo Borrar</string>
 	<string name="forms_downloader_list_item_FormVersionTextViewText">Versión: </string>
 	<string name="forms_downloader_list_itemFormStatusTextViewText">Estado: </string>
 	<string name="forms_downloader_list_itemFormStatusUpdate">Actualización Disp.</string>

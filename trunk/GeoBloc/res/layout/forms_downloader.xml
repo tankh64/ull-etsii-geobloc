@@ -13,30 +13,32 @@
   </TextView>
   
   <!-- Bottom of the screen -->
+
   <Button
-  	android:id="@+id/forms_downloaderEraseButton"
-  	android:text="@string/forms_downloaderEraseButtonText"
+  	android:id="@+id/forms_downloaderActionButton"
+  	android:text="@string/forms_downloaderActionDLButtonText"
   	android:layout_alignParentBottom="true"
-  	android:layout_alignParentLeft="true"
-  	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content">
-  </Button>
-  <Button
-  	android:id="@+id/forms_downloaderDownloadButton"
-  	android:text="@string/forms_downloaderDownloadButtonText"
-  	android:layout_alignParentBottom="true"
-  	android:layout_alignParentRight="true"
-  	android:layout_toRightOf="@id/forms_downloaderEraseButton"
-  	android:onClick="forms_downloaderDownloadButtonOnClickHandler"
+  	android:onClick="forms_downloaderActionButtonOnClickHandler"
+  	android:padding="20dp"
   	android:layout_width="fill_parent"
   	android:layout_height="wrap_content">
   </Button>
-  	
+  
+  <!-- On top of the previous two buttons -->
+  <ToggleButton
+  	android:id="@+id/forms_downloaderEraseModeButton"
+  	android:textOn="@string/forms_downloaderEraseModeButtonTextOn"
+  	android:textOff="@string/forms_downloaderEraseModeButtonTextOff"
+  	android:layout_above="@id/forms_downloaderActionButton"
+  	android:onClick="forms_downloaderEraseModeButtonOnClickHandler"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content">
+  </ToggleButton>
   <!-- In the middle (most important part! -->
   <ListView
   	android:id="@+id/forms_downloaderListView"
   	android:layout_below="@id/forms_downloaderTextView"
-  	android:layout_above="@id/forms_downloaderDownloadButton"
+  	android:layout_above="@id/forms_downloaderEraseModeButton"
   	android:layout_width="fill_parent"
   	android:layout_height="fill_parent">
   </ListView>
