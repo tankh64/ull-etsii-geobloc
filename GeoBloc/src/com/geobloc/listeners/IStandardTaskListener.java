@@ -10,6 +10,6 @@ import java.util.ArrayList;
  *
  */
 public interface IStandardTaskListener {
-	void downloadingComplete(Object result);
+	void taskComplete(Object result);
     void progressUpdate(int progress, int total);
 }

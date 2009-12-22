@@ -86,6 +86,24 @@ public class GeoBlocPackageManager {
 		return ok;
 	}
 	
+	public boolean eraseFile(String filename) {
+		boolean success = false;
+		//String[] filenamesArray = directory.list();
+		List<String> filenames = this.getAllFilenames();
+		List<File> files = this.getAllFiles();
+		String s;
+		for (int i = 0; i < filenames.size(); i++) {
+			s = filenames.get(i);
+			if (s.contains(filename)) {
+				File toBeErased = files.get(i);
+				success = toBeErased.delete();
+				// end loop
+				i = filenames.size();
+			}
+		}
+		return success;
+	}
+	
 	public String getPackageFullpath() {
 		return packageDirectory;
 	}
