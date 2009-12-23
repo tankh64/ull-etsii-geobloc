@@ -35,7 +35,6 @@ import android.widget.ToggleButton;
 import com.geobloc.ApplicationEx;
 import com.geobloc.R;
 import com.geobloc.animations.FormsDownloaderListViewAnimation;
-import com.geobloc.animations.LeftToRightFlipAnimation;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.GBSharedPreferences;
@@ -498,7 +497,7 @@ public class FormsDownloader extends Activity implements android.content.DialogI
 			// go into erase mode
 			eraseMode = true;
 			actionButton.setText(R.string.forms_downloaderActionERButtonText);
-			listView.startAnimation(new LeftToRightFlipAnimation());
+			//listView.startAnimation(new ????Animation());
 		}
 		else {
 			// back to download mode
