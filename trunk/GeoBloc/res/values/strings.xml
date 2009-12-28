@@ -54,4 +54,6 @@
 	<string name="forms_downloader_list_itemFormStatusUpdate">Actualización Disp.</string>
 	<string name="forms_downloader_list_itemFormStatusNew">Nuevo </string>
 	<string name="forms_downloader_list_itemFormStatusCurrent">Más reciente</string>
+<string name="cover_title">GeoBloc</string>
+<string name="cover_subtile_2">Gerencia de Urbanismo de La Laguna</string>
 </resources>
