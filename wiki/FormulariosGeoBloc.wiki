@@ -2,20 +2,44 @@
 
 = DTD Formularios =
 
-El DTD del formulario GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
+El DTD de los formularios XML GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
 
 {{{
 
-<!ELEMENT gb_form (gb_name, gb_page+)>
+<!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_page+)>
+  <!ELEMENT gb_name (#PCDATA)>
+  <!ELEMENT gb_version (#PCDATA)>
+  <!ELEMENT gb_date (gb_day, gb_month, gb_year)>
+    <!ELEMENT gb_day (#PCDATA)>
+    <!ELEMENT gb_month (#PCDATA)>
+    <!ELEMENT gb_year (#PCDATA)>
+  <!ELEMENT gb_page (gb_pageName,(gb_label|gb_button|gb_inputData||gb_singleChoiceList|gb_multipleChoiceList)+)>
+    <!ELEMENT gb_pageName (#PCDATA)
+    <!ELEMENT gb_label (#PCDATA)>
+    <!ELEMENT gb_button (#PCDATA)>
+    <!ELEMENT gb_dataInput (#PCDATA)>
+    <!ELEMENT gb_singleChoiceList (gb_radioButton+)>
+      <!ELEMENT gb_radioButton (#PCDATA)>
+    <!ELEMENT gb_multipleChoiceList (gb_checkBox+)>
+      <!ELEMENT gb_checkBox (#PCDATA)>
 
-<!ELEMENT gb_name (#PCDATA)>
-<!ELEMENT gb_page (gb_button|gb_string|gb_label|gb_int|gb_checkbox)+>
+<!ATTLIST gb_button
+  action (map|gps|photo|video|audio) #IMPLIED
+>
 
-<!ELEMENT gb_button (#PCDATA)>
-<!ELEMENT gb_string (#PCDATA)>
-<!ELEMENT gb_int (#PCDATA)>
-<!ELEMENT gb_label (#PCDATA)>
-<!ELEMENT gb_checkbox (#PCDATA)>
+<!ATTLIST gb_dataInput 
+  isRequired (true|false) "false"
+  dataType (string|integer|float) #REQUIRED
+  linesNumber CDATA "1"
+>
+
+<!ATTLIST gb_singleChoiceList
+  isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_multipleChoiceList
+  isRequired (true|false) "false"
+>
 
 }}}
 
@@ -29,11 +53,17 @@ Un ejemplo de formulario con 2 páginas.
 <!DOCTYPE gb_form SYSTEM "gb_form.dtd">
 <gb_form>
   <gb_name>Formulario La Laguna</gb_name>
-  <gb_page>
+  <gb_version>1.0</gb_version>
+  <gb_date>
+    <gb_day>4</gb_day>
+    <gb_month>1</gb_month>
+    <gb_year>2010</gb_year>
+  </gb_date>
+  <gb_page>primera página
 	<gb_button>Boton</gb_button>
 	<gb_string>Texto 1</gb_string>
   </gb_page>
-  <gb_page>
+  <gb_page>segunda página
 	<gb_label>Texto</gb_label>
   </gb_page>
 </gb_form>
