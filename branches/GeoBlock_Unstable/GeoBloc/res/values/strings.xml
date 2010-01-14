@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainMenu!</string>
+    <string name="app_name">GeoBloc-ULL</string>
+	<string name="ButtonMainMenu1">Generar Formulario</string>
+	<string name="menu_send_form">Enviar</string>
+	
+	<string name="list_form">Formularios</string>
+	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
+	<string name="ButtonMainMenu2">Prueba</string>
+	<string name="created_dir">Directorio %s creado correctamente</string>
+	<string name="TextView01">Formulario %s cargado</string>
+	
+	
+	<!-- Nombres de botones de la Actividad Menú Principal -->
+	<string name="staticFormSelectionSpinnerText">Seleccione Formulario:</string>
+	<string name="staticFormStartButtonText">Test Formulario Estático</string>
+	<string name="menu_question_view_save">Guardar</string>
+	<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
+	<string name="selected_file">Ha seleccionado el archivo %s</string>
+	<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
+	<string name="formsDownloaderButtonText">Descarga de Formularios</string>
+	<string name="formsSenderButtonText">Envío de formularios</string>
+	
+	<!-- SharedPreferences -->
+	<string name="sharedPreferencesTitle">Preferencias</string>
+	<string name="sharedInternetPreferencesTitle">Preferencias de internet</string>
+	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
+	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
+	<string name="uploadPackagesServletAddressDescription">Dirección del servlet para subir paquetes</string>
+	<string name="getAvailableFormsListFromServletAddress">Servlet lista de formularios</string>
+	<string name="getAvailableFormsListFromServletAddressDescription">Dirección del servlet que permite obtener la lista de formularios.</string>
+	<string name="downloadFormsServletAddress">Servlet de formularios</string>
+	<string name="downloadFormsServletAddressDescription">Dirección del servlet para descargar paquetes</string>
+	<string name="numberOfInternetAttempts">Intentos de conexión</string>
+	<string name="numberOfInternetAttemptsDescription">Nº de veces que se intentarán las operaciones de Internet</string>
+	<string name="packagesPath">Directorio de paquetes</string>
+	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
+	<string name="formsPath">Directorio de formularios</string>
+	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
+	
+	<!-- FormPages -->
+	<string name="button_back">Atrás</string>
+	<string name="button_next">Adelante</string>
+	
+	<!-- FormsDownloader Layout -->
+	<string name="forms_downloaderTextViewText">Lista de formularios disponibles</string>
+	<string name="forms_downloaderActionDLButtonText">Descargar</string>
+	<string name="forms_downloaderActionERButtonText">Eliminar</string>
+	<string name="forms_downloaderEraseModeButtonTextOn">Modo Borrar</string>
+	<string name="forms_downloaderEraseModeButtonTextOff">Modo Borrar</string>
+	<string name="forms_downloader_list_item_FormVersionTextViewText">Versión: </string>
+	<string name="forms_downloader_list_itemFormStatusTextViewText">Estado: </string>
+	<string name="forms_downloader_list_itemFormStatusUpdate">Actualización Disp.</string>
+	<string name="forms_downloader_list_itemFormStatusNew">Nuevo </string>
+	<string name="forms_downloader_list_itemFormStatusCurrent">Más reciente</string>
+<string name="cover_title">GeoBloc</string>
+<string name="cover_subtile_2">Gerencia de Urbanismo de La Laguna</string>
+</resources>

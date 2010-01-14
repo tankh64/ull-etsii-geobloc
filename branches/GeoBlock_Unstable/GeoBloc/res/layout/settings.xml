@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:title="@string/sharedPreferencesTitle">
+  <PreferenceCategory
+  	android:title="@string/sharedInternetPreferencesTitle">
+  	<EditTextPreference
+  		android:key="uploadPackagesServletAddress"
+  		android:name="uploadServerAddress"
+  		android:title="@string/uploadPackagesServletAdress"
+  		android:summary="@string/uploadPackagesServletAddressDescription">
+  	</EditTextPreference>
+  	<EditTextPreference
+  		android:key="getAvailableFormsListFromServletAddress"
+  		android:name="getAvailableFormsList"
+  		android:title="@string/getAvailableFormsListFromServletAddress"
+  		android:summary="@string/getAvailableFormsListFromServletAddressDescription">
+  	</EditTextPreference>
+  	<EditTextPreference
+  		android:key="downloadFormsServletAddress"
+  		android:name="downloadFormsServlet"
+  		android:title="@string/downloadFormsServletAddress"
+  		android:summary="@string/downloadFormsServletAddressDescription">
+  	</EditTextPreference>
+  	<EditTextPreference
+  		android:key="numberOfInternetConnectionAttempts"
+  		android:name="numberOfInternetAttempts"
+  		android:title="@string/numberOfInternetAttempts"
+  		android:summary="@string/numberOfInternetAttemptsDescription">
+  	</EditTextPreference>
+  </PreferenceCategory>
+  <PreferenceCategory
+  	android:title="@string/sharedPersistancePreferencesTitle">
+  	<EditTextPreference
+  		android:key="formsPath"
+  		android:name="formsSD_DirectoryPath"
+  		android:title="@string/formsPath"
+  		android:summary="@string/formsPathDescription">
+  	</EditTextPreference>
+  	<EditTextPreference
+  		android:key="packagesPath"
+  		android:name="packagesSD_DirectoryPath"
+  		android:title="@string/packagesPath"
+  		android:summary="@string/packagesPathDescription">
+  	</EditTextPreference>
+  </PreferenceCategory>
+  
+  	
+  
+</PreferenceScreen>
