@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/forms_downloader_list_itemParentView"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+  <!-- Left side of the item -->
+  <CheckBox
+  	android:id="@+id/forms_downloader_list_itemCb"
+  	android:layout_alignParentLeft="true"
+  	android:layout_width="48dip"
+    android:layout_height="48dip">
+  </CheckBox>
+  <!-- Top -->
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormNameTextView"
+  	android:layout_toRightOf="@id/forms_downloader_list_itemCb"
+  	android:layout_alignParentTop="true"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:textSize="18sp"
+  	android:textStyle="bold">
+  </TextView>
+  
+  <!-- Below the form name, the version -->
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormVersionTextView"
+  	android:text="@string/forms_downloader_list_item_FormVersionTextViewText"
+  	android:layout_toRightOf="@id/forms_downloader_list_itemCb"
+  	android:layout_below="@id/forms_downloader_list_itemFormNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content"
+  	android:textStyle="italic">
+  </TextView>
+  
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormVersionNumberTextView"
+  	android:layout_toRightOf="@id/forms_downloader_list_itemFormVersionTextView"
+  	android:layout_below="@id/forms_downloader_list_itemFormNameTextView"
+  	android:paddingLeft="2dp"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content"
+  	android:textStyle="italic">
+  </TextView>
+  
+    <!-- On the right bottom corner, the form's status (update avaiable(green), current version, new(yellow) -->
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormStatusInfoTextView"
+  	android:layout_alignParentRight="true"
+  	android:paddingRight="7dp"
+  	android:layout_below="@id/forms_downloader_list_itemFormNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  </TextView>
+  <TextView
+  	android:id="@+id/forms_downloader_list_itemFormStatusTextView"
+  	android:text="@string/forms_downloader_list_itemFormStatusTextViewText"
+  	android:paddingRight="2dp"
+  	android:layout_toLeftOf="@id/forms_downloader_list_itemFormStatusInfoTextView"
+  	android:layout_below="@id/forms_downloader_list_itemFormNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  </TextView>
+  
+
+</RelativeLayout>
