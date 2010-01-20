@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.geobloc.activities.FormActivity;
 import com.geobloc.activities.FormsDownloader;
 import com.geobloc.activities.SecondStaticFormPrototype;
 import com.geobloc.activities.StaticFormPrototype;
@@ -33,6 +34,8 @@ public class MainMenu extends Activity {
 	private static final int LIST_FORM = 0;
 	private static final int QUESTION_FORM = LIST_FORM + 1;
 	private static final int PARSING_XML = LIST_FORM + 2;
+	
+	private static final int TEST = LIST_FORM + 9;
 	
 	// Buttons
 	private Button mCreateFormButton;
@@ -66,8 +69,8 @@ public class MainMenu extends Activity {
         mTestButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 
-            	Intent i = new Intent (getApplicationContext(), QuestionActivity.class);
-                startActivityForResult(i, QUESTION_FORM);
+            	Intent i = new Intent (getApplicationContext(), FormList.class);
+                startActivityForResult(i, TEST);
             }
         });
     }
@@ -110,6 +113,24 @@ public class MainMenu extends Activity {
     			break;
     			
     		case PARSING_XML:
+    			break;
+    			
+    		case TEST:
+
+    			if(resultCode == RESULT_OK){
+    				Bundle extras = data.getExtras();
+    				String filename = extras.getString (FormList.FILE_NAME);
+    				String filepath = extras.getString (FormList.FILE_PATH);
+    				
+    				Intent i = new Intent (getApplicationContext(),FormActivity.class);
+    				i.putExtra(FormActivity.FILE_NAME, filepath);
+    				startActivityForResult(i, PARSING_XML);
+    			}
+    			else {
+    				Utilities.showToast(getApplicationContext(),
+    							"Actividad NO devuelve correctamente",
+    							Toast.LENGTH_SHORT);
+    			}
     			break;
     	}
     }

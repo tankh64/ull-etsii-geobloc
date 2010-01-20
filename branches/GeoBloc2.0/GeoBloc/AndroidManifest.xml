@@ -49,6 +49,7 @@
 			android:label="Forms Downloader">
 		</activity>
 	<activity android:name="ParsingXML"></activity>
+<activity android:name=".activities.FormActivity"></activity>
 </application>
     <uses-sdk android:minSdkVersion="4" />
 
