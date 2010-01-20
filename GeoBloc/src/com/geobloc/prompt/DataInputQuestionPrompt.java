@@ -9,17 +9,19 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	
 	
 	////// Builders
-	public DataInputQuestionPrompt () {
-		
-	}
-	
 	public DataInputQuestionPrompt (String nameText, String labelText, String inputText) {
 		this.setQuestionName(nameText);
 		this.setLabelQuestion(labelText);
 		this.setInputQuestion(inputText);
+		this.setType();
 	}
 	
 	////// Methods
+	@Override
+	public void setType() {
+			type = QuestionType.GB_DATAINPUT;	
+	}
+	
 	public String getLabelQuestion () {
 		return label;
 	}
@@ -35,4 +37,5 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	public void setInputQuestion (String text) {
 		input = text;
 	}
+
 }
