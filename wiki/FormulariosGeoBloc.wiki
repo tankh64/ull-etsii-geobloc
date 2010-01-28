@@ -1,12 +1,12 @@
 #summary Estructura de formularios GeoBloc
 
-= DTD Formularios =
+= GeoBloc XML Forms DTD =
 
-El DTD de los formularios XML GeoBloc.
+You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTD.dtd
 
 {{{
 
-<!-- Elements struct -->
+<!-- Elements -->
 <!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_formDescription, gb_page+)>
     <!ELEMENT gb_name (#PCDATA)>
     <!ELEMENT gb_version (#PCDATA)>
@@ -67,22 +67,22 @@ El DTD de los formularios XML GeoBloc.
 
 }}}
 
-=== Ejemplo 1 ===
+=== Example 1 ===
 
-Un ejemplo de formulario simple con una página.
+A simple one page form example
 
 {{{
 
-// pendiente de actualizar
+// cooming soon
 
 }}}
 
-=== Ejemplo 2 ===
+=== Example 2 ===
 
-Un formulario con 2 páginas y varios tipos de elementos.
+A 2 paged form example with various kinds of elements.
 
 {{{
 
-// pendiente de actualizar
+// cooming soon
 
 }}}
