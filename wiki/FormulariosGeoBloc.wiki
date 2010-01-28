@@ -5,7 +5,7 @@
 El DTD de los formularios XML GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
 
 {{{
-<?xml version="1.0" encoding="UTF-8"?>
+
 <!-- Elements struct -->
 <!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_formDescription, gb_page+)>
     <!ELEMENT gb_name (#PCDATA)>
@@ -64,6 +64,7 @@ El DTD de los formularios XML GeoBloc. Por ahora es una versión muy simplificad
 <!ATTLIST gb_listItem
     selected (true|false) "false"
 >
+
 }}}
 
 === Ejemplo 1 ===
