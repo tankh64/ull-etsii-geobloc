@@ -2,7 +2,7 @@
 
 = DTD Formularios =
 
-El DTD de los formularios XML GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
+El DTD de los formularios XML GeoBloc.
 
 {{{
 
