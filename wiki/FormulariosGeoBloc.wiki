@@ -5,42 +5,65 @@
 El DTD de los formularios XML GeoBloc. Por ahora es una versión muy simplificada (se irá renovando).
 
 {{{
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Elements struct -->
+<!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_formDescription, gb_page+)>
+    <!ELEMENT gb_name (#PCDATA)>
+    <!ELEMENT gb_version (#PCDATA)>
+    <!ELEMENT gb_date (gb_dateDay, gb_dateMonth, gb_dateYear)>
+        <!ELEMENT gb_dateDay (#PCDATA)>
+        <!ELEMENT gb_dateMonth (#PCDATA)>
+        <!ELEMENT gb_dateYear (#PCDATA)>
+    <!ELEMENT gb_formDescription (#PCDATA)>
+    <!ELEMENT gb_page (gb_pageName,(gb_label|gb_button|gb_field|gb_list)+)>
+        <!ELEMENT gb_pageName (#PCDATA)>
+        <!ELEMENT gb_label (gb_description?, gb_labelText)>
+            <!ELEMENT gb_description (#PCDATA)>
+            <!ELEMENT gb_labelText (#PCDATA)>
+        <!ELEMENT gb_button (gb_description?, gb_buttonText)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_buttonText (#PCDATA)>
+        <!ELEMENT gb_field (gb_description?, gb_fieldLabel, gb_fieldDefaultValue?)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_fieldLabel (#PCDATA)>
+            <!ELEMENT gb_fieldDefaultValue (#PCDATA)>
+        <!ELEMENT gb_list (gb_description?, gb_listLabel, gb_listItem+)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_listLabel (#PCDATA)>
+            <!ELEMENT gb_listItem (gb_listItemLabel, gb_listItemValue)>
+                <!ELEMENT gb_listItemLabel (#PCDATA)>
+                <!ELEMENT gb_listItemValue (#PCDATA)>
 
-<!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_page+)>
-  <!ELEMENT gb_name (#PCDATA)>
-  <!ELEMENT gb_version (#PCDATA)>
-  <!ELEMENT gb_date (gb_day, gb_month, gb_year)>
-    <!ELEMENT gb_day (#PCDATA)>
-    <!ELEMENT gb_month (#PCDATA)>
-    <!ELEMENT gb_year (#PCDATA)>
-  <!ELEMENT gb_page (gb_pageName,(gb_label|gb_button|gb_inputData||gb_singleChoiceList|gb_multipleChoiceList)+)>
-    <!ELEMENT gb_pageName (#PCDATA)
-    <!ELEMENT gb_label (#PCDATA)>
-    <!ELEMENT gb_button (#PCDATA)>
-    <!ELEMENT gb_dataInput (#PCDATA)>
-    <!ELEMENT gb_singleChoiceList (gb_radioButton+)>
-      <!ELEMENT gb_radioButton (#PCDATA)>
-    <!ELEMENT gb_multipleChoiceList (gb_checkBox+)>
-      <!ELEMENT gb_checkBox (#PCDATA)>
+<!-- Attributes -->
+<!ATTLIST gb_label
+    id CDATA #REQUIRED
+>
 
 <!ATTLIST gb_button
-  action (map|gps|photo|video|audio) #IMPLIED
+    id CDATA #REQUIRED
+    action (map|gps|photo|video|audio) #REQUIRED
 >
 
-<!ATTLIST gb_dataInput 
-  isRequired (true|false) "false"
-  dataType (string|integer|float) #REQUIRED
-  linesNumber CDATA "1"
+<!ATTLIST gb_field
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+    type (string|integer|float) #REQUIRED
+    linesNumber CDATA "1"
 >
 
-<!ATTLIST gb_singleChoiceList
-  isRequired (true|false) "false"
+<!ATTLIST gb_list
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+    type (single|multiple|combo) #REQUIRED
 >
 
 <!ATTLIST gb_multipleChoiceList
   isRequired (true|false) "false"
 >
 
+<!ATTLIST gb_listItem
+    selected (true|false) "false"
+>
 }}}
 
 === Ejemplo 1 ===
@@ -49,24 +72,7 @@ Un ejemplo de formulario simple con una página.
 
 {{{
 
-<?xml version="1.0"?>
-<!DOCTYPE gb_form SYSTEM "gb_form.dtd">
-<gb_form>
-  <gb_name>Formulario de ejemplo 1</gb_name>
-  <gb_version>1.0</gb_version>
-  <gb_date>
-    <gb_day>4</gb_day>
-    <gb_month>1</gb_month>
-    <gb_year>2010</gb_year>
-  </gb_date>
-  <gb_page>
-    <gb_pageName>Primera página</gb_pageName>
-    <gb_label>Introduzca su nombre completo</gb_label>
-    <gb_inputData isRequired="true" dataType="string">Nombre:</gb_inputData>
-    <gb_button action="photo">Añadir fotografía</gb_button>
-    <gb_button>Submit</gb_button>
-  </gb_page>
-</gb_form>
+// pendiente de actualizar
 
 }}}
 
@@ -76,51 +82,6 @@ Un formulario con 2 páginas y varios tipos de elementos.
 
 {{{
 
-<?xml version="1.0"?>
-<!DOCTYPE gb_form SYSTEM "gb_form.dtd">
-<gb_form>
-  <gb_name>Formulario de ejemplo 2</gb_name>
-  <gb_version>1.1</gb_version>
-  <gb_date>
-    <gb_day>5</gb_day>
-    <gb_month>1</gb_month>
-    <gb_year>2010</gb_year>
-  </gb_date>
-  <gb_page>
-    <gb_pageName>Datos de usuario</gb_pageName>
-    <gb_label>Datos personales</gb_label>
-    <gb_inputData isRequired="true" dataType="string">Nombre:</gb_inputData>
-    <gb_inputData isRequired="true" dataType="string">Apellido:</gb_inputData>
-    <gb_inputData dataType="integer">Edad:</gb_inputData>
-    <gb_label>Intereses</gb_label>
-    <gb_multipleChoiceList>
-      <gb_checkBox>Arte</gb_checkBox>
-      <gb_checkBox>Historia</gb_checkBox>
-      <gb_checkBox>Ciencia</gb_checkBox>
-      <gb_checkBox>Literatura</gb_checkBox>
-    </gb_multipleChoiceList>
-    <gb_label>Nivel de estudios</gb_label>
-    <gb_singleChoiceList isRequired="true">
-      <bg_radioButton>ESO</bg_radioButton>
-      <bg_radioButton>Bachillerato</bg_radioButton>
-      <bg_radioButton>Estudios Universitarios</bg_radioButton>
-      <bg_radioButton>Máster/Doctorado</bg_radioButton>
-    </gb_singleChoiceList>
-    <gb_button>Siguiente página</gb_button>
-  </gb_page>
-  <gb_page>
-    <gb_pageName>Datos de contacto</gb_pageName>
-    <gb_label>Domicilio</gb_label>
-    <gb_inputData isRequired="true" dataType="string">Dirección</gb_inputData>
-    <gb_inputData isRequired="true" dataType="string">Población</gb_inputData>
-    <gb_inputData isRequired="true" dataType="string">País</gb_inputData>
-    <gb_label>Telefono</gb_label>
-    <gb_inputData isRequired="true" dataType="integer">Fijo</gb_inputData>
-    <gb_inputData dataType="integer">Movil</gb_inputData>
-    <gb_label>Señale su localización en el mapa</gb_label>
-    <gb_button action="map">Abrir mapa</gb_button>
-  </gb_page>
-</gb_form>
-
+// pendiente de actualizar
 
 }}}
