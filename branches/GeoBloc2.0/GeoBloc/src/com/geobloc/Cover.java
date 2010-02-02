@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +17,7 @@ import android.os.Handler;
  *
  */
 public class Cover extends Activity {
-	
+
 	final Handler handler = new Handler();
 	Timer t;
 	

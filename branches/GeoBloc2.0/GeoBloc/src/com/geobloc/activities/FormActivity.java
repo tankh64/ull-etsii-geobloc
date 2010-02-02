@@ -26,9 +26,9 @@ public class FormActivity extends Activity {
 	
 	private String filename;
 	
-	private ProgressDialog myProgressDialog;
+	private ProgressDialog pDialog;
 	
-	private LoadFormTask myLoadFormTask;
+	private LoadFormTask loadTask;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -56,12 +56,25 @@ public class FormActivity extends Activity {
 		
         Intent intent = getIntent();
         if (intent != null) {
-            //filename = intent.getStringExtra(FormActivity.FILE_NAME);
+            filename = intent.getStringExtra(FormActivity.FILE_NAME);
             //myLoadFormTask = new LoadFormTask();
             //myLoadFormTask.execute(filename);
-            showDialog(PROGRESS_DIALOG);
+            //showDialog(PROGRESS_DIALOG);
         }
+        
+		pDialog = ProgressDialog.show(this, "Working", "Loading form "+filename);
+		pDialog.setIndeterminate(true);
+		pDialog.setCancelable(true);
 		
+        
+        loadTask = new LoadFormTask();
+        loadTask.setContext(getApplicationContext());
+        
+        loadTask.execute();
+        
+        
+        Utilities.showToast(getApplicationContext(), "Final de todo", Toast.LENGTH_SHORT);
+        //pDialog.dismiss();
 	}
 
 	
