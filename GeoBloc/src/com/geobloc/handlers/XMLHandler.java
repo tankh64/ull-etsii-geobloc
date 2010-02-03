@@ -88,6 +88,7 @@ public class XMLHandler extends DefaultHandler {
     public void startElement(String namespaceURI, String localName,
               String qName, Attributes atts) throws SAXException {
          if (localName.equals(GB_FORM)) {
+        	 NotInForm();
              this.in_gb_form = true;
              
              myForm = new FormClass();
@@ -155,6 +156,12 @@ public class XMLHandler extends DefaultHandler {
     
     public int getNumPages () {
     	return myForm.getNumPages();
+    }
+    
+    public void NotInForm () {
+    	if (this.in_gb_form) {
+    		// Error
+    	}
     }
     
 }

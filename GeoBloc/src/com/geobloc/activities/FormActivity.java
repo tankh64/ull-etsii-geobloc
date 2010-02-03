@@ -1,12 +1,16 @@
 package com.geobloc.activities;
 
 import com.geobloc.R;
+//import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
+import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,16 +23,40 @@ import android.widget.Toast;
  */
 public class FormActivity extends Activity {
 	
+	
+	private static class FormsLoader_FormsTaskListener implements IStandardTaskListener {
+
+		private Context callerContext;
+		private Context appContext;
+		
+		public FormsLoader_FormsTaskListener(Context appContext, Context callerContext) {
+			this.callerContext = callerContext;
+			this.appContext = appContext;
+		}
+		
+		@Override
+		public void taskComplete(Object result) {
+
+			String res = (String)result;
+
+			pDialog.dismiss();
+		}
+
+		@Override
+		public void progressUpdate(int progress, int total) {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
+	
 	public static final String FILE_NAME = "filename";
-	
-	private static final int PROGRESS_DIALOG = 1;
-	
 	
 	private String filename;
 	
-	private ProgressDialog pDialog;
-	
+	private static ProgressDialog pDialog;
 	private LoadFormTask loadTask;
+	private IStandardTaskListener listener;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -69,14 +97,32 @@ public class FormActivity extends Activity {
         
         loadTask = new LoadFormTask();
         loadTask.setContext(getApplicationContext());
+        loadTask.setListener(new FormsLoader_FormsTaskListener(getApplicationContext(), this));
         
-        loadTask.execute();
+        loadTask.execute(filename);
         
         
-        Utilities.showToast(getApplicationContext(), "Final de todo", Toast.LENGTH_SHORT);
-        //pDialog.dismiss();
+	}
+	
+	/*@Override
+	protected void onResume () {
+		if (loadTask != null) {
+			if (loadTask.getStatus() == AsyncTask.Status.FINISHED) {
+			}
+		}
+
+		super.onResume();
+	}*/
+	
+	
+	public void taskCompleted () {
+		pDialog.dismiss();
 	}
 
+	public void setListener(IStandardTaskListener listener) {
+		this.listener = listener;
+	}
+	
 	
 	
 }
