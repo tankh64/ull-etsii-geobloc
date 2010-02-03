@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
 import com.geobloc.activities.FormsDownloader;
+import com.geobloc.activities.InstanceManager;
 import com.geobloc.activities.SecondStaticFormPrototype;
 import com.geobloc.activities.StaticFormPrototype;
 import com.geobloc.shared.GBSharedPreferences;
@@ -143,7 +144,9 @@ public class MainMenu extends Activity {
     }
     
     public void formsSenderButtonOnClickHandler(View target) {
-    	Utilities.showToast(this, "Merry XMas!!", Toast.LENGTH_LONG);
+    	//Utilities.showToast(this, "Merry XMas!!", Toast.LENGTH_LONG);
+    	Intent i = new Intent(this, InstanceManager.class);
+    	startActivity(i);
     }
     
     /* --> Menu <-- */

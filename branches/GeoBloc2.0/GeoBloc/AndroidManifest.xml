@@ -46,7 +46,11 @@
 		</activity>
 		<activity
 			android:name=".activities.FormsDownloader"
-			android:label="Forms Downloader">
+			android:label="@string/formsDownloaderButtonText">
+		</activity>
+		<activity
+			android:name=".activities.InstanceManager"
+			android:label="@string/formsSenderButtonText">
 		</activity>
 	<activity android:name="ParsingXML"></activity>
 <activity android:name=".activities.FormActivity"></activity>
