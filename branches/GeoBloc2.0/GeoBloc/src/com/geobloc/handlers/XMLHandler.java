@@ -13,12 +13,14 @@ import com.geobloc.QuestionActivity;
 import com.geobloc.QuestionActivity.*;
 import com.geobloc.form.FormClass;
 import com.geobloc.form.FormPage;
+import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.shared.Utilities;
 import com.geobloc.xml.IField;
 
 import android.content.Context;
 import android.text.InputType;
 import android.util.Xml;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -31,28 +33,39 @@ import android.widget.Toast;
 
 public class XMLHandler extends DefaultHandler {
 	
+	private static final String TAG = "XMLHandler";
 	/**
 	 * Loaded form
 	 */
-	FormClass myForm;
-	
-	FormPage myPage;
+	private final FormClass myForm;
+	private FormPage myPage;
 	
 	/** Tags Valid XML */
 	private String GB_FORM = "gb_form";
-	private String GB_PAGE = "gb_page";
 	private String GB_NAME = "gb_name";
 	private String GB_VERSION = "gb_version";
 	private String GB_DATE = "gb_date";
-
 	
+	private String GB_PAGE = "gb_page";
+	private String GB_PAGE_NAME = "gb_pageName";
+	
+	private String GB_LABEL = "gb_label";
+	private String GB_LABEL_TEXT = "gb_labelText";
+
 	// fields
 	private boolean in_gb_form = false;
-	private boolean in_gb_page = false;
 	private boolean in_gb_name = false;
 	private boolean in_gb_version = false;
 	private boolean in_gb_date = false;
+	
+	private boolean in_gb_page = false;
+	private boolean in_gb_pageName = false;
+	
+	private boolean in_gb_label = false;
+	private boolean in_gb_labelText = false;
 
+	
+	private boolean parseError;
 	
 	private Context myContext;
     
@@ -63,7 +76,8 @@ public class XMLHandler extends DefaultHandler {
     {
     	super();
     	
-        
+        myForm = new FormClass();
+        parseError = false;
     }
 
 
@@ -77,7 +91,7 @@ public class XMLHandler extends DefaultHandler {
 
     @Override
     public void endDocument() throws SAXException {
-         // 
+         //
     }     
 
     /** It runs when it encounters tags as:
@@ -88,10 +102,9 @@ public class XMLHandler extends DefaultHandler {
     public void startElement(String namespaceURI, String localName,
               String qName, Attributes atts) throws SAXException {
          if (localName.equals(GB_FORM)) {
-        	 NotInForm();
              this.in_gb_form = true;
              
-             myForm = new FormClass();
+             Log.v(TAG, "Nuevo formulario");
              
          } else if (localName.equals(GB_PAGE)) {
         	 this.in_gb_page = true;
@@ -104,6 +117,12 @@ public class XMLHandler extends DefaultHandler {
         	 this.in_gb_version = true;
          } else if (localName.equals(GB_DATE)) {
         	 this.in_gb_date = true;
+         } else if (localName.equals(GB_PAGE_NAME)) {
+        	 this.in_gb_pageName = true;
+         } else if (localName.equals(GB_LABEL)) {
+        	 this.in_gb_label = true;
+         } else if (localName.equals(GB_LABEL_TEXT)) {
+        	 this.in_gb_labelText = true;
          } else {
  
          }
@@ -124,14 +143,22 @@ public class XMLHandler extends DefaultHandler {
             
             if (this.in_gb_form) {
             	myForm.addPage(myPage);
+            	Log.v(TAG, "New page added");
        	 	}
        	 	else {
-       	 		//ErrorParsing();
+       	 		setParseError();
        	 	}
+            
         } else if (localName.equals(GB_VERSION)) {
             this.in_gb_version = false;
         } else if (localName.equals(GB_DATE)) {
             this.in_gb_date = false;
+        } else if (localName.equals(GB_PAGE_NAME)) {
+            this.in_gb_pageName = false;
+        } else if (localName.equals(GB_LABEL)) {
+            this.in_gb_label = false;
+        } else if (localName.equals(GB_LABEL_TEXT)) {
+            this.in_gb_labelText = false;
         } else {
         	
         }
@@ -140,28 +167,43 @@ public class XMLHandler extends DefaultHandler {
     /** It runs when faced with the following structure:
      * <tag>characters</tag> */
     @Override
-   public void characters(char ch[], int start, int length) {
-         if(this.in_gb_form){
-        	 if(this.in_gb_page) {
-        	 }
-        	 else {
-        		 if (this.in_gb_name) {
-        			 // We must set the form name
-        		 }
-        	 }
-         } else {
-        	 // We must indicate that the parsing is not correct
-         }
-   } 
+    public void characters(char ch[], int start, int length) {
+    	String cadena = new String(ch, start, length).trim();
+    	if(this.in_gb_form){
+    		if(this.in_gb_page) {
+    			if (this.in_gb_pageName) {
+    				myPage.setNamePage(cadena);
+    			} else if ((this.in_gb_label) && (this.in_gb_labelText)) {
+    				LabelQuestionPrompt qPrompt = new LabelQuestionPrompt(cadena);
+    				myPage.addQuestion(qPrompt);
+    			}
+    		}
+    		else {
+    			if (this.in_gb_name) {
+    				//We must set the form name
+    				myForm.setNameForm(cadena);
+    			}
+    			else if (this.in_gb_version) {
+    				myForm.setVersionForm(cadena);
+    			}
+    		}
+    	} else {
+    		// We must indicate that the parsing is not correct
+    		setParseError();
+    	}
+    } 
     
     public int getNumPages () {
     	return myForm.getNumPages();
     }
     
-    public void NotInForm () {
-    	if (this.in_gb_form) {
-    		// Error
-    	}
+    
+    /** Returns the form loaded */
+    public FormClass getForm() {
+    	return myForm;
     }
     
+    private void setParseError() {
+    	parseError = true;
+    }
 }

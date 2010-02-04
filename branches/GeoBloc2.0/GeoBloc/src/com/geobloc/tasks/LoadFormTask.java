@@ -8,6 +8,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import com.geobloc.Cover;
+import com.geobloc.handlers.FormHandler;
 import com.geobloc.handlers.XMLHandler;
 import com.geobloc.form.FormClass;
 import com.geobloc.listeners.IStandardTaskListener;
@@ -24,10 +25,16 @@ import android.widget.Toast;
  * @author Jorge Carballo (jelcaf@gmail.com
  *
  */
-public final class LoadFormTask extends AsyncTask<String, Void, FormClass>{
+public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 
 	private Context context;
 	private IStandardTaskListener listener;
+	
+	private String message;
+	private boolean trowsOk;
+	
+	private FormClass formC;
+	private FormHandler formH;
 	
 	/** Auxiliar for debug */
 	int num;
@@ -50,7 +57,7 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormClass>{
 	}
 	
 	@Override
-	protected FormClass doInBackground(String... params) {
+	protected FormHandler doInBackground(String... params) {
 		// TODO Auto-generated method stub
 		
 		/*** Filename of the form */
@@ -66,22 +73,32 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormClass>{
 		try {
 			/* Creamos un SAXParser. */
 			SAXParserFactory spf = SAXParserFactory.newInstance();
+			
+			/** To validate the file against a DTD*/
+			//spf.setValidating(true);
+			//spf.setFeature("http://xml.org/sax/features/validation", true);
+			
 			SAXParser sp = spf.newSAXParser();
 
-			/* Creamos un nuevo ContentHandler */
 			XMLHandler myXMLHandler = new XMLHandler();
 			
 			/** Parsing the file */
             sp.parse(new File(filename), myXMLHandler);
+          
+            trowsOk = true;
             
-            num = myXMLHandler.getNumPages();
+            formC = new FormClass();
+            formC = myXMLHandler.getForm();
+            formH = new FormHandler (formC);
+            return formH;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			
+			trowsOk = false;
+			message = e.getMessage();
 			return null;
 		}
-
-		return null;
 	}
 	
 	/*
@@ -96,12 +113,16 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormClass>{
 	 * Runs on UI Thread
 	 */
 	@Override
-	protected void onPostExecute(FormClass result) {
+	protected void onPostExecute(FormHandler result) {
 		if (listener != null) {
 			listener.taskComplete(result);
 		}
 		
-		Utilities.showToast(context, num+" pages loaded", Toast.LENGTH_SHORT);
+		if (trowsOk == true) {
+			message = formH.getNumPages()+" pages loaded of the form \""+formH.getNameForm()+"\"";
+		}
+		
+		Utilities.showToast(context, message, Toast.LENGTH_SHORT);
 		
 		super.onPostExecute(result);
     }
