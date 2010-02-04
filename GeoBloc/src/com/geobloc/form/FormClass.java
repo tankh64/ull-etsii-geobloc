@@ -16,6 +16,7 @@ public class FormClass {
 	 */
 	
 	private String nameForm;
+	private String versionForm;
 	
 	private List<FormPage> listPages;
 	
@@ -41,12 +42,20 @@ public class FormClass {
 	
 	
 	/// Methods
-	private void setNameForm (String name) {
+	public void setNameForm (String name) {
 		this.nameForm = name;
 	}
 	
 	public String getNameForm () {
 		return nameForm;
+	}
+	
+	public void setVersionForm (String version) {
+		this.versionForm = version;
+	}
+	
+	public String getVersionForm () {
+		return versionForm;
 	}
 	
 	/**
