@@ -66,9 +66,19 @@ public class UploadBasicFormServlet extends HttpServlet {
 					} else {
 						
 						String fieldName = item.getFieldName();
-						String fileName = item.getName();
+						String auxFilename = item.getName();
+						// filter filename from path
+						int sep = auxFilename.lastIndexOf('/');
+					    if (sep == -1)
+					    	sep = auxFilename.lastIndexOf('\\');
+					    String filename = "";
+					    if (sep >= 0)
+					    	filename = auxFilename.substring(sep + 1, auxFilename.length());
+					    else
+					    	filename = auxFilename;
+						
 						String contentType = item.getContentType();
-
+						
 						try {
 							Blob blob = new Blob(IOUtils.toByteArray(in));
 							byte[] array = blob.getBytes();							
@@ -77,12 +87,12 @@ public class UploadBasicFormServlet extends HttpServlet {
 								out.println("No content.");
 							else {
 								out.println("--------------");
-								out.println("fileName = " + fileName);
+								out.println("fileName = " + filename);
 								out.println("field name = " + fieldName);
 								out.println("contentType = " + contentType);
 								//out.println(fileContents);
 								
-								BasicForm form = new BasicForm(user, fileName, blob, new Date());
+								BasicForm form = new BasicForm(user, filename, blob, new Date());
 								PersistenceManager pm = PMF.get().getPersistenceManager();
 								try {
 									pm.makePersistent(form);
