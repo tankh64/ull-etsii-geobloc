@@ -1,12 +1,41 @@
 #summary A new UI widget built specifically for our clients, a checkbox with three-states.
+#labels Phase-Implementation
+
 = Introduction =
 
-Add your content here.
+This is new widget was built as a compound widget, from a ThreeStateButton and a TextView. The main idea was to keep it as similar to a standard Android Framework CheckBox, but offering the functionality the three states functionality.
 
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The ThreeStateCheckBox has three possible states:
+
+{{{
+public static final int __STATE_UNPRESSED__ = 0;
+public static int __STATE_PRESSED__ = 1;
+public static int __STATE_CHECKED__ = 2;
+}}}
+
+And using it in our app is very easy. Here's a sample code for inflating it through XML:
+
+{{{
+<LinearLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	xmlns:app="http://schemas.android.com/apk/res/com.geobloc"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content"
+  	android:orientation="horizontal">
+	<com.geobloc.widget.ThreeStateCheckBox
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:padding="6dp"
+  		app:label="I am a ThreeStateCheckBox"
+  		app:shadow="true"
+  		app:state="2">
+  	</com.geobloc.widget.ThreeStateCheckBox>
+</LinearLayout>
+}}}
+
+As you can see, we must first declare the app property to access our widget's own properties, since these are not properties of the Android Framework. The label property defines the text of the ThreeStateCheckBox, the shadow property allows the dev to enable/disable a background shadow of the cross and tick on the button, similar to the tick shadow in the standard CheckBox. And finally, state allows the developer to specify the inital state of the ThreeStateCheckBox. Note that we're ussing padding with 6 density independent pixels; this helps to make the widget take nearly the same space as the standard CheckBox.
+
+The ThreeStateCheckBox can also be created programmatically.
