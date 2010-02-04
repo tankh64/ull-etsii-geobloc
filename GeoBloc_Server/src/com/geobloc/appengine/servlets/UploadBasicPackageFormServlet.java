@@ -68,7 +68,17 @@ public class UploadBasicPackageFormServlet extends HttpServlet {
 						out.println("Got a file");
 
 						String fieldName = item.getFieldName();
-						String fileName = item.getName();
+						String auxFilename = item.getName();
+						// filter filename from path						
+					    int sep = auxFilename.lastIndexOf('/');
+					    if (sep == -1)
+					    	sep = auxFilename.lastIndexOf('\\');
+					    String filename = "";
+					    if (sep >= 0)
+					    	filename = auxFilename.substring(sep + 1, auxFilename.length());
+					    else
+					    	filename = auxFilename;
+					    
 						String contentType = item.getContentType();
 
 						try {
@@ -85,11 +95,11 @@ public class UploadBasicPackageFormServlet extends HttpServlet {
 								
 								// there is content
 								out.println("--------------");
-								out.println("fileName = " + fileName);
+								out.println("filename = " + filename);
 								out.println("field name = " + fieldName);
 								out.println("contentType = " + contentType);
 								// add to package
-								packageForm.addFile(blob, fileName);								
+								packageForm.addFile(blob, filename);								
 								out.println("");
 								out.println("");
 								
