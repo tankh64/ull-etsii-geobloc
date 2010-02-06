@@ -124,13 +124,9 @@ public class MainMenu extends Activity {
     				String filepath = extras.getString (FormList.FILE_PATH);
     				
     				Intent i = new Intent (getApplicationContext(),FormActivity.class);
-    				i.putExtra(FormActivity.FILE_NAME, filepath);
+    				i.putExtra(FormActivity.FILE_NAME, filename);
+    				i.putExtra(FormActivity.FILE_PATH, filepath);
     				startActivityForResult(i, PARSING_XML);
-    			}
-    			else {
-    				Utilities.showToast(getApplicationContext(),
-    							"Actividad NO devuelve correctamente",
-    							Toast.LENGTH_SHORT);
     			}
     			break;
     	}

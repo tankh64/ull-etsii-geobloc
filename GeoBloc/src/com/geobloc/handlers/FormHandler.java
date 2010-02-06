@@ -1,5 +1,7 @@
 package com.geobloc.handlers;
 
+import android.widget.LinearLayout;
+
 import com.geobloc.form.FormClass;
 
 
@@ -35,6 +37,11 @@ public class FormHandler {
 
 	public String getNameForm () {
 		return defForm.getNameForm();
+	}
+	
+	
+	public LinearLayout getLayout() {
+		return null;
 	}
 
 }
