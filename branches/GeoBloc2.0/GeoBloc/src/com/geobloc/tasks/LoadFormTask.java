@@ -17,6 +17,7 @@ import com.geobloc.shared.Utilities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -26,6 +27,8 @@ import android.widget.Toast;
  *
  */
 public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
+	
+	private static final String TAG = "LoadFormTask";
 
 	private Context context;
 	private IStandardTaskListener listener;
@@ -62,7 +65,7 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 		
 		/*** Filename of the form */
 		String filename = params[0];
-		File filexml = new File (filename);
+		//File filexml = new File (filename);
 		
 		try {
 			Thread.sleep(5000);
@@ -94,6 +97,8 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			
+			Log.w(TAG, "Formulario Vacío");
 			
 			trowsOk = false;
 			message = e.getMessage();

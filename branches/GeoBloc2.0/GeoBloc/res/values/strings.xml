@@ -7,7 +7,7 @@
 	
 	<string name="list_form">Formularios</string>
 	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
-	<string name="ButtonMainMenu2">Prueba</string>
+	<string name="ButtonMainMenu2">Rellenar nuevo formulario</string>
 	<string name="created_dir">Directorio %s creado correctamente</string>
 	<string name="TextView01">Formulario %s cargado</string>
 	
@@ -56,4 +56,6 @@
 	<string name="forms_downloader_list_itemFormStatusCurrent">Más reciente</string>
 <string name="cover_title">GeoBloc</string>
 <string name="cover_subtile_2">Gerencia de Urbanismo de La Laguna</string>
+<string name="no_more_pages_at_left">No existen más páginas del formulario a la izquierda</string>
+<string name="no_more_pages_at_rigth">No existen más páginas del formulario a la derecha</string>
 </resources>
