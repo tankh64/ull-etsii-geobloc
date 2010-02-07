@@ -3,6 +3,7 @@
 	<declare-styleable name="ThreeStateCheckBox">
 	    <attr name="label" format="string" />
 	    <attr name="shadow" format="boolean" />
+	    <attr name="state" format="integer" />
 	</declare-styleable>
 	
 </resources>
