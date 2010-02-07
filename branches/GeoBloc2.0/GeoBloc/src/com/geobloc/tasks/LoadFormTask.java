@@ -65,10 +65,9 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 		
 		/*** Filename of the form */
 		String filename = params[0];
-		//File filexml = new File (filename);
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

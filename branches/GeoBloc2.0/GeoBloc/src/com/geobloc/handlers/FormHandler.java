@@ -1,8 +1,12 @@
 package com.geobloc.handlers;
 
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.geobloc.form.FormClass;
+import com.geobloc.shared.Utilities;
 
 
 /**
@@ -39,9 +43,27 @@ public class FormHandler {
 		return defForm.getNameForm();
 	}
 	
+	public void setDescription (String desc) {
+		defForm.setDescription(desc);
+	}
 	
-	public LinearLayout getLayout() {
-		return null;
+	public String getDescription () {
+		return defForm.getDescription();
+	}
+	
+	/** Método que devolverá un ViewGroup del formulario */
+	public ViewGroup getLayout(Context context) {
+		
+		LinearLayout view = new LinearLayout(context);
+		
+		if (defForm == null)
+			return null;
+		
+		for (int i=0; i < defForm.getNumPages(); i++) {
+			view.addView(defForm.getPage(i).getLayoutPage(context));
+		}
+		
+		return (ViewGroup)view;
 	}
 
 }

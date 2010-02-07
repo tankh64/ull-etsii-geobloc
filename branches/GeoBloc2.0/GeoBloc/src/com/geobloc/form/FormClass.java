@@ -17,6 +17,7 @@ public class FormClass {
 	
 	private String nameForm;
 	private String versionForm;
+	private String description;
 	
 	private List<FormPage> listPages;
 	
@@ -58,6 +59,14 @@ public class FormClass {
 		return versionForm;
 	}
 	
+	public void setDescription (String desc) {
+		this.description = desc;
+	}
+	
+	public String getDescription () {
+		return this.description;
+	}
+	
 	/**
 	 * Add a page to form
 	 * @param page New page to add to the form
@@ -69,7 +78,6 @@ public class FormClass {
 	public FormPage getPage (int index) {
 		return (listPages.get(index));
 	}
-	
 
 	
 	/**

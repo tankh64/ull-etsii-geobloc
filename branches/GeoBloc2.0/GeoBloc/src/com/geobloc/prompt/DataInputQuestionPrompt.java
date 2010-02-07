@@ -1,5 +1,7 @@
 package com.geobloc.prompt;
 
+import com.geobloc.shared.Utilities.QuestionType;
+
 public class DataInputQuestionPrompt extends QuestionPrompt {
 	/** label of the Input */
 	private String label;

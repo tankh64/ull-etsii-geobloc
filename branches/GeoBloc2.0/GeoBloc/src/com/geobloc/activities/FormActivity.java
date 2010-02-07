@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -43,7 +44,7 @@ public class FormActivity extends Activity {
     private Animation slideRightOut;
     private ViewFlipper viewFlipper;
 	
-	private static class FormsLoader_FormsTaskListener implements IStandardTaskListener {
+	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
 
 		private Context callerContext;
 		private Context appContext;
@@ -59,11 +60,16 @@ public class FormActivity extends Activity {
 			
 			formH = (FormHandler)result;
 			if (formH == null) {
-				Utilities.showToast(appContext, "No load form", Toast.LENGTH_SHORT);
+				//Utilities.showToast(appContext, "No load form", Toast.LENGTH_SHORT);
+				finish();
 			}
 			else {
+				postTaskFinished();
+
 				
 			}
+			
+			
 		}
 
 		@Override
@@ -115,6 +121,7 @@ public class FormActivity extends Activity {
 		pDialog.setIndeterminate(false);
 		pDialog.setCancelable(false);
 		
+
 		
 		/*** Flipper *********/
 	    viewFlipper = (ViewFlipper)findViewById(R.id.flipper);
@@ -122,7 +129,8 @@ public class FormActivity extends Activity {
 	    slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
 	    slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
 	    slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
-	        
+	    
+	    
 	    gestureDetector = new GestureDetector(new MyGestureDetector());
 	    gestureListener = new View.OnTouchListener() {
 	    	public boolean onTouch(View v, MotionEvent event) {
@@ -141,7 +149,34 @@ public class FormActivity extends Activity {
         
         loadTask.execute(filepath);
         
-        
+	}
+	
+	private void postTaskFinished() {
+		/** Rellenamos el Titulo y la descripción del formulario */
+		/*** Colocamos texto en el viewFlipper */
+		TextView tView = (TextView)findViewById(R.id.TitleForm);
+		tView.setText(getString(R.string.form_loaded, formH.getNameForm()));
+		tView = (TextView)findViewById(R.id.FormDescription);
+		tView.setText(formH.getDescription());
+		
+		//setFlipperPages();
+	}
+	
+	private void setFlipperPages () {
+	    LinearLayout layout = new LinearLayout(getApplicationContext());
+	    
+	    // Añadimos al ViewFlipper las páginas del formulario
+	    if (formH != null) {
+	    	layout = (LinearLayout)formH.getLayout(getApplicationContext());
+	    	if (layout != null) {
+	    		for (int i=0; i < layout.getChildCount(); i++) {
+	    			// Fail
+	    			viewFlipper.addView(layout.getChildAt(i));
+	    		}
+	    	}
+	    }
+	    
+	    Utilities.showToast(getApplicationContext(), "El Flipper tiene "+viewFlipper.getChildCount(), Toast.LENGTH_LONG);
 	}
 	
     class MyGestureDetector extends SimpleOnGestureListener {
@@ -197,7 +232,6 @@ public class FormActivity extends Activity {
 	public void setListener(IStandardTaskListener listener) {
 		this.listener = listener;
 	}
-	
 	
 	
 }
