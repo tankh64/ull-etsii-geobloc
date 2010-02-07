@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,12 +28,24 @@ public class ThreeStateCheckBox extends LinearLayout {
 	
 	private boolean drawShadow;
 	private String labelText;
+	private int state;
 	/**
 	 * @param context
 	 */
 	public ThreeStateCheckBox(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		initConfig();
+		
+		((Activity)getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
+
+		// get views and set their values
+		box = (ThreeStateButton) findViewById(R.id.box);
+		setDrawShadowEnabled(drawShadow);
+		setState(state);
+		label = (TextView) findViewById(R.id.label);
+		label.setTextColor(Color.WHITE);
+		label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+		setText(labelText);
 	}
 
 	/**
@@ -41,20 +54,28 @@ public class ThreeStateCheckBox extends LinearLayout {
 	 */
 	public ThreeStateCheckBox(final Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.setOrientation(HORIZONTAL);
-		// set attribute defaults
-		drawShadow = false;
-		labelText = "";
-		//setPadding(15, 15, 15, 15);
+		initConfig();
+
 		// get attributes		
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ThreeStateCheckBox, 0, 0);
 		drawShadow = a.getBoolean(R.styleable.ThreeStateCheckBox_shadow, false);
 		labelText = a.getString(R.styleable.ThreeStateCheckBox_label);
+		if (labelText == null)
+			labelText = "";
+		state = a.getInt(R.styleable.ThreeStateCheckBox_state, ThreeStateButton.__STATE_UNPRESSED__);
 		// free TypedArray
 		a.recycle();
 		
 	}
 
+	private void initConfig() {
+		this.setOrientation(HORIZONTAL);
+		// set attribute defaults
+		drawShadow = false;
+		labelText = "";
+		state = 0;
+	}
+	
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
@@ -63,16 +84,18 @@ public class ThreeStateCheckBox extends LinearLayout {
 		// get views and set their values
 		box = (ThreeStateButton) findViewById(R.id.box);
 		setDrawShadowEnabled(drawShadow);
+		setState(state);
 		label = (TextView) findViewById(R.id.label);
 		label.setTextColor(Color.WHITE);
 		setText(labelText);
+		label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 	}
 	
-	public boolean isPressed() {
+	public boolean isStatePressed() {
 		return box.isPressed();
 	}
 	
-	public boolean isChecked() {
+	public boolean isStateChecked() {
 		return box.isChecked();
 	}
 	
@@ -84,11 +107,13 @@ public class ThreeStateCheckBox extends LinearLayout {
 		box.setState(state);
 	}
 	
-	public String getText() {
-		return (String) label.getText();
+	//@Override
+	public CharSequence getText() {
+		return label.getText();
 	}
 	
-	public void setText(String text) {
+	//@Override
+	public final void setText(CharSequence text) {
 		label.setText(text);
 	}
 	

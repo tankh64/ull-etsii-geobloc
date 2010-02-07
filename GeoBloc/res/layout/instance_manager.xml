@@ -2,19 +2,22 @@
 <LinearLayout
   	xmlns:android="http://schemas.android.com/apk/res/android"
   	xmlns:app="http://schemas.android.com/apk/res/com.geobloc"
+  	android:id="@+id/myLinearLayout"
   	android:layout_width="wrap_content"
   	android:layout_height="wrap_content"
-  	android:orientation="horizontal">
+  	android:orientation="vertical">
 	<CheckBox
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Hello">
+		android:text="Programmatically inflated">
 	</CheckBox>
-	  	<com.geobloc.widget.ThreeStateCheckBox
-  		android:layout_width="wrap_content"
+	
+	<com.geobloc.widget.ThreeStateCheckBox
+		android:id="@+id/boxOne"
+  		android:layout_width="fill_parent"
   		android:layout_height="wrap_content"
-  		android:padding="6dp"
-  		app:label="I am a ThreeStateCheckBox"
-  		app:shadow="true">
+  		app:label="Inflated from XML ThreeStateCheckBox"
+  		app:state="1">
   	</com.geobloc.widget.ThreeStateCheckBox>
+  	
 </LinearLayout>

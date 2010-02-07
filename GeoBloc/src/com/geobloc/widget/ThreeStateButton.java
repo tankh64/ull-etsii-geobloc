@@ -82,13 +82,13 @@ public class ThreeStateButton extends Button {
 		greenPaint = new Paint();
 		greenPaint.setAntiAlias(true);
 		greenPaint.setStyle(Paint.Style.FILL);
-		greenPaint.setStrokeWidth(5.0f);
-		greenPaint.setColor(Color.GREEN);
+		greenPaint.setStrokeWidth(6.0f);
+		greenPaint.setColor(Color.argb(255, 0, 198, 0));
 		grayPaint = new Paint();
 		grayPaint.setAntiAlias(false);
 		grayPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 		grayPaint.setStrokeWidth(6.5f);
-		grayPaint.setColor(Color.GRAY);
+		grayPaint.setColor(Color.argb(255, 173, 173, 173));
 		
 		// listeners
 		setOnClickListener(new View.OnClickListener() {
@@ -116,8 +116,8 @@ public class ThreeStateButton extends Button {
 		canvas.drawLine(0 + getCompoundPaddingLeft(), 0 + getCompoundPaddingTop(), getWidth() - getCompoundPaddingRight(), getHeight() - getCompoundPaddingBottom(), grayPaint);
 		canvas.drawLine(getWidth() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), 0 + getCompoundPaddingLeft(), getHeight() - getCompoundPaddingBottom(), grayPaint);
 		// tick background
-		canvas.drawLine(getWidth() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), (float) (0 + (1.5f)*getCompoundPaddingLeft()), getHeight() - getCompoundPaddingBottom(), grayPaint);
-		canvas.drawLine((float) (0 + (1.5f)*getCompoundPaddingLeft()), getHeight() - (0.9f)*getCompoundPaddingBottom(), 0 + getCompoundPaddingLeft(), (float) (getHeight() - (2f)*getCompoundPaddingBottom()), grayPaint);
+		canvas.drawLine(getWidth() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), (float) (0 + (0.4f)*getWidth()), getHeight() - getCompoundPaddingBottom(), grayPaint);
+		canvas.drawLine((float) (0 + (0.425f)*getWidth()), getHeight() - (0.9f)*getCompoundPaddingBottom(), 0 + getCompoundPaddingLeft(), (float) (getHeight() - (2f)*getCompoundPaddingBottom()), grayPaint);
 	}
 	
 	@Override
@@ -128,18 +128,14 @@ public class ThreeStateButton extends Button {
 		switch (state) {
 			case (1):
 				// draw an X using redPaint
-				//canvas.drawLine(0 + getCompoundPaddingLeft(), 0 + getCompoundPaddingTop(), getRight() - getCompoundPaddingRight(), getHeight() - getCompoundPaddingBottom(), redPaint);
-				//canvas.drawLine(getRight() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), 0 + getCompoundPaddingLeft(), getHeight() - getCompoundPaddingBottom(), redPaint);
 				canvas.drawLine(0 + getCompoundPaddingLeft(), 0 + getCompoundPaddingTop(), getWidth() - getCompoundPaddingRight(), getHeight() - getCompoundPaddingBottom(), redPaint);
 				canvas.drawLine(getWidth() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), 0 + getCompoundPaddingLeft(), getHeight() - getCompoundPaddingBottom(), redPaint);
 				break;
 			case 2:
 				// draw a tick
-				//canvas.drawLine(getRight() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), (float) (0 + (1.5f)*getCompoundPaddingLeft()), getHeight() - getCompoundPaddingBottom(), greenPaint);
-				//canvas.drawLine((float) (0 + (1.5f)*getCompoundPaddingLeft()), getHeight() - (0.9f)*getCompoundPaddingBottom(), 0 + getCompoundPaddingLeft(), (float) (getHeight() - (2f)*getCompoundPaddingBottom()), greenPaint);
-				canvas.drawLine(getWidth() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), (float) (0 + (1.5f)*getCompoundPaddingLeft()), getHeight() - getCompoundPaddingBottom(), greenPaint);
-				canvas.drawLine((float) (0 + (1.5f)*getCompoundPaddingLeft()), getHeight() - (0.9f)*getCompoundPaddingBottom(), 0 + getCompoundPaddingLeft(), (float) (getHeight() - (2f)*getCompoundPaddingBottom()), greenPaint);
-
+				canvas.drawLine(getWidth() - getCompoundPaddingRight(), 0 + getCompoundPaddingTop(), (float) (0 + (0.4f)*getWidth()), getHeight() - getCompoundPaddingBottom(), greenPaint);
+				canvas.drawLine((float) (0 + (0.425f)*getWidth()), getHeight() - (0.9f)*getCompoundPaddingBottom(), 0 + getCompoundPaddingLeft(), (float) (getHeight() - (2f)*getCompoundPaddingBottom()), greenPaint);
+				
 				break;
 			default: 
 				break;
