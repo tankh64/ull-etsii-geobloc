@@ -45,6 +45,7 @@ public class XMLHandler extends DefaultHandler {
 	private String GB_NAME = "gb_name";
 	private String GB_VERSION = "gb_version";
 	private String GB_DATE = "gb_date";
+	private String GB_DESCRIPTION = "gb_description";
 	
 	private String GB_PAGE = "gb_page";
 	private String GB_PAGE_NAME = "gb_pageName";
@@ -57,6 +58,7 @@ public class XMLHandler extends DefaultHandler {
 	private boolean in_gb_name = false;
 	private boolean in_gb_version = false;
 	private boolean in_gb_date = false;
+	private boolean in_gb_description = false;
 	
 	private boolean in_gb_page = false;
 	private boolean in_gb_pageName = false;
@@ -123,6 +125,8 @@ public class XMLHandler extends DefaultHandler {
         	 this.in_gb_label = true;
          } else if (localName.equals(GB_LABEL_TEXT)) {
         	 this.in_gb_labelText = true;
+         } else if (localName.equals(GB_DESCRIPTION)) {
+        	 this.in_gb_description = true;
          } else {
  
          }
@@ -159,6 +163,8 @@ public class XMLHandler extends DefaultHandler {
             this.in_gb_label = false;
         } else if (localName.equals(GB_LABEL_TEXT)) {
             this.in_gb_labelText = false;
+        } else if (localName.equals(GB_DESCRIPTION)) {
+            this.in_gb_description = false;
         } else {
         	
         }
@@ -185,7 +191,9 @@ public class XMLHandler extends DefaultHandler {
     			}
     			else if (this.in_gb_version) {
     				myForm.setVersionForm(cadena);
-    			}
+    			} else if (this.in_gb_description) {
+    				myForm.setDescription(cadena);
+    			} 
     		}
     	} else {
     		// We must indicate that the parsing is not correct

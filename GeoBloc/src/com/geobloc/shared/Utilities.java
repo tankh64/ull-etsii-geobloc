@@ -21,6 +21,13 @@ public class Utilities {
 	 */
 	public enum WidgetType {LABEL, STRING, INT, BUTTON, CHECKBOX};
 	
+	/**
+	 * Enumerated type indicating the type of question
+	 * @author Jorge Carballo (jelcaf@gmail.com)
+	 *
+	 */
+	public enum QuestionType {GB_DATAINPUT, GB_LABEL, GB_BUTTON};
+	
 	/* 
 	 * Displays a Toast. The context parameter is filled with getApplicationContext() from the Activity 
 	 * you're calling this from. Duration is with Toast.LENGTH_SHORT or Toast.LENGTH_LONG
