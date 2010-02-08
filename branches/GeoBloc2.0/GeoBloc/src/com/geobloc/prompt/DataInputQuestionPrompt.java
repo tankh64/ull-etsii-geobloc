@@ -24,10 +24,18 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 			type = QuestionType.GB_DATAINPUT;	
 	}
 	
+	/**
+	 * 
+	 * @return Label of the question (Title)
+	 */
 	public String getLabelQuestion () {
 		return label;
 	}
 	
+	/**
+	 * 
+	 * @return Input of the question
+	 */
 	public String getInputQuestion () {
 		return input;
 	}

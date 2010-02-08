@@ -13,6 +13,7 @@ import com.geobloc.QuestionActivity;
 import com.geobloc.QuestionActivity.*;
 import com.geobloc.form.FormClass;
 import com.geobloc.form.FormPage;
+import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.shared.Utilities;
 import com.geobloc.xml.IField;
@@ -52,6 +53,9 @@ public class XMLHandler extends DefaultHandler {
 	
 	private String GB_LABEL = "gb_label";
 	private String GB_LABEL_TEXT = "gb_labelText";
+	
+	private String GB_FIELD = "gb_field";
+	private String GB_FIELD_LABEL = "gb_fieldLabel";
 
 	// fields
 	private boolean in_gb_form = false;
@@ -65,6 +69,9 @@ public class XMLHandler extends DefaultHandler {
 	
 	private boolean in_gb_label = false;
 	private boolean in_gb_labelText = false;
+	
+	private boolean in_gb_field = false;
+	private boolean in_gb_fieldLabel = false;
 
 	
 	private boolean parseError;
@@ -127,6 +134,10 @@ public class XMLHandler extends DefaultHandler {
         	 this.in_gb_labelText = true;
          } else if (localName.equals(GB_DESCRIPTION)) {
         	 this.in_gb_description = true;
+         } else if (localName.equals(GB_FIELD_LABEL)) {
+        	 this.in_gb_fieldLabel = true;
+         } else if (localName.equals(GB_FIELD)) {
+        	 this.in_gb_field = true;
          } else {
  
          }
@@ -165,6 +176,10 @@ public class XMLHandler extends DefaultHandler {
             this.in_gb_labelText = false;
         } else if (localName.equals(GB_DESCRIPTION)) {
             this.in_gb_description = false;
+        } else if (localName.equals(GB_FIELD_LABEL)) {
+            this.in_gb_fieldLabel = false;
+        } else if (localName.equals(GB_FIELD)) {
+            this.in_gb_field = false;
         } else {
         	
         }
@@ -175,6 +190,8 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void characters(char ch[], int start, int length) {
     	String cadena = new String(ch, start, length).trim();
+    	String aux = new String();
+    	
     	if(this.in_gb_form){
     		if(this.in_gb_page) {
     			if (this.in_gb_pageName) {
@@ -182,6 +199,11 @@ public class XMLHandler extends DefaultHandler {
     			} else if ((this.in_gb_label) && (this.in_gb_labelText)) {
     				LabelQuestionPrompt qPrompt = new LabelQuestionPrompt(cadena);
     				myPage.addQuestion(qPrompt);
+    			} else if (this.in_gb_field) {
+    				if (this.in_gb_fieldLabel) {
+    					DataInputQuestionPrompt qPrompt = new DataInputQuestionPrompt ("", cadena, "");
+    					myPage.addQuestion(qPrompt);
+    				}
     			}
     		}
     		else {

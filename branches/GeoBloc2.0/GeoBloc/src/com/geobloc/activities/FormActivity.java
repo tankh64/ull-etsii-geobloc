@@ -159,22 +159,44 @@ public class FormActivity extends Activity {
 		tView = (TextView)findViewById(R.id.FormDescription);
 		tView.setText(formH.getDescription());
 		
-		//setFlipperPages();
+		setFlipperPages();
 	}
 	
 	private void setFlipperPages () {
-	    LinearLayout layout = new LinearLayout(getApplicationContext());
+		Context context = FormActivity.this;
+	    LinearLayout vista = new LinearLayout(context);
+	    
+	    
+	    if (formH != null) {
+	    	for (int i=0; i < formH.getNumPages(); i++) {
+	    		//LinearLayout vista = new LinearLayout(context);
+	    		vista = formH.getLayout(context,i);
+	    		vista.setOrientation(LinearLayout.VERTICAL);
+    			if (vista != null)
+    				viewFlipper.addView(vista, i+1);
+    		
+	    	}
+	    }
+	    
+	    
+	    
 	    
 	    // Añadimos al ViewFlipper las páginas del formulario
-	    if (formH != null) {
-	    	layout = (LinearLayout)formH.getLayout(getApplicationContext());
+	    /*if (formH != null) {
+	    	layout = formH.getLayout(context);
 	    	if (layout != null) {
 	    		for (int i=0; i < layout.getChildCount(); i++) {
 	    			// Fail
-	    			viewFlipper.addView(layout.getChildAt(i));
+	    			LinearLayout vista = new LinearLayout(context);
+	    			//vista = (LinearLayout)layout.getChildAt(i);
+	    			viewFlipper.addView(vista);
+	    			
+	    			/*TextView tView = new TextView(context);
+	    			tView.setText("Hola soy uno creado");
+	    			viewFlipper.addView(tView, i+1);
 	    		}
 	    	}
-	    }
+	    }*/
 	    
 	    Utilities.showToast(getApplicationContext(), "El Flipper tiene "+viewFlipper.getChildCount(), Toast.LENGTH_LONG);
 	}
