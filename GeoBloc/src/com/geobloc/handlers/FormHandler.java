@@ -21,6 +21,8 @@ public class FormHandler {
 	/** Llevará el numero de "campo" por el que va en el formulario */
 	private int index;
 	
+	private LinearLayout view;
+	
 	public FormHandler (FormClass form) {
 		defForm = form;
 		index = 0;
@@ -51,19 +53,20 @@ public class FormHandler {
 		return defForm.getDescription();
 	}
 	
-	/** Método que devolverá un ViewGroup del formulario */
-	public ViewGroup getLayout(Context context) {
+	/** Método que devolverá un layout de una página del formulario */
+	public LinearLayout getLayout(Context context, int page) {
 		
-		LinearLayout view = new LinearLayout(context);
+		view = new LinearLayout(context);
 		
 		if (defForm == null)
 			return null;
 		
-		for (int i=0; i < defForm.getNumPages(); i++) {
-			view.addView(defForm.getPage(i).getLayoutPage(context));
+		if (page < defForm.getNumPages()) {
+			view = defForm.getPage(page).getLayoutPage(context);
 		}
-		
-		return (ViewGroup)view;
+
+		return view;
+		//return (ViewGroup)view;
 	}
 
 }

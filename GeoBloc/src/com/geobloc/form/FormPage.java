@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 
 /**
@@ -69,10 +70,14 @@ public class FormPage {
 	public LinearLayout getLayoutPage (Context context) {
 		
 		LinearLayout layout = new LinearLayout (context);
+		
+		//layout.setOrientation(LinearLayout.VERTICAL);
+		//layout.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+		
 		QuestionPrompt question;
 		
 		for (int i=0; i < listQuestions.size(); i++) {
-	        
+			
 			question = listQuestions.get(i);
 			
 			switch (question.getType()) {
@@ -88,17 +93,21 @@ public class FormPage {
 					LinearLayout mView = new LinearLayout(context);
 					mView.setPadding(5, 5, 5, 5);
 					mView.setOrientation(LinearLayout.HORIZONTAL);
+					mView.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 					
 					/* Texto antes del EditText */
 					TextView Text = new TextView(context);
-					Text.setText(question.getQuestionName()+":  ");
+					Text.setText(((DataInputQuestionPrompt)question).getLabelQuestion()+":  ");
 					Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
 					
 					EditText ed = new EditText(context);
 					ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
+					ed.setText(((DataInputQuestionPrompt)question).getInputQuestion());
 					
-					layout.addView(Text);
-					layout.addView(ed);
+					mView.addView(Text);
+					mView.addView(ed);
+					
+					layout.addView(mView);
 					break;
 				case GB_BUTTON:
 					
