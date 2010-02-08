@@ -57,10 +57,6 @@ You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFo
     type (single|multiple|combo) #REQUIRED
 >
 
-<!ATTLIST gb_multipleChoiceList
-  isRequired (true|false) "false"
->
-
 <!ATTLIST gb_listItem
     selected (true|false) "false"
 >
