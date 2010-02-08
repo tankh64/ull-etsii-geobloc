@@ -73,7 +73,46 @@ A simple one page form example
 
 {{{
 
-// cooming soon
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gb_form SYSTEM "http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTD.dtd">
+
+<gb_form>
+  <gb_name>Form example 1</gb_name>
+  <gb_version>1.0</gb_version>
+  <gb_date>
+    <gb_dateDay>28</gb_dateDay>
+    <gb_dateMonth>1</gb_dateMonth>
+    <gb_dateYear>2010</gb_dateYear>
+  </gb_date>
+  <gb_formDescription>This is a form example, written using the GeoBloc Desktop aplication.</gb_formDescription>
+  <gb_page>
+    <gb_pageName>Page 1</gb_pageName>
+    <gb_label id="lab01">
+      <gb_labelText>User autentification</gb_labelText>
+    </gb_label>
+    <gb_field id="field01" type="string" linesNumber="1" isRequired="true">
+      <gb_fieldLabel>Name</gb_fieldLabel>
+    </gb_field>
+    <gb_field id="field02" type="string" linesNumber="1" isRequired="true">
+      <gb_fieldLabel>Surname</gb_fieldLabel>
+    </gb_field>
+    <gb_list id="list01" type="combo" isRequired="false">
+      <gb_listLabel>Gender</gb_listLabel>
+      <gb_listItem>
+        <gb_listItemLabel>Male</gb_listItemLabel>
+        <gb_listItemValue>M</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem>
+        <gb_listItemLabel>Female</gb_listItemLabel>
+        <gb_listItemValue>F</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem>
+        <gb_listItemLabel>Unknown</gb_listItemLabel>
+        <gb_listItemValue>U</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+  </gb_page>
+</gb_form>
 
 }}}
 
