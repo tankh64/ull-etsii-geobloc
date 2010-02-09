@@ -11,7 +11,7 @@ import com.geobloc.shared.Utilities.QuestionType;
  *
  */
 public abstract class QuestionPrompt {
-	private String questionName;
+	private String questionId;
 	protected QuestionType type;
 	
 	///////// Builders
@@ -35,18 +35,18 @@ public abstract class QuestionPrompt {
 	}
 	
 	/**
-	 * Gets the name of the question
+	 * Gets the ID of the question
 	 * @return
 	 */
-	public String getQuestionName () {
-		return questionName;
+	public String getQuestionId () {
+		return questionId;
 	}
 	
 	/**
-	 * Sets the name of question
-	 * @param name Name of the question
+	 * Sets the Id of question
+	 * @param name Id of the question
 	 */
-	public void setQuestionName (String name) {
-		questionName = name;
+	public void setQuestionId (String name) {
+		questionId = name;
 	}
 }

@@ -68,5 +68,12 @@ public class FormHandler {
 		return view;
 		//return (ViewGroup)view;
 	}
-
+	
+	public String getVersionForm () {
+		return defForm.getVersionForm();
+	}
+	
+	public void setVersionForm (String ver) {
+		defForm.setVersionForm(ver);
+	}
 }

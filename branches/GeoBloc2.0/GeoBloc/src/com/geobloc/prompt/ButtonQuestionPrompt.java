@@ -4,13 +4,28 @@ import com.geobloc.shared.Utilities.QuestionType;
 
 public class ButtonQuestionPrompt extends QuestionPrompt {
 	
-	public ButtonQuestionPrompt (String name) {
-		this.setQuestionName(name);
+	String title;
+	
+	public ButtonQuestionPrompt (String myId, String titleText) {
+		this.setQuestionId(myId);
+		this.setButtonTitle(titleText);
 		this.setType();
 	}
 	
 	@Override
 	public void setType() {
 		type = QuestionType.GB_BUTTON;	
+	}
+	
+	/**
+	 * Sets the text on the label
+	 * @param name
+	 */
+	public void setButtonTitle (String name) {
+		title = name;
+	}
+	
+	public String getButtonTitle () {
+		return title;
 	}
 }

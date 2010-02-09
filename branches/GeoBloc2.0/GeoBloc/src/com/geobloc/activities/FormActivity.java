@@ -9,8 +9,10 @@ import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,16 +62,22 @@ public class FormActivity extends Activity {
 			
 			formH = (FormHandler)result;
 			if (formH == null) {
-				//Utilities.showToast(appContext, "No load form", Toast.LENGTH_SHORT);
-				finish();
+			    new AlertDialog.Builder(callerContext)
+					.setTitle("Error")
+					.setMessage("At load form")
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                        finish();
+	                        dialog.cancel();
+	                   }
+	               })
+			      .show();
 			}
 			else {
+				Utilities.showTitleAndMessageDialog(callerContext, formH.getNameForm(),
+						"Formulario "+formH.getNameForm()+" cargado correctamente");
 				postTaskFinished();
-
-				
 			}
-			
-			
 		}
 
 		@Override
@@ -108,12 +116,10 @@ public class FormActivity extends Activity {
                     Toast.LENGTH_SHORT);
         	finish();
         }
-        
 		
         /* Create a new TextView to display the parsing result later. */
         TextView tv = new TextView(getApplicationContext());
 
-        //setContentView(R.layout.form_question);
         setContentView(R.layout.flipper_question);
 		setTitle(getString(R.string.app_name)+ " > " + filename);
         
@@ -158,6 +164,8 @@ public class FormActivity extends Activity {
 		tView.setText(getString(R.string.form_loaded, formH.getNameForm()));
 		tView = (TextView)findViewById(R.id.FormDescription);
 		tView.setText(formH.getDescription());
+		tView = (TextView)findViewById(R.id.TextFingerMov);
+		tView.setText(getString(R.string.help_form_mov));
 		
 		setFlipperPages();
 	}
@@ -169,7 +177,6 @@ public class FormActivity extends Activity {
 	    
 	    if (formH != null) {
 	    	for (int i=0; i < formH.getNumPages(); i++) {
-	    		//LinearLayout vista = new LinearLayout(context);
 	    		vista = formH.getLayout(context,i);
 	    		vista.setOrientation(LinearLayout.VERTICAL);
     			if (vista != null)
@@ -177,28 +184,7 @@ public class FormActivity extends Activity {
     		
 	    	}
 	    }
-	    
-	    
-	    
-	    
-	    // Añadimos al ViewFlipper las páginas del formulario
-	    /*if (formH != null) {
-	    	layout = formH.getLayout(context);
-	    	if (layout != null) {
-	    		for (int i=0; i < layout.getChildCount(); i++) {
-	    			// Fail
-	    			LinearLayout vista = new LinearLayout(context);
-	    			//vista = (LinearLayout)layout.getChildAt(i);
-	    			viewFlipper.addView(vista);
-	    			
-	    			/*TextView tView = new TextView(context);
-	    			tView.setText("Hola soy uno creado");
-	    			viewFlipper.addView(tView, i+1);
-	    		}
-	    	}
-	    }*/
-	    
-	    Utilities.showToast(getApplicationContext(), "El Flipper tiene "+viewFlipper.getChildCount(), Toast.LENGTH_LONG);
+	    //Utilities.showToast(getApplicationContext(), "El Flipper tiene "+viewFlipper.getChildCount(), Toast.LENGTH_LONG);
 	}
 	
     class MyGestureDetector extends SimpleOnGestureListener {
@@ -239,17 +225,6 @@ public class FormActivity extends Activity {
 	    else
 	    	return false;
     }
-	
-	/*@Override
-	protected void onResume () {
-		if (loadTask != null) {
-			if (loadTask.getStatus() == AsyncTask.Status.FINISHED) {
-			}
-		}
-
-		super.onResume();
-	}*/
-
 
 	public void setListener(IStandardTaskListener listener) {
 		this.listener = listener;

@@ -126,8 +126,6 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 			message = formH.getNumPages()+" pages loaded of the form \""+formH.getNameForm()+"\"";
 		}
 		
-		Utilities.showToast(context, message, Toast.LENGTH_SHORT);
-		
 		super.onPostExecute(result);
     }
 

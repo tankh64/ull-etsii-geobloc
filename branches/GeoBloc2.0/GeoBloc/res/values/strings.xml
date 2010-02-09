@@ -60,4 +60,5 @@
 <string name="no_more_pages_at_rigth">No existen más páginas del formulario a la derecha</string>
 <string name="help_form_mov">Mueva su dedo horizontalmente en la pantalla para desplazarse por el formulario</string>
 <string name="form_loaded">Formulario del tipo %s cargado</string>
+
 </resources>

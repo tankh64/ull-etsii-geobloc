@@ -4,17 +4,20 @@ import com.geobloc.shared.Utilities.QuestionType;
 
 public class DataInputQuestionPrompt extends QuestionPrompt {
 	/** label of the Input */
-	private String label;
+	private String title;
 	
 	/** input of the question */
 	private String input;
 	
 	
 	////// Builders
-	public DataInputQuestionPrompt (String nameText, String labelText, String inputText) {
-		this.setQuestionName(nameText);
-		this.setLabelQuestion(labelText);
-		this.setInputQuestion(inputText);
+	/**
+	 * 
+	 */
+	public DataInputQuestionPrompt (String id, String titleText, String inputText) {
+		this.setQuestionId(id);
+		this.setQuestionTitle(titleText);
+		this.setQuestionInput(inputText);
 		this.setType();
 	}
 	
@@ -26,25 +29,21 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	
 	/**
 	 * 
-	 * @return Label of the question (Title)
-	 */
-	public String getLabelQuestion () {
-		return label;
-	}
-	
-	/**
-	 * 
 	 * @return Input of the question
 	 */
-	public String getInputQuestion () {
+	public String getQuestionInput () {
 		return input;
 	}
 	
-	public void setLabelQuestion (String text) {
-		label = text;
+	public String getQuestionTitle () {
+		return title;
 	}
 	
-	public void setInputQuestion (String text) {
+	public void setQuestionTitle (String text) {
+		title = text;
+	}
+	
+	public void setQuestionInput (String text) {
 		input = text;
 	}
 
