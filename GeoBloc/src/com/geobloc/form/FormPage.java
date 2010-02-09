@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.geobloc.prompt.ButtonQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
+import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 
 /**
@@ -84,7 +90,7 @@ public class FormPage {
 			
 				case GB_LABEL:
 					TextView tv = new TextView(context);
-					tv.setText(question.getQuestionName());
+					tv.setText(((LabelQuestionPrompt)question).getQuestionTitle());
 					tv.setPadding(5, 5, 0, 5);		      		
 					layout.addView(tv);
 					break;
@@ -97,12 +103,12 @@ public class FormPage {
 					
 					/* Texto antes del EditText */
 					TextView Text = new TextView(context);
-					Text.setText(((DataInputQuestionPrompt)question).getLabelQuestion()+":  ");
+					Text.setText(((DataInputQuestionPrompt)question).getQuestionTitle()+":  ");
 					Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
 					
 					EditText ed = new EditText(context);
 					ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
-					ed.setText(((DataInputQuestionPrompt)question).getInputQuestion());
+					ed.setText(((DataInputQuestionPrompt)question).getQuestionInput());
 					
 					mView.addView(Text);
 					mView.addView(ed);
@@ -110,7 +116,13 @@ public class FormPage {
 					layout.addView(mView);
 					break;
 				case GB_BUTTON:
+					Button but = new Button(context);
+					but.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+					but.setText(((ButtonQuestionPrompt)question).getButtonTitle());
+					but.setPadding(10,10,10,10);
 					
+					layout.addView(but);
+					break;
 				default:
 					break;
 			}
