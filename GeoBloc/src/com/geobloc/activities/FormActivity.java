@@ -22,7 +22,9 @@ import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -100,6 +102,8 @@ public class FormActivity extends Activity {
 	
 	private static FormHandler formH;
 	
+	LinearLayout vista;
+	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,9 +120,6 @@ public class FormActivity extends Activity {
                     Toast.LENGTH_SHORT);
         	finish();
         }
-		
-        /* Create a new TextView to display the parsing result later. */
-        TextView tv = new TextView(getApplicationContext());
 
         setContentView(R.layout.flipper_question);
 		setTitle(getString(R.string.app_name)+ " > " + filename);
@@ -126,9 +127,7 @@ public class FormActivity extends Activity {
 		pDialog = ProgressDialog.show(this, "Working", "Loading form "+filename);
 		pDialog.setIndeterminate(false);
 		pDialog.setCancelable(false);
-		
-
-		
+				
 		/*** Flipper *********/
 	    viewFlipper = (ViewFlipper)findViewById(R.id.flipper);
 	    slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
@@ -172,19 +171,30 @@ public class FormActivity extends Activity {
 	
 	private void setFlipperPages () {
 		Context context = FormActivity.this;
-	    LinearLayout vista = new LinearLayout(context);
-	    
-	    
+		/*if (vista == null)
+			vista = new LinearLayout(context);*/
+		//RelativeLayout vistaR = new RelativeLayout(context);
+		
+		RelativeLayout vistaR = new RelativeLayout(context);
+		vistaR = (RelativeLayout) findViewById(R.id.form_page_layout);
+		
+		//vistaR = new RelativeLayout(context);
+		
 	    if (formH != null) {
-	    	for (int i=0; i < formH.getNumPages(); i++) {
-	    		vista = formH.getLayout(context,i);
-	    		vista.setOrientation(LinearLayout.VERTICAL);
-    			if (vista != null)
-    				viewFlipper.addView(vista, i+1);
-    		
+	    	for (int page=0; page < formH.getNumPages(); page++) {
+	    		
+	    		int numQuestions = formH.getNumQuestionOfPage(page);
+	    		
+	    		for (int question=0; question < numQuestions; question++) {
+	    			TextView tv = new TextView(context);
+	    			
+	    			tv.setText("Page: "+page+"  Question: "+question);
+	    			
+	    			vistaR.addView (tv);
+	    		}
+	    		//viewFlipper.addView(vistaR, page+1);
 	    	}
 	    }
-	    //Utilities.showToast(getApplicationContext(), "El Flipper tiene "+viewFlipper.getChildCount(), Toast.LENGTH_LONG);
 	}
 	
     class MyGestureDetector extends SimpleOnGestureListener {

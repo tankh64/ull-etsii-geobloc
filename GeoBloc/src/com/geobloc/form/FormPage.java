@@ -3,6 +3,7 @@ package com.geobloc.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,9 +11,11 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.geobloc.R;
 import com.geobloc.prompt.ButtonQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
@@ -27,6 +30,8 @@ import com.geobloc.prompt.QuestionPrompt;
 public class FormPage {
 	
 	private String namePage;
+	
+	LinearLayout layout;
 	/**
 	 * list of questions that contains the current page
 	 */
@@ -75,7 +80,10 @@ public class FormPage {
 	 */
 	public LinearLayout getLayoutPage (Context context) {
 		
-		LinearLayout layout = new LinearLayout (context);
+		//LinearLayout layout = new LinearLayout (context);
+		if (layout == null) {
+			layout = new LinearLayout (context);
+		}
 		
 		//layout.setOrientation(LinearLayout.VERTICAL);
 		//layout.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
