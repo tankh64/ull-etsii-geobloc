@@ -86,5 +86,9 @@ public class FormClass {
 	public int getNumPages () {
 		return listPages.size();
 	}
+	
+	public int getNumQuestionsOfPage (int numPage) {
+		return (listPages.get(numPage)).getNumQuestions();
+	}
 
 }

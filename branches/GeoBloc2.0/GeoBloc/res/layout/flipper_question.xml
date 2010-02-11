@@ -13,13 +13,20 @@
 	</LinearLayout>
 
     
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:id="@+id/form_page_layout" android:background="#FF0000" >
+	
+	
+<TextView android:text="Num Pag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:id="@+id/NumPageForm"></TextView>
+</RelativeLayout>
+    
+    
 <LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:gravity="center">
 
 <Button android:id="@+id/Button01" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Guardar como incompleto" android:layout_margin="10px" android:textSize="26px"></Button>
 <Button android:id="@+id/Button02" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Guardar como completo" android:layout_margin="10px" android:textSize="26px"></Button>
 </LinearLayout>
-
-    
 </ViewFlipper>
 
 

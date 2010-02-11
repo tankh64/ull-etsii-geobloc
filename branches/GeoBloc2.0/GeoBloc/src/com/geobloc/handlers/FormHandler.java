@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.geobloc.form.FormClass;
 import com.geobloc.shared.Utilities;
@@ -22,10 +23,12 @@ public class FormHandler {
 	private int index;
 	
 	private LinearLayout view;
+	private RelativeLayout viewR;
 	
 	public FormHandler (FormClass form) {
 		defForm = form;
 		index = 0;
+		
 	}
 	
 	public int getNextData () {
@@ -56,7 +59,8 @@ public class FormHandler {
 	/** Método que devolverá un layout de una página del formulario */
 	public LinearLayout getLayout(Context context, int page) {
 		
-		view = new LinearLayout(context);
+		/*if (view == null)
+			view = new LinearLayout(context);*/
 		
 		if (defForm == null)
 			return null;
@@ -66,8 +70,8 @@ public class FormHandler {
 		}
 
 		return view;
-		//return (ViewGroup)view;
 	}
+	
 	
 	public String getVersionForm () {
 		return defForm.getVersionForm();
@@ -75,5 +79,14 @@ public class FormHandler {
 	
 	public void setVersionForm (String ver) {
 		defForm.setVersionForm(ver);
+	}
+	
+	/**
+	 * 
+	 * @param numPage 0 to ...
+	 * @return
+	 */
+	public int getNumQuestionOfPage (int numPage) {
+		return defForm.getNumQuestionsOfPage(numPage);
 	}
 }
