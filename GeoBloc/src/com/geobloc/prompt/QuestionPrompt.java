@@ -1,5 +1,7 @@
 package com.geobloc.prompt;
 
+import android.view.View;
+
 import com.geobloc.shared.Utilities.QuestionType;
 
 
@@ -13,13 +15,13 @@ import com.geobloc.shared.Utilities.QuestionType;
 public abstract class QuestionPrompt {
 	private String questionId;
 	protected QuestionType type;
+	private boolean required;
 	
 	///////// Builders
 	/*
 	public QuestionPrompt (String name) {
 		setQuestionName(name);
 	}*/
-	
 	
 	///////// Methods
 	/**
@@ -48,5 +50,17 @@ public abstract class QuestionPrompt {
 	 */
 	public void setQuestionId (String name) {
 		questionId = name;
+	}
+	
+	public void setRequired () {
+		required = true;
+	}
+	
+	public void unsetRequired () {
+		required = false;
+	}
+	
+	public boolean isRequired () {
+		return required;
 	}
 }

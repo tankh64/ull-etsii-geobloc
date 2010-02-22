@@ -6,11 +6,13 @@ public class LabelQuestionPrompt extends QuestionPrompt {
 	
 	private String title;
 	
-	public LabelQuestionPrompt (String name) {
-		this.setQuestionId(name);
+	public LabelQuestionPrompt(String id, String name) {
+		this.setQuestionId(id);
+		this.setQuestionTitle(name);
 		this.setType();
 	}
-	
+
+
 	@Override
 	public void setType () {
 		type = QuestionType.GB_LABEL;
@@ -27,5 +29,6 @@ public class LabelQuestionPrompt extends QuestionPrompt {
 	public String getQuestionTitle () {
 		return title;
 	}
+	
 
 }

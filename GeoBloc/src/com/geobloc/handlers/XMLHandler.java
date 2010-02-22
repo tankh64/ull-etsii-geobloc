@@ -205,7 +205,7 @@ public class XMLHandler extends DefaultHandler {
 			this.in_gb_pageName = false;
 			break;
 		case IGB_LABEL:
-        	LabelQuestionPrompt lqPrompt = new LabelQuestionPrompt(title);
+			LabelQuestionPrompt lqPrompt = new LabelQuestionPrompt(id, title);
 			myPage.addQuestion(lqPrompt);
 			
             this.in_gb_label = false;
