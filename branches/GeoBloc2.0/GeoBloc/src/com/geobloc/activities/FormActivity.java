@@ -7,6 +7,7 @@ import com.geobloc.handlers.FormHandler;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
+import com.geobloc.widget.QuestionWidget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -169,30 +170,50 @@ public class FormActivity extends Activity {
 		setFlipperPages();
 	}
 	
+	private void setNumPage (LinearLayout layout, int page) {
+		TextView tv = (TextView)layout.findViewById (R.id.NumPageForm);
+		tv.setText(page+"/"+formH.getNumPages());
+	}
+	
 	private void setFlipperPages () {
 		Context context = FormActivity.this;
-		/*if (vista == null)
-			vista = new LinearLayout(context);*/
-		//RelativeLayout vistaR = new RelativeLayout(context);
 		
-		RelativeLayout vistaR = new RelativeLayout(context);
-		vistaR = (RelativeLayout) findViewById(R.id.form_page_layout);
-		
-		//vistaR = new RelativeLayout(context);
+		LinearLayout vistaR = new LinearLayout(context);
 		
 	    if (formH != null) {
 	    	for (int page=0; page < formH.getNumPages(); page++) {
 	    		
+	    		if (page == 0) {
+	    			vistaR = (LinearLayout) findViewById(R.id.form_page_layout_1);
+	    		} else if (page == 1) {
+	    			vistaR = (LinearLayout) findViewById(R.id.form_page_layout_2);
+	    		} else if (page == 2){
+	    			vistaR = (LinearLayout) findViewById(R.id.form_page_layout_3);
+	    		} else {
+	    			break;
+	    		}
+	    		
 	    		int numQuestions = formH.getNumQuestionOfPage(page);
 	    		
-	    		for (int question=0; question < numQuestions; question++) {
-	    			TextView tv = new TextView(context);
+	    		setNumPage(vistaR, page+1);
+	    		
+	    		for (int question=0; question < numQuestions; question++) {	    			
+	    			QuestionWidget wdget = new QuestionWidget (context, formH.getQuestionOfPage(question, page));
 	    			
-	    			tv.setText("Page: "+page+"  Question: "+question);
-	    			
-	    			vistaR.addView (tv);
+	    			vistaR.addView (wdget);
 	    		}
-	    		//viewFlipper.addView(vistaR, page+1);
+	    	}
+	    	
+	    	/*** We eliminate unnecessary pages of ViewFlipper */
+	    	int numPages = formH.getNumPages();
+	    	if (numPages < 3) {
+	    		if (numPages == 1) {
+	    			viewFlipper.removeViewAt(3);
+	    			viewFlipper.removeViewAt(2);
+	    		}
+	    		else if (numPages == 2) {
+	    			viewFlipper.removeViewAt(3);
+	    		}
 	    	}
 	    }
 	}

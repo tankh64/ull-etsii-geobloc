@@ -75,6 +75,10 @@ public class FormPage {
 		return listQuestions.size();
 	}
 	
+	public QuestionPrompt getQuestion (int question) {
+		return listQuestions.get(question);
+	}
+	
 	/**
 	 * Returns a layout with the questions on the page
 	 */
