@@ -124,6 +124,25 @@ public class FormActivity extends Activity {
         	finish();
         }
 
+        
+        final Object data = getLastNonConfigurationInstance();
+        
+        // The activity is starting for the first time, load the photos from Flickr
+        if (data == null) {
+            myLoadForm();
+        } else {
+            // El viewFlipper ya existe
+        }
+
+        
+	}
+	
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		return viewFlipper;
+	}
+	
+	private void myLoadForm () {
         setContentView(R.layout.flipper_question);
 		setTitle(getString(R.string.app_name)+ " > " + filename);
         
@@ -156,7 +175,6 @@ public class FormActivity extends Activity {
         loadTask.setListener(new FormsLoader_FormsTaskListener(getApplicationContext(), this));
         
         loadTask.execute(filepath);
-        
 	}
 	
 	private void postTaskFinished() {
