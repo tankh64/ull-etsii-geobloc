@@ -61,4 +61,7 @@
 <string name="help_form_mov">Mueva su dedo horizontalmente en la pantalla para desplazarse por el formulario</string>
 <string name="form_loaded">Formulario del tipo %s cargado</string>
 
+<string name="formPreferencesTitle">Preferencias del Formulario</string>
+<string name="formColorBackgroundDescription">Color de fondo del formulario por defecto</string>
+<string name="formColorBackground">Fondo del formulario</string>
 </resources>
