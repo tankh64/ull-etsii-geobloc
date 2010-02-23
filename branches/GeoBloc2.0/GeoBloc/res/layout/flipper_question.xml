@@ -13,32 +13,6 @@
 	</LinearLayout>
 
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:id="@+id/form_page_layout_1" android:background="#FF0000" >
-	
-	
-<TextView android:text="Num Pag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:id="@+id/NumPageForm" android:layout_gravity="right" android:textSize="20px" android:layout_margin="5px"></TextView>
-</LinearLayout>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:id="@+id/form_page_layout_2" android:background="#00FF00" >
-	
-	
-<TextView android:text="Num Pag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:id="@+id/NumPageForm" android:layout_gravity="right" android:textSize="20px" android:layout_margin="5px"></TextView>
-</LinearLayout>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:id="@+id/form_page_layout_3" android:background="#0000FF" >
-	
-	
-<TextView android:text="Num Pag" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:id="@+id/NumPageForm" android:layout_gravity="right" android:textSize="20px" android:layout_margin="5px"></TextView>
-</LinearLayout>
     
     
 <LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:gravity="center">

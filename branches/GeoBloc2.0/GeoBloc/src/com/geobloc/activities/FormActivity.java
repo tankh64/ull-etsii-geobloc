@@ -15,9 +15,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -170,28 +172,30 @@ public class FormActivity extends Activity {
 		setFlipperPages();
 	}
 	
+	/**
+	 * Set the number of the page
+	 * @param layout
+	 * @param page
+	 */
 	private void setNumPage (LinearLayout layout, int page) {
-		TextView tv = (TextView)layout.findViewById (R.id.NumPageForm);
+		TextView tv = new TextView(layout.getContext());
+		tv.setTextSize(20);
 		tv.setText(page+"/"+formH.getNumPages());
+		tv.layout(5, 5, 5, 5);
+		tv.setGravity(Gravity.RIGHT);
+		
+		layout.addView(tv);
 	}
 	
 	private void setFlipperPages () {
 		Context context = FormActivity.this;
 		
-		LinearLayout vistaR = new LinearLayout(context);
-		
 	    if (formH != null) {
 	    	for (int page=0; page < formH.getNumPages(); page++) {
+	    	
+	    		LinearLayout vistaR = new LinearLayout(context);
+	    		vistaR.setOrientation(LinearLayout.VERTICAL);
 	    		
-	    		if (page == 0) {
-	    			vistaR = (LinearLayout) findViewById(R.id.form_page_layout_1);
-	    		} else if (page == 1) {
-	    			vistaR = (LinearLayout) findViewById(R.id.form_page_layout_2);
-	    		} else if (page == 2){
-	    			vistaR = (LinearLayout) findViewById(R.id.form_page_layout_3);
-	    		} else {
-	    			break;
-	    		}
 	    		
 	    		int numQuestions = formH.getNumQuestionOfPage(page);
 	    		
@@ -200,20 +204,12 @@ public class FormActivity extends Activity {
 	    		for (int question=0; question < numQuestions; question++) {	    			
 	    			QuestionWidget wdget = new QuestionWidget (context, formH.getQuestionOfPage(question, page));
 	    			
+	    			wdget.layout(5, 5, 5, 5);
+	    			wdget.setBackgroundColor(Color.YELLOW);
 	    			vistaR.addView (wdget);
 	    		}
-	    	}
-	    	
-	    	/*** We eliminate unnecessary pages of ViewFlipper */
-	    	int numPages = formH.getNumPages();
-	    	if (numPages < 3) {
-	    		if (numPages == 1) {
-	    			viewFlipper.removeViewAt(3);
-	    			viewFlipper.removeViewAt(2);
-	    		}
-	    		else if (numPages == 2) {
-	    			viewFlipper.removeViewAt(3);
-	    		}
+	    		
+	    		viewFlipper.addView(vistaR, page+1);
 	    	}
 	    }
 	}

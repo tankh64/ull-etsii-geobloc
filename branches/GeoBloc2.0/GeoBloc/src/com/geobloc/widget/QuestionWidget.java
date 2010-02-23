@@ -36,7 +36,8 @@ public class QuestionWidget extends LinearLayout {
 			
 			TextView tv = new TextView(context);
 			tv.setText(((LabelQuestionPrompt)mQuestion).getQuestionTitle());
-			tv.setPadding(5, 5, 0, 5);		      		
+			tv.setPadding(5, 5, 0, 5);
+			tv.setTextSize(20);
 			addView(tv);
 			break;
 		case GB_DATAINPUT:
@@ -48,6 +49,7 @@ public class QuestionWidget extends LinearLayout {
 			
 			/* Texto antes del EditText */
 			TextView Text = new TextView(context);
+			Text.setTextSize(20);
 			Text.setText(((DataInputQuestionPrompt)mQuestion).getQuestionTitle()+":  ");
 			Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
 			

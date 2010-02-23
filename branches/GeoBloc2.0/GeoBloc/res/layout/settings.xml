@@ -45,6 +45,18 @@
   	</EditTextPreference>
   </PreferenceCategory>
   
+  <PreferenceCategory
+  	android:title="@string/formPreferencesTitle">
+  	<ListPreference
+  		android:key="formBackground"
+  		android:name="formBackgroundName"
+  		android:title="@string/formColorBackground"
+  		android:summary="@string/formColorBackgroundDescription"
+  		android:defaultValue="WHITE"
+		android:entries="@array/Array"
+		android:entryValues="@array/Values" >
+  	</ListPreference>
+  </PreferenceCategory>
   	
   
 </PreferenceScreen>
