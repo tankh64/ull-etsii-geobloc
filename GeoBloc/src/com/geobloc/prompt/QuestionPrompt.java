@@ -15,6 +15,7 @@ import com.geobloc.shared.Utilities.QuestionType;
 public abstract class QuestionPrompt {
 	private String questionId;
 	protected QuestionType type;
+	
 	private boolean required;
 	
 	///////// Builders

@@ -3,6 +3,8 @@ package com.geobloc.handlers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -56,6 +58,8 @@ public class XMLHandler extends DefaultHandler {
 	
 	private static String GB_BUTTON = "gb_button";
 	private static String GB_BUTTON_TEXT = "gb_buttonText";
+	
+	
 
 	// fields
 	private boolean in_gb_form = false;
@@ -83,7 +87,11 @@ public class XMLHandler extends DefaultHandler {
 	private Context myContext;
     
     List<IField> fields;
-    
+
+    /** We use a stack of Attributes */
+    private Stack<AttributeTag> attrStack;
+    private AttributeTag actualAtt;
+
       
     public XMLHandler ()
     {
@@ -91,6 +99,7 @@ public class XMLHandler extends DefaultHandler {
     	
         myForm = new FormClass();
         parseError = false;
+        attrStack = new Stack<AttributeTag>();
     }
 
 
@@ -108,6 +117,15 @@ public class XMLHandler extends DefaultHandler {
     public void endDocument() throws SAXException {
          //
     }     
+    
+    
+    public void pushAttrStack (String localName, AttributeTag atts) throws SAXException {
+        
+		/** We insert the Attributes in the stack */
+    	attrStack.push(atts);
+    	
+    	Log.v(TAG, "("+attrStack.size()+") Push <"+localName+">  - {"+atts.attMap.size()+"}");
+    }
 
     /** It runs when it encounters tags as:
      * <tag>
@@ -116,12 +134,14 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void startElement(String namespaceURI, String localName,
               String qName, Attributes atts) throws SAXException {
-    	    	
+    	
+    	actualAtt = new AttributeTag(atts);
+    	
     	switch (XMLHandler.MapTags.get(localName)) {
     		case IGB_FORM:
     			this.in_gb_form = true;
     			Log.v(TAG, "Nuevo formulario");
-    			break;
+                break;
     		case IGB_PAGE:
     			this.in_gb_page = true;
     			myPage = new FormPage();
@@ -169,6 +189,11 @@ public class XMLHandler extends DefaultHandler {
     				Log.e(TAG, "Etiqueta no definida: <"+localName+">");
     	}
     	
+    	pushAttrStack (localName, actualAtt);
+    }
+    
+    private AttributeTag popAttrStack () {
+    	return attrStack.pop();
     }
     
     /** It runs in closing tags:
@@ -177,10 +202,17 @@ public class XMLHandler extends DefaultHandler {
     public void endElement(String namespaceURI, String localName, String qName)
               throws SAXException {
     	
+    	AttributeTag attMap = popAttrStack();
+    	
     	switch (XMLHandler.MapTags.get(localName)) {
     	
 		case IGB_FORM:
 			this.in_gb_form = false;
+
+	    	if (!attrStack.empty()) {
+	    		Log.e(TAG, "PILA NO VACIA");
+	    	}
+	    	
 			break;
 		case IGB_PAGE:
 			this.in_gb_page = false;
@@ -205,7 +237,7 @@ public class XMLHandler extends DefaultHandler {
 			this.in_gb_pageName = false;
 			break;
 		case IGB_LABEL:
-			LabelQuestionPrompt lqPrompt = new LabelQuestionPrompt(id, title);
+			LabelQuestionPrompt lqPrompt = new LabelQuestionPrompt(title, attMap);
 			myPage.addQuestion(lqPrompt);
 			
             this.in_gb_label = false;
@@ -247,6 +279,8 @@ public class XMLHandler extends DefaultHandler {
 				Log.e(TAG, "Etiqueta no definida: </"+localName+">");
 				break;
     	}
+    	
+
 
     } 
     
