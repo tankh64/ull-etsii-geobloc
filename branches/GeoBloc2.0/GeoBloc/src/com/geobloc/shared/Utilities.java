@@ -17,6 +17,12 @@ import android.widget.Toast;
 public class Utilities {
 
 	/*
+	 * Attributes for the Tags and the questions
+	 */
+	public static String ATTR_ID = "id";
+	public static String ATTR_IS_REQUIRED = "isRequired";
+	
+	/*
 	 * Type for the "Widget"
 	 */
 	public enum WidgetType {LABEL, STRING, INT, BUTTON, CHECKBOX};

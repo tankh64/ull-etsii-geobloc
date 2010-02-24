@@ -127,7 +127,7 @@ public class FormActivity extends Activity {
         
         final Object data = getLastNonConfigurationInstance();
         
-        // The activity is starting for the first time, load the photos from Flickr
+        // The activity is starting for the first time
         if (data == null) {
             myLoadForm();
         } else {
