@@ -6,6 +6,8 @@ import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,13 +33,11 @@ public class QuestionWidget extends LinearLayout {
 		switch (mQuestion.getType()) {
 		
 		case GB_LABEL:
-			
-			mQuestion.setRequired();
-			
 			TextView tv = new TextView(context);
 			tv.setText(((LabelQuestionPrompt)mQuestion).getQuestionTitle());
 			tv.setPadding(5, 5, 0, 5);
 			tv.setTextSize(20);
+			
 			addView(tv);
 			break;
 		case GB_DATAINPUT:
@@ -74,13 +74,18 @@ public class QuestionWidget extends LinearLayout {
 			break;
 		}
 		
-		/** If required, we add a button information */
-		if (mQuestion.isRequired()) {
-			Button req = new Button(context);
-			req.setText("Required");
-			addView(req);
-		}
+		if (mQuestion.isRequired())
+			setRequired();
 		
+	}
+	
+	
+	/**
+	 * Establece las características del widget cuando la pregunta es requerida
+	 * @param vista
+	 */
+	private void setRequired () {
+		setBackgroundColor(Color.YELLOW);
 	}
 	
 }

@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
+import com.geobloc.activities.FormLocalList;
 import com.geobloc.activities.FormsDownloader;
 import com.geobloc.activities.InstanceManager;
 import com.geobloc.activities.SecondStaticFormPrototype;
@@ -57,7 +58,7 @@ public class MainMenu extends Activity {
         mCreateFormButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 
-            	Intent i = new Intent (getApplicationContext(), FormList.class);
+            	Intent i = new Intent (getApplicationContext(), FormLocalList.class);
                 startActivityForResult(i, LIST_FORM);
             }
             
@@ -84,7 +85,7 @@ public class MainMenu extends Activity {
     	
     		case LIST_FORM:
 
-    			if(resultCode == RESULT_OK){
+    			/*if(resultCode == RESULT_OK){
     				Bundle extras = data.getExtras();
     				String filename = extras.getString (FormList.FILE_NAME);
     				String filepath = extras.getString (FormList.FILE_PATH);
@@ -97,7 +98,7 @@ public class MainMenu extends Activity {
     				Utilities.showToast(getApplicationContext(),
     							"Actividad NO devuelve correctamente",
     							Toast.LENGTH_SHORT);
-    			}
+    			}*/
     			break;
     		
     		case QUESTION_FORM:
