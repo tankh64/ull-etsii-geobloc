@@ -213,6 +213,8 @@ public class FormActivity extends Activity {
 	    	
 	    		LinearLayout vistaR = new LinearLayout(context);
 	    		vistaR.setOrientation(LinearLayout.VERTICAL);
+	    		vistaR.setHorizontalScrollBarEnabled(true);
+	    		vistaR.setVerticalScrollBarEnabled(true);
 	    		
 	    		
 	    		int numQuestions = formH.getNumQuestionOfPage(page);
@@ -223,7 +225,6 @@ public class FormActivity extends Activity {
 	    			QuestionWidget wdget = new QuestionWidget (context, formH.getQuestionOfPage(question, page));
 	    			
 	    			wdget.layout(5, 5, 5, 5);
-	    			wdget.setBackgroundColor(Color.YELLOW);
 	    			vistaR.addView (wdget);
 	    		}
 	    		

@@ -18,19 +18,17 @@ public class LabelQuestionPrompt extends QuestionPrompt {
 	
 	public LabelQuestionPrompt(String name, AttributeTag att) {
 		
-		if (att.attMap.size() != 0) {
-			
+		Log.i(TAG, "Constructor"+TAG);
+		// ID
+		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
 			this.setQuestionId(att.attMap.get(Utilities.ATTR_ID));
-			
-			if (att.isRequired())
-				this.setRequired();
-			
 		} else {
-			Log.v(TAG, " es NULL");
-			
-			atts = null;
+			Log.e(TAG, "Tag <"+name+"> has not ID");
 		}
-				
+		
+		if (att.isRequired())
+			this.setRequired();
+			
 		this.setQuestionTitle(name);
 		this.setType();
 	}

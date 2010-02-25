@@ -1,5 +1,6 @@
 package com.geobloc.prompt;
 
+import android.util.Log;
 import android.view.View;
 
 import com.geobloc.shared.Utilities.QuestionType;
@@ -13,6 +14,8 @@ import com.geobloc.shared.Utilities.QuestionType;
  *
  */
 public abstract class QuestionPrompt {
+	private static String TAG = "QuestionPrompt";
+	
 	private String questionId;
 	protected QuestionType type;
 	
@@ -23,6 +26,9 @@ public abstract class QuestionPrompt {
 	public QuestionPrompt (String name) {
 		setQuestionName(name);
 	}*/
+	public QuestionPrompt () {
+		Log.i(TAG, "Constructor"+TAG);
+	}
 	
 	///////// Methods
 	/**
