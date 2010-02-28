@@ -21,6 +21,9 @@ public class Utilities {
 	 */
 	public static String ATTR_ID = "id";
 	public static String ATTR_IS_REQUIRED = "isRequired";
+	public static String ATTR_LINES_NUMBER = "linesNumber";
+	
+	public static int background;
 	
 	/*
 	 * Type for the "Widget"

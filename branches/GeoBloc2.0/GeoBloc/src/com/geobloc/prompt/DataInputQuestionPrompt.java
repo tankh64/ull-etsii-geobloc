@@ -1,21 +1,45 @@
 package com.geobloc.prompt;
 
+import org.xml.sax.Attributes;
+
+import android.util.Log;
+
+import com.geobloc.handlers.AttributeTag;
+import com.geobloc.shared.Utilities;
 import com.geobloc.shared.Utilities.QuestionType;
 
 public class DataInputQuestionPrompt extends QuestionPrompt {
+	private static final String TAG = "DataInputQuestionPrompt";
+	
 	/** label of the Input */
 	private String title;
 	
 	/** input of the question */
 	private String input;
 	
+	private int numLines;
 	
 	////// Builders
 	/**
 	 * 
 	 */
-	public DataInputQuestionPrompt (String id, String titleText, String inputText) {
-		this.setQuestionId(id);
+	public DataInputQuestionPrompt (String titleText, String inputText, AttributeTag att) {
+		
+		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
+			this.setQuestionId(att.attMap.get(Utilities.ATTR_ID));
+		} else {
+			Log.e(TAG, "<"+titleText+"> has not ID");
+		}
+		
+		if (att.isRequired())
+			this.setRequired();
+		
+		if (att.attMap.containsKey(Utilities.ATTR_LINES_NUMBER)) {
+			this.setNumLines(Integer.parseInt(att.attMap.get(Utilities.ATTR_LINES_NUMBER)));
+		} else {
+			setNumLines(1);
+		}
+		
 		this.setQuestionTitle(titleText);
 		this.setQuestionInput(inputText);
 		this.setType();
@@ -45,6 +69,14 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	
 	public void setQuestionInput (String text) {
 		input = text;
+	}
+	
+	public void setNumLines (int num) {
+		numLines = num;
+	}
+	
+	public int getNumLines () {
+		return numLines;
 	}
 
 }

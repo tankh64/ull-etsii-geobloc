@@ -4,16 +4,12 @@
         <item>Formulario Texto</item>
         <item>Formulario Geolocalizado</item>
     </string-array>
-<string-array name="Array"><item>Azul</item>
-<item>Rojo</item>
-<item>Verde</item>
+<string-array name="Array">
 <item>Blanco</item>
 <item>Negro</item>
 </string-array>
-<string-array name="Values"><item>Blue</item>
-<item>Red</item>
-<item>GREEN</item>
-<item>WHITE</item>
-<item>BLACK</item>
+<string-array name="Values">
+<item>@color/White</item>
+<item>@color/Black</item>
 </string-array>
 </resources>

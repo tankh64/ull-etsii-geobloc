@@ -5,9 +5,11 @@ import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
 import com.geobloc.handlers.FormHandler;
 import com.geobloc.listeners.IStandardTaskListener;
+import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
 import com.geobloc.widget.QuestionWidget;
+import com.geobloc.widget.CreateWidget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,9 +17,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -105,6 +109,8 @@ public class FormActivity extends Activity {
 	
 	private static FormHandler formH;
 	
+	private SharedPreferences prefs;
+	
 	LinearLayout vista;
 	
 	@Override
@@ -124,6 +130,7 @@ public class FormActivity extends Activity {
         	finish();
         }
 
+        initConfig();
         
         final Object data = getLastNonConfigurationInstance();
         
@@ -135,6 +142,15 @@ public class FormActivity extends Activity {
         }
 
         
+	}
+	
+	/**
+	 * Initial config
+	 */
+	public void initConfig () {
+		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		
+		//Utilities.background = prefs.getInt(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, R.color.Background);
 	}
 	
 	@Override
@@ -198,7 +214,7 @@ public class FormActivity extends Activity {
 	private void setNumPage (LinearLayout layout, int page) {
 		TextView tv = new TextView(layout.getContext());
 		tv.setTextSize(20);
-		tv.setText(page+"/"+formH.getNumPages());
+		tv.setText("Página: "+page+"/"+formH.getNumPages());
 		tv.layout(5, 5, 5, 5);
 		tv.setGravity(Gravity.RIGHT);
 		
@@ -212,22 +228,20 @@ public class FormActivity extends Activity {
 	    	for (int page=0; page < formH.getNumPages(); page++) {
 	    	
 	    		LinearLayout vistaR = new LinearLayout(context);
+	    		vistaR.setPadding(5, 5, 5, 5);
 	    		vistaR.setOrientation(LinearLayout.VERTICAL);
 	    		vistaR.setHorizontalScrollBarEnabled(true);
 	    		vistaR.setVerticalScrollBarEnabled(true);
-	    		
 	    		
 	    		int numQuestions = formH.getNumQuestionOfPage(page);
 	    		
 	    		setNumPage(vistaR, page+1);
 	    		
-	    		for (int question=0; question < numQuestions; question++) {	    			
-	    			QuestionWidget wdget = new QuestionWidget (context, formH.getQuestionOfPage(question, page));
-	    			
-	    			wdget.layout(5, 5, 5, 5);
-	    			vistaR.addView (wdget);
+	    		for (int question=0; question < numQuestions; question++) {
+	    			/** create the appropriate widget depending on the question */
+	    			QuestionWidget wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), context);
+	    			vistaR.addView((View)wdget);
 	    		}
-	    		
 	    		viewFlipper.addView(vistaR, page+1);
 	    	}
 	    }
@@ -275,6 +289,6 @@ public class FormActivity extends Activity {
 	public void setListener(IStandardTaskListener listener) {
 		this.listener = listener;
 	}
-	
+
 	
 }

@@ -36,7 +36,11 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
 	public static String __FORMS_PATH_KEY__ = "formsPath";
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
-	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
+	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";	
+	// forms preferences
+	public static String __FORM_BACKGROUND_COLOR__ = "formBackground";
+	public static String __FORM_REQUIRED_COLOR__ = "colorRequired";
+	
 	
 	// default internet addresses
 	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/upload_basicpackageform";
