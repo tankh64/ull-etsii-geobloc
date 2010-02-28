@@ -52,7 +52,7 @@
   		android:name="formBackgroundName"
   		android:title="@string/formColorBackground"
   		android:summary="@string/formColorBackgroundDescription"
-  		android:defaultValue="WHITE"
+  		android:defaultValue="@color/White"
 		android:entries="@array/Array"
 		android:entryValues="@array/Values" >
   	</ListPreference>

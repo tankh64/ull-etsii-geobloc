@@ -250,7 +250,7 @@ public class XMLHandler extends DefaultHandler {
 			this.in_gb_description = false;
 			break;
 		case IGB_FIELD:
-        	DataInputQuestionPrompt iQPrompt = new DataInputQuestionPrompt (id, title, this.textContent);
+        	DataInputQuestionPrompt iQPrompt = new DataInputQuestionPrompt (title, this.textContent, attMap);
 			myPage.addQuestion(iQPrompt);
 			
             this.in_gb_field = false;
@@ -263,7 +263,7 @@ public class XMLHandler extends DefaultHandler {
 			this.in_gb_fieldDefaultValue = false;
 			break;
 		case IGB_BUTTON:
-        	ButtonQuestionPrompt bPrompt = new ButtonQuestionPrompt (id, title);
+        	ButtonQuestionPrompt bPrompt = new ButtonQuestionPrompt (title, attMap);
 			myPage.addQuestion(bPrompt);
         	
             this.in_gb_button = false;

@@ -23,7 +23,7 @@ public class LabelQuestionPrompt extends QuestionPrompt {
 		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
 			this.setQuestionId(att.attMap.get(Utilities.ATTR_ID));
 		} else {
-			Log.e(TAG, "Tag <"+name+"> has not ID");
+			Log.e(TAG, "<"+name+"> has not ID");
 		}
 		
 		if (att.isRequired())

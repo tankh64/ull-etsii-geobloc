@@ -5,4 +5,6 @@
 	<color name="CandyRed">#E62626FF</color>
 	<color name="SoftGreen">#FF76E626</color>
 	<color name="LightYellow">#FF76E626</color>
+<color name="Background">#FFFFFFFF</color>
+<color name="Black">#FF000000</color>
 </resources>
