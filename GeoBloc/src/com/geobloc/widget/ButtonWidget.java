@@ -2,6 +2,7 @@ package com.geobloc.widget;
 
 import com.geobloc.prompt.ButtonQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
+import com.geobloc.shared.Utilities;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -33,7 +34,7 @@ public class ButtonWidget extends Button implements QuestionWidget {
         setPadding(10,10,10,10);
         
 		if (qP.isRequired()) {
-			this.setBackgroundColor(Color.YELLOW);
+			this.setBackgroundColor(Utilities.requiredColor);
 		}
 	}
 

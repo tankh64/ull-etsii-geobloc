@@ -3,8 +3,11 @@
  */
 package com.geobloc.shared;
 
+import com.geobloc.R;
+
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.Toast;
 
 /**
@@ -22,13 +25,20 @@ public class Utilities {
 	public static String ATTR_ID = "id";
 	public static String ATTR_IS_REQUIRED = "isRequired";
 	public static String ATTR_LINES_NUMBER = "linesNumber";
+	public static String ATTR_TYPE = "type";
 	
-	public static int background;
+	public static int background = Color.WHITE;
+	public static int requiredColor = Color.rgb(255,200,0);
 	
 	/*
 	 * Type for the "Widget"
 	 */
 	public enum WidgetType {LABEL, STRING, INT, BUTTON, CHECKBOX};
+	
+	/*
+	 * Types for the FIELD
+	 */
+	public enum FieldType {STRING, INT, FLOAT};
 	
 	/**
 	 * Enumerated type indicating the type of question

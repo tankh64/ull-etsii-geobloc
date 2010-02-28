@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
+import com.geobloc.shared.Utilities;
 
 public class LabelWidget extends TextView implements QuestionWidget {
 
@@ -34,7 +35,7 @@ public class LabelWidget extends TextView implements QuestionWidget {
 		this.setTextSize(20);
 		
 		if (qP.isRequired()) {
-			this.setBackgroundColor(Color.YELLOW);
+			this.setBackgroundColor(Utilities.requiredColor);
 		}
 	}
 

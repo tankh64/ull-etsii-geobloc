@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -43,6 +44,7 @@ import android.widget.ViewFlipper;
  *
  */
 public class FormActivity extends Activity {
+	private static final String TAG = "FormActivity";
 	
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -150,6 +152,10 @@ public class FormActivity extends Activity {
 	public void initConfig () {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
+		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_BACKGROUND_COLOR__+">");
+		
+		Log.v(TAG, "Es    <"+Utilities.background+">");
+		
 		//Utilities.background = prefs.getInt(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, R.color.Background);
 	}
 	
@@ -194,10 +200,17 @@ public class FormActivity extends Activity {
 	}
 	
 	private void postTaskFinished() {
+		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutInit);
+		lL.setBackgroundColor(Utilities.background);
+		lL = (LinearLayout) findViewById(R.id.FormLayoutEnd);
+		lL.setBackgroundColor(Utilities.background);
+		
 		/** Rellenamos el Titulo y la descripción del formulario */
 		/*** Colocamos texto en el viewFlipper */
 		TextView tView = (TextView)findViewById(R.id.TitleForm);
 		tView.setText(getString(R.string.form_loaded, formH.getNameForm()));
+		tView = (TextView)findViewById(R.id.FormVersion);
+		tView.setText(getString(R.string.form_version, formH.getVersionForm()));
 		tView = (TextView)findViewById(R.id.FormDescription);
 		tView.setText(formH.getDescription());
 		tView = (TextView)findViewById(R.id.TextFingerMov);
@@ -232,6 +245,7 @@ public class FormActivity extends Activity {
 	    		vistaR.setOrientation(LinearLayout.VERTICAL);
 	    		vistaR.setHorizontalScrollBarEnabled(true);
 	    		vistaR.setVerticalScrollBarEnabled(true);
+	    		vistaR.setBackgroundColor(Utilities.background);
 	    		
 	    		int numQuestions = formH.getNumQuestionOfPage(page);
 	    		
