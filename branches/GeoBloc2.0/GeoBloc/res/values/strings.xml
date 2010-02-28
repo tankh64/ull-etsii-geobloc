@@ -64,4 +64,5 @@
 <string name="formPreferencesTitle">Preferencias del Formulario</string>
 <string name="formColorBackgroundDescription">Color de fondo del formulario por defecto</string>
 <string name="formColorBackground">Fondo del formulario</string>
+<string name="form_version">Version %s</string>
 </resources>

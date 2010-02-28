@@ -2,6 +2,7 @@ package com.geobloc.prompt;
 
 import org.xml.sax.Attributes;
 
+import android.text.InputType;
 import android.util.Log;
 
 import com.geobloc.handlers.AttributeTag;
@@ -18,6 +19,8 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	private String input;
 	
 	private int numLines;
+	/** Type of the Text inserted */
+	private Utilities.FieldType fieldType;
 	
 	////// Builders
 	/**
@@ -32,7 +35,13 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 		}
 		
 		if (att.isRequired())
-			this.setRequired();
+			this.setRequired();		
+		
+		if (att.attMap.containsKey(Utilities.ATTR_TYPE)) {
+			this.setFieldType(att.attMap.get(Utilities.ATTR_TYPE));
+		} else {
+			this.setFieldType("HAVENT");
+		}
 		
 		if (att.attMap.containsKey(Utilities.ATTR_LINES_NUMBER)) {
 			this.setNumLines(Integer.parseInt(att.attMap.get(Utilities.ATTR_LINES_NUMBER)));
@@ -79,4 +88,17 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 		return numLines;
 	}
 
+	private void setFieldType (String type) {
+		if (type.equalsIgnoreCase("int")) {
+			fieldType = Utilities.FieldType.INT;
+		} else if (type.equalsIgnoreCase("float")) {
+			fieldType = Utilities.FieldType.FLOAT;
+		} else {
+			fieldType = Utilities.FieldType.STRING;
+		}
+	}
+	
+	public Utilities.FieldType getFieldType () {
+		return fieldType;
+	}
 }
