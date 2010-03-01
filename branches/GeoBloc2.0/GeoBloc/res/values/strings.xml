@@ -54,6 +54,16 @@
 	<string name="forms_downloader_list_itemFormStatusUpdate">Actualización Disp.</string>
 	<string name="forms_downloader_list_itemFormStatusNew">Nuevo </string>
 	<string name="forms_downloader_list_itemFormStatusCurrent">Más reciente</string>
+	
+		<!-- InstanceManager Layout and List Items -->
+	<string name="instance_manager_allInstancesLabel">Todas las instancias</string>
+	<string name="instance_manager_completeInstancesLabel">Instancias completas</string>
+	<string name="instance_manager_allInstancesEraseButton">Borrar</string>
+	<string name="instance_manager_completeInstancesSendButton">Enviar</string>
+	<string name="instance_manager_list_itemFormInstanceCompletedTextViewText">Completado: </string>
+	<string name="instance_manager_list_itemFormInstanceCompleteYes">Si</string>
+	<string name="instance_manager_list_itemFormInstanceCompleteNo">No</string>
+	
 <string name="cover_title">GeoBloc</string>
 <string name="cover_subtile_2">Gerencia de Urbanismo de La Laguna</string>
 <string name="no_more_pages_at_left">No existen más páginas del formulario a la izquierda</string>

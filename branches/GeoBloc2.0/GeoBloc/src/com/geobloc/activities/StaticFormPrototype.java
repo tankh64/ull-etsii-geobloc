@@ -1,11 +1,12 @@
 package com.geobloc.activities;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.geobloc.R;
+import com.geobloc.db.DbFormInstance;
+import com.geobloc.db.DbFormInstanceSQLiteHelper;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.persistance.GeoBlocPackageManifestBuilder;
 import com.geobloc.shared.GBSharedPreferences;
@@ -20,7 +23,7 @@ import com.geobloc.shared.Utilities;
 import com.geobloc.xml.FormTextField;
 import com.geobloc.xml.IField;
 import com.geobloc.xml.IXMLWriter;
-import com.geobloc.xml.MultiField;
+import com.geobloc.xml.TextMultiField;
 import com.geobloc.xml.TextXMLWriter;
 
 public class StaticFormPrototype extends Activity {
@@ -52,17 +55,12 @@ public class StaticFormPrototype extends Activity {
     	enviar = (Button) findViewById(R.id.Button04);
     	
     	// build package
-    	Calendar cal = Calendar.getInstance();
-    	String date = cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH)+1) 
-			+ "-" + cal.get(Calendar.YEAR);
-    	packageName = "geobloc_pk_" + date + "_" + cal.get(Calendar.HOUR_OF_DAY) 
-    		+ "-" + cal.get(Calendar.MINUTE) 
-			+ "-" + cal.get(Calendar.SECOND)+"/";
+    	packageName = Utilities.buildPackageName(this, "static");
     	formPackage = new GeoBlocPackageManager(getApplicationContext(), packageName);
     	
     	// build manifest
     	manifestBuilder = new GeoBlocPackageManifestBuilder(packageName, "GeoBloc Package", 
-    			"static/1", "es", "application/octet", date);
+    			"static/1", "es", "application/octet", (new Date()).toLocaleString());
     	
     	if (!formPackage.OK()) {
     		enviar.setEnabled(false);
@@ -84,19 +82,21 @@ public class StaticFormPrototype extends Activity {
     private List<IField> getFields() {
     	List<IField> myFields = new ArrayList<IField>();
     	FormTextField field;
-    	MultiField fields = new MultiField("fields");
+    	TextMultiField fields = new TextMultiField("fields", "field1", "field2", "field1Content", "field2Content");
+    	
     	// numForm
-    	field = new FormTextField("field", "numForm", numForm.getText().toString());
+    	field = new FormTextField("field", "field1", "field2", "numForm", numForm.getText().toString());
     	fields.addField(field);
     	// inspector
-    	field = new FormTextField("field", "inspector", inspector.getText().toString());
+    	field = new FormTextField("field", "field1", "field2", "inspector", inspector.getText().toString());
     	fields.addField(field);
     	// numVisita
-    	field = new FormTextField("field", "numVisita", numVisita.getText().toString());
+    	field = new FormTextField("field", "field1", "field2", "numVisita", numVisita.getText().toString());
     	fields.addField(field);
     	// observaciones
-    	field = new FormTextField("field", "observaciones", observaciones.getText().toString());
+    	field = new FormTextField("field", "field1", "field2", "observaciones", observaciones.getText().toString());
     	fields.addField(field);
+    	
     	
     	// add MultiField
     	myFields.add(fields);
@@ -128,8 +128,21 @@ public class StaticFormPrototype extends Activity {
     	boolean xmlOk = formPackage.addFile(GBSharedPreferences.__DEFAULT_FORM_FILENAME__, xml);
     	
     	// add manifest.xml
-    	xml = manifestBuilder.toXml();
-    	xmlOk = formPackage.addFile(GBSharedPreferences.__DEFAULT_PACKAGE_MANIFEST_FILENAME__, xml);
+    	String manifestXml = manifestBuilder.toXml();
+    	xmlOk = formPackage.addFile(GBSharedPreferences.__DEFAULT_PACKAGE_MANIFEST_FILENAME__, manifestXml);
+    	
+    	// add form to database (completed)
+    	DbFormInstance dbi = new DbFormInstance();
+    	dbi.setName(Utilities.buildPackageName(this, "static"));
+    	dbi.setCreatedDate(new Date());
+    	dbi.setPackageLocation(formPackage.getPackageFullpath());
+    	dbi.setCompletedDate(new Date());
+    	dbi.setCompressedPackageFileLocation(null);
+    	dbi.setCompleted(true);
+    	
+    	SQLiteDatabase db =(new DbFormInstanceSQLiteHelper(getBaseContext())).getWritableDatabase();
+    	dbi.save(db);
+    	db.close();
     	
     	Intent i = new Intent(this, NewTextReader.class);
     	i.putExtra(NewTextReader.__TEXT_READER_TEXT__, xml);

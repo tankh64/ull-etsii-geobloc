@@ -196,6 +196,7 @@ public class FormsDownloader extends Activity implements android.content.DialogI
 			holder.status.setTextColor(Color.CYAN);
 			if (checkedItems[position]) {
 				holder.background.setBackgroundColor(Color.rgb(165, 42, 42));
+				//holder.background.setBackgroundColor(R.color.CheckedRed);
 			}
 			else
 				holder.background.setBackgroundColor(Color.DKGRAY);

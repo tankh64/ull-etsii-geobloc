@@ -15,6 +15,8 @@ import com.geobloc.xml.TextXMLWriter;
  * A class designed to return an XML containing metadata about the package. Some information will be filled 
  * upon creation, but other data must be added by the class in charge of building the package.
  * 
+ * DISABLED FOR NEXT BUILD
+ * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
@@ -35,6 +37,7 @@ public class GeoBlocPackageManifestBuilder {
 		//pk_metadata is inside packageMultiField
 		packageMultiField.addField(pk_metadata);
 		
+		/*
 		// fill in packageMultiField
 		FormTextField field;
 		field = new FormTextField("field", "Title", title);
@@ -49,6 +52,7 @@ public class GeoBlocPackageManifestBuilder {
 		pk_metadata.addField(field);
 		field = new FormTextField("field", "date", date);
 		pk_metadata.addField(field);
+		*/
 	}
 	
 	public void addFile(String filename, String filetype) {
@@ -57,10 +61,12 @@ public class GeoBlocPackageManifestBuilder {
 		f_metadata.setFieldTag("f-metadata");
 		FormTextField field;
 		
+		/*
 		field = new FormTextField("field", "file-name", filename);
 		f_metadata.addField(field);
 		field = new FormTextField("field", "file-type", filetype);
 		f_metadata.addField(field);
+		*/
 		// we add the new file to the packageMultiField
 		packageMultiField.addField(f_metadata);		
 	}

@@ -146,6 +146,15 @@ public class MainMenu extends Activity {
     	startActivity(i);
     }
     
+    /*
+     * TESTING
+     */
+    
+    public void staticFormStartButtonOnClickHandler(View target) {
+    	Intent i = new Intent(this, StaticFormPrototype.class);
+    	startActivity(i);
+    }
+    
     /* --> Menu <-- */
     
     @Override
