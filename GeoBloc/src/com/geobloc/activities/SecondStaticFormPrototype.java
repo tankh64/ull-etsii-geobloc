@@ -102,6 +102,7 @@ public class SecondStaticFormPrototype extends Activity {
     	List<IField> myFields = new ArrayList<IField>();
     	FormTextField field;
     	MultiField fields = new MultiField("fields");
+    	/*
     	// numForm
     	field = new FormTextField("field", "numForm", numForm.getText().toString());
     	fields.addField(field);
@@ -117,6 +118,7 @@ public class SecondStaticFormPrototype extends Activity {
     	// longitude
     	field = new FormTextField("field", "latitude", latitude.getText().toString());
     	fields.addField(field);
+    	*/
     	
     	// add MultiField
     	myFields.add(fields);

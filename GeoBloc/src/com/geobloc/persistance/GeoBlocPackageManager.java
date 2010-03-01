@@ -104,6 +104,32 @@ public class GeoBlocPackageManager {
 		return success;
 	}
 	
+	public boolean eraseDirectory(String directoryname) {
+		boolean success = true;
+		boolean finished = false;
+		List<File> directories = this.getAllDirectories();
+		String s;
+		//for (int i = 0; i < directories.size(); i++) {
+		int i = 0;
+		while ((!finished) && (i < directories.size())) {
+			s = directories.get(i).getName();
+			if (s.contains(directoryname)) {
+				File directoryToBeErased = directories.get(i);
+				// first erase all files in the directory
+				for (File f : directoryToBeErased.listFiles())
+					if (!f.delete())
+						success = false;
+				// if all files in the directory where deleted, delete the directory
+				if (success)
+					success = directoryToBeErased.delete();
+				// end loop
+				i = directories.size();
+			}
+			i++;
+		}
+		return success;
+	}
+	
 	public String getPackageFullpath() {
 		return packageDirectory;
 	}
@@ -149,5 +175,15 @@ public class GeoBlocPackageManager {
 			files.add(fileArray[i]);
 		}
 		return files;
+	}
+	
+	public List<File> getAllDirectories() {
+		File[] fileArray = directory.listFiles();
+		List<File> directories = new ArrayList<File>();
+		for (int i = 0; i < fileArray.length; i++) {
+			if (fileArray[i].isDirectory())
+				directories.add(fileArray[i]);
+		}
+		return directories;
 	}
 }

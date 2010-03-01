@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/forms_downloader_list_itemParentView"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+  <!-- Left side of the item -->
+  <CheckBox
+  	android:id="@+id/instance_manager_list_itemCb"
+  	android:layout_alignParentLeft="true"
+  	android:layout_width="48dip"
+    android:layout_height="48dip">
+  </CheckBox>
+  <!-- Top -->
+  <TextView
+  	android:id="@+id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:layout_toRightOf="@id/instance_manager_list_itemCb"
+  	android:layout_alignParentTop="true"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:textSize="18sp"
+  	android:textStyle="bold">
+  </TextView>
+  
+  <!-- Lower right corner, Completed? -->
+  <TextView
+  	android:id="@+id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
+  	android:layout_alignParentRight="true"
+  	android:paddingRight="7dp"
+  	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  </TextView>
+  <TextView
+  	android:id="@+id/instance_manager_list_itemFormInstanceCompletedTextView"
+  	android:text="@string/instance_manager_list_itemFormInstanceCompletedTextViewText"
+  	android:paddingRight="2dp"
+  	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
+  	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  </TextView>
+  <!-- Below the form instance name, the dates -->
+  <TextView
+  	android:id="@+id/instance_manager_list_itemFormInstanceCreated"
+  	android:layout_toRightOf="@id/instance_manager_list_itemCb"
+  	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
+  	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content">
+  </TextView>  
+
+</RelativeLayout>

@@ -3,11 +3,12 @@
  */
 package com.geobloc.shared;
 
-import com.geobloc.R;
+import java.util.Calendar;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 /**
@@ -69,4 +70,27 @@ public class Utilities {
 		alert.show();
 	}
 
+	/*
+	 * Builds a new package's name which follows this structure: formName + phoneID + Date&Time
+	 * phoneID can be the phone's IMEI if it is a GSM device, MEID if it is a CDMA device, etc.
+	 * 
+	 */
+	public static String buildPackageName(Context context, String formName) {
+		String name = formName;
+		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		String id = tm.getDeviceId();
+		// some devices do not have ID (MIDs, tablets, etc.)
+		if (id != null)
+			name += "_" + id;
+		
+    	Calendar cal = Calendar.getInstance();
+    	String date = cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH)+1) 
+			+ "-" + cal.get(Calendar.YEAR);
+    	String time = cal.get(Calendar.HOUR_OF_DAY) 
+    		+ "-" + cal.get(Calendar.MINUTE) 
+			+ "-" + cal.get(Calendar.SECOND)+"/";
+		
+    	name += "_" + date + "_" + time;
+		return name;
+	}
 }

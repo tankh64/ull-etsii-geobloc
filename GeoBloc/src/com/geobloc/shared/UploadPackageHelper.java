@@ -131,7 +131,7 @@ public class UploadPackageHelper implements IStandardTaskListener {
     			else
     				value = "FALSE";
     		}
-    		field = new FormTextField("widget", name, value);
+    		field = new FormTextField("widget", "field1", "field2", name, value);
     		fields.addField(field);
     		childFlag++;
     	}

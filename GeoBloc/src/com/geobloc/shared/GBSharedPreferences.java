@@ -54,6 +54,11 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __DEFAULT_PACKAGE_MANIFEST_FILENAME__ = "manifest.xml";
 	public static String __DEFAULT_FORM_FILENAME__ = "form.xml";
 	
+	// swipe
+	public static final int SWIPE_MIN_DISTANCE = 120;
+	public static final int SWIPE_MAX_OFF_PATH = 250;
+	public static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	
 	// other
 	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
 	public final static int __DEFAULT__ANIMATION_TIME__ = 2500;
