@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
@@ -52,6 +53,9 @@ public class MainMenu extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        TextView tv = (TextView) findViewById(R.id.ProgramName);
+        tv.setText(getString(R.string.app_name)+" v"+getString(R.string.version));
         
         // Create Form Button
         mCreateFormButton = (Button) findViewById(R.id.ButtonMainMenu1);

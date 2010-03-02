@@ -38,7 +38,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
 	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";	
 	// forms preferences
-	public static String __FORM_BACKGROUND_COLOR__ = "formBackground";
+	public static String __FORM_BACKGROUND_COLOR__ = "formColor";
+	public static String __FORM_TEXT_COLOR__ = "formTextColor";
 	public static String __FORM_REQUIRED_COLOR__ = "colorRequired";
 	
 	

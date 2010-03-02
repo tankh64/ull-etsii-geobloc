@@ -153,10 +153,12 @@ public class FormActivity extends Activity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
 		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_BACKGROUND_COLOR__+">");
-		
+		Utilities.background = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, "-1"));
 		Log.v(TAG, "Es    <"+Utilities.background+">");
 		
-		//Utilities.background = prefs.getInt(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, R.color.Background);
+		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_TEXT_COLOR__+">");
+		Utilities.fontColor = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_TEXT_COLOR__, "-12303292"));
+		Log.v(TAG, "Es    <"+Utilities.fontColor+">");
 	}
 	
 	@Override
@@ -208,12 +210,16 @@ public class FormActivity extends Activity {
 		/** Rellenamos el Titulo y la descripción del formulario */
 		/*** Colocamos texto en el viewFlipper */
 		TextView tView = (TextView)findViewById(R.id.TitleForm);
+		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.form_loaded, formH.getNameForm()));
 		tView = (TextView)findViewById(R.id.FormVersion);
+		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.form_version, formH.getVersionForm()));
 		tView = (TextView)findViewById(R.id.FormDescription);
+		tView.setTextColor(Utilities.fontColor);
 		tView.setText(formH.getDescription());
 		tView = (TextView)findViewById(R.id.TextFingerMov);
+		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.help_form_mov));
 		
 		setFlipperPages();
@@ -226,6 +232,7 @@ public class FormActivity extends Activity {
 	 */
 	private void setNumPage (LinearLayout layout, int page) {
 		TextView tv = new TextView(layout.getContext());
+		tv.setTextColor(Utilities.fontColor);
 		tv.setTextSize(20);
 		tv.setText("Página: "+page+"/"+formH.getNumPages());
 		tv.layout(5, 5, 5, 5);

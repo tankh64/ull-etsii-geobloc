@@ -32,6 +32,7 @@ public class LabelWidget extends TextView implements QuestionWidget {
 		
 		this.setText(((LabelQuestionPrompt)qP).getQuestionTitle());
 		this.setPadding(0, 5, 0, 5);
+		this.setTextColor(Utilities.fontColor);
 		this.setTextSize(20);
 		
 		if (qP.isRequired()) {

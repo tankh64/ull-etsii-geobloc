@@ -27,8 +27,10 @@ public class Utilities {
 	public static String ATTR_IS_REQUIRED = "isRequired";
 	public static String ATTR_LINES_NUMBER = "linesNumber";
 	public static String ATTR_TYPE = "type";
+	public static String ATTR_ACTION = "action";
 	
 	public static int background = Color.WHITE;
+	public static int fontColor = Color.DKGRAY;
 	public static int requiredColor = Color.rgb(255,200,0);
 	
 	/*
