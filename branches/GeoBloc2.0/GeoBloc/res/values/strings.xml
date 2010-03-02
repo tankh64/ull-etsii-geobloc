@@ -75,4 +75,7 @@
 <string name="formColorBackgroundDescription">Color de fondo del formulario por defecto</string>
 <string name="formColorBackground">Fondo del formulario</string>
 <string name="form_version">Version %s</string>
+<string name="formColorTextDescription">Color del texto del formulario por defecto</string>
+<string name="formColorText">Color del Texto</string>
+<string name="version">0.1</string>
 </resources>

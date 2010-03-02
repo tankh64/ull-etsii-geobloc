@@ -11,12 +11,18 @@ public class ButtonQuestionPrompt extends QuestionPrompt {
 	
 	String title;
 	
+	String action;
+	
 	public ButtonQuestionPrompt (String titleText, AttributeTag att) {
 		
 		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
 			this.setQuestionId(att.attMap.get(Utilities.ATTR_ID));
 		} else {
 			Log.e(TAG, "<"+titleText+"> has not ID");
+		}
+		
+		if (att.attMap.containsKey(Utilities.ATTR_ACTION)) {
+			this.setAction(att.attMap.get(Utilities.ATTR_ACTION));
 		}
 		
 		this.setButtonTitle(titleText);
@@ -38,5 +44,13 @@ public class ButtonQuestionPrompt extends QuestionPrompt {
 	
 	public String getButtonTitle () {
 		return title;
+	}
+	
+	private void setAction (String mAction) {
+		this.action = mAction;
+	}
+	
+	public String getAction () {
+		return this.action;
 	}
 }

@@ -48,7 +48,7 @@
   <PreferenceCategory
   	android:title="@string/formPreferencesTitle">
   	<ListPreference
-  		android:key="formBackground"
+  		android:key="formColor"
   		android:name="formBackgroundName"
   		android:title="@string/formColorBackground"
   		android:summary="@string/formColorBackgroundDescription"
@@ -56,6 +56,17 @@
 		android:entries="@array/Array"
 		android:entryValues="@array/Values" >
   	</ListPreference>
+  	
+  	  	<ListPreference
+  		android:key="formTextColor"
+  		android:name="formTextName"
+  		android:title="@string/formColorText"
+  		android:summary="@string/formColorTextDescription"
+  		android:defaultValue="@color/White"
+		android:entries="@array/Array"
+		android:entryValues="@array/Values" >
+  	</ListPreference>
+  	
   </PreferenceCategory>
   	
   
