@@ -7,9 +7,11 @@ import com.geobloc.shared.Utilities;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 public class ButtonWidget extends LinearLayout implements QuestionWidget {
 	
