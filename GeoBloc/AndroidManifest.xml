@@ -6,6 +6,7 @@
     <application 
     	android:label="@string/app_name"
     	android:name="ApplicationEx" 
+    	android:screenOrientation="portrait"
     	android:debuggable="true" android:icon="@drawable/milestone_geobloc_icon">
     	<activity android:name="Cover"
     			android:label="@string/app_name">
@@ -53,7 +54,7 @@
 			android:label="@string/formsSenderButtonText">
 		</activity>
 	<activity android:name="ParsingXML"></activity>
-<activity android:name=".activities.FormActivity"></activity>
+<activity android:name=".activities.FormActivity" android:screenOrientation="portrait"></activity>
 <activity android:name=".activities.FormLocalList"></activity>
 </application>
     <uses-sdk android:minSdkVersion="4" />
