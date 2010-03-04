@@ -18,6 +18,7 @@ import com.geobloc.activities.FormActivity;
 import com.geobloc.activities.FormLocalList;
 import com.geobloc.activities.FormsDownloader;
 import com.geobloc.activities.InstanceManager;
+import com.geobloc.activities.FormTemplateList;
 import com.geobloc.activities.SecondStaticFormPrototype;
 import com.geobloc.activities.StaticFormPrototype;
 import com.geobloc.shared.GBSharedPreferences;
@@ -62,7 +63,8 @@ public class MainMenu extends Activity {
         mCreateFormButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 
-            	Intent i = new Intent (getApplicationContext(), FormLocalList.class);
+            	/*Intent i = new Intent (getApplicationContext(), FormLocalList.class);*/
+            	Intent i = new Intent (getApplicationContext(), FormTemplateList.class);
                 startActivityForResult(i, LIST_FORM);
             }
             

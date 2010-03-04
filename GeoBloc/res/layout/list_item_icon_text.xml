@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android='http://schemas.android.com/apk/res/android'
+    android:layout_width='fill_parent'
+    android:layout_height='?android:attr/listPreferredItemHeight'
+
+    android:padding='6dip'>
+
+    <ImageView
+        android:id='@+id/icon'
+
+        android:layout_width='wrap_content'
+        android:layout_height='fill_parent'
+
+        android:layout_alignParentTop='true'
+        android:layout_alignParentBottom='true'
+        android:layout_marginRight='6dip'
+        android:src="@drawable/icon48x48"/>
+
+		
+		<TextView android:layout_height="wrap_content"
+		android:id="@+id/title" android:layout_toRightOf="@+id/icon" android:layout_width="wrap_content" android:textSize="20px" android:text="Nombre del formulario bastante largo para ver que pasa con todo" android:maxLines="1" android:layout_toLeftOf="@+id/version">
+		</TextView>
+		
+		<TextView android:layout_height="wrap_content"
+		android:id="@+id/description"
+		android:ellipsize='marquee'
+		android:layout_width="wrap_content" android:text="Descripcion corta del formulario" android:layout_toRightOf="@+id/icon" android:layout_below="@+id/title" android:layout_toLeftOf="@+id/date">
+		</TextView>
+
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/version" android:text="Version" android:layout_alignParentRight="true" android:layout_alignParentTop="true" android:gravity="right" android:lines="1"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/date" android:text="Fecha" android:layout_alignParentRight="true" android:layout_below="@+id/version"></TextView>
+</RelativeLayout>

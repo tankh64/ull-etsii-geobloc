@@ -22,10 +22,6 @@
         <activity 
         	android:name=".FormList"
         	android:label="@string/app_name"/>
-        <activity 
-        	android:name="QuestionActivity"
-        	android:label="@string/app_name">
-        </activity>
         <activity
         	android:name=".activities.StaticFormPrototype"
         	android:label="GeoBloc Static Form Prototyoe"
@@ -53,9 +49,10 @@
 			android:name=".activities.InstanceManager"
 			android:label="@string/formsSenderButtonText">
 		</activity>
-	<activity android:name="ParsingXML"></activity>
 <activity android:name=".activities.FormActivity" android:screenOrientation="portrait"></activity>
 <activity android:name=".activities.FormLocalList"></activity>
+
+<activity android:name=".activities.FormTemplateList"></activity>
 </application>
     <uses-sdk android:minSdkVersion="4" />
 
