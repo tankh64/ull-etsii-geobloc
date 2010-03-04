@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import com.geobloc.R;
 import com.geobloc.form.FormDefinition;
+import com.geobloc.shared.Utilities;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -28,8 +29,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
 
@@ -153,6 +156,11 @@ public class FormTemplateList extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setListAdapter(new EfficientAdapter(this));
+    }
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	Utilities.showToast(getApplicationContext(), "Selected the "+position, Toast.LENGTH_SHORT);
     }
     
     /**
