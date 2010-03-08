@@ -11,13 +11,18 @@ import java.util.Date;
  */
 public class FormDefinition {
 	
+	private String filename;
 	private String nameForm;
 	private String descriptionForm;
 	private String versionForm;
 	private String dateForm;
 	
-	public FormDefinition (String name, String desc, String version, String date) {
-		
+	public FormDefinition (String filename, String name, String desc, String version, String date) {
+		setFilename (filename);
+		setNameForm (name);
+		setDescriptionForm(desc);
+		setVersionForm (version);
+		setDateForm (date);
 	}
 	
 	public void setNameForm (String name) {
@@ -32,6 +37,9 @@ public class FormDefinition {
 	public void setDateForm (String date) {
 		this.dateForm = date;
 	}
+	public void setFilename (String name) {
+		this.filename = name;
+	}
 	public String getNameForm () {
 		return this.nameForm;
 	}
@@ -43,6 +51,9 @@ public class FormDefinition {
 	}
 	public String getDateForm () {
 		return this.dateForm;
+	}
+	public String getFilename () {
+		return this.filename;
 	}
 
 }

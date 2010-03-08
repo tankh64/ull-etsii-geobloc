@@ -72,7 +72,7 @@ public class FormTemplateList extends ListActivity {
          * @see android.widget.ListAdapter#getCount()
          */
         public int getCount() {
-            return DATA.length;
+            return listForm.size();
         }
 
         /**
@@ -129,12 +129,15 @@ public class FormTemplateList extends ListActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            FormDefinition form = listForm.get(position);
+            
             // Bind the data efficiently with the holder.
-            holder.title.setText(DATA[position]);
-            holder.description.setText("Es una descripcion");
+            holder.title.setText((form.getNameForm()));
+            //holder.title.setText(DATA[position]);
+            holder.description.setText(form.getDescriptionForm());
             holder.icon.setImageBitmap(mIcon);
-            holder.date.setText("fecha de hoy");
-            holder.version.setText("version");
+            holder.date.setText(form.getDateForm());
+            holder.version.setText(form.getVersionForm());
 
             return convertView;
         }
@@ -150,12 +153,26 @@ public class FormTemplateList extends ListActivity {
     
     /****************** FormTemplateList **************/
     
-    private ArrayList<FormDefinition> listForm;	// Form definition list
+    private static ArrayList<FormDefinition> listForm;	// Form definition list
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        FormDefinition form1 = new FormDefinition ("file1.xml", "Fresas", "Formulario de fresas", "1.0", "02/03/2010");
+        FormDefinition form2 = new FormDefinition ("file2.xml", "Naranjas", "Formulario de naranjas", "1.1", "04/03/2010");
+        FormDefinition form3 = new FormDefinition ("file3.xml", "Tomates", "Formulario de tomates", "2.0", "02/03/2009");
+        FormDefinition form4 = new FormDefinition ("file4.xml", "Papas", "Formulario de papitas negras", "2.0", "02/03/2010");
+    
+        listForm = new ArrayList<FormDefinition>();
+        
+        listForm.add(form1);
+        listForm.add(form2);
+        listForm.add(form3);
+        listForm.add(form4);
+        
         setListAdapter(new EfficientAdapter(this));
+
     }
     
     @Override
@@ -171,7 +188,7 @@ public class FormTemplateList extends ListActivity {
     	
     }
 
-    private static final String[] DATA = {
+    /*private static final String[] DATA = {
             "Abbaye de Belloc lo mas largo que se pueda por dios", "Abbaye du Mont des Cats", "Abertam",
             "Abondance", "Ackawi", "Acorn", "Adelost", "Affidelice au Chablis",
             "Afuega'l Pitu", "Airag", "Airedale", "Aisy Cendre",
@@ -344,5 +361,5 @@ public class FormTemplateList extends ListActivity {
             "White Stilton", "Whitestone Farmhouse", "Wigmore",
             "Woodside Cabecou", "Xanadu", "Xynotyro", "Yarg Cornish",
             "Yarra Valley Pyramid", "Yorkshire Blue", "Zamorano",
-            "Zanetti Grana Padano", "Zanetti Parmigiano Reggiano"};
+            "Zanetti Grana Padano", "Zanetti Parmigiano Reggiano"};*/
 }
