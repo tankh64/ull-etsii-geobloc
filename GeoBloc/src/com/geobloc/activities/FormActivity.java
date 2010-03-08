@@ -27,6 +27,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -134,6 +135,12 @@ public class FormActivity extends Activity {
 
         initConfig();
         
+        /** to use the custom title */
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.custom_title);
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
+        
+        
         final Object data = getLastNonConfigurationInstance();
         
         // The activity is starting for the first time
@@ -223,22 +230,23 @@ public class FormActivity extends Activity {
 		tView.setText(getString(R.string.help_form_mov));
 		
 		setFlipperPages();
+		setNumPage();
 	}
 	
-	/**
-	 * Set the number of the page
-	 * @param layout
-	 * @param page
-	 */
-	private void setNumPage (LinearLayout layout, int page) {
-		TextView tv = new TextView(layout.getContext());
-		tv.setTextColor(Utilities.fontColor);
-		tv.setTextSize(20);
-		tv.setText("Página: "+page+"/"+formH.getNumPages());
-		tv.layout(5, 5, 5, 5);
-		tv.setGravity(Gravity.RIGHT);
+	private void setNumPage () {
+	
+		final TextView leftText = (TextView) findViewById(R.id.left_text);
+		final TextView rightText = (TextView) findViewById(R.id.right_text);
+    	leftText.setText(filename);
 		
-		layout.addView(tv);
+    	int page = viewFlipper.getDisplayedChild();
+    	int max_page = viewFlipper.getChildCount();
+    	
+		if ((page >= 0) && (page <= max_page)) {
+        	rightText.setText("Página: "+(page+1)+"/"+max_page);
+		} else {
+			rightText.setText("");
+		}
 	}
 	
 	private void setFlipperPages () {
@@ -255,8 +263,6 @@ public class FormActivity extends Activity {
 	    		vistaR.setBackgroundColor(Utilities.background);
 	    		
 	    		int numQuestions = formH.getNumQuestionOfPage(page);
-	    		
-	    		setNumPage(vistaR, page+1);
 	    		
 	    		for (int question=0; question < numQuestions; question++) {
 	    			/** create the appropriate widget depending on the question */
@@ -280,6 +286,8 @@ public class FormActivity extends Activity {
                 		viewFlipper.setInAnimation(slideLeftIn);
                 		viewFlipper.setOutAnimation(slideLeftOut);
                 		viewFlipper.showNext();
+                		
+                		setNumPage();
                 	} else {
                 		Utilities.showToast(getApplicationContext(), getString(R.string.no_more_pages_at_rigth), Toast.LENGTH_SHORT);
                 	}
@@ -288,6 +296,8 @@ public class FormActivity extends Activity {
                 		viewFlipper.setInAnimation(slideRightIn);
                 		viewFlipper.setOutAnimation(slideRightOut);
                 		viewFlipper.showPrevious();
+                		
+                		setNumPage();
                 	} else {
                 		Utilities.showToast(getApplicationContext(), getString(R.string.no_more_pages_at_left), Toast.LENGTH_SHORT);
                 	}
