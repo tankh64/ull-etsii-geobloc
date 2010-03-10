@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.geobloc.form.FormClass;
+import com.geobloc.form.FormPage;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
@@ -93,5 +94,18 @@ public class FormHandler {
 	
 	public QuestionPrompt getQuestionOfPage (int question, int page) {
 		return defForm.getPage(page).getQuestion(question);
+	}
+	
+	/**
+	 * Returns a page of a form
+	 * @param page number of the page to return
+	 * @return
+	 */
+	public FormPage getPage (int page) {
+		return defForm.getPage(page);
+	}
+	
+	public String getNamePage (int page) {
+		return defForm.getNamePage(page);
 	}
 }

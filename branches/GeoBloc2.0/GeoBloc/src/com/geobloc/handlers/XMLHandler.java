@@ -13,6 +13,8 @@ import com.geobloc.form.FormPage;
 import com.geobloc.prompt.ButtonQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
+import com.geobloc.prompt.MediaQuestionPrompt;
+import com.geobloc.shared.Utilities;
 import com.geobloc.xml.IField;
 
 import android.content.Context;
@@ -144,7 +146,17 @@ public class XMLHandler extends DefaultHandler {
                 break;
     		case IGB_PAGE:
     			this.in_gb_page = true;
-    			myPage = new FormPage();
+    			
+    			if (actualAtt.attMap.containsKey(Utilities.ATTR_TYPE)) {
+    				myPage = new FormPage (actualAtt.attMap.get(Utilities.ATTR_TYPE));
+    				
+    				if (actualAtt.attMap.get(Utilities.ATTR_TYPE).equalsIgnoreCase("photo")) {
+    					MediaQuestionPrompt mediaPrompt = new MediaQuestionPrompt();
+    					myPage.addQuestion(mediaPrompt);
+    				}
+    			} else {
+    				myPage = new FormPage();
+    			}
            	 	break;
     		case IGB_NAME:
     			this.in_gb_name = true;

@@ -79,6 +79,9 @@ public class FormClass {
 		return (listPages.get(index));
 	}
 
+	public String getNamePage (int page) {
+		return (listPages.get(page)).getNamePage();
+	}
 	
 	/**
 	 * @return Number of pages on the form

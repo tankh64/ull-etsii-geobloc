@@ -3,6 +3,8 @@ package com.geobloc.activities;
 
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
+import com.geobloc.form.FormPage;
+import com.geobloc.form.FormPage.PageType;
 import com.geobloc.handlers.FormHandler;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
@@ -27,6 +29,7 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
@@ -76,7 +79,7 @@ public class FormActivity extends Activity {
 			if (formH == null) {
 			    new AlertDialog.Builder(callerContext)
 					.setTitle("Error")
-					.setMessage("At load form")
+					.setMessage(loadTask.message)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                        finish();
@@ -237,12 +240,17 @@ public class FormActivity extends Activity {
 	
 		final TextView leftText = (TextView) findViewById(R.id.left_text);
 		final TextView rightText = (TextView) findViewById(R.id.right_text);
-    	leftText.setText(filename);
 		
     	int page = viewFlipper.getDisplayedChild();
     	int max_page = viewFlipper.getChildCount();
     	
-		if ((page >= 0) && (page <= max_page)) {
+		if ((page >= 0) && (page < max_page)) {
+			if ((page > 0) && (page < (max_page-1))) {
+				leftText.setText(formH.getNameForm()+" > "+formH.getNamePage(page-1));
+			}
+			else {
+				leftText.setText(formH.getNameForm());
+			}
         	rightText.setText("Página: "+(page+1)+"/"+max_page);
 		} else {
 			rightText.setText("");
@@ -251,25 +259,55 @@ public class FormActivity extends Activity {
 	
 	private void setFlipperPages () {
 		Context context = FormActivity.this;
+		QuestionWidget wdget;
 		
 	    if (formH != null) {
 	    	for (int page=0; page < formH.getNumPages(); page++) {
 	    	
-	    		LinearLayout vistaR = new LinearLayout(context);
-	    		vistaR.setPadding(5, 5, 5, 5);
-	    		vistaR.setOrientation(LinearLayout.VERTICAL);
-	    		vistaR.setHorizontalScrollBarEnabled(true);
-	    		vistaR.setVerticalScrollBarEnabled(true);
-	    		vistaR.setBackgroundColor(Utilities.background);
-	    		
-	    		int numQuestions = formH.getNumQuestionOfPage(page);
-	    		
-	    		for (int question=0; question < numQuestions; question++) {
-	    			/** create the appropriate widget depending on the question */
-	    			QuestionWidget wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), context);
-	    			vistaR.addView((View)wdget);
+	    		PageType mType = (formH.getPage(page)).getPageType();
+	    		if (mType == null) {
+	    			Log.e(TAG, "La página "+page+"no tiene tipo");
 	    		}
-	    		viewFlipper.addView(vistaR, page+1);
+	    		switch (mType) {
+	    		
+	    			case PHOTO:
+	    				/*View myView = View.inflate(this, R.layout.gallery, null);
+	    				RelativeLayout layoutR = (RelativeLayout) myView.findViewById(R.id.photoGalleryLayout);
+	    				viewFlipper.addView(layoutR, page+1);
+	    				break;*/
+	    			case AUDIO:
+	    				/*LinearLayout vistaA = new LinearLayout(context);
+	    	    		vistaA.setPadding(5, 5, 5, 5);
+	    	    		vistaA.setOrientation(LinearLayout.VERTICAL);
+	    	    		vistaA.setBackgroundColor(Utilities.background);*/
+	    	    		
+	    				wdget = CreateWidget.createWidget(formH.getQuestionOfPage(0, page), context, (ViewGroup)viewFlipper);
+	    				//viewFlipper.addView ((View) wdget, page+1);
+	    				
+	    				//viewFlipper.addView(vistaA, page+1);
+	    			case VIDEO: 
+	    			case GPS: break;
+	    			case DATA:
+	    				LinearLayout vistaR = new LinearLayout(context);
+	    	    		vistaR.setPadding(5, 5, 5, 5);
+	    	    		vistaR.setOrientation(LinearLayout.VERTICAL);
+	    	    		vistaR.setHorizontalScrollBarEnabled(true);
+	    	    		vistaR.setVerticalScrollBarEnabled(true);
+	    	    		vistaR.setBackgroundColor(Utilities.background);
+	    	    		
+	    	    		int numQuestions = formH.getNumQuestionOfPage(page);
+	    	    		
+	    	    		for (int question=0; question < numQuestions; question++) {
+	    	    			/** create the appropriate widget depending on the question */
+	    	    			wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), context, (ViewGroup)viewFlipper);
+	    	    			vistaR.addView((View)wdget);
+	    	    		}
+	    	    		viewFlipper.addView(vistaR, page+1); 			
+	    			default: break;
+	    		
+	    		}
+	    		
+	    		
 	    	}
 	    }
 	}

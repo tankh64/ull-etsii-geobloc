@@ -153,25 +153,23 @@ public class FormTemplateList extends ListActivity {
     
     /****************** FormTemplateList **************/
     
-    private static ArrayList<FormDefinition> listForm;	// Form definition list
+    private static ArrayList<FormDefinition> listForm = new ArrayList<FormDefinition>();	// Form definition list
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setListAdapter(new EfficientAdapter(this));
+        
         FormDefinition form1 = new FormDefinition ("file1.xml", "Fresas", "Formulario de fresas", "1.0", "02/03/2010");
         FormDefinition form2 = new FormDefinition ("file2.xml", "Naranjas", "Formulario de naranjas", "1.1", "04/03/2010");
         FormDefinition form3 = new FormDefinition ("file3.xml", "Tomates", "Formulario de tomates", "2.0", "02/03/2009");
         FormDefinition form4 = new FormDefinition ("file4.xml", "Papas", "Formulario de papitas negras", "2.0", "02/03/2010");
-    
-        listForm = new ArrayList<FormDefinition>();
         
         listForm.add(form1);
         listForm.add(form2);
         listForm.add(form3);
         listForm.add(form4);
-        
-        setListAdapter(new EfficientAdapter(this));
 
     }
     
