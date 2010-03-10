@@ -48,7 +48,7 @@ public class Utilities {
 	 * @author Jorge Carballo (jelcaf@gmail.com)
 	 *
 	 */
-	public enum QuestionType {GB_DATAINPUT, GB_LABEL, GB_BUTTON};
+	public enum QuestionType {GB_DATAINPUT, GB_LABEL, GB_BUTTON, GB_MEDIA};
 	
 	/* 
 	 * Displays a Toast. The context parameter is filled with getApplicationContext() from the Activity 

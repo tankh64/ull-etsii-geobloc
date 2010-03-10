@@ -33,7 +33,7 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 	private Context context;
 	private IStandardTaskListener listener;
 	
-	private String message;
+	public String message;
 	private boolean trowsOk;
 	
 	private FormClass formC;
@@ -97,7 +97,7 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 		catch (Exception e) {
 			e.printStackTrace();
 			
-			Log.w(TAG, "Formulario Vacío");
+			Log.w(TAG, "Error al parsear: "+e.getMessage());
 			
 			trowsOk = false;
 			message = e.getMessage();

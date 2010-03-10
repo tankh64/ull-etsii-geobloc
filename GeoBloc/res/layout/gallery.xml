@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+     
+<RelativeLayout android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/photoGalleryLayout">
+
+	<!-- Gallery android:id="@+id/gallery"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_margin="10px"/-->
+
+
+<ImageButton android:layout_height="wrap_content" android:id="@+id/takePhotoButton" android:layout_width="100px" android:layout_centerHorizontal="true" android:layout_above="@+id/loadFromGalleryButton"></ImageButton>
+<ImageButton android:layout_height="wrap_content" android:id="@+id/loadFromGalleryButton" android:layout_width="100px" android:layout_centerHorizontal="true" android:layout_centerInParent="true" android:layout_above="@+id/clearButton"></ImageButton>
+<ImageButton android:id="@+id/clearButton" android:layout_above="@+id/loadPhotos" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_width="100px"></ImageButton>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerInParent="true" android:id="@+id/loadPhotos" android:text="Se han cargado X fotos"></TextView>
+</RelativeLayout>

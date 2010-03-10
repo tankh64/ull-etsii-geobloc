@@ -21,6 +21,7 @@ import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 
+
 /**
  * Represents a page of Form. 
  * 
@@ -29,7 +30,10 @@ import com.geobloc.prompt.QuestionPrompt;
  */
 public class FormPage {
 	
+	public enum PageType {DATA, PHOTO, VIDEO, AUDIO, GPS};
+	
 	private String namePage;
+	private PageType type;
 	
 	LinearLayout layout;
 	/**
@@ -46,10 +50,38 @@ public class FormPage {
 		listQuestions = new ArrayList<QuestionPrompt>();
 	}
 	
-	public FormPage (String name) {
-		this.setNamePage(name);
+	public FormPage (String sType) {
+		
+		if (sType.equalsIgnoreCase("data")) {
+			this.type = PageType.DATA;
+		} else if (sType.equalsIgnoreCase("photo")) {
+			this.type = PageType.PHOTO;
+		} else if (sType.equalsIgnoreCase("audio")) {
+			this.type = PageType.AUDIO;
+		} else if (sType.equalsIgnoreCase("video")) {
+			this.type = PageType.VIDEO;
+		} else if (sType.equalsIgnoreCase("gps")) {
+			this.type = PageType.GPS;
+		}
 		
 		listQuestions = new ArrayList<QuestionPrompt>();
+	}
+	
+	public FormPage (String name, String sType) {
+		this.setNamePage(name);
+		listQuestions = new ArrayList<QuestionPrompt>();
+		
+		if (sType.equalsIgnoreCase("data")) {
+			this.type = PageType.DATA;
+		} else if (sType.equalsIgnoreCase("photo")) {
+			this.type = PageType.PHOTO;
+		} else if (sType.equalsIgnoreCase("audio")) {
+			this.type = PageType.AUDIO;
+		} else if (sType.equalsIgnoreCase("video")) {
+			this.type = PageType.VIDEO;
+		} else if (sType.equalsIgnoreCase("gps")) {
+			this.type = PageType.GPS;
+		}
 	}
 
 	/// Methods
@@ -67,6 +99,9 @@ public class FormPage {
 	public void setNamePage (String name) {
 		this.namePage = name;
 	}
+	public String getNamePage () {
+		return this.namePage;
+	}
 	
 	/**
 	 * Returns the number of pages
@@ -78,6 +113,18 @@ public class FormPage {
 	public QuestionPrompt getQuestion (int question) {
 		return listQuestions.get(question);
 	}
+	
+	/**
+	 * Returns the type of page
+	 */
+	public PageType getPageType () {
+		return this.type;
+	}
+	
+	public void setPageType (PageType mtype) {
+		this.type = mtype;
+	}
+	
 	
 	/**
 	 * Returns a layout with the questions on the page
