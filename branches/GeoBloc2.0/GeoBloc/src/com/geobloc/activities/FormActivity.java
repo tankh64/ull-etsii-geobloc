@@ -3,6 +3,7 @@ package com.geobloc.activities;
 
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
+import com.geobloc.activities.Gallery1.ImageAdapter;
 import com.geobloc.form.FormPage;
 import com.geobloc.form.FormPage.PageType;
 import com.geobloc.handlers.FormHandler;
@@ -20,26 +21,36 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Activity that loads the form and is responsible to handle it graphically
@@ -61,6 +72,61 @@ public class FormActivity extends Activity {
     private Animation slideRightOut;
     private ViewFlipper viewFlipper;
 	
+    
+    public class ImageAdapterPhoto extends BaseAdapter {
+        int mGalleryItemBackground;
+        
+        public ImageAdapterPhoto(Context c) {
+            mContext = c;
+            // See res/values/attrs.xml for the <declare-styleable> that defines
+            // Gallery1.
+            TypedArray a = obtainStyledAttributes(R.styleable.GalleryPhoto);
+            mGalleryItemBackground = a.getResourceId(
+                    R.styleable.GalleryPhoto_android_galleryItemBackground, 0);
+            a.recycle();
+        }
+
+        public int getCount() {
+            return mImageIds.length;
+        }
+
+        public Object getItem(int position) {
+            return position;
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView i = new ImageView(mContext);
+
+            i.setImageResource(mImageIds[position]);
+            i.setScaleType(ImageView.ScaleType.FIT_XY);
+            //i.setLayoutParams(new Gallery.LayoutParams(136, 88));
+            i.setLayoutParams(new Gallery.LayoutParams(170, 120));
+            
+            // The preferred Gallery item background
+            i.setBackgroundResource(mGalleryItemBackground);
+            
+            return i;
+        }
+
+        private Context mContext;
+
+        private Integer[] mImageIds = {
+                R.drawable.gallery_photo_1,
+                R.drawable.gallery_photo_2,
+                R.drawable.gallery_photo_3,
+                R.drawable.gallery_photo_4,
+                R.drawable.gallery_photo_5,
+                R.drawable.gallery_photo_6,
+                R.drawable.gallery_photo_7,
+                R.drawable.gallery_photo_8
+        };
+    }
+
+    
 	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
 
 		private Context callerContext;
@@ -211,12 +277,11 @@ public class FormActivity extends Activity {
         loadTask.execute(filepath);
 	}
 	
-	private void postTaskFinished() {
+	private void inflateFirstPage() {
+		/* Insert first page of the form */
+		ViewFlipper.inflate(getApplicationContext(), R.layout.first_page_flipper, viewFlipper);
 		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutInit);
 		lL.setBackgroundColor(Utilities.background);
-		lL = (LinearLayout) findViewById(R.id.FormLayoutEnd);
-		lL.setBackgroundColor(Utilities.background);
-		
 		/** Rellenamos el Titulo y la descripción del formulario */
 		/*** Colocamos texto en el viewFlipper */
 		TextView tView = (TextView)findViewById(R.id.TitleForm);
@@ -231,9 +296,23 @@ public class FormActivity extends Activity {
 		tView = (TextView)findViewById(R.id.TextFingerMov);
 		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.help_form_mov));
+		/**********/		
+	}
+	
+	private void inflateLastPage() {
+		/* Insert last page of the form */
+		ViewFlipper.inflate(getApplicationContext(), R.layout.last_page_flipper, viewFlipper);
+		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutEnd);
+		lL.setBackgroundColor(Utilities.background);	
+	}
+	
+	private void postTaskFinished() {
+		inflateFirstPage();
 		
 		setFlipperPages();
 		setNumPage();
+	
+		inflateLastPage();
 	}
 	
 	private void setNumPage () {
@@ -258,7 +337,8 @@ public class FormActivity extends Activity {
 	}
 	
 	private void setFlipperPages () {
-		Context context = FormActivity.this;
+		//Context context = FormActivity.this;
+		Context context = getApplicationContext();
 		QuestionWidget wdget;
 		
 	    if (formH != null) {
@@ -270,21 +350,24 @@ public class FormActivity extends Activity {
 	    		}
 	    		switch (mType) {
 	    		
-	    			case PHOTO:
-	    				/*View myView = View.inflate(this, R.layout.gallery, null);
-	    				RelativeLayout layoutR = (RelativeLayout) myView.findViewById(R.id.photoGalleryLayout);
-	    				viewFlipper.addView(layoutR, page+1);
-	    				break;*/
-	    			case AUDIO:
-	    				/*LinearLayout vistaA = new LinearLayout(context);
-	    	    		vistaA.setPadding(5, 5, 5, 5);
-	    	    		vistaA.setOrientation(LinearLayout.VERTICAL);
-	    	    		vistaA.setBackgroundColor(Utilities.background);*/
-	    	    		
-	    				wdget = CreateWidget.createWidget(formH.getQuestionOfPage(0, page), context, (ViewGroup)viewFlipper);
-	    				//viewFlipper.addView ((View) wdget, page+1);
-	    				
-	    				//viewFlipper.addView(vistaA, page+1);
+	    			case PHOTO: wdget = CreateWidget.createWidget(formH.getQuestionOfPage(0, page), context, (ViewGroup)viewFlipper);
+	    						viewFlipper.addView((View) wdget, page+1);
+	    						// Reference the Gallery view
+	    				        Gallery g = (Gallery) findViewById(R.id.gallery);
+	    				        // Set the adapter to our custom adapter (below)
+	    				        g.setAdapter(new ImageAdapterPhoto(this));
+	    				        
+	    				        // Set a item click listener, and just Toast the clicked position
+	    				        g.setOnItemClickListener(new OnItemClickListener() {
+	    				            public void onItemClick(AdapterView parent, View v, int position, long id) {
+	    				                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
+	    				            }
+	    				        });
+	    				        
+	    				        // We also want to show context menu for longpressed items in the gallery
+	    				        registerForContextMenu(g);
+	    						break;
+	    			case AUDIO:	
 	    			case VIDEO: 
 	    			case GPS: break;
 	    			case DATA:
@@ -359,5 +442,16 @@ public class FormActivity extends Activity {
 		this.listener = listener;
 	}
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    	menu.add("Borrar foto seleccionada");
+    }
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        Toast.makeText(this, "Longpress: " + info.position, Toast.LENGTH_SHORT).show();
+        return true;
+    }
 	
 }

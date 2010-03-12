@@ -1,6 +1,6 @@
 package com.geobloc.widget;
 
-import com.geobloc.prompt.ButtonQuestionPrompt;
+import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;

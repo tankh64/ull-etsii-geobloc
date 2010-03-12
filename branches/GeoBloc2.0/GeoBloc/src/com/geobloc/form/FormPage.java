@@ -12,11 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.R;
-import com.geobloc.prompt.ButtonQuestionPrompt;
+import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
@@ -174,13 +175,13 @@ public class FormPage {
 					
 					layout.addView(mView);
 					break;
-				case GB_BUTTON:
-					Button but = new Button(context);
-					but.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-					but.setText(((ButtonQuestionPrompt)question).getButtonTitle());
-					but.setPadding(10,10,10,10);
+				case GB_CHECKBOX:
+					Spinner sp = new Spinner(context);
+					sp.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+					//.setText(((CheckboxQuestionPrompt)question).getButtonTitle());
+					sp.setPadding(10,10,10,10);
 					
-					layout.addView(but);
+					layout.addView(sp);
 					break;
 				default:
 					break;

@@ -20,15 +20,20 @@ public class CreateWidget {
 		case GB_DATAINPUT:
 			widget = new FieldWidget(context);
 			break;
-		case GB_BUTTON:
-			widget = new ButtonWidget(context);
+		case GB_CHECKBOX:
+			widget = new CheckboxWidget(context);
+			break;
+		case GB_CHECKBOX_THREE:
+			/* Error in ThreeStateCheckboc */
+			widget = new CheckboxThreeWidget(context);
 			break;
 		case GB_MEDIA:
-			widget = new MediaWidget (context);
-			((MediaWidget) widget).buildViewParent(parent);
+			/* Needs the parent View for inflate */
+			widget = new MediaWidget (context, parent);
+			((MediaWidget)widget).buildViewParent(parent);
 			break;
 		default:
-			widget = new LabelWidget(context);
+			widget = null;//new LabelWidget(context);
 			break;
 		}
 		
