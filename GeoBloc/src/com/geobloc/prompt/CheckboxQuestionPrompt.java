@@ -6,14 +6,14 @@ import com.geobloc.handlers.AttributeTag;
 import com.geobloc.shared.Utilities;
 import com.geobloc.shared.Utilities.QuestionType;
 
-public class ButtonQuestionPrompt extends QuestionPrompt {
+public class CheckboxQuestionPrompt extends QuestionPrompt {
 	private static final String TAG = "ButtonQuestionPrompt";
 	
 	String title;
 	
 	String action;
 	
-	public ButtonQuestionPrompt (String titleText, AttributeTag att) {
+	public CheckboxQuestionPrompt (String titleText, AttributeTag att) {
 		
 		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
 			this.setQuestionId(att.attMap.get(Utilities.ATTR_ID));
@@ -25,21 +25,25 @@ public class ButtonQuestionPrompt extends QuestionPrompt {
 			this.setAction(att.attMap.get(Utilities.ATTR_ACTION));
 		}
 		
-		this.setButtonTitle(titleText);
+		this.setTitle(titleText);
 		this.setType();
 	}
 	
 	@Override
 	public void setType() {
-		type = QuestionType.GB_BUTTON;	
+		type = QuestionType.GB_CHECKBOX;	
 	}
 	
 	/**
 	 * Sets the text on the label
 	 * @param name
 	 */
-	public void setButtonTitle (String name) {
+	public void setTitle (String name) {
 		title = name;
+	}
+	
+	public String getTitle () {
+		return this.title;
 	}
 	
 	public String getButtonTitle () {

@@ -10,7 +10,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import com.geobloc.form.FormClass;
 import com.geobloc.form.FormPage;
-import com.geobloc.prompt.ButtonQuestionPrompt;
+import com.geobloc.prompt.CheckboxQuestionPrompt;
+import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.MediaQuestionPrompt;
@@ -37,7 +38,7 @@ public class XMLHandler extends DefaultHandler {
 	private String textContent;
 	
 	private static enum IntegerTag {IGB_FORM, IGB_NAME, IGB_VERSION, IGB_DATE, IGB_DESCRIPTION, IGB_PAGE, IGB_PAGE_NAME,
-		IGB_LABEL, IGB_LABEL_TEXT, IGB_FIELD, IGB_FIELD_LABEL, IGB_FIELD_DEFAULT_VALUE, IGB_BUTTON, IGB_BUTTON_TEXT};
+		IGB_LABEL, IGB_LABEL_TEXT, IGB_FIELD, IGB_FIELD_LABEL, IGB_FIELD_DEFAULT_VALUE, IGB_CHECKBOX, IGB_CHECKBOX_TEXT, IGB_CHECKBOX_THREE, IGB_CHECKBOX_THREE_TEXT};
 	
 	private static Map<String, IntegerTag> MapTags;
 	
@@ -58,8 +59,11 @@ public class XMLHandler extends DefaultHandler {
 	private static String GB_FIELD_LABEL = "gb_fieldLabel";
 	private static String GB_FIELD_DEFAULT_VALUE = "gb_fieldDefaultValue";
 	
-	private static String GB_BUTTON = "gb_button";
-	private static String GB_BUTTON_TEXT = "gb_buttonText";
+	private static String GB_CHECKBOX = "gb_checkbox";
+	private static String GB_CHECKBOX_TEXT = "gb_checkboxText";
+	
+	private static String GB_CHECKBOX_THREE = "gb_checkboxthree";
+	private static String GB_CHECKBOX_THREE_TEXT = "gb_checkboxthreeText";
 	
 	
 
@@ -80,13 +84,14 @@ public class XMLHandler extends DefaultHandler {
 	private boolean in_gb_fieldLabel = false;
 	private boolean in_gb_fieldDefaultValue = false;
 	
-	private boolean in_gb_button = false;
-	private boolean in_gb_buttonText = false;
+	private boolean in_gb_checkbox = false;
+	private boolean in_gb_checkboxText = false;
+	
+	private boolean in_gb_checkboxthree = false;
+	private boolean in_gb_checkboxthreeText = false;
 
 	
 	private boolean parseError;
-	
-	private Context myContext;
     
     List<IField> fields;
 
@@ -139,6 +144,8 @@ public class XMLHandler extends DefaultHandler {
     	
     	actualAtt = new AttributeTag(atts);
     	
+    	try {
+    		
     	switch (XMLHandler.MapTags.get(localName)) {
     		case IGB_FORM:
     			this.in_gb_form = true;
@@ -188,18 +195,29 @@ public class XMLHandler extends DefaultHandler {
     		case IGB_FIELD_DEFAULT_VALUE:
     			this.in_gb_fieldDefaultValue = true;
     			break;
-    		case IGB_BUTTON:
-    			this.in_gb_button = true;
+    		case IGB_CHECKBOX:
+    			this.in_gb_checkbox = true;
     			break;
-    		case IGB_BUTTON_TEXT:
-    			this.in_gb_buttonText = true;
+    		case IGB_CHECKBOX_TEXT:
+    			this.in_gb_checkboxText = true;
+    			break;
+    		case IGB_CHECKBOX_THREE:
+    			this.in_gb_checkbox = true;
+    			break;
+    		case IGB_CHECKBOX_THREE_TEXT:
+    			this.in_gb_checkboxText = true;
     			break;
     		/*case IGB_:
     			this
     			break;*/
     			default:
     				Log.e(TAG, "Etiqueta no definida: <"+localName+">");
+    				break;
     	}
+          	} catch (Exception e) {
+        		Log.e(TAG, "Etiqueta no definida: </"+localName+">");
+        	}
+        	
     	
     	pushAttrStack (localName, actualAtt);
     }
@@ -216,6 +234,7 @@ public class XMLHandler extends DefaultHandler {
     	
     	AttributeTag attMap = popAttrStack();
     	
+    	try {
     	switch (XMLHandler.MapTags.get(localName)) {
     	
 		case IGB_FORM:
@@ -274,15 +293,25 @@ public class XMLHandler extends DefaultHandler {
 		case IGB_FIELD_DEFAULT_VALUE:
 			this.in_gb_fieldDefaultValue = false;
 			break;
-		case IGB_BUTTON:
-        	ButtonQuestionPrompt bPrompt = new ButtonQuestionPrompt (title, attMap);
+		case IGB_CHECKBOX:
+        	CheckboxQuestionPrompt bPrompt = new CheckboxQuestionPrompt (title, attMap);
 			myPage.addQuestion(bPrompt);
         	
-            this.in_gb_button = false;
+            this.in_gb_checkbox = false;
             clearValues();
 			break;
-		case IGB_BUTTON_TEXT:
-			this.in_gb_buttonText = false;
+		case IGB_CHECKBOX_TEXT:
+			this.in_gb_checkboxText = false;
+			break;
+		case IGB_CHECKBOX_THREE:
+        	CheckboxThreeQuestionPrompt ch3Prompt = new CheckboxThreeQuestionPrompt (title, attMap);
+			myPage.addQuestion(ch3Prompt);
+        	
+            this.in_gb_checkboxthree = false;
+            clearValues();
+			break;
+		case IGB_CHECKBOX_THREE_TEXT:
+			this.in_gb_checkboxText = false;
 			break;
 		/*case IGB_:
 			this
@@ -290,6 +319,9 @@ public class XMLHandler extends DefaultHandler {
 			default:
 				Log.e(TAG, "Etiqueta no definida: </"+localName+">");
 				break;
+    	}
+    	} catch (Exception e) {
+    		Log.e(TAG, "Etiqueta no definida: </"+localName+">");
     	}
     	
 
@@ -314,8 +346,12 @@ public class XMLHandler extends DefaultHandler {
     				} else if (this.in_gb_fieldDefaultValue) {
     					this.textContent = cadena;
     				}
-    			} else if (this.in_gb_button) {
-    				if (this.in_gb_buttonText) {
+    			} else if (this.in_gb_checkbox) {
+    				if (this.in_gb_checkboxText) {
+    					this.title = cadena;
+    				}
+    			} else if (this.in_gb_checkboxthree) {
+    				if (this.in_gb_checkboxthreeText) {
     					this.title = cadena;
     				}
     			}
@@ -376,8 +412,10 @@ public class XMLHandler extends DefaultHandler {
     	MapTags.put(GB_FIELD, IntegerTag.IGB_FIELD);
     	MapTags.put(GB_FIELD_LABEL, IntegerTag.IGB_FIELD_LABEL);
     	MapTags.put(GB_FIELD_DEFAULT_VALUE, IntegerTag.IGB_FIELD_DEFAULT_VALUE);
-    	MapTags.put(GB_BUTTON, IntegerTag.IGB_BUTTON);
-    	MapTags.put(GB_BUTTON_TEXT, IntegerTag.IGB_BUTTON_TEXT);
+    	MapTags.put(GB_CHECKBOX, IntegerTag.IGB_CHECKBOX);
+    	MapTags.put(GB_CHECKBOX_TEXT, IntegerTag.IGB_CHECKBOX_TEXT);
+    	MapTags.put(GB_CHECKBOX_THREE, IntegerTag.IGB_CHECKBOX_THREE);
+    	MapTags.put(GB_CHECKBOX_THREE_TEXT, IntegerTag.IGB_CHECKBOX_THREE_TEXT);
     	//MapTags.put(GB_, IntegerTag.IGB_);
     }
 }

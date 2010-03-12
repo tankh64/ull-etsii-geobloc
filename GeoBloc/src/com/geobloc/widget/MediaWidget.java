@@ -1,19 +1,22 @@
 package com.geobloc.widget;
 
 import com.geobloc.R;
-import com.geobloc.prompt.ButtonQuestionPrompt;
+import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -24,14 +27,26 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
 	
 	Context mContext;
 	
-	public MediaWidget(Context context) {
+	LayoutInflater inflater;
+	
+	public MediaWidget(Context context, ViewGroup parent) {
 		super(context);
 		
 		mContext = context;
 		
-		//inflate(getContext(), R.layout.gallery, null);
-		//findViewById(R.id.photoGalleryLayout);
-		// TODO Auto-generated constructor stub
+		/*inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater.inflate(R.layout.gallery, null);*/
+		/*inflater = LayoutInflater.from(context);
+		inflater.inflate(R.layout.gallery, null);*/
+				
+		/* Así funciona, pero añade un Nivel mas en la jerarquía */
+		inflate(context, R.layout.gallery, this);
+        Button but = (Button)findViewById(R.id.takePhotoButton);
+        but.setText("Hacer foto");
+        but = (Button)findViewById(R.id.loadFromGalleryButton);
+        but.setText("Añadir foto desde galeria");
+        but = (Button)findViewById(R.id.clearButton);
+        but.setText("Borrar fotos");
 	}
 
 	public MediaWidget(Context context, AttributeSet attrs) {
@@ -47,15 +62,15 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
 	}*/
 	
 	public void buildView (QuestionPrompt qP) {
-        EditText ed = new EditText(getContext());
-        ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
-        ed.setText("Debería ir el Layout de las Fotos");
-             
-        addView(ed);
+
+        
 	}
 	
 	public void buildViewParent (ViewGroup parent) {
-		inflate(getContext(), R.layout.gallery, parent);
+		//inflate(mContext, R.layout.gallery, parent);
+		
+        /*Button but = (Button)findViewById(R.id.takePhotoButton);
+        but.setText("Hacer foto");*/
 	}
 
 	@Override
