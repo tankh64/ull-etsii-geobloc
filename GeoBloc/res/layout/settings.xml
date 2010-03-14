@@ -24,6 +24,7 @@
   	</EditTextPreference>
   	<EditTextPreference
   		android:key="numberOfInternetConnectionAttempts"
+  		android:inputType="number|numberSigned"
   		android:name="numberOfInternetAttempts"
   		android:title="@string/numberOfInternetAttempts"
   		android:summary="@string/numberOfInternetAttemptsDescription">
@@ -56,8 +57,7 @@
 		android:entries="@array/Array"
 		android:entryValues="@array/Values" >
   	</ListPreference>
-  	
-  	  	<ListPreference
+  	<ListPreference
   		android:key="formTextColor"
   		android:name="formTextName"
   		android:title="@string/formColorText"
@@ -65,9 +65,16 @@
   		android:defaultValue="@color/White"
 		android:entries="@array/Array"
 		android:entryValues="@array/Values" >
-  	</ListPreference>
-  	
+  	</ListPreference>	
   </PreferenceCategory>
-  	
+  <PreferenceCategory
+  	android:title="@string/animationsCategory">
+  	<CheckBoxPreference
+  		android:key="slidingButtonsAnimationKey"
+  		android:name="slidingButtonsanimation"
+  		android:title="@string/slidingButtonsAnimation"
+  		android:summary="@string/slidingButtonsAnimationDescription">
+  	</CheckBoxPreference>	
+  </PreferenceCategory>
   
 </PreferenceScreen>

@@ -28,21 +28,26 @@
   			android:layout_alignParentTop="true"
   			android:layout_alignParentRight="true">
   		</TextView>
-  		<Button
-  			android:id="@+id/allInstancesEraseButton"
+  		<RelativeLayout
+  			android:id="@+id/allInstancesBottomButtons"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
-  			android:text="@string/instance_manager_allInstancesEraseButton"
-  			android:layout_alignParentBottom="true"
-  			android:onClick="allInstancesButtonOnClick">
-  		</Button>
+  			android:layout_alignParentBottom="true">
+  			<Button
+  				android:id="@+id/allInstancesEraseButton"
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"
+  				android:text="@string/instance_manager_allInstancesEraseButton"
+  				android:onClick="allInstancesButtonOnClick">
+  			</Button>
+  		</RelativeLayout>
   		
   		<ListView
   			android:id="@+id/allInstancesListView"
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
   			android:layout_below="@id/allInstancesTextView1"
-  			android:layout_above="@id/allInstancesEraseButton">
+  			android:layout_above="@id/allInstancesBottomButtons">
   		</ListView>
   		
 	</RelativeLayout>
@@ -71,21 +76,45 @@
   			android:layout_alignParentTop="true"
   			android:layout_alignParentRight="true">
   		</TextView>
-  		<Button
-  			android:id="@+id/completeInstancesSendButton"
+  		<RelativeLayout
+  			android:id="@+id/completeInstancesBottomButtons"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
-  			android:text="@string/instance_manager_completeInstancesSendButton"
-  			android:layout_alignParentBottom="true"
-  			android:onClick="allInstancesButtonOnClick">
-  		</Button>
+  			android:layout_alignParentBottom="true">
+  			<TextView
+  				android:id="@+id/buttonSetCenterStub"
+  				android:layout_width="wrap_content"
+  				android:layout_height="wrap_content"
+  				android:layout_centerHorizontal="true"
+  				android:visibility="invisible">
+  			</TextView>
+  			<Button
+  				android:id="@+id/completeInstancesSendButton"
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"
+  				android:layout_alignParentLeft="true"
+  				android:layout_toLeftOf="@id/buttonSetCenterStub"
+  				android:text="@string/instance_manager_completeInstancesSendButton"
+	  			android:onClick="allInstancesButtonOnClick">
+  			</Button>
+  			<Button
+  				android:id="@+id/completeInstancesMarkIncompleteButton"
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"
+  				android:layout_toRightOf="@id/buttonSetCenterStub"
+  				android:layout_alignParentRight="true"
+  				android:text="@string/instance_manager_completeInstancesMarkIncomplete"
+	  			android:onClick="allInstancesButtonOnClick">
+  			</Button>
+
+  		</RelativeLayout>
   		
   		<ListView
   			android:id="@+id/completeInstancesListView"
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
   			android:layout_below="@id/allInstancesTextView2"
-  			android:layout_above="@id/completeInstancesSendButton">
+  			android:layout_above="@id/completeInstancesBottomButtons">
   		</ListView>  		
   	</RelativeLayout>  	
 </ViewFlipper>

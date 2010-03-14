@@ -72,6 +72,16 @@ public class Utilities {
 		alert.show();
 	}
 
+	public static String getDateAndTimeString() {
+		Calendar cal = Calendar.getInstance();
+    	String date = cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH)+1) 
+			+ "-" + cal.get(Calendar.YEAR);
+    	String time = cal.get(Calendar.HOUR_OF_DAY) 
+    		+ "-" + cal.get(Calendar.MINUTE) 
+			+ "-" + cal.get(Calendar.SECOND)+"/";
+		return "_" + date + "_" + time;
+	}
+	
 	/*
 	 * Builds a new package's name which follows this structure: formName + phoneID + Date&Time
 	 * phoneID can be the phone's IMEI if it is a GSM device, MEID if it is a CDMA device, etc.
@@ -92,7 +102,7 @@ public class Utilities {
     		+ "-" + cal.get(Calendar.MINUTE) 
 			+ "-" + cal.get(Calendar.SECOND)+"/";
 		
-    	name += "_" + date + "_" + time;
+    	name += getDateAndTimeString();
 		return name;
 	}
 }

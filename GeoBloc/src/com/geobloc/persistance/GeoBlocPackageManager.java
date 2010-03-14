@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * A new class designed to take care over the files which make up a package. In this way, activities 
@@ -32,6 +33,8 @@ import android.preference.PreferenceManager;
  */
 public class GeoBlocPackageManager {
 	
+	private static String LOG_TAG = "GeoBlocPackageManager";
+	
 	private boolean ok;
 	
 	// we need to hold the directory
@@ -40,7 +43,11 @@ public class GeoBlocPackageManager {
 	// absolute package directory
 	private String packageDirectory;
 	
+	// package name
+	private String packageName;
+	
 	public GeoBlocPackageManager() {
+		packageName = "";
 		packageDirectory = "";
 		directory = null;
 		ok = false;
@@ -48,6 +55,7 @@ public class GeoBlocPackageManager {
 	
 	public GeoBlocPackageManager(Context context, String name) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		packageName = name;
 		packageDirectory = prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, 
 				GBSharedPreferences.__DEFAULT_PACKAGES_PATH__) + name;
 		directory = new File(packageDirectory);
@@ -65,6 +73,7 @@ public class GeoBlocPackageManager {
 	
 	// opens a directory, doesn't create it
 	public boolean openPackage(String fullpath) {
+		packageName = packageDirectory.substring(packageDirectory.lastIndexOf('/')+1);
 		packageDirectory = fullpath;
 		directory = new File(fullpath);
 		if (directory.isDirectory())
@@ -76,6 +85,7 @@ public class GeoBlocPackageManager {
 	
 	// same as openPackage, but builds the directory if necessary
 	public boolean openOrBuildPackage(String fullpath) {
+		packageName = packageDirectory.substring(packageDirectory.lastIndexOf('/')+1);
 		packageDirectory = fullpath;
 		directory = new File(fullpath);
 		directory.mkdirs();
@@ -116,12 +126,17 @@ public class GeoBlocPackageManager {
 			if (s.contains(directoryname)) {
 				File directoryToBeErased = directories.get(i);
 				// first erase all files in the directory
-				for (File f : directoryToBeErased.listFiles())
+				for (File f : directoryToBeErased.listFiles()) {	
 					if (!f.delete())
 						success = false;
+				}
+				if (directoryToBeErased.listFiles().length > 0)
+						Log.e(LOG_TAG, "All files in directory " + directoryname + " could not be erased.");
 				// if all files in the directory where deleted, delete the directory
 				if (success)
 					success = directoryToBeErased.delete();
+				if ((directoryToBeErased.exists()) && success)
+					Log.e(LOG_TAG, "Directory " + directoryname + " is supposed to be erased but isn't");
 				// end loop
 				i = directories.size();
 			}
@@ -130,6 +145,10 @@ public class GeoBlocPackageManager {
 		return success;
 	}
 	
+	public String getPackageName() {
+		return packageName;
+	}
+
 	public String getPackageFullpath() {
 		return packageDirectory;
 	}
@@ -147,6 +166,14 @@ public class GeoBlocPackageManager {
 		List<String> filenames = new ArrayList<String>();
 		for (int i = 0; i < filenamesArray.length; i++)
 			filenames.add(filenamesArray[i]);
+		return filenames;
+	}
+	
+	public List<String> getAllFilePaths() {
+		String[] filenamesArray = directory.list();
+		List<String> filenames = new ArrayList<String>();
+		for (int i = 0; i < filenamesArray.length; i++)
+			filenames.add(packageDirectory + filenamesArray[i]);
 		return filenames;
 	}
 	
@@ -185,5 +212,16 @@ public class GeoBlocPackageManager {
 				directories.add(fileArray[i]);
 		}
 		return directories;
+	}
+	
+	public boolean buildZIPfromPackage(String zipFileName) {
+		if (!isPackageEmpty())
+			return SDFilePersistance.makeZIPFile(zipFileName, getAllFilePaths(), getAllFilenames());
+		else
+			return false;
+	}
+	
+	public boolean isPackageEmpty() {
+		return (directory.list().length == 0);
 	}
 }

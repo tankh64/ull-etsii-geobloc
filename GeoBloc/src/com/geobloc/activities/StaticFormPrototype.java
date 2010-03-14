@@ -133,7 +133,7 @@ public class StaticFormPrototype extends Activity {
     	
     	// add form to database (completed)
     	DbFormInstance dbi = new DbFormInstance();
-    	dbi.setName(Utilities.buildPackageName(this, "static"));
+    	dbi.setName(formPackage.getPackageName());
     	dbi.setCreatedDate(new Date());
     	dbi.setPackageLocation(formPackage.getPackageFullpath());
     	dbi.setCompletedDate(new Date());

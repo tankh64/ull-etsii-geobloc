@@ -80,7 +80,7 @@ public class GetListOfAvailableFormsTask extends
 		SimpleHttpPost post;
 		Hashtable<String, String> response = null;
 		
-		for (int i = 1; (!exception && !done && (i <= 3)); i++) {
+		for (int i = 1; (!exception && !done && (i <= attempts)); i++) {
 			post = new SimpleHttpPost();
 			// tell the handler in which attempt we are
 			//handler.sendEmptyMessage(i);
