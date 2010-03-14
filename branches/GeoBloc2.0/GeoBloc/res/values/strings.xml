@@ -38,6 +38,9 @@
 	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
 	<string name="formsPath">Directorio de formularios</string>
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
+	<string name="animationsCategory">Preferencias de Animaciones</string>
+	<string name="slidingButtonsAnimation">Botones Deslizantes</string>
+	<string name="slidingButtonsAnimationDescription">Los botones sólo aparecerán cuando se pueda realizar una acción con ellos.</string>
 	
 	<!-- FormPages -->
 	<string name="button_back">Atrás</string>
@@ -60,6 +63,9 @@
 	<string name="instance_manager_completeInstancesLabel">Instancias completas</string>
 	<string name="instance_manager_allInstancesEraseButton">Borrar</string>
 	<string name="instance_manager_completeInstancesSendButton">Enviar</string>
+	<string name="instance_manager_completeInstancesMarkIncomplete">Marcar Incompleto</string>
+	<string name="instance_manager_list_itemFormInstanceCreatedDateText">Creado: </string>
+	<string name="instance_manager_list_itemFormInstanceCompletedDateText">Completado: </string>
 	<string name="instance_manager_list_itemFormInstanceCompletedTextViewText">Completado: </string>
 	<string name="instance_manager_list_itemFormInstanceCompleteYes">Si</string>
 	<string name="instance_manager_list_itemFormInstanceCompleteNo">No</string>

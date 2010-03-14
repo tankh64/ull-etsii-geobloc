@@ -3,6 +3,7 @@
  */
 package com.geobloc.shared;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +11,13 @@ import org.apache.http.client.HttpClient;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.geobloc.db.DbFormInstance;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.Utilities.WidgetType;
@@ -140,6 +143,27 @@ public class UploadPackageHelper implements IStandardTaskListener {
 		return myFields;
 	}
 
+	/*
+		Builds the package file to be sent.
+	*/
+	public static boolean preparePackage(DbFormInstance dbi, SQLiteDatabase db, GeoBlocPackageManager pm) {
+		if (dbi.getCompressedPackageFileLocation() != null) {
+			// erase the previous compressed file
+			File file = new File (dbi.getCompressedPackageFileLocation());
+			if (file.exists())
+				file.delete();
+		}
+		String packageName = dbi.getName().substring(0,dbi.getName().lastIndexOf('_'));
+		packageName += Utilities.getDateAndTimeString().substring(0, Utilities.getDateAndTimeString().length()-1);
+		String zipFilename = pm.getPackageFullpath() + packageName + ".zip";
+		boolean success = pm.buildZIPfromPackage(zipFilename);
+		if (success) {
+			dbi.setCompressedPackageFileLocation(zipFilename);
+			dbi.save(db);
+		}
+		return success;
+	}
+	
 	@Override
 	public void taskComplete(Object result) {
 		if (pd != null)

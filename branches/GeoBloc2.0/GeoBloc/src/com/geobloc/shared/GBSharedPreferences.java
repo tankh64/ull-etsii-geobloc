@@ -5,16 +5,18 @@ package com.geobloc.shared;
 
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.widget.EditText;
 
 import com.geobloc.R;
 
 /**
+ * @author Jorge Carballo (jelcaf@gmail.com)
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
@@ -26,6 +28,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditTextPreference packagesPath;
 	private EditTextPreference formsPath;
 	private EditTextPreference numberOfInternetAttempts;
+	private CheckBoxPreference slidingButtonsAnimationEnabled;
 	
 	private EditText et;
 	private SharedPreferences prefs;
@@ -36,7 +39,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
 	public static String __FORMS_PATH_KEY__ = "formsPath";
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
-	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";	
+	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
+	public static String __SLIDING_BUTTONS_ANIMATION_KEY__ = "slidingButtonsAnimationKey";
 	// forms preferences
 	public static String __FORM_BACKGROUND_COLOR__ = "formColor";
 	public static String __FORM_TEXT_COLOR__ = "formTextColor";
@@ -55,10 +59,13 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __DEFAULT_PACKAGE_MANIFEST_FILENAME__ = "manifest.xml";
 	public static String __DEFAULT_FORM_FILENAME__ = "form.xml";
 	
+	// default animation states
+	public static boolean __DEFAULT_SLIDING_BUTTONS_ANIMATION__ = true;
+	
 	// swipe
-	public static final int SWIPE_MIN_DISTANCE = 120;
-	public static final int SWIPE_MAX_OFF_PATH = 250;
-	public static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	public static final int SWIPE_MIN_DISTANCE = 70;
+	public static final int SWIPE_MAX_OFF_PATH = 320;
+	public static final int SWIPE_THRESHOLD_VELOCITY = 100;
 	
 	// other
 	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
@@ -75,13 +82,14 @@ public class GBSharedPreferences extends PreferenceActivity {
 	
 	private void initConfig() {
 		addPreferencesFromResource(R.layout.settings);
-		
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		uploadPackagesServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__);
 		listOfAvailableFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__);
 		downloadFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__);
 		formsPath = (EditTextPreference) findPreference(GBSharedPreferences.__FORMS_PATH_KEY__);
 		packagesPath = (EditTextPreference) findPreference(GBSharedPreferences.__PACKAGES_PATH_KEY__);
 		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
+		slidingButtonsAnimationEnabled = (CheckBoxPreference) findPreference(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__);
 		
 		// default uploadPackagesServletAddress
 		setEditTextDefaultConfig(uploadPackagesServletAddress, 
@@ -105,7 +113,13 @@ public class GBSharedPreferences extends PreferenceActivity {
 		
 		// default packages path
 		setEditTextDefaultConfig(packagesPath, GBSharedPreferences.__DEFAULT_PACKAGES_PATH__);
-
+		
+		// default animations setting
+		//slidingButtonsAnimationEnabled.setDefaultValue(GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
+		slidingButtonsAnimationEnabled.setChecked(prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
+				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__));
+		//slidingButtonsAnimationEnabled.setDefaultValue(GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
+		
 	}
 	
 	private void setEditTextDefaultConfig(EditTextPreference edt, String defaultText) {
