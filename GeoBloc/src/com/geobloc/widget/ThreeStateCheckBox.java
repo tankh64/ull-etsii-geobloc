@@ -36,7 +36,8 @@ public class ThreeStateCheckBox extends LinearLayout {
 		super(context);
 		initConfig();
 		
-		((Activity)getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
+		inflate(getContext(), R.layout.three_state_checkbox, this);
+		//((Activity)getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
 
 		// get views and set their values
 		box = (ThreeStateButton) findViewById(R.id.box);

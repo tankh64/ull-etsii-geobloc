@@ -1,6 +1,7 @@
 package com.geobloc.widget;
 
 import com.geobloc.prompt.CheckboxQuestionPrompt;
+import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,6 +24,9 @@ public class CheckboxThreeWidget extends ThreeStateCheckBox implements QuestionW
 		super(context);
 		
 		mContext = context;
+		
+		this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 		// TODO Auto-generated constructor stub
 	}
 
@@ -39,7 +44,7 @@ public class CheckboxThreeWidget extends ThreeStateCheckBox implements QuestionW
 	
 	public void buildView (QuestionPrompt qP) {
 
-		this.setText(((CheckboxQuestionPrompt)qP).getTitle());
+		this.setText((CharSequence)((CheckboxThreeQuestionPrompt)qP).getTitle());
 		
 		if (qP.isRequired()) {
 			this.setBackgroundColor(Utilities.requiredColor);

@@ -24,7 +24,6 @@ public class CreateWidget {
 			widget = new CheckboxWidget(context);
 			break;
 		case GB_CHECKBOX_THREE:
-			/* Error in ThreeStateCheckboc */
 			widget = new CheckboxThreeWidget(context);
 			break;
 		case GB_MEDIA:
