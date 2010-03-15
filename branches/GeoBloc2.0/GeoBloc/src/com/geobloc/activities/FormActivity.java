@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,6 +72,11 @@ public class FormActivity extends Activity {
 	private Animation slideRightIn;
     private Animation slideRightOut;
     private ViewFlipper viewFlipper;
+    
+    private static final int MENU_PREVIOUS_PAGE = Menu.FIRST;
+    private static final int MENU_NEXT_PAGE = MENU_PREVIOUS_PAGE + 1;
+    private static final int MENU_SAVE_COMPLETE = MENU_NEXT_PAGE + 1;
+    private static final int MENU_SAVE_INCOMPLETE = MENU_SAVE_COMPLETE + 1;
 	
     
     public class ImageAdapterPhoto extends BaseAdapter {
@@ -282,6 +288,7 @@ public class FormActivity extends Activity {
 		ViewFlipper.inflate(getApplicationContext(), R.layout.first_page_flipper, viewFlipper);
 		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutInit);
 		lL.setBackgroundColor(Utilities.background);
+		
 		/** Rellenamos el Titulo y la descripción del formulario */
 		/*** Colocamos texto en el viewFlipper */
 		TextView tView = (TextView)findViewById(R.id.TitleForm);
@@ -308,11 +315,9 @@ public class FormActivity extends Activity {
 	
 	private void postTaskFinished() {
 		inflateFirstPage();
-		
 		setFlipperPages();
-		setNumPage();
-	
 		inflateLastPage();
+		setNumPage();
 	}
 	
 	private void setNumPage () {
@@ -404,21 +409,13 @@ public class FormActivity extends Activity {
                 // right to left swipe
                 if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 	if (viewFlipper.getDisplayedChild() < (viewFlipper.getChildCount()-1)) {
-                		viewFlipper.setInAnimation(slideLeftIn);
-                		viewFlipper.setOutAnimation(slideLeftOut);
-                		viewFlipper.showNext();
-                		
-                		setNumPage();
+                		nextPage();
                 	} else {
                 		Utilities.showToast(getApplicationContext(), getString(R.string.no_more_pages_at_rigth), Toast.LENGTH_SHORT);
                 	}
                 }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 	if (viewFlipper.getDisplayedChild() > 0) {
-                		viewFlipper.setInAnimation(slideRightIn);
-                		viewFlipper.setOutAnimation(slideRightOut);
-                		viewFlipper.showPrevious();
-                		
-                		setNumPage();
+                		previousPage();
                 	} else {
                 		Utilities.showToast(getApplicationContext(), getString(R.string.no_more_pages_at_left), Toast.LENGTH_SHORT);
                 	}
@@ -453,5 +450,51 @@ public class FormActivity extends Activity {
         Toast.makeText(this, "Longpress: " + info.position, Toast.LENGTH_SHORT).show();
         return true;
     }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.removeItem(MENU_PREVIOUS_PAGE);
+    	menu.removeItem(MENU_NEXT_PAGE);
+    	menu.removeItem(MENU_SAVE_COMPLETE);
+    	menu.removeItem(MENU_SAVE_INCOMPLETE);
+    	
+        menu.add(0, MENU_PREVIOUS_PAGE, 0, "Previous Page").setIcon(
+                android.R.drawable.ic_media_previous).setEnabled(
+                		viewFlipper.getDisplayedChild() != 0 ? true : false);
+        menu.add(0, MENU_NEXT_PAGE, 0, "Next Page").setIcon(
+                android.R.drawable.ic_media_next).setEnabled(
+                		viewFlipper.getDisplayedChild() != (viewFlipper.getChildCount()-1) ? true : false);
+        menu.add(0, MENU_SAVE_COMPLETE, 0, "Save as Complete").setIcon(
+                android.R.drawable.ic_menu_save).setEnabled(false);
+        menu.add(0, MENU_SAVE_INCOMPLETE, 0, "Save as Incomplete").setIcon(
+                android.R.drawable.ic_menu_save).setEnabled(false);
+		return true;
+    }
 	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        	case MENU_PREVIOUS_PAGE: previousPage();
+        		break;
+        	case MENU_NEXT_PAGE: nextPage();
+        		break;	
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
+    private void previousPage() {
+		viewFlipper.setInAnimation(slideRightIn);
+		viewFlipper.setOutAnimation(slideRightOut);
+		viewFlipper.showPrevious();
+		
+		setNumPage();
+    }
+    
+    private void nextPage() {
+		viewFlipper.setInAnimation(slideLeftIn);
+		viewFlipper.setOutAnimation(slideLeftOut);
+		viewFlipper.showNext();
+		
+		setNumPage();
+    }
 }
