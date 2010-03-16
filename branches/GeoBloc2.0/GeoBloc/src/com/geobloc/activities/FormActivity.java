@@ -1,6 +1,8 @@
 package com.geobloc.activities;
 
 
+import java.util.ArrayList;
+
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
 import com.geobloc.activities.Gallery1.ImageAdapter;
@@ -42,10 +44,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +81,7 @@ public class FormActivity extends Activity {
     private static final int MENU_NEXT_PAGE = MENU_PREVIOUS_PAGE + 1;
     private static final int MENU_SAVE_COMPLETE = MENU_NEXT_PAGE + 1;
     private static final int MENU_SAVE_INCOMPLETE = MENU_SAVE_COMPLETE + 1;
+    private static final int MENU_JUMP_TO = MENU_SAVE_INCOMPLETE + 1; 
 	
     
     public class ImageAdapterPhoto extends BaseAdapter {
@@ -106,7 +111,7 @@ public class FormActivity extends Activity {
 
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView i = new ImageView(mContext);
-
+            
             i.setImageResource(mImageIds[position]);
             i.setScaleType(ImageView.ScaleType.FIT_XY);
             //i.setLayoutParams(new Gallery.LayoutParams(136, 88));
@@ -457,7 +462,10 @@ public class FormActivity extends Activity {
     	menu.removeItem(MENU_NEXT_PAGE);
     	menu.removeItem(MENU_SAVE_COMPLETE);
     	menu.removeItem(MENU_SAVE_INCOMPLETE);
-    	
+    	menu.removeItem(MENU_JUMP_TO);
+
+        menu.add(0, MENU_JUMP_TO, 0, "Ir a la página ...").setIcon(
+                android.R.drawable.ic_menu_view).setEnabled(true);
         menu.add(0, MENU_PREVIOUS_PAGE, 0, "Previous Page").setIcon(
                 android.R.drawable.ic_media_previous).setEnabled(
                 		viewFlipper.getDisplayedChild() != 0 ? true : false);
@@ -468,16 +476,20 @@ public class FormActivity extends Activity {
                 android.R.drawable.ic_menu_save).setEnabled(false);
         menu.add(0, MENU_SAVE_INCOMPLETE, 0, "Save as Incomplete").setIcon(
                 android.R.drawable.ic_menu_save).setEnabled(false);
+
 		return true;
     }
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        	case MENU_JUMP_TO: listDialog();
+        		break;
         	case MENU_PREVIOUS_PAGE: previousPage();
         		break;
         	case MENU_NEXT_PAGE: nextPage();
         		break;	
+        	
         }
         return super.onOptionsItemSelected(item);
     }
@@ -496,5 +508,38 @@ public class FormActivity extends Activity {
 		viewFlipper.showNext();
 		
 		setNumPage();
+    }
+    
+    /** Simple dialog list to select the page.
+     * Not implemented yet.
+     */
+    private void listDialog () {
+    	
+    	final ArrayList<String> myArray = new ArrayList();
+    	myArray.add("Hola 1");
+    	myArray.add("Hola 2");
+    	myArray.add("Hola 3");
+    	myArray.add("Hola 4");
+    	
+    	ListAdapter lAdapter = new ArrayAdapter<String> (FormActivity.this, android.R.layout.simple_list_item_1, myArray);
+
+    	AlertDialog dial = new AlertDialog.Builder(FormActivity.this)
+        .setTitle("Ir a la página")
+        .setInverseBackgroundForced(true)
+        //.setSingleChoiceItems(lAdapter, android.R.layout.simple_list_item_1, new DialogInterface.OnClickListener() {
+        .setAdapter(lAdapter, new DialogInterface.OnClickListener() {
+        //.setItems(R.array.Array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                /* User clicked so do some stuff */
+                //String[] items = getResources().getStringArray(R.array.Array);
+                new AlertDialog.Builder(FormActivity.this)
+                        .setMessage("You selected: " + which + " , " + myArray.get(which))
+                        .show();
+            }
+        })
+        .create();
+    	
+    	dial.show();
     }
 }
