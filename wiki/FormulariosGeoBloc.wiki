@@ -6,7 +6,8 @@ You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFo
 
 {{{
 
-<!-- Elements -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Elements struct -->
 <!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_formDescription, gb_page+)>
     <!ELEMENT gb_name (#PCDATA)>
     <!ELEMENT gb_version (#PCDATA)>
@@ -15,18 +16,25 @@ You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFo
         <!ELEMENT gb_dateMonth (#PCDATA)>
         <!ELEMENT gb_dateYear (#PCDATA)>
     <!ELEMENT gb_formDescription (#PCDATA)>
-    <!ELEMENT gb_page (gb_pageName,(gb_label|gb_button|gb_field|gb_list)+)>
+    <!ELEMENT gb_page (gb_pageName,(gb_label|gb_field|gb_list|gb_checkbox|gb_checkboxthree)+)>
         <!ELEMENT gb_pageName (#PCDATA)>
         <!ELEMENT gb_label (gb_description?, gb_labelText)>
             <!ELEMENT gb_description (#PCDATA)>
             <!ELEMENT gb_labelText (#PCDATA)>
-        <!ELEMENT gb_button (gb_description?, gb_buttonText)>
-            <!-- <gb_description> -->
-            <!ELEMENT gb_buttonText (#PCDATA)>
         <!ELEMENT gb_field (gb_description?, gb_fieldLabel, gb_fieldDefaultValue?)>
             <!-- <gb_description> -->
             <!ELEMENT gb_fieldLabel (#PCDATA)>
             <!ELEMENT gb_fieldDefaultValue (#PCDATA)>
+        <!ELEMENT gb_checkbox (gb_description?, gb_checkboxText, gb_checkboxDefaultValue?)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_checkboxText (#PCDATA)>
+            <!ELEMENT gb_checkboxDefaultValue (#PCDATA)>
+            <!-- 0 or 1-->
+        <!ELEMENT gb_checkboxthree (gb_description?, gb_checkboxthreeText, gb_checkboxthreeDefaultValue?)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_checkboxthreeText (#PCDATA)>
+            <!ELEMENT gb_checkboxthreeDefaultValue (#PCDATA)>
+            <!-- 0, 1 or 2-->
         <!ELEMENT gb_list (gb_description?, gb_listLabel, gb_listItem+)>
             <!-- <gb_description> -->
             <!ELEMENT gb_listLabel (#PCDATA)>
@@ -39,9 +47,9 @@ You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFo
     id CDATA #REQUIRED
 >
 
-<!ATTLIST gb_button
+<!ATTLIST gb_page
     id CDATA #REQUIRED
-    action (map|gps|photo|video|audio) #REQUIRED
+    action (data|map|gps|photo|video|audio) #REQUIRED
 >
 
 <!ATTLIST gb_field
@@ -57,8 +65,22 @@ You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFo
     type (single|multiple|combo) #REQUIRED
 >
 
+<!ATTLIST gb_multipleChoiceList
+  isRequired (true|false) "false"
+>
+
 <!ATTLIST gb_listItem
     selected (true|false) "false"
+>
+
+<!ATTLIST gb_checkbox
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_checkboxthree
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
 >
 
 }}}
@@ -69,45 +91,72 @@ A simple one page form example
 
 {{{
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE gb_form SYSTEM "http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTD.dtd">
+<?xml version="1.0"?>
+<!DOCTYPE gb_form SYSTEM "GeoBloc.dtd">
 
-<gb_form>
-  <gb_name>Form example 1</gb_name>
-  <gb_version>1.0</gb_version>
-  <gb_date>
-    <gb_dateDay>28</gb_dateDay>
-    <gb_dateMonth>1</gb_dateMonth>
-    <gb_dateYear>2010</gb_dateYear>
-  </gb_date>
-  <gb_formDescription>This is a form example, written using the GeoBloc Desktop aplication.</gb_formDescription>
-  <gb_page>
-    <gb_pageName>Page 1</gb_pageName>
-    <gb_label id="lab01">
-      <gb_labelText>User autentification</gb_labelText>
-    </gb_label>
-    <gb_field id="field01" type="string" linesNumber="1" isRequired="true">
-      <gb_fieldLabel>Name</gb_fieldLabel>
-    </gb_field>
-    <gb_field id="field02" type="string" linesNumber="1" isRequired="true">
-      <gb_fieldLabel>Surname</gb_fieldLabel>
-    </gb_field>
-    <gb_list id="list01" type="combo" isRequired="false">
-      <gb_listLabel>Gender</gb_listLabel>
-      <gb_listItem>
-        <gb_listItemLabel>Male</gb_listItemLabel>
-        <gb_listItemValue>M</gb_listItemValue>
-      </gb_listItem>
-      <gb_listItem>
-        <gb_listItemLabel>Female</gb_listItemLabel>
-        <gb_listItemValue>F</gb_listItemValue>
-      </gb_listItem>
-      <gb_listItem>
-        <gb_listItemLabel>Unknown</gb_listItemLabel>
-        <gb_listItemValue>U</gb_listItemValue>
-      </gb_listItem>
-    </gb_list>
-  </gb_page>
+<gb_form id="form">
+	<gb_name>Recogida Fresas</gb_name>
+	<gb_description>Formulario utilizado para el recuento de la recogida de fresas en los meses de invierno</gb_description>
+	<gb_version>1.0</gb_version>
+	
+	<gb_page id="photo1" type="photo">
+		<gb_pageName>Pagina de Fotos</gb_pageName>
+	
+	</gb_page>
+	
+	<gb_page id="page1" type="data">
+	
+		<gb_pageName>Pagina 1</gb_pageName>
+
+		<gb_label id="label1">
+		<gb_labelText>Campo 1</gb_labelText>
+		</gb_label>
+
+		<gb_checkbox id="checkbox">
+		<gb_checkboxText>Foto de Casa</gb_checkboxText>
+		</gb_checkbox>
+
+	
+		<gb_label id="label2" isRequired="true">
+		<gb_labelText>Campo 2</gb_labelText>
+		</gb_label>
+
+		
+		<gb_checkboxthree id="checkbox3">
+		<gb_checkboxthreeText>Marco 1 de 3</gb_checkboxthreeText>
+		</gb_checkboxthree>
+
+		<gb_field id="field1" isRequired="true" type="int" linesNumber="3">
+		<gb_fieldLabel>Inserta num</gb_fieldLabel>
+		</gb_field>
+
+		<gb_label id="label1" isRequired="false">
+		<gb_labelText>Campo 3</gb_labelText>
+		</gb_label>
+
+		<gb_field id="field2" linesNumber="2">
+		<gb_fieldLabel>Inserta texto 2</gb_fieldLabel>
+		<gb_fieldDefaultValue>Valor por defecto</gb_fieldDefaultValue>	
+		</gb_field>
+
+		
+	</gb_page>
+
+	<gb_page id="page2" type="data">
+	
+		<gb_pageName>Pagina 2</gb_pageName>
+
+		<gb_label id="label1" isRequired="true">
+		<gb_labelText>Campo 1 de 2</gb_labelText>
+		</gb_label>
+
+	
+		<gb_label id="label2" isRequired="true">
+		<gb_labelText>Campo 2 de 2</gb_labelText>
+		</gb_label>
+		
+	</gb_page>
+
 </gb_form>
 
 }}}
