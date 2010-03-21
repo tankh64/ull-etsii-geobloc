@@ -2,7 +2,7 @@
 
 = GeoBloc XML Forms DTD =
 
-You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTD.dtd
+You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTDv1.1.dtd
 
 {{{
 
