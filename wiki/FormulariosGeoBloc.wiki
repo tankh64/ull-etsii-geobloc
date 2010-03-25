@@ -1,6 +1,8 @@
 #summary Estructura de formularios GeoBloc
 
-= GeoBloc XML Forms DTD =
+= GeoBloc XML Forms Definition =
+
+== XMLF Forms DTD ==
 
 You can download it from http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTDv1.1.dtd
 
@@ -170,3 +172,13 @@ A 2 paged form example with various kinds of elements.
 // cooming soon
 
 }}}
+
+
+== XML Forms Database Table ==
+This section shows the table definition where the xml forms are saved. It's based on an Oracle 10g eXpress Edition database:
+
+|| *ID* || *FormID* || *Version* || *FormXML* || 
+|| NUMBER || VARCHAR(80) || NUMBER || XMLType ||
+|| NOT NULL || NOT NULL || NOT NULL || NOT NULL ||
+|| (PK) || UNIQUE || UNIQUE ||  ||
+|| Indice secuencial estándar || Identificador del esquema del formulario || Numero de version del formulario || Contenido XML del formulario ||
