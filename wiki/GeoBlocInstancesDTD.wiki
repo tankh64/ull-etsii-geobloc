@@ -1,0 +1,70 @@
+#summary Definition of GeoBloc instances XML file.
+
+= GeoBloc instances DTD =
+
+Original file can be downloaded here: http://ull-etsii-geobloc.googlecode.com/files/GeoBlocInstancesDTD_1.xml
+
+*WARNING: I'm sure it's not 100% correct, it's my first DTD after all.*
+
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT gb_instance (gb_scheme, gb_device, gb_form, gb_formVersion, gb_page+)>
+  <!ELEMENT gb_page (gb_field|gb_singleChoiceList|gb_multipleChoiceList|gb_checkbox|gb_checkboxthree|gb_binary|gb_location)*>
+    <!ELEMENT gb_field (#PCDATA)>
+    <!ELEMENT gb_singleChoiceList selected_value>
+      <!ELEMENT selected_value (#PCDATA)>
+    <!ELEMENT gb_multipleChoiceList selected_values>
+      <!ELEMENT selected_values gb_listItem+>
+        <!ELEMENT gb_listItem (#PCDATA)>
+    <!ELEMENT gb_checkbox (#PCDATA)>
+    <!ELEMENT gb_checkboxthree (#PCDATA>
+    <!ELEMENT gb_binary (#PCDATA)>
+    <!ELEMENT gb_location (longitutde, latitude)>
+      <!ELEMENT longitude (#PCDATA)>
+      <!ELEMENT latitude (#PCDATA)>
+    
+    
+<!-- Attributes -->
+<!ATTLIST gb_instance
+    schemeFile CDATA #REQUIRED
+    device CDATA #REQUIRED
+    formID CDATA #REQUIRED
+    formVersion CDATA #REQUIRED
+    complete CDATA #REQUIRED
+>
+
+<!ATTLIST gb_page
+    id CDATA #REQUIRED
+    type (data|gps|photo|video|audio) #REQUIRED
+>
+
+<!ATTLIST gb_field
+    id CDATA #REQUIRED
+    value CDATA #REQUIRED
+>
+
+<!ATTLIST gb_singleChoiceList
+    id CDATA #REQUIRED
+>
+
+<!ATTLIST selected_value
+    id CDATA #REQUIRED
+    value CDATA #REQUIRED
+>
+
+<!ATTLIST gb_multipleChoiceList
+    id CDATA #REQUIRED
+>
+
+<!ATTLIST gb_listItem
+    id CDATA #REQUIRED
+    value CDATA #REQUIRED
+>
+
+<!ATTLIST gb_checkbox
+    id CDATA #REQUIRED
+    value (0|1) #REQUIRED
+>
+}}}
+
+Please commment so I can correct any mistakes.
