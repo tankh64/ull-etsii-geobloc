@@ -9,7 +9,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import com.geobloc.form.FormClass;
+import com.geobloc.form.FormDataPage;
 import com.geobloc.form.FormPage;
+import com.geobloc.form.FormPhotoPage;
 import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
@@ -37,7 +39,7 @@ public class XMLHandler extends DefaultHandler {
 	private String title;
 	private String textContent;
 	
-	private static enum IntegerTag {IGB_FORM, IGB_NAME, IGB_VERSION, IGB_DATE, IGB_DESCRIPTION, IGB_PAGE, IGB_PAGE_NAME,
+	private static enum IntegerTag {IGB_FORM, IGB_NAME, IGB_VERSION, IGB_DATE, IGB_DESCRIPTION, IGB_DATA_PAGE, IGB_PHOTO_PAGE, IGB_VIDEO_PAGE, IGB_AUDIO_PAGE, IGB_LOCATION_PAGE, IGB_PAGE_NAME,
 		IGB_LABEL, IGB_LABEL_TEXT, IGB_FIELD, IGB_FIELD_LABEL, IGB_FIELD_DEFAULT_VALUE, IGB_CHECKBOX, IGB_CHECKBOX_TEXT, IGB_CHECKBOX_THREE, IGB_CHECKBOX_THREE_TEXT};
 	
 	private static Map<String, IntegerTag> MapTags;
@@ -49,7 +51,12 @@ public class XMLHandler extends DefaultHandler {
 	private static String GB_DATE = "gb_date";
 	private static String GB_DESCRIPTION = "gb_description";
 	
-	private static String GB_PAGE = "gb_page";
+	private static String GB_DATA_PAGE = "gb_dataPage";
+	private static String GB_PHOTO_PAGE = "gb_photoPage";
+	private static String GB_VIDEO_PAGE = "gb_videoPage";
+	private static String GB_AUDIO_PAGE = "gb_audioPage";
+	private static String GB_LOCATION_PAGE = "gb_locationPage";
+	
 	private static String GB_PAGE_NAME = "gb_pageName";
 	
 	private static String GB_LABEL = "gb_label";
@@ -74,7 +81,12 @@ public class XMLHandler extends DefaultHandler {
 	private boolean in_gb_date = false;
 	private boolean in_gb_description = false;
 	
-	private boolean in_gb_page = false;
+	private boolean in_gb_dataPage = false;
+	private boolean in_gb_photoPage = false;
+	private boolean in_gb_videoPage = false;
+	private boolean in_gb_audioPage = false;
+	private boolean in_gb_locationPage = false;
+	
 	private boolean in_gb_pageName = false;
 	
 	private boolean in_gb_label = false;
@@ -151,20 +163,23 @@ public class XMLHandler extends DefaultHandler {
     			this.in_gb_form = true;
     			Log.v(TAG, "Nuevo formulario");
                 break;
-    		case IGB_PAGE:
-    			this.in_gb_page = true;
-    			
-    			if (actualAtt.attMap.containsKey(Utilities.ATTR_TYPE)) {
-    				myPage = new FormPage (actualAtt.attMap.get(Utilities.ATTR_TYPE));
-    				
-    				if (actualAtt.attMap.get(Utilities.ATTR_TYPE).equalsIgnoreCase("photo")) {
-    					MediaQuestionPrompt mediaPrompt = new MediaQuestionPrompt();
-    					myPage.addQuestion(mediaPrompt);
-    				}
-    			} else {
-    				myPage = new FormPage();
-    			}
+    		case IGB_DATA_PAGE:
+    			this.in_gb_dataPage = true;
+    			myPage = (FormPage) new FormDataPage();
            	 	break;
+    		case IGB_PHOTO_PAGE:
+    			this.in_gb_photoPage = true;
+    			myPage = (FormPage) new FormPhotoPage();
+    			break;
+    		case IGB_VIDEO_PAGE:
+    			this.in_gb_videoPage = true;
+    			break;
+    		case IGB_AUDIO_PAGE:
+    			this.in_gb_audioPage = true;
+    			break;
+    		case IGB_LOCATION_PAGE:
+    			this.in_gb_locationPage = true;
+    			break;
     		case IGB_NAME:
     			this.in_gb_name = true;
     			break;
@@ -245,16 +260,30 @@ public class XMLHandler extends DefaultHandler {
 	    	}
 	    	
 			break;
-		case IGB_PAGE:
-			this.in_gb_page = false;
+		case IGB_DATA_PAGE:
+			this.in_gb_dataPage = false;
             if (this.in_gb_form) {
-            	myForm.addPage(myPage);
+            	myForm.addPage((FormPage)myPage);
             	Log.v(TAG, "New page added");
        	 	}
        	 	else {
        	 		setParseError();
        	 	}
        	 	break;
+		case IGB_PHOTO_PAGE:
+			this.in_gb_photoPage = false;
+        	myForm.addPage((FormPhotoPage)myPage);
+        	Log.v(TAG, "New photo page added");
+			break;
+		case IGB_VIDEO_PAGE:
+			this.in_gb_videoPage = false;
+			break;
+		case IGB_AUDIO_PAGE:
+			this.in_gb_audioPage = false;
+			break;
+		case IGB_LOCATION_PAGE:
+			this.in_gb_locationPage = false;
+			break;
 		case IGB_NAME:
 			this.in_gb_name = false;
 			break;
@@ -269,7 +298,7 @@ public class XMLHandler extends DefaultHandler {
 			break;
 		case IGB_LABEL:
 			LabelQuestionPrompt lqPrompt = new LabelQuestionPrompt(title, attMap);
-			myPage.addQuestion(lqPrompt);
+			((FormDataPage)myPage).addQuestion(lqPrompt);
 			
             this.in_gb_label = false;
             clearValues();
@@ -282,7 +311,7 @@ public class XMLHandler extends DefaultHandler {
 			break;
 		case IGB_FIELD:
         	DataInputQuestionPrompt iQPrompt = new DataInputQuestionPrompt (title, this.textContent, attMap);
-			myPage.addQuestion(iQPrompt);
+			((FormDataPage)myPage).addQuestion(iQPrompt);
 			
             this.in_gb_field = false;
             clearValues();
@@ -295,7 +324,7 @@ public class XMLHandler extends DefaultHandler {
 			break;
 		case IGB_CHECKBOX:
         	CheckboxQuestionPrompt bPrompt = new CheckboxQuestionPrompt (title, attMap);
-			myPage.addQuestion(bPrompt);
+			((FormDataPage)myPage).addQuestion(bPrompt);
         	
             this.in_gb_checkbox = false;
             clearValues();
@@ -305,7 +334,7 @@ public class XMLHandler extends DefaultHandler {
 			break;
 		case IGB_CHECKBOX_THREE:
         	CheckboxThreeQuestionPrompt ch3Prompt = new CheckboxThreeQuestionPrompt (title, attMap);
-			myPage.addQuestion(ch3Prompt);
+			((FormDataPage)myPage).addQuestion(ch3Prompt);
         	
             this.in_gb_checkboxthree = false;
             clearValues();
@@ -335,7 +364,7 @@ public class XMLHandler extends DefaultHandler {
     	String cadena = new String(ch, start, length).trim();
     	
     	if(this.in_gb_form){
-    		if(this.in_gb_page) {
+    		if(this.in_gb_dataPage) {
     			if (this.in_gb_pageName) {
     				myPage.setNamePage(cadena);
     			} else if ((this.in_gb_label) && (this.in_gb_labelText)) {
@@ -405,7 +434,11 @@ public class XMLHandler extends DefaultHandler {
     	MapTags.put(GB_VERSION, IntegerTag.IGB_VERSION);
     	MapTags.put(GB_DATE, IntegerTag.IGB_DATE);
     	MapTags.put(GB_DESCRIPTION, IntegerTag.IGB_DESCRIPTION);
-    	MapTags.put(GB_PAGE, IntegerTag.IGB_PAGE);
+    	MapTags.put(GB_DATA_PAGE, IntegerTag.IGB_DATA_PAGE);
+    	MapTags.put(GB_PHOTO_PAGE, IntegerTag.IGB_PHOTO_PAGE);
+    	MapTags.put(GB_VIDEO_PAGE, IntegerTag.IGB_VIDEO_PAGE);
+    	MapTags.put(GB_AUDIO_PAGE, IntegerTag.IGB_AUDIO_PAGE);
+    	MapTags.put(GB_LOCATION_PAGE, IntegerTag.IGB_LOCATION_PAGE);
     	MapTags.put(GB_PAGE_NAME, IntegerTag.IGB_PAGE_NAME);
     	MapTags.put(GB_LABEL, IntegerTag.IGB_LABEL);
     	MapTags.put(GB_LABEL_TEXT, IntegerTag.IGB_LABEL_TEXT);

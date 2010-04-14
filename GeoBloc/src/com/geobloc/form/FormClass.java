@@ -91,7 +91,7 @@ public class FormClass {
 	}
 	
 	public int getNumQuestionsOfPage (int numPage) {
-		return (listPages.get(numPage)).getNumQuestions();
+		return ((FormDataPage)listPages.get(numPage)).getNumQuestions();
 	}
 
 }
