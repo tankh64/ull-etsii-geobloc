@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
 import com.geobloc.activities.Gallery1.ImageAdapter;
-import com.geobloc.form.FormPage;
+import com.geobloc.adapters.ImageAdapterPhoto;
+import com.geobloc.form.FormDataPage;
 import com.geobloc.form.FormPage.PageType;
 import com.geobloc.handlers.FormHandler;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
+import com.geobloc.widget.MediaWidget;
 import com.geobloc.widget.QuestionWidget;
 import com.geobloc.widget.CreateWidget;
 
@@ -82,60 +84,6 @@ public class FormActivity extends Activity {
     private static final int MENU_SAVE_COMPLETE = MENU_NEXT_PAGE + 1;
     private static final int MENU_SAVE_INCOMPLETE = MENU_SAVE_COMPLETE + 1;
     private static final int MENU_JUMP_TO = MENU_SAVE_INCOMPLETE + 1; 
-	
-    
-    public class ImageAdapterPhoto extends BaseAdapter {
-        int mGalleryItemBackground;
-        
-        public ImageAdapterPhoto(Context c) {
-            mContext = c;
-            // See res/values/attrs.xml for the <declare-styleable> that defines
-            // Gallery1.
-            TypedArray a = obtainStyledAttributes(R.styleable.GalleryPhoto);
-            mGalleryItemBackground = a.getResourceId(
-                    R.styleable.GalleryPhoto_android_galleryItemBackground, 0);
-            a.recycle();
-        }
-
-        public int getCount() {
-            return mImageIds.length;
-        }
-
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView i = new ImageView(mContext);
-            
-            i.setImageResource(mImageIds[position]);
-            i.setScaleType(ImageView.ScaleType.FIT_XY);
-            //i.setLayoutParams(new Gallery.LayoutParams(136, 88));
-            i.setLayoutParams(new Gallery.LayoutParams(170, 120));
-            
-            // The preferred Gallery item background
-            i.setBackgroundResource(mGalleryItemBackground);
-            
-            return i;
-        }
-
-        private Context mContext;
-
-        private Integer[] mImageIds = {
-                R.drawable.gallery_photo_1,
-                R.drawable.gallery_photo_2,
-                R.drawable.gallery_photo_3,
-                R.drawable.gallery_photo_4,
-                R.drawable.gallery_photo_5,
-                R.drawable.gallery_photo_6,
-                R.drawable.gallery_photo_7,
-                R.drawable.gallery_photo_8
-        };
-    }
 
     
 	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
@@ -356,16 +304,21 @@ public class FormActivity extends Activity {
 	    	
 	    		PageType mType = (formH.getPage(page)).getPageType();
 	    		if (mType == null) {
-	    			Log.e(TAG, "La página "+page+"no tiene tipo");
+	    			Log.e(TAG, "La página "+page+" no tiene tipo");
 	    		}
 	    		switch (mType) {
 	    		
-	    			case PHOTO: wdget = CreateWidget.createWidget(formH.getQuestionOfPage(0, page), context, (ViewGroup)viewFlipper);
+	    			case PHOTO: wdget = new MediaWidget (context, (ViewGroup)viewFlipper);
+	    						((MediaWidget)wdget).buildViewParent((ViewGroup)viewFlipper); 
+	    						//wdget = CreateWidget.createWidget(null, context, (ViewGroup)viewFlipper);
+	    				
+	    						//wdget = CreateWidget.createWidget(formH.getQuestionOfPage(0, page), context, (ViewGroup)viewFlipper);
 	    						viewFlipper.addView((View) wdget, page+1);
 	    						// Reference the Gallery view
-	    				        Gallery g = (Gallery) findViewById(R.id.gallery);
+	    				        Gallery g = (Gallery) ((View)wdget).findViewById(R.id.gallery);
+	    				        Log.v(TAG, "findView -> "+((View)wdget).findViewById(R.id.gallery));
 	    				        // Set the adapter to our custom adapter (below)
-	    				        g.setAdapter(new ImageAdapterPhoto(this));
+	    				        g.setAdapter(new ImageAdapterPhoto(getApplicationContext()));
 	    				        
 	    				        // Set a item click listener, and just Toast the clicked position
 	    				        g.setOnItemClickListener(new OnItemClickListener() {
@@ -379,7 +332,7 @@ public class FormActivity extends Activity {
 	    						break;
 	    			case AUDIO:	
 	    			case VIDEO: 
-	    			case GPS: break;
+	    			case LOCATION: break;
 	    			case DATA:
 	    				LinearLayout vistaR = new LinearLayout(context);
 	    	    		vistaR.setPadding(5, 5, 5, 5);
