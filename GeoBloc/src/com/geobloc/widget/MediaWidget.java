@@ -56,21 +56,8 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
 		mContext = context;
 	}
 
-	/*public ButtonWidget(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
-	}*/
-	
 	public void buildView (QuestionPrompt qP) {
 
-        
-	}
-	
-	public void buildViewParent (ViewGroup parent) {
-		//inflate(mContext, R.layout.gallery, parent);
-		
-        /*Button but = (Button)findViewById(R.id.takePhotoButton);
-        but.setText("Hacer foto");*/
 	}
 
 	@Override

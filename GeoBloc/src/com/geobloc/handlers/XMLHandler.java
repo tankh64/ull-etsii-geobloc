@@ -385,6 +385,11 @@ public class XMLHandler extends DefaultHandler {
     				}
     			}
     		}
+    		else if (this.in_gb_photoPage) {
+    			if (this.in_gb_pageName) {
+    				myPage.setNamePage(cadena);
+    			}
+    		}
     		else {
     			if (this.in_gb_name) {
     				//We must set the form name

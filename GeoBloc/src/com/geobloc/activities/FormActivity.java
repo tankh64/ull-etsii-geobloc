@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
-import com.geobloc.activities.Gallery1.ImageAdapter;
 import com.geobloc.adapters.ImageAdapterPhoto;
 import com.geobloc.form.FormDataPage;
 import com.geobloc.form.FormPage.PageType;
@@ -30,6 +29,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
@@ -42,12 +42,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -309,16 +311,15 @@ public class FormActivity extends Activity {
 	    		switch (mType) {
 	    		
 	    			case PHOTO: wdget = new MediaWidget (context, (ViewGroup)viewFlipper);
-	    						((MediaWidget)wdget).buildViewParent((ViewGroup)viewFlipper); 
-	    						//wdget = CreateWidget.createWidget(null, context, (ViewGroup)viewFlipper);
-	    				
-	    						//wdget = CreateWidget.createWidget(formH.getQuestionOfPage(0, page), context, (ViewGroup)viewFlipper);
 	    						viewFlipper.addView((View) wdget, page+1);
+	    						
 	    						// Reference the Gallery view
 	    				        Gallery g = (Gallery) ((View)wdget).findViewById(R.id.gallery);
 	    				        Log.v(TAG, "findView -> "+((View)wdget).findViewById(R.id.gallery));
+	    				        
 	    				        // Set the adapter to our custom adapter (below)
-	    				        g.setAdapter(new ImageAdapterPhoto(getApplicationContext()));
+	    				        final ImageAdapterPhoto imageAdapter = new ImageAdapterPhoto(getApplicationContext());
+	    				        g.setAdapter(imageAdapter);
 	    				        
 	    				        // Set a item click listener, and just Toast the clicked position
 	    				        g.setOnItemClickListener(new OnItemClickListener() {
@@ -326,6 +327,51 @@ public class FormActivity extends Activity {
 	    				                Toast.makeText(getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
 	    				            }
 	    				        });
+	    				        
+	    				        // ************  Makephoto button
+	    				        Button button = (Button) ((View)wdget).findViewById (R.id.takePhotoButton);
+	    				        button.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View arg0) {
+										// TODO Auto-generated method stub
+										imageAdapter.addPhoto();
+										Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+										startActivity(intent);
+									}
+	    				        	
+	    				        });
+	    				        
+	    				        // ************* get photo from gallery
+	    				        button = (Button) ((View)wdget).findViewById (R.id.loadFromGalleryButton);
+	    				        button.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View arg0) {
+										// TODO Auto-generated method stub
+										imageAdapter.addPhotoFromGallery();
+										Intent intent = new Intent();
+										intent.setType("image/*");
+										intent.setAction(Intent.ACTION_GET_CONTENT);
+										startActivity(intent);
+									}
+	    				        	
+	    				        });
+	    				        
+	    				        // ************* clear all photos
+	    				        button = (Button) ((View)wdget).findViewById (R.id.clearButton);
+	    				        button.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View arg0) {
+										// TODO Auto-generated method stub
+										imageAdapter.clearPhotos();
+									}
+	    				        	
+	    				        });
+	    				        
+	    				        TextView texto = (TextView) ((View)wdget).findViewById (R.id.loadPhotos);
+	    				        texto.setText(getString(R.string.load_photos, ""+imageAdapter.getCount()));
 	    				        
 	    				        // We also want to show context menu for longpressed items in the gallery
 	    				        registerForContextMenu(g);

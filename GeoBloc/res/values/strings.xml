@@ -84,4 +84,5 @@
 <string name="formColorTextDescription">Color del texto del formulario por defecto</string>
 <string name="formColorText">Color del Texto</string>
 <string name="version">0.1</string>
+<string name="load_photos">Se han cargado %s fotos</string>
 </resources>

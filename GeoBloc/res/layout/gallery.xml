@@ -12,5 +12,5 @@
 <Button android:layout_height="wrap_content" android:id="@+id/takePhotoButton" android:layout_centerHorizontal="true" android:layout_above="@+id/loadFromGalleryButton" android:layout_margin="10px" android:layout_width="200px"></Button>
 <Button android:layout_height="wrap_content" android:id="@+id/loadFromGalleryButton" android:layout_centerHorizontal="true" android:layout_centerInParent="true" android:layout_above="@+id/clearButton" android:layout_margin="10px" android:layout_width="200px"></Button>
 <Button android:id="@+id/clearButton" android:layout_above="@+id/loadPhotos" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_margin="10px" android:layout_width="200px"></Button>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerInParent="true" android:id="@+id/loadPhotos" android:text="Se han cargado X fotos" android:layout_margin="20px"></TextView>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerInParent="true" android:id="@+id/loadPhotos" android:layout_margin="20dp"></TextView>
 </RelativeLayout>
