@@ -11,7 +11,7 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class ImageAdapterPhoto extends BaseAdapter {
+public class ImageAdapterPhotoTest extends BaseAdapter {
 
     private int mGalleryItemBackground;
     private Context mContext;
@@ -27,7 +27,7 @@ public class ImageAdapterPhoto extends BaseAdapter {
             R.drawable.gallery_photo_8
     };
     
-    public ImageAdapterPhoto(Context c) {
+    public ImageAdapterPhotoTest(Context c) {
         mContext = c;
         // See res/values/attrs.xml for the <declare-styleable> that defines
         // Gallery1.
