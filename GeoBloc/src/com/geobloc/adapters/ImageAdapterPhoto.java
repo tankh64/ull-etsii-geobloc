@@ -1,9 +1,12 @@
 package com.geobloc.adapters;
 
+import java.util.ArrayList;
+
 import com.geobloc.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,16 +19,7 @@ public class ImageAdapterPhoto extends BaseAdapter {
     private int mGalleryItemBackground;
     private Context mContext;
     
-    private Integer[] mImageIds = {
-            R.drawable.gallery_photo_1,
-            R.drawable.gallery_photo_2,
-            R.drawable.gallery_photo_3,
-            R.drawable.gallery_photo_4,
-            R.drawable.gallery_photo_5,
-            R.drawable.gallery_photo_6,
-            R.drawable.gallery_photo_7,
-            R.drawable.gallery_photo_8
-    };
+    private ArrayList<Bitmap> mArray = new ArrayList<Bitmap>();
     
     public ImageAdapterPhoto(Context c) {
         mContext = c;
@@ -40,8 +34,7 @@ public class ImageAdapterPhoto extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mImageIds.length;
-		//return 0;
+		return mArray.size();
 	}
 
 	@Override
@@ -60,7 +53,7 @@ public class ImageAdapterPhoto extends BaseAdapter {
 	public View getView(int position, View arg1, ViewGroup arg2) {
         ImageView i = new ImageView(mContext);
         
-        i.setImageResource(mImageIds[position]);
+        i.setImageBitmap(mArray.get(position));
         i.setScaleType(ImageView.ScaleType.FIT_XY);
         //i.setLayoutParams(new Gallery.LayoutParams(136, 88));
         i.setLayoutParams(new Gallery.LayoutParams(170, 120));
@@ -71,7 +64,8 @@ public class ImageAdapterPhoto extends BaseAdapter {
         return i;
 	}
 	
-	public void addPhoto () {
+	public void addPhoto (Bitmap photo) {
+		mArray.add(photo);
 		Toast.makeText(mContext, "Añado una nueva foto", Toast.LENGTH_SHORT).show();
 	}
 
@@ -81,6 +75,10 @@ public class ImageAdapterPhoto extends BaseAdapter {
 	
 	public void clearPhotos () {
 		Toast.makeText(mContext, "Elimino todas las fotos", Toast.LENGTH_SHORT).show();
+		for (int i=mArray.size() - 1; i >= 0; i--) {
+			mArray.remove(i);
+			//Toast.makeText(mContext, "Elimino la foto: "+i, Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 }

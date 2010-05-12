@@ -1,6 +1,7 @@
 package com.geobloc.activities;
 
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.geobloc.R;
@@ -20,12 +21,16 @@ import com.geobloc.widget.CreateWidget;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -69,6 +74,9 @@ import android.widget.AdapterView.OnItemClickListener;
  */
 public class FormActivity extends Activity {
 	private static final String TAG = "FormActivity";
+	
+	private static final int CAMERA_ACTIVITY = 1;
+	private static final int GALLERY_ACTIVITY = 2;
 	
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -145,6 +153,9 @@ public class FormActivity extends Activity {
 	private SharedPreferences prefs;
 	
 	LinearLayout vista;
+	
+	Gallery g;
+	ImageAdapterPhoto imageAdapter;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -314,11 +325,11 @@ public class FormActivity extends Activity {
 	    						viewFlipper.addView((View) wdget, page+1);
 	    						
 	    						// Reference the Gallery view
-	    				        Gallery g = (Gallery) ((View)wdget).findViewById(R.id.gallery);
+	    				        g = (Gallery) ((View)wdget).findViewById(R.id.gallery);
 	    				        Log.v(TAG, "findView -> "+((View)wdget).findViewById(R.id.gallery));
 	    				        
 	    				        // Set the adapter to our custom adapter (below)
-	    				        final ImageAdapterPhoto imageAdapter = new ImageAdapterPhoto(getApplicationContext());
+	    				        imageAdapter = new ImageAdapterPhoto(getApplicationContext());
 	    				        g.setAdapter(imageAdapter);
 	    				        
 	    				        // Set a item click listener, and just Toast the clicked position
@@ -335,9 +346,9 @@ public class FormActivity extends Activity {
 									@Override
 									public void onClick(View arg0) {
 										// TODO Auto-generated method stub
-										imageAdapter.addPhoto();
+										//imageAdapter.addPhoto();
 										Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-										startActivity(intent);
+										startActivityForResult(intent, CAMERA_ACTIVITY);
 									}
 	    				        	
 	    				        });
@@ -353,7 +364,8 @@ public class FormActivity extends Activity {
 										Intent intent = new Intent();
 										intent.setType("image/*");
 										intent.setAction(Intent.ACTION_GET_CONTENT);
-										startActivity(intent);
+										startActivityForResult(intent, GALLERY_ACTIVITY);
+										//startActivity(intent);
 									}
 	    				        	
 	    				        });
@@ -366,6 +378,7 @@ public class FormActivity extends Activity {
 									public void onClick(View arg0) {
 										// TODO Auto-generated method stub
 										imageAdapter.clearPhotos();
+										reload();
 									}
 	    				        	
 	    				        });
@@ -541,4 +554,67 @@ public class FormActivity extends Activity {
     	
     	dial.show();
     }
+    
+	/**
+	 * Retrieves the returned image from the Intent, inserts it into the MediaStore, which
+	 *  automatically saves a thumbnail. Then assigns the thumbnail to the ImageView.
+	 *  @param requestCode is the sub-activity code
+	 *  @param resultCode specifies whether the activity was cancelled or not
+	 *  @param intent is the data packet passed back from the sub-activity
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+		Log.i(TAG, "Result code = " + resultCode);
+
+		if (resultCode == RESULT_CANCELED) {
+			return;
+		}
+		switch (requestCode) {
+
+
+		/* Debo diferenciar desde que página fue llamada la cámara o la galería, para incluirla en su lugar */
+		
+		case CAMERA_ACTIVITY:
+			Bundle b = intent.getExtras();
+			Bitmap bm = (Bitmap) b.get("data");
+			imageAdapter.addPhoto(bm);
+			//mImageView.setImageBitmap(bm); // Display image in the View
+
+//			Bundle b = mIntent.getExtras();
+//			Bundle b = intent.getExtras();
+			//if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+			if (b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+				Log.i(TAG, "This is a large image");
+				//showToast(this,"Large image");
+				// Should have to do nothing for big images -- should already saved in MediaStore ... but
+				//MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+			} else {
+				Log.i(TAG, "This is a small image");
+				//showToast(this,"Small image");
+				//MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+			}
+			break;
+			
+		case GALLERY_ACTIVITY:
+			
+			Uri uri = intent.getData();
+		    ContentResolver cr = getApplicationContext().getContentResolver();
+		    try {
+				Bitmap bitmap = BitmapFactory.decodeStream( cr.openInputStream(uri) );
+				imageAdapter.addPhoto(bitmap);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+			break;
+		}
+		reload();
+		//displayGallery();
+	}
+	
+	private void reload () {
+		g = (Gallery) findViewById(R.id.gallery);
+		g.setAdapter(imageAdapter);
+	}
 }

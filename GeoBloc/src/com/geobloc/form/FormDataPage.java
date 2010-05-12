@@ -61,8 +61,6 @@ public class FormDataPage extends FormPage {
 		listQuestions.add(question);
 	}
 	
-
-	
 	/**
 	 * Returns the number of pages
 	 */
@@ -70,6 +68,11 @@ public class FormDataPage extends FormPage {
 		return listQuestions.size();
 	}
 	
+	/**
+	 * Returns the question as QuestionPrompt
+	 * @param question
+	 * @return
+	 */
 	public QuestionPrompt getQuestion (int question) {
 		return listQuestions.get(question);
 	}
@@ -83,9 +86,6 @@ public class FormDataPage extends FormPage {
 		if (layout == null) {
 			layout = new LinearLayout (context);
 		}
-		
-		//layout.setOrientation(LinearLayout.VERTICAL);
-		//layout.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
 		
 		QuestionPrompt question;
 		

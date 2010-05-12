@@ -56,7 +56,6 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		
 	}
 	
 	@Override
