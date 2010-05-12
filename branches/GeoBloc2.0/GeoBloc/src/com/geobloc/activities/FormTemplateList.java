@@ -62,7 +62,7 @@ public class FormTemplateList extends ListActivity {
             mInflater = LayoutInflater.from(context);
 
             // Icons bound to the rows.
-            mIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon48x48);
+            mIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.formulario);
         }
 
         /**
