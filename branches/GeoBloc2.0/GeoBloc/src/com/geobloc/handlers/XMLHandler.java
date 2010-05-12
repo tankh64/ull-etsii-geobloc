@@ -66,11 +66,11 @@ public class XMLHandler extends DefaultHandler {
 	private static String GB_FIELD_LABEL = "gb_fieldLabel";
 	private static String GB_FIELD_DEFAULT_VALUE = "gb_fieldDefaultValue";
 	
-	private static String GB_CHECKBOX = "gb_checkbox";
-	private static String GB_CHECKBOX_TEXT = "gb_checkboxText";
+	private static String GB_CHECKBOX = "gb_checkboxthree";
+	private static String GB_CHECKBOX_TEXT = "gb_checkboxthreeText";
 	
-	private static String GB_CHECKBOX_THREE = "gb_checkboxthree";
-	private static String GB_CHECKBOX_THREE_TEXT = "gb_checkboxthreeText";
+	private static String GB_CHECKBOX_THREE = "gb_checkbox";
+	private static String GB_CHECKBOX_THREE_TEXT = "gb_checkboxText";
 	
 	
 
@@ -139,7 +139,6 @@ public class XMLHandler extends DefaultHandler {
     
     
     public void pushAttrStack (String localName, AttributeTag atts) throws SAXException {
-        
 		/** We insert the Attributes in the stack */
     	attrStack.push(atts);
     	
