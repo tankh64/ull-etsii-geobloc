@@ -15,7 +15,7 @@
         android:layout_alignParentTop='true'
         android:layout_alignParentBottom='true'
         android:layout_marginRight='6dip'
-        android:src="@drawable/icon48x48"/>
+        android:src="@drawable/formulario"/>
 
 		
 		<TextView android:layout_height="wrap_content"
