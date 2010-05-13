@@ -59,22 +59,6 @@ public class FormHandler {
 		return defForm.getDescription();
 	}
 	
-	/** Método que devolverá un layout de una página del formulario */
-	public LinearLayout getLayout(Context context, int page) {
-		
-		/*if (view == null)
-			view = new LinearLayout(context);*/
-		
-		if (defForm == null)
-			return null;
-		
-		if (page < defForm.getNumPages()) {
-			view = ((FormDataPage) defForm.getPage(page)).getLayoutPage(context);
-		}
-
-		return view;
-	}
-	
 	
 	public String getVersionForm () {
 		return defForm.getVersionForm();

@@ -26,6 +26,9 @@ public class CreateWidget {
 		case GB_CHECKBOX_THREE:
 			widget = new CheckboxThreeWidget(context);
 			break;
+		case GB_LIST:
+			widget = new ListWidget(context);
+			break;
 		//case GB_MEDIA:
 			/* Needs the parent View for inflate */
 			//widget = new MediaWidget (context, parent);
