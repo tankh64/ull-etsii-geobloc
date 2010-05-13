@@ -16,6 +16,7 @@ import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
+import com.geobloc.prompt.ListQuestionPrompt;
 import com.geobloc.prompt.MediaQuestionPrompt;
 import com.geobloc.shared.Utilities;
 import com.geobloc.xml.IField;
@@ -40,7 +41,8 @@ public class XMLHandler extends DefaultHandler {
 	private String textContent;
 	
 	private static enum IntegerTag {IGB_FORM, IGB_NAME, IGB_VERSION, IGB_DATE, IGB_DESCRIPTION, IGB_DATA_PAGE, IGB_PHOTO_PAGE, IGB_VIDEO_PAGE, IGB_AUDIO_PAGE, IGB_LOCATION_PAGE, IGB_PAGE_NAME,
-		IGB_LABEL, IGB_LABEL_TEXT, IGB_FIELD, IGB_FIELD_LABEL, IGB_FIELD_DEFAULT_VALUE, IGB_CHECKBOX, IGB_CHECKBOX_TEXT, IGB_CHECKBOX_THREE, IGB_CHECKBOX_THREE_TEXT};
+		IGB_LABEL, IGB_LABEL_TEXT, IGB_FIELD, IGB_FIELD_LABEL, IGB_FIELD_DEFAULT_VALUE, IGB_CHECKBOX, IGB_CHECKBOX_TEXT, IGB_CHECKBOX_THREE, IGB_CHECKBOX_THREE_TEXT,
+		IGB_LIST, IGB_LIST_LABEL, IGB_LIST_ITEM, IGB_LIST_ITEM_LABEL, IGB_LIST_ITEM_VALUE};
 	
 	private static Map<String, IntegerTag> MapTags;
 	
@@ -72,6 +74,11 @@ public class XMLHandler extends DefaultHandler {
 	private static String GB_CHECKBOX_THREE = "gb_checkbox";
 	private static String GB_CHECKBOX_THREE_TEXT = "gb_checkboxText";
 	
+	private static String GB_LIST = "gb_list";
+	private static String GB_LIST_LABEL = "gb_listLabel";
+	private static String GB_LIST_ITEM = "gb_listItem";
+	private static String GB_LIST_ITEM_LABEL = "gb_listItemLabel";
+	private static String GB_LIST_ITEM_VALUE = "gb_listItemValue";
 	
 
 	// fields
@@ -101,6 +108,12 @@ public class XMLHandler extends DefaultHandler {
 	
 	private boolean in_gb_checkboxthree = false;
 	private boolean in_gb_checkboxthreeText = false;
+	
+	private boolean in_gb_list = false;
+	private boolean in_gb_listLabel = false;
+	private boolean in_gb_listItem = false;
+	private boolean in_gb_listItemLabel = false;
+	private boolean in_gb_listItemValue = false;
 
 	
 	private boolean parseError;
@@ -220,6 +233,21 @@ public class XMLHandler extends DefaultHandler {
     			break;
     		case IGB_CHECKBOX_THREE_TEXT:
     			this.in_gb_checkboxText = true;
+    			break;
+    		case IGB_LIST:
+    			this.in_gb_list = true;
+    			break;
+    		case IGB_LIST_LABEL:
+    			this.in_gb_listLabel = true;
+    			break;
+    		case IGB_LIST_ITEM:
+    			this.in_gb_listItem = true;
+    			break;
+    		case IGB_LIST_ITEM_LABEL:
+    			this.in_gb_listItemLabel = true;
+    			break;
+    		case IGB_LIST_ITEM_VALUE:
+    			this.in_gb_listItemValue = true;
     			break;
     		/*case IGB_:
     			this
@@ -341,6 +369,25 @@ public class XMLHandler extends DefaultHandler {
 		case IGB_CHECKBOX_THREE_TEXT:
 			this.in_gb_checkboxText = false;
 			break;
+		case IGB_LIST:
+        	ListQuestionPrompt listPrompt = new ListQuestionPrompt (title, attMap);
+			((FormDataPage)myPage).addQuestion(listPrompt);
+			
+			this.in_gb_list = false;
+			clearValues();
+			break;
+		case IGB_LIST_LABEL:
+			this.in_gb_listLabel = false;
+			break;
+		case IGB_LIST_ITEM:
+			this.in_gb_listItem = false;
+			break;
+		case IGB_LIST_ITEM_LABEL:
+			this.in_gb_listItemLabel = false;
+			break;
+		case IGB_LIST_ITEM_VALUE:
+			this.in_gb_listItemValue = false;
+			break;
 		/*case IGB_:
 			this
 			break;*/
@@ -381,6 +428,10 @@ public class XMLHandler extends DefaultHandler {
     			} else if (this.in_gb_checkboxthree) {
     				if (this.in_gb_checkboxthreeText) {
     					this.title = cadena;
+    				}
+    			} else if (this.in_gb_list) {
+    				if (this.in_gb_listLabel) {
+    					Log.v(TAG, "En la lista "+cadena);
     				}
     			}
     		}
@@ -453,6 +504,11 @@ public class XMLHandler extends DefaultHandler {
     	MapTags.put(GB_CHECKBOX_TEXT, IntegerTag.IGB_CHECKBOX_TEXT);
     	MapTags.put(GB_CHECKBOX_THREE, IntegerTag.IGB_CHECKBOX_THREE);
     	MapTags.put(GB_CHECKBOX_THREE_TEXT, IntegerTag.IGB_CHECKBOX_THREE_TEXT);
+    	MapTags.put(GB_LIST, IntegerTag.IGB_LIST);
+    	MapTags.put(GB_LIST_LABEL, IntegerTag.IGB_LIST_LABEL);
+    	MapTags.put(GB_LIST_ITEM, IntegerTag.IGB_LIST_ITEM);
+    	MapTags.put(GB_LIST_ITEM_LABEL, IntegerTag.IGB_LIST_ITEM_LABEL);
+    	MapTags.put(GB_LIST_ITEM_VALUE, IntegerTag.IGB_LIST_ITEM_VALUE);
     	//MapTags.put(GB_, IntegerTag.IGB_);
     }
 }
