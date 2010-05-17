@@ -339,6 +339,8 @@ public class FormActivity extends Activity {
 	    				            }
 	    				        });
 	    				        
+	    				        
+	    				        
 	    				        // ************  Makephoto button
 	    				        Button button = (Button) ((View)wdget).findViewById (R.id.takePhotoButton);
 	    				        button.setOnClickListener(new OnClickListener() {
@@ -384,7 +386,7 @@ public class FormActivity extends Activity {
 	    				        });
 	    				        
 	    				        TextView texto = (TextView) ((View)wdget).findViewById (R.id.loadPhotos);
-	    				        texto.setText(getString(R.string.load_photos, ""+imageAdapter.getCount()));
+	    				        texto.setText(getString(R.string.no_load_photos));
 	    				        
 	    				        // We also want to show context menu for longpressed items in the gallery
 	    				        registerForContextMenu(g);
@@ -616,5 +618,15 @@ public class FormActivity extends Activity {
 	private void reload () {
 		g = (Gallery) findViewById(R.id.gallery);
 		g.setAdapter(imageAdapter);
+		
+		TextView texto = (TextView) findViewById(R.id.loadPhotos);
+		
+		switch (imageAdapter.getCount()) {
+			case 0: texto.setText(getString(R.string.no_load_photos));
+				break;
+			case 1: texto.setText(getString(R.string.load_photo,""+imageAdapter.getCount()));
+				break;
+			default: texto.setText(getString(R.string.load_photos,""+imageAdapter.getCount()));
+		}
 	}
 }
