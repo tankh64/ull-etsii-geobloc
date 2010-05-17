@@ -84,5 +84,19 @@
 <string name="formColorTextDescription">Color del texto del formulario por defecto</string>
 <string name="formColorText">Color del Texto</string>
 <string name="version">0.1</string>
+<string name="load_photo">Se ha cargado %s foto</string>
 <string name="load_photos">Se han cargado %s fotos</string>
+<string name="no_load_photos">No se han cargado fotos</string>
+
+    <string name="planet_prompt">Choose a planet</string>
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>
