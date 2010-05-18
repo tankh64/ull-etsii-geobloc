@@ -406,7 +406,7 @@ public class FormActivity extends Activity {
 	    	    		
 	    	    		for (int question=0; question < numQuestions; question++) {
 	    	    			/** create the appropriate widget depending on the question */
-	    	    			wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), context, (ViewGroup)viewFlipper);
+	    	    			wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), this, (ViewGroup)viewFlipper);
 	    	    			vistaR.addView((View)wdget);
 	    	    		}
 	    	    		viewFlipper.addView(vistaR, page+1); 			
