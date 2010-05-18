@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class ThreeStateCheckBox extends LinearLayout {
 		initConfig();
 		
 		inflate(getContext(), R.layout.three_state_checkbox, this);
+		//inflate(context, R.layout.three_state_checkbox, this);
 		//((Activity)getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
 
 		// get views and set their values
@@ -80,6 +82,7 @@ public class ThreeStateCheckBox extends LinearLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
+
 		((Activity)getContext()).getLayoutInflater().inflate(R.layout.three_state_checkbox, this);
 
 		// get views and set their values
