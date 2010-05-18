@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.geobloc.R;
 import com.geobloc.prompt.LabelQuestionPrompt;
+import com.geobloc.prompt.ListQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
@@ -42,12 +43,12 @@ public class ListWidget extends Spinner implements QuestionWidget {
 	@Override
 	public void buildView(QuestionPrompt qP) {
 		// TODO Auto-generated method stub
-	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+	    /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 	            getContext(), R.array.planets_array, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    this.setAdapter(adapter);
+	    this.setAdapter(adapter);*/
 		
-		//this.setPrompt("Hola");
+		this.setPrompt(((ListQuestionPrompt)qP).getQuestionTitle());
 	}
 
 	@Override

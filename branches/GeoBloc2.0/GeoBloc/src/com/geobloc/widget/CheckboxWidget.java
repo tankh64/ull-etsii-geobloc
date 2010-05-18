@@ -16,31 +16,15 @@ import android.widget.Spinner;
 
 public class CheckboxWidget extends CheckBox implements QuestionWidget {
 	
-	private static final int REQUEST_CAMERA = 0;
-	
-	Context mContext;
-	
-	Button but;
-	Spinner sp;
-	
 	public CheckboxWidget(Context context) {
 		super(context);
-		
-		mContext = context;
 		// TODO Auto-generated constructor stub
 	}
 
 	public CheckboxWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
-		
-		mContext = context;
 	}
-
-	/*public ButtonWidget(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
-	}*/
 	
 	public void buildView (QuestionPrompt qP) {
 

@@ -17,24 +17,20 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 public class CheckboxThreeWidget extends ThreeStateCheckBox implements QuestionWidget {
-	
-	Context mContext;
+
 	
 	public CheckboxThreeWidget(Context context) {
 		super(context);
 		
-		mContext = context;
-		
-		this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+		//this.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+           //     ViewGroup.LayoutParams.WRAP_CONTENT));
 		// TODO Auto-generated constructor stub
 	}
 
 	public CheckboxThreeWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
-		
-		mContext = context;
+
 	}
 
 	/*public ButtonWidget(Context context, AttributeSet attrs, int defStyle) {

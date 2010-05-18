@@ -409,6 +409,10 @@ public class XMLHandler extends DefaultHandler {
     public void characters(char ch[], int start, int length) {
     	String cadena = new String(ch, start, length).trim();
     	
+    	if (cadena.contains("Mi Lista")) {
+    		Log.i(TAG, "Listaaaaaaa");
+    	}
+    	
     	if(this.in_gb_form){
     		if(this.in_gb_dataPage) {
     			if (this.in_gb_pageName) {
@@ -431,6 +435,7 @@ public class XMLHandler extends DefaultHandler {
     				}
     			} else if (this.in_gb_list) {
     				if (this.in_gb_listLabel) {
+    					this.title = cadena;
     					Log.v(TAG, "En la lista "+cadena);
     				}
     			}
