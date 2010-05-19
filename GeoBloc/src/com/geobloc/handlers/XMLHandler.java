@@ -1,5 +1,6 @@
 package com.geobloc.handlers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,14 +116,19 @@ public class XMLHandler extends DefaultHandler {
 	private boolean in_gb_listItemLabel = false;
 	private boolean in_gb_listItemValue = false;
 
-	
 	private boolean parseError;
-    
-    List<IField> fields;
 
     /** We use a stack of Attributes */
     private Stack<AttributeTag> attrStack;
     private AttributeTag actualAtt;
+    
+    /** Label and value list */
+    private ArrayList<String> labelList;
+    private ArrayList<String> valueList;
+    
+    /** Aux variables for Labels and Values of list */
+    private String auxLabel;
+    private String auxValue;
 
       
     public XMLHandler ()
@@ -236,6 +242,10 @@ public class XMLHandler extends DefaultHandler {
     			break;
     		case IGB_LIST:
     			this.in_gb_list = true;
+    			
+    			/** We create a new list of values and labels */
+    			labelList = new ArrayList<String>();
+    			valueList = new ArrayList<String>();
     			break;
     		case IGB_LIST_LABEL:
     			this.in_gb_listLabel = true;
@@ -370,17 +380,47 @@ public class XMLHandler extends DefaultHandler {
 			this.in_gb_checkboxText = false;
 			break;
 		case IGB_LIST:
-        	ListQuestionPrompt listPrompt = new ListQuestionPrompt (title, attMap);
-			((FormDataPage)myPage).addQuestion(listPrompt);
+			
+			String listType;
+			if (attMap.attMap.containsKey(Utilities.ATTR_TYPE)) {
+				listType = attMap.attMap.get(Utilities.ATTR_TYPE);
+			}
+			else {
+				Log.e(TAG, "La lista no tiene tipo");
+				break;
+			}
+
+			/** If type is Single */
+			if (listType.equalsIgnoreCase(Utilities.SINGLE_LIST_TYPE)) {
+				ListQuestionPrompt listPrompt = new ListQuestionPrompt (title, attMap);
+			
+				/* Ahora debemos insertar todos los label y values en la ListQuestionPrompt */
+				if (labelList.size() != valueList.size()) {
+					Log.e(TAG, "Diferente número de LABELS y VALUES");
+					this.in_gb_list = false;
+					break;
+				}
+				for (int i=0; i<labelList.size(); i++) {
+					listPrompt.addItemToList(labelList.get(i), valueList.get(i));
+				}
+				((FormDataPage)myPage).addQuestion(listPrompt);
+			}
+
 			
 			this.in_gb_list = false;
 			clearValues();
+			labelList.clear();
+			valueList.clear();
 			break;
 		case IGB_LIST_LABEL:
 			this.in_gb_listLabel = false;
 			break;
 		case IGB_LIST_ITEM:
+			/* Ahora debemos insertar el label y value */
 			this.in_gb_listItem = false;
+			
+			labelList.add(auxLabel);
+			valueList.add(auxValue);
 			break;
 		case IGB_LIST_ITEM_LABEL:
 			this.in_gb_listItemLabel = false;
@@ -409,10 +449,6 @@ public class XMLHandler extends DefaultHandler {
     public void characters(char ch[], int start, int length) {
     	String cadena = new String(ch, start, length).trim();
     	
-    	if (cadena.contains("Mi Lista")) {
-    		Log.i(TAG, "Listaaaaaaa");
-    	}
-    	
     	if(this.in_gb_form){
     		if(this.in_gb_dataPage) {
     			if (this.in_gb_pageName) {
@@ -437,6 +473,15 @@ public class XMLHandler extends DefaultHandler {
     				if (this.in_gb_listLabel) {
     					this.title = cadena;
     					Log.v(TAG, "En la lista "+cadena);
+    				}
+    				else if (this.in_gb_listItem) {
+    					/* Nuevo item */
+    					if (this.in_gb_listItemLabel) {
+    						auxLabel = cadena;
+    					}
+    					else if (this.in_gb_listItemValue) {
+    						auxValue = cadena;
+    					}
     				}
     			}
     		}

@@ -6,16 +6,20 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.geobloc.R;
+import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.ListQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
-public class ListWidget extends Spinner implements QuestionWidget {
+public class ListWidget extends RadioGroup implements QuestionWidget {
 	private static String TAG = "ListWidget";
 
 	public ListWidget(Context context) {
@@ -28,17 +32,7 @@ public class ListWidget extends Spinner implements QuestionWidget {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ListWidget(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
-	}
-	
-	@Override
-	public void onClick (DialogInterface dialog, int which) {
-		Log.i(TAG, "En el OnClick del spinner");
-		
-		super.onClick(dialog, which);
-	}
+
 
 	@Override
 	public void buildView(QuestionPrompt qP) {
@@ -47,8 +41,23 @@ public class ListWidget extends Spinner implements QuestionWidget {
 	            getContext(), R.array.planets_array, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    this.setAdapter(adapter);*/
+		this.setPadding(0, 20, 0, 20);
 		
-		this.setPrompt(((ListQuestionPrompt)qP).getQuestionTitle());
+		TextView Text = new TextView(getContext());
+        Text.setTextSize(20);
+        Text.setTextColor(Utilities.fontColor);
+        Text.setText(((ListQuestionPrompt)qP).getQuestionTitle()+":  ");
+        addView(Text);
+        
+        RadioButton rButton;
+        int size = ((ListQuestionPrompt)qP).getSizeOfList();
+        for (int i=0; i<size; i++) {
+        	rButton = new RadioButton (getContext());
+    		rButton.setTextColor(Utilities.fontColor);
+    		rButton.setText(((ListQuestionPrompt)qP).getItem(i).getLabel());
+    		addView(rButton);
+        }		
+		
 	}
 
 	@Override

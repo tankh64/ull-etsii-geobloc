@@ -29,6 +29,10 @@ public class Utilities {
 	public static String ATTR_TYPE = "type";
 	public static String ATTR_ACTION = "action";
 	
+	public static String SINGLE_LIST_TYPE = "single";
+	public static String MULTIPLE_LIST_TYPE = "multiple";
+	public static String COMBO_LIST_TYPE = "combo";
+	
 	public static int background = Color.WHITE;
 	public static int fontColor = Color.DKGRAY;
 	public static int requiredColor = Color.rgb(255,200,0);
