@@ -60,6 +60,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -395,6 +396,9 @@ public class FormActivity extends Activity {
 	    			case VIDEO: 
 	    			case LOCATION: break;
 	    			case DATA:
+	    				ScrollView scrollV = new ScrollView(context);
+	    				scrollV.setBackgroundColor(Utilities.background);
+	    				
 	    				LinearLayout vistaR = new LinearLayout(context);
 	    	    		vistaR.setPadding(5, 5, 5, 5);
 	    	    		vistaR.setOrientation(LinearLayout.VERTICAL);
@@ -409,7 +413,9 @@ public class FormActivity extends Activity {
 	    	    			wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), this, (ViewGroup)viewFlipper);
 	    	    			vistaR.addView((View)wdget);
 	    	    		}
-	    	    		viewFlipper.addView(vistaR, page+1); 			
+	    	    		
+	    	    		scrollV.addView(vistaR);
+	    	    		viewFlipper.addView(scrollV, page+1); 			
 	    			default: break;
 	    		
 	    		}

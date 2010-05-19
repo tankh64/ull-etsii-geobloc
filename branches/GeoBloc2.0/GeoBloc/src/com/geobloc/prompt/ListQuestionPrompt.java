@@ -1,5 +1,8 @@
 package com.geobloc.prompt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.xml.sax.Attributes;
 
 import android.util.Log;
@@ -14,6 +17,9 @@ public class ListQuestionPrompt extends QuestionPrompt {
 	
 	private String title;
 	private Attributes atts;
+	
+	/** items from the list */
+	private List<ItemList> listItem;
 	
 	// Deberá tener la lista de opciones ...
 	
@@ -32,6 +38,8 @@ public class ListQuestionPrompt extends QuestionPrompt {
 			
 		this.setQuestionTitle(name);
 		this.setType();
+		
+		listItem = new ArrayList();
 	}
 
 
@@ -52,5 +60,29 @@ public class ListQuestionPrompt extends QuestionPrompt {
 		return title;
 	}
 	
+	/**
+	 * Adds the pair (label, value), an object item to the list.
+	 * @param label
+	 * @param value
+	 */
+	public void addItemToList (String label, String value) {
+		ItemList item = new ItemList (label, value);
+		listItem.add(item);
+	}
+	/**
+	 * Add an item to the list.
+	 * @param item
+	 */
+	public void addItemToList (ItemList item) {
+		listItem.add(item);
+	}
+	
+	public int getSizeOfList () {
+		return listItem.size();
+	}
+	
+	public ItemList getItem (int pos) {
+		return listItem.get(pos);
+	}
 
 }
