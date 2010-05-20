@@ -52,7 +52,7 @@ public class Utilities {
 	 * @author Jorge Carballo (jelcaf@gmail.com)
 	 *
 	 */
-	public enum QuestionType {GB_DATAINPUT, GB_LABEL, GB_MEDIA, GB_CHECKBOX, GB_CHECKBOX_THREE, GB_LIST};
+	public enum QuestionType {GB_DATAINPUT, GB_LABEL, GB_MEDIA, GB_CHECKBOX, GB_CHECKBOX_THREE, GB_SINGLE_LIST, GB_MULTIPLE_LIST};
 	
 	/* 
 	 * Displays a Toast. The context parameter is filled with getApplicationContext() from the Activity 
