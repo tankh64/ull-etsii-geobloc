@@ -15,19 +15,19 @@ import android.widget.TextView;
 import com.geobloc.R;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
-import com.geobloc.prompt.ListQuestionPrompt;
+import com.geobloc.prompt.SingleListQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
-public class ListWidget extends RadioGroup implements QuestionWidget {
+public class SingleListWidget extends RadioGroup implements QuestionWidget {
 	private static String TAG = "ListWidget";
 
-	public ListWidget(Context context) {
+	public SingleListWidget(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ListWidget(Context context, AttributeSet attrs) {
+	public SingleListWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
@@ -46,15 +46,15 @@ public class ListWidget extends RadioGroup implements QuestionWidget {
 		TextView Text = new TextView(getContext());
         Text.setTextSize(20);
         Text.setTextColor(Utilities.fontColor);
-        Text.setText(((ListQuestionPrompt)qP).getQuestionTitle()+":  ");
+        Text.setText(((SingleListQuestionPrompt)qP).getQuestionTitle()+":  ");
         addView(Text);
         
         RadioButton rButton;
-        int size = ((ListQuestionPrompt)qP).getSizeOfList();
+        int size = ((SingleListQuestionPrompt)qP).getSizeOfList();
         for (int i=0; i<size; i++) {
         	rButton = new RadioButton (getContext());
     		rButton.setTextColor(Utilities.fontColor);
-    		rButton.setText(((ListQuestionPrompt)qP).getItem(i).getLabel());
+    		rButton.setText(((SingleListQuestionPrompt)qP).getItem(i).getLabel());
     		addView(rButton);
         }		
 		

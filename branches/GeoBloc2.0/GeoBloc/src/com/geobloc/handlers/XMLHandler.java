@@ -17,7 +17,8 @@ import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
-import com.geobloc.prompt.ListQuestionPrompt;
+import com.geobloc.prompt.MultipleListQuestionPrompt;
+import com.geobloc.prompt.SingleListQuestionPrompt;
 import com.geobloc.prompt.MediaQuestionPrompt;
 import com.geobloc.shared.Utilities;
 import com.geobloc.xml.IField;
@@ -392,8 +393,24 @@ public class XMLHandler extends DefaultHandler {
 
 			/** If type is Single */
 			if (listType.equalsIgnoreCase(Utilities.SINGLE_LIST_TYPE)) {
-				ListQuestionPrompt listPrompt = new ListQuestionPrompt (title, attMap);
+				SingleListQuestionPrompt listPrompt = new SingleListQuestionPrompt (title, attMap);
 			
+				/* Ahora debemos insertar todos los label y values en la ListQuestionPrompt */
+				if (labelList.size() != valueList.size()) {
+					Log.e(TAG, "Diferente número de LABELS y VALUES");
+					this.in_gb_list = false;
+					break;
+				}
+				for (int i=0; i<labelList.size(); i++) {
+					listPrompt.addItemToList(labelList.get(i), valueList.get(i));
+				}
+				((FormDataPage)myPage).addQuestion(listPrompt);
+			}
+			/** If type is Multiple */
+			else if (listType.equalsIgnoreCase(Utilities.MULTIPLE_LIST_TYPE)) {
+				/** I think you should have a multiple type. Perhaps we should change it, we'll see. */
+				MultipleListQuestionPrompt listPrompt = new MultipleListQuestionPrompt (title, attMap);
+				
 				/* Ahora debemos insertar todos los label y values en la ListQuestionPrompt */
 				if (labelList.size() != valueList.size()) {
 					Log.e(TAG, "Diferente número de LABELS y VALUES");

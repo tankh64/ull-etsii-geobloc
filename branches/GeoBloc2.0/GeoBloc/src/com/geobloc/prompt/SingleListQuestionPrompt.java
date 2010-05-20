@@ -11,7 +11,7 @@ import com.geobloc.handlers.AttributeTag;
 import com.geobloc.shared.Utilities;
 import com.geobloc.shared.Utilities.QuestionType;
 
-public class ListQuestionPrompt extends QuestionPrompt {
+public class SingleListQuestionPrompt extends QuestionPrompt {
 	
 	private static final String TAG = "ListQuestionPrompt";
 	
@@ -23,7 +23,7 @@ public class ListQuestionPrompt extends QuestionPrompt {
 	
 	// Deberá tener la lista de opciones ...
 	
-	public ListQuestionPrompt(String name, AttributeTag att) {
+	public SingleListQuestionPrompt(String name, AttributeTag att) {
 		
 		Log.i(TAG, "Constructor"+TAG);
 		// ID
@@ -45,7 +45,7 @@ public class ListQuestionPrompt extends QuestionPrompt {
 
 	@Override
 	public void setType () {
-		type = QuestionType.GB_LIST;
+		type = QuestionType.GB_SINGLE_LIST;
 	}
 	
 	/**
