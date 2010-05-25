@@ -73,6 +73,10 @@ public class ImageAdapterPhoto extends BaseAdapter {
 		Toast.makeText(mContext, "Añado una nueva foto desde la galería", Toast.LENGTH_SHORT).show();
 	}
 	
+	public void deletePhoto (int i) {
+		mArray.remove(i);
+	}
+	
 	public void clearPhotos () {
 		Toast.makeText(mContext, "Elimino todas las fotos", Toast.LENGTH_SHORT).show();
 		for (int i=mArray.size() - 1; i >= 0; i--) {
