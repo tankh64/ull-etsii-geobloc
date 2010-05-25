@@ -94,7 +94,10 @@ public class FormActivity extends Activity {
     private static final int MENU_NEXT_PAGE = MENU_PREVIOUS_PAGE + 1;
     private static final int MENU_SAVE_COMPLETE = MENU_NEXT_PAGE + 1;
     private static final int MENU_SAVE_INCOMPLETE = MENU_SAVE_COMPLETE + 1;
-    private static final int MENU_JUMP_TO = MENU_SAVE_INCOMPLETE + 1; 
+    private static final int MENU_JUMP_TO = MENU_SAVE_INCOMPLETE + 1;
+    
+    private static final int VIEW_PHOTO = 0;
+    private static final int DELETE_PHOTO = 1;
 
     
 	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
@@ -157,6 +160,10 @@ public class FormActivity extends Activity {
 	
 	Gallery g;
 	ImageAdapterPhoto imageAdapter;
+	
+	/** Adaptador de la lista de páginas */
+	ListAdapter lAdapter;
+	ArrayList<String> mArray;
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -284,7 +291,10 @@ public class FormActivity extends Activity {
 		inflateFirstPage();
 		setFlipperPages();
 		inflateLastPage();
+		
 		setNumPage();
+		
+		setArrayListPage();
 	}
 	
 	private void setNumPage () {
@@ -429,6 +439,7 @@ public class FormActivity extends Activity {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
+            	Log.i(TAG, "onFlinggggggg");
                 if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                     return false;
                 // right to left swipe
@@ -466,14 +477,25 @@ public class FormActivity extends Activity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-    	menu.add("Borrar foto seleccionada");
+    	super.onCreateContextMenu(menu, v, menuInfo);
+    	menu.add(0, VIEW_PHOTO, 0, "Ver foto");
+    	menu.add(0, DELETE_PHOTO, 0, "Borrar foto seleccionada");
     }
     
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        Toast.makeText(this, "Longpress: " + info.position, Toast.LENGTH_SHORT).show();
-        return true;
+
+        switch (item.getItemId()) {
+        	case VIEW_PHOTO:
+            	Utilities.showToast(getApplicationContext(), "No implementada todavía", Toast.LENGTH_LONG);
+        		break;
+        	case DELETE_PHOTO:
+        		imageAdapter.deletePhoto(info.position);
+                reload();
+        		break;
+        }
+        return super.onContextItemSelected(item);
     }
     
     @Override
@@ -530,32 +552,44 @@ public class FormActivity extends Activity {
 		setNumPage();
     }
     
+    /** 
+     * Place the form on the page set
+     * @param page
+     */
+    private void goToPage (int page) {
+    	Utilities.showToast(getApplicationContext(), "Debo ir a la página "+page, Toast.LENGTH_LONG);
+    	
+		viewFlipper.setInAnimation(slideLeftIn);
+		viewFlipper.setOutAnimation(slideLeftOut);
+		viewFlipper.setDisplayedChild(page);
+		
+		setNumPage();
+    }
+    
+    /**
+     * 
+     */
+    private void setArrayListPage () {
+    	mArray = formH.getAllNamesOfPages();
+    	Log.i(TAG,"Establecidas "+mArray.size());
+    }
+    
+    
     /** Simple dialog list to select the page.
      * Not implemented yet.
      */
     private void listDialog () {
     	
-    	final ArrayList<String> myArray = new ArrayList();
-    	myArray.add("Hola 1");
-    	myArray.add("Hola 2");
-    	myArray.add("Hola 3");
-    	myArray.add("Hola 4");
+    	Utilities.showToast(getApplicationContext(), "Existen "+(formH.getNumPages()+2)+" páginas", Toast.LENGTH_LONG);
     	
-    	ListAdapter lAdapter = new ArrayAdapter<String> (FormActivity.this, android.R.layout.simple_list_item_1, myArray);
-
+    	lAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_list_item_1, mArray);
+    	
     	AlertDialog dial = new AlertDialog.Builder(FormActivity.this)
         .setTitle("Ir a la página")
         .setInverseBackgroundForced(true)
-        //.setSingleChoiceItems(lAdapter, android.R.layout.simple_list_item_1, new DialogInterface.OnClickListener() {
         .setAdapter(lAdapter, new DialogInterface.OnClickListener() {
-        //.setItems(R.array.Array, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
-                /* User clicked so do some stuff */
-                //String[] items = getResources().getStringArray(R.array.Array);
-                new AlertDialog.Builder(FormActivity.this)
-                        .setMessage("You selected: " + which + " , " + myArray.get(which))
-                        .show();
+                goToPage(which);
             }
         })
         .create();

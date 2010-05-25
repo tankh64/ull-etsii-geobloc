@@ -1,5 +1,7 @@
 package com.geobloc.handlers;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,5 +94,21 @@ public class FormHandler {
 	
 	public String getNamePage (int page) {
 		return defForm.getNamePage(page);
+	}
+	
+	/**
+	 * Returns all the pages names
+	 * @return
+	 */
+	public ArrayList<String> getAllNamesOfPages () {
+		ArrayList<String> nameList = new ArrayList<String>();
+		
+		nameList.add("Inicio");
+		for (int i=0; i<defForm.getNumPages(); i++) {
+			nameList.add(defForm.getNamePage(i));
+		}
+		nameList.add("Fin");
+		
+		return nameList;
 	}
 }
