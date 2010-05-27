@@ -53,7 +53,6 @@
   		android:name="formBackgroundName"
   		android:title="@string/formColorBackground"
   		android:summary="@string/formColorBackgroundDescription"
-  		android:defaultValue="@color/White"
 		android:entries="@array/Array"
 		android:entryValues="@array/Values" >
   	</ListPreference>
@@ -62,10 +61,15 @@
   		android:name="formTextName"
   		android:title="@string/formColorText"
   		android:summary="@string/formColorTextDescription"
-  		android:defaultValue="@color/White"
 		android:entries="@array/Array"
 		android:entryValues="@array/Values" >
-  	</ListPreference>	
+  	</ListPreference>
+  	<CheckBoxPreference
+  		android:key="formPhotoSize"
+  		android:name="formPhotoSizeName"
+  		android:title="@string/formPhotoSizeTitle"
+  		android:summary="@string/formPhotoSizeDescription" >
+  	</CheckBoxPreference>
   </PreferenceCategory>
   <PreferenceCategory
   	android:title="@string/animationsCategory">

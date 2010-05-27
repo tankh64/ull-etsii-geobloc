@@ -36,6 +36,7 @@ public class Utilities {
 	public static int background = Color.WHITE;
 	public static int fontColor = Color.DKGRAY;
 	public static int requiredColor = Color.rgb(255,200,0);
+	public static boolean photoSizeBigEnable = false;
 	
 	/*
 	 * Type for the "Widget"
