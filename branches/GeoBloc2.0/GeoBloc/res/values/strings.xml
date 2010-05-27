@@ -38,6 +38,15 @@
 	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
 	<string name="formsPath">Directorio de formularios</string>
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
+	
+	<string name="formPreferencesTitle">Preferencias del Formulario</string>
+	<string name="formColorBackgroundDescription">Color de fondo del formulario por defecto</string>
+	<string name="formColorBackground">Fondo del formulario</string>
+	<string name="formColorTextDescription">Color del texto del formulario por defecto</string>
+	<string name="formColorText">Color del Texto</string>
+	<string name="formPhotoSizeTitle">Tamaño de foto grande</string> 
+	<string name="formPhotoSizeDescription">Establece el tamaño de las fotos de los formularios al mayor</string> 
+
 	<string name="animationsCategory">Preferencias de Animaciones</string>
 	<string name="slidingButtonsAnimation">Botones Deslizantes</string>
 	<string name="slidingButtonsAnimationDescription">Los botones sólo aparecerán cuando se pueda realizar una acción con ellos.</string>
@@ -77,12 +86,8 @@
 <string name="help_form_mov">Mueva su dedo horizontalmente en la pantalla para desplazarse por el formulario</string>
 <string name="form_loaded">Formulario del tipo %s cargado</string>
 
-<string name="formPreferencesTitle">Preferencias del Formulario</string>
-<string name="formColorBackgroundDescription">Color de fondo del formulario por defecto</string>
-<string name="formColorBackground">Fondo del formulario</string>
 <string name="form_version">Version %s</string>
-<string name="formColorTextDescription">Color del texto del formulario por defecto</string>
-<string name="formColorText">Color del Texto</string>
+
 <string name="version">0.1</string>
 <string name="load_photo">Se ha cargado %s foto</string>
 <string name="load_photos">Se han cargado %s fotos</string>

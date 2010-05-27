@@ -215,6 +215,10 @@ public class FormActivity extends Activity {
 		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_TEXT_COLOR__+">");
 		Utilities.fontColor = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_TEXT_COLOR__, "-12303292"));
 		Log.v(TAG, "Es    <"+Utilities.fontColor+">");
+		
+		Log.v(TAG, "Photo Big Size");
+		Utilities.photoSizeBigEnable = prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, false);
+		Log.v(TAG, "Photo Big Size Done");
 	}
 	
 	@Override
@@ -361,7 +365,15 @@ public class FormActivity extends Activity {
 										// TODO Auto-generated method stub
 										//imageAdapter.addPhoto();
 										Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-										startActivityForResult(intent, CAMERA_ACTIVITY);
+										
+										if (Utilities.photoSizeBigEnable) {
+											intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+											startActivityForResult(intent, CAMERA_ACTIVITY);
+										} else {
+											startActivityForResult(intent, CAMERA_ACTIVITY);
+										}
+										
+										//startActivityForResult(intent, CAMERA_ACTIVITY);
 									}
 	    				        	
 	    				        });
@@ -621,20 +633,18 @@ public class FormActivity extends Activity {
 			Bundle b = intent.getExtras();
 			Bitmap bm = (Bitmap) b.get("data");
 			imageAdapter.addPhoto(bm);
-			//mImageView.setImageBitmap(bm); // Display image in the View
 
-//			Bundle b = mIntent.getExtras();
-//			Bundle b = intent.getExtras();
-			//if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
-			if (b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
-				Log.i(TAG, "This is a large image");
-				//showToast(this,"Large image");
+			if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+				if (b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+					Log.i(TAG, "This is a large image");
+					//showToast(this,"Large image");
 				// Should have to do nothing for big images -- should already saved in MediaStore ... but
-				//MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
-			} else {
-				Log.i(TAG, "This is a small image");
+				MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+				} else {
+					Log.i(TAG, "This is a small image");
 				//showToast(this,"Small image");
 				//MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+				}
 			}
 			break;
 			

@@ -29,6 +29,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditTextPreference formsPath;
 	private EditTextPreference numberOfInternetAttempts;
 	private CheckBoxPreference slidingButtonsAnimationEnabled;
+	private CheckBoxPreference photoSizeBigEnable;
 	
 	private EditText et;
 	private SharedPreferences prefs;
@@ -45,6 +46,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __FORM_BACKGROUND_COLOR__ = "formColor";
 	public static String __FORM_TEXT_COLOR__ = "formTextColor";
 	public static String __FORM_REQUIRED_COLOR__ = "colorRequired";
+	public static String __FORM_PHOTO_SIZE_BIG__ = "formPhotoSize";
 	
 	
 	// default internet addresses
@@ -66,6 +68,9 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static final int SWIPE_MIN_DISTANCE = 70;
 	public static final int SWIPE_MAX_OFF_PATH = 320;
 	public static final int SWIPE_THRESHOLD_VELOCITY = 100;
+	
+	// default form
+	public static final boolean __DEFAULT_FORM_PHOTO_SIZE_BIG__ = false;
 	
 	// other
 	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
@@ -90,6 +95,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 		packagesPath = (EditTextPreference) findPreference(GBSharedPreferences.__PACKAGES_PATH_KEY__);
 		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
 		slidingButtonsAnimationEnabled = (CheckBoxPreference) findPreference(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__);
+		photoSizeBigEnable = (CheckBoxPreference) findPreference(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__);
 		
 		// default uploadPackagesServletAddress
 		setEditTextDefaultConfig(uploadPackagesServletAddress, 
@@ -120,6 +126,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__));
 		//slidingButtonsAnimationEnabled.setDefaultValue(GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
 		
+		photoSizeBigEnable.setChecked(prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, 
+				GBSharedPreferences.__DEFAULT_FORM_PHOTO_SIZE_BIG__));
 	}
 	
 	private void setEditTextDefaultConfig(EditTextPreference edt, String defaultText) {
