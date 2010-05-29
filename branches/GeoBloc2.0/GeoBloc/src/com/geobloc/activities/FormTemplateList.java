@@ -19,7 +19,7 @@ package com.geobloc.activities;
 import java.util.ArrayList;
 
 import com.geobloc.R;
-import com.geobloc.form.FormDefinition;
+import com.geobloc.shared.FormDefinition;
 import com.geobloc.shared.Utilities;
 
 import android.app.ListActivity;
@@ -132,12 +132,12 @@ public class FormTemplateList extends ListActivity {
             FormDefinition form = listForm.get(position);
             
             // Bind the data efficiently with the holder.
-            holder.title.setText((form.getNameForm()));
+            holder.title.setText((form.getForm_name()));
             //holder.title.setText(DATA[position]);
-            holder.description.setText(form.getDescriptionForm());
+            holder.description.setText(form.getForm_description());
             holder.icon.setImageBitmap(mIcon);
-            holder.date.setText(form.getDateForm());
-            holder.version.setText(form.getVersionForm());
+            holder.date.setText(form.getForm_date());
+            holder.version.setText(String.valueOf(form.getForm_version()));
 
             return convertView;
         }
@@ -161,11 +161,16 @@ public class FormTemplateList extends ListActivity {
         
         setListAdapter(new EfficientAdapter(this));
         
+        FormDefinition form1 = new FormDefinition("Fresas", "serverform11212", 0, "Formulario de fresas", "02/03/2010", -1);
+        FormDefinition form2 = new FormDefinition("Naranjas", "serverform11213", 1, "Formulario de naranjas", "04/03/2010", -1);
+        FormDefinition form3 = new FormDefinition("Tomates", "serverform11214", 2, "Formulario de tomates", "02/03/2009", -1);
+        FormDefinition form4 = new FormDefinition("Papas", "serverform11215", 2, "Formulario de papitas negras", "02/03/2010", -1);
+        /*
         FormDefinition form1 = new FormDefinition ("file1.xml", "Fresas", "Formulario de fresas", "1.0", "02/03/2010");
         FormDefinition form2 = new FormDefinition ("file2.xml", "Naranjas", "Formulario de naranjas", "1.1", "04/03/2010");
         FormDefinition form3 = new FormDefinition ("file3.xml", "Tomates", "Formulario de tomates", "2.0", "02/03/2009");
         FormDefinition form4 = new FormDefinition ("file4.xml", "Papas", "Formulario de papitas negras", "2.0", "02/03/2010");
-        
+        */
         listForm.add(form1);
         listForm.add(form2);
         listForm.add(form3);

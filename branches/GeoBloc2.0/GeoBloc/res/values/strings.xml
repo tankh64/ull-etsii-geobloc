@@ -26,6 +26,8 @@
 	<string name="sharedPreferencesTitle">Preferencias</string>
 	<string name="sharedInternetPreferencesTitle">Preferencias de internet</string>
 	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
+	<string name="baseServerAddress">Dirección base</string>
+	<string name="baseServerAddressDescription">Dirección base donde se encuentran los servicios en Internet</string>
 	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
 	<string name="uploadPackagesServletAddressDescription">Dirección del servlet para subir paquetes</string>
 	<string name="getAvailableFormsListFromServletAddress">Servlet lista de formularios</string>

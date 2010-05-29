@@ -11,7 +11,9 @@ import java.net.URI;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 /**
  * Class for testing http connection, strongly tied to the current Google App Engine Server.
@@ -23,6 +25,23 @@ import org.apache.http.impl.client.DefaultHttpClient;
  *
  */
 public class SimpleHttpGet {
+	
+	public String executeHttpGetRequest(String url, HttpClient httpClient) throws Exception {
+		String resp = "Error!";
+		try {
+			HttpGet request = new HttpGet();
+			request.setURI(new URI(url));
+			HttpResponse response = httpClient.execute(request);
+			resp = EntityUtils.toString(response.getEntity());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			if (e.getMessage() != null)
+				resp = e.getMessage();
+		}
+		return resp;
+	}
+	
 	public String ExecuteHttpGet(String url, HttpClient httpClient) throws Exception {
 		String respString = "Error!";
 		BufferedReader in = null;

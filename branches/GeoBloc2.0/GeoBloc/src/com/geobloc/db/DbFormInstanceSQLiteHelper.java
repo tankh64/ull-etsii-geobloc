@@ -42,11 +42,6 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 				DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__ + " INTEGER);");
 		buildDatabase(db);
-		
-		/*
-		db.execSQL("CREATE TABLE " + DbFormInstanceSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__ + 
-				" (_id INTEGER PRIMARY KEY AUTOINCREMENT);");
-		*/
 	}
 
 	@Override
@@ -57,9 +52,10 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 
 	}
 	
-	/*
+	/**
 	 * Builds the database from the list of packages in the packages directory.
 	 * By default, it is set to "not completed" and the date is the date in which the file was last modified.
+	 * @param db 
 	 */
 	private void buildDatabase(SQLiteDatabase db) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

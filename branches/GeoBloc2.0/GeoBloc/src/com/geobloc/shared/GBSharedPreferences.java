@@ -22,6 +22,7 @@ import com.geobloc.R;
  */
 public class GBSharedPreferences extends PreferenceActivity {
 	
+	private EditTextPreference baseServerAddress;
 	private EditTextPreference uploadPackagesServletAddress;
 	private EditTextPreference listOfAvailableFormsServletAddress;
 	private EditTextPreference downloadFormsServletAddress;
@@ -35,6 +36,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private SharedPreferences prefs;
 	
 	// preference keys
+	public static String __BASE_SERVER_ADDRESS_KEY__ = "baseServerAddressKey";
 	public static String __UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__ = "uploadPackagesServletAddress";
 	public static String __DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__ = "downloadFormsServletAddress";
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
@@ -50,9 +52,14 @@ public class GBSharedPreferences extends PreferenceActivity {
 	
 	
 	// default internet addresses
-	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/upload_basicpackageform";
-	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/get_listofavailablebasicforms";
-	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "http://ull-etsii-geobloc.appspot.com/get_basicformfile";
+	public static String __DEFAULT_BASE_SERVER_ADDRESS__ = "http://tomcat.etsii.ull.es/geobloc/";
+	//public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/upload_basicpackageform";
+	//public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/get_listofavailablebasicforms";
+	//public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "http://ull-etsii-geobloc.appspot.com/get_basicformfile";
+	
+	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "notAvailable";
+	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "notAvailable";
+	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "notAvailable";
 	// default directory paths
 	public static String __DEFAULT_FORMS_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/forms/";
 	public static String __DEFAULT_PACKAGES_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/packages/";
@@ -88,6 +95,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private void initConfig() {
 		addPreferencesFromResource(R.layout.settings);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		baseServerAddress = (EditTextPreference) findPreference(GBSharedPreferences.__BASE_SERVER_ADDRESS_KEY__);
 		uploadPackagesServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__);
 		listOfAvailableFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__);
 		downloadFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__);
@@ -96,6 +104,10 @@ public class GBSharedPreferences extends PreferenceActivity {
 		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
 		slidingButtonsAnimationEnabled = (CheckBoxPreference) findPreference(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__);
 		photoSizeBigEnable = (CheckBoxPreference) findPreference(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__);
+		
+		// default baseServerAddress
+		setEditTextDefaultConfig(baseServerAddress, 
+				GBSharedPreferences.__DEFAULT_BASE_SERVER_ADDRESS__);
 		
 		// default uploadPackagesServletAddress
 		setEditTextDefaultConfig(uploadPackagesServletAddress, 

@@ -5,6 +5,12 @@
   <PreferenceCategory
   	android:title="@string/sharedInternetPreferencesTitle">
   	<EditTextPreference
+  		android:key="baseServerAddressKey"
+  		android:name="baseServerAddress"
+  		android:title="@string/baseServerAddress"
+  		android:summary="@string/baseServerAddressDescription">
+  	</EditTextPreference>
+  	<EditTextPreference
   		android:key="uploadPackagesServletAddress"
   		android:name="uploadServerAddress"
   		android:title="@string/uploadPackagesServletAdress"
