@@ -38,6 +38,10 @@ public class DbFormInstance {
 	public static final String __LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__ = "compressedPackageFile";
 	public static final String __LOCALPACKAGESDB_COMPLETED_KEY__ = "completed";
 	
+	/*
+	 * MISSING form server key: form_id and form_version 
+	 */
+	
 	private long id = -1;
 	private String name = "";
 	private String packageLocation = "";
@@ -48,16 +52,6 @@ public class DbFormInstance {
 	
 	public static Cursor getAll(SQLiteDatabase db) {
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__, null);
-		//c.moveToFirst();
-		/*
-		try {
-			c.moveToFirst();
-		}
-		finally {
-			if (c != null)
-				c.close();
-		}
-		*/
 		return c;
 	}
 	
@@ -73,11 +67,6 @@ public class DbFormInstance {
 				DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__, DbFormInstance.__LOCALPACKAGESDB_COMPLETEDDATE_KEY__, 
 				DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__, 
 				DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, };
-		/*
-		Cursor c = db.query(DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__, 
-				DBFORMINSTANCE_FROM, 
-				DbFormInstance.__LOCALPACKAGESDB_ID__ + " = " + id, null, null, null, null);
-		*/
 		
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
 				" WHERE " + DbFormInstance.__LOCALPACKAGESDB_ID__ + " = " + id, null);
