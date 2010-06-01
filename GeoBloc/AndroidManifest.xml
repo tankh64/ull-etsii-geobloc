@@ -42,8 +42,7 @@
 			android:theme="@android:style/Theme.NoTitleBar">
 		</activity>
 		<activity
-			android:name=".activities.FormsDownloader"
-			android:label="@string/formsDownloaderButtonText">
+			android:label="@string/formsDownloaderButtonText" android:name=".activities.FormsManager">
 		</activity>
 		<activity
 			android:name=".activities.InstanceManager"

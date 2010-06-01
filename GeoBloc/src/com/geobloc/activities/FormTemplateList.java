@@ -19,7 +19,7 @@ package com.geobloc.activities;
 import java.util.ArrayList;
 
 import com.geobloc.R;
-import com.geobloc.shared.FormDefinition;
+import com.geobloc.db.FormDefinition;
 import com.geobloc.shared.Utilities;
 
 import android.app.ListActivity;

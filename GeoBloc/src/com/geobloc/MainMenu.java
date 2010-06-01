@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.geobloc.activities.FormActivity;
 import com.geobloc.activities.FormLocalList;
 import com.geobloc.activities.FormsDownloader;
+import com.geobloc.activities.FormsManager;
 import com.geobloc.activities.InstanceManager;
 import com.geobloc.activities.FormTemplateList;
 import com.geobloc.activities.SecondStaticFormPrototype;
@@ -142,7 +143,7 @@ public class MainMenu extends Activity {
     
     public void formsDownloaderButtonOnClickHandler(View target)
     {
-    	Intent i = new Intent(this, FormsDownloader.class);
+    	Intent i = new Intent(this, FormsManager.class);
     	startActivity(i);
     }
     

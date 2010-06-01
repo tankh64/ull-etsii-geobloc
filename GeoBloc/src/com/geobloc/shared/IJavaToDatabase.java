@@ -5,6 +5,8 @@ package com.geobloc.shared;
 
 import java.util.List;
 
+import com.geobloc.db.FormDefinition;
+import com.geobloc.db.InstanceDefinition;
 import com.geobloc.form.FormClass;
 
 /**

@@ -1,6 +1,8 @@
-package com.geobloc.shared;
+package com.geobloc.db;
 
 import java.util.Date;
+
+import com.geobloc.shared.IFormDefinition;
 
 /**
  * Class to represent the basic info of a form to be used by different classes.
@@ -10,7 +12,7 @@ import java.util.Date;
  * @author Dinesh Harjani
  *
  */
-public class FormDefinition {
+public class FormDefinition implements IFormDefinition {
 	
 	private String form_name;
 	private String form_id; // id in server
