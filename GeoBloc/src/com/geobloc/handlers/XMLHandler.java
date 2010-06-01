@@ -236,10 +236,10 @@ public class XMLHandler extends DefaultHandler {
     			this.in_gb_checkboxText = true;
     			break;
     		case IGB_CHECKBOX_THREE:
-    			this.in_gb_checkbox = true;
+    			this.in_gb_checkboxthree = true;
     			break;
     		case IGB_CHECKBOX_THREE_TEXT:
-    			this.in_gb_checkboxText = true;
+    			this.in_gb_checkboxthreeText = true;
     			break;
     		case IGB_LIST:
     			this.in_gb_list = true;
@@ -378,7 +378,7 @@ public class XMLHandler extends DefaultHandler {
             clearValues();
 			break;
 		case IGB_CHECKBOX_THREE_TEXT:
-			this.in_gb_checkboxText = false;
+			this.in_gb_checkboxthreeText = false;
 			break;
 		case IGB_LIST:
 			

@@ -209,6 +209,9 @@ public class FormActivity extends Activity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
 		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_BACKGROUND_COLOR__+">");
+		
+		String pepe = prefs.getString(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, "-1");
+		
 		Utilities.background = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, "-1"));
 		Log.v(TAG, "Es    <"+Utilities.background+">");
 		
