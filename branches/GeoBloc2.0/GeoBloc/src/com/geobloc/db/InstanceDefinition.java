@@ -1,19 +1,22 @@
 /**
  * 
  */
-package com.geobloc.shared;
+package com.geobloc.db;
 
 import java.util.Date;
+
+import com.geobloc.shared.IFormDefinition;
+import com.geobloc.shared.IInstanceDefinition;
 
 /**
  * @author Jorge Carballo
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
-public class InstanceDefinition {
+public class InstanceDefinition implements IInstanceDefinition {
 	
 	private long instance_local_id;
-	private FormDefinition form_definition;
+	private IFormDefinition form_definition;
 	private String package_path; // instance path on SD-Card
 	private Date date;
 	private boolean complete;
@@ -21,7 +24,7 @@ public class InstanceDefinition {
 	
 		
 	public InstanceDefinition(long instanceLocalId,
-			FormDefinition formDefinition, String packagePath, Date date,
+			IFormDefinition formDefinition, String packagePath, Date date,
 			boolean complete, String label) {
 		super();
 		instance_local_id = instanceLocalId;
@@ -38,10 +41,10 @@ public class InstanceDefinition {
 	public void setInstance_local_id(long instanceLocalId) {
 		instance_local_id = instanceLocalId;
 	}
-	public FormDefinition getForm_definition() {
+	public IFormDefinition getForm_definition() {
 		return form_definition;
 	}
-	public void setForm_definition(FormDefinition formDefinition) {
+	public void setForm_definition(IFormDefinition formDefinition) {
 		form_definition = formDefinition;
 	}
 	public String getPackage_path() {

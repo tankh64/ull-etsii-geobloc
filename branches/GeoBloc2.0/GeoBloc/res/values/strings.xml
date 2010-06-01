@@ -57,6 +57,10 @@
 	<string name="button_back">Atrás</string>
 	<string name="button_next">Adelante</string>
 	
+	<!-- FormsManager Layout and List Items -->
+	<string name="formsManager_downloadTitle">Descarga de Formularios</string>
+	<string name="formsManager_deleteTitle">Borrado de Formularios</string>
+	
 	<!-- FormsDownloader Layout -->
 	<string name="forms_downloaderTextViewText">Lista de formularios disponibles</string>
 	<string name="forms_downloaderActionDLButtonText">Descargar</string>
