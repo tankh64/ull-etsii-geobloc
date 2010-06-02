@@ -5,7 +5,7 @@ package com.geobloc.shared;
 
 import java.util.List;
 
-import com.geobloc.db.FormDefinition;
+import com.geobloc.db.DbForm;
 import com.geobloc.db.InstanceDefinition;
 import com.geobloc.form.FormClass;
 
@@ -28,16 +28,16 @@ public interface IJavaToDatabase {
 	/**
 	 * This method must return a list with all the forms stored locally, which will later be used to create 
 	 * a new instance from.
-	 * @return List<FormDefinition> of {@link FormDefinition} Objects
+	 * @return List<FormDefinition> of {@link DbForm} Objects
 	 * @throws Exception if this and other related operations cannot be performed, such as reading from the SD-Card.
 	 */
-	public List<FormDefinition> getListOfLocalForms() throws Exception;
+	public List<IFormDefinition> getListOfLocalForms() throws Exception;
 	/**
 	 * This method allows us to get a Java object representation of a form stored locally.
 	 * @param form_local_id The unique identifier (primary key) in the form local database
-	 * @return {@link FormDefinition} a Java POJO representing a local form.
+	 * @return {@link DbForm} a Java POJO representing a local form.
 	 */
-	public FormDefinition getLocalFormDefinition(long form_local_id);
+	public IFormDefinition getLocalFormDefinition(long form_local_id);
 	/**
 	 * Allows us to get the full path to the form.xml file associated with this local form. 
 	 * @param form_local_id
@@ -54,14 +54,14 @@ public interface IJavaToDatabase {
 	 * @return List with {@link InstanceDefinition} Java Objects
 	 * @throws Exception if something goes wrong, like not being able to read from the database.
 	 */
-	public List<InstanceDefinition> getListOfLocalInstances() throws Exception;
+	public List<IInstanceDefinition> getListOfLocalInstances() throws Exception;
 	/**
 	 * Allows us to create a new instance based on the given form
-	 * @param form_local_id the unique identifier to the local form, usually provided by a {@link FormDefinition}
+	 * @param form_local_id the unique identifier to the local form, usually provided by a {@link DbForm}
 	 * @return {@link InstanceDefinition} representing the newly created instance.
 	 * @throws Exception if something goes wrong.
 	 */
-	public InstanceDefinition newInstance(long form_local_id) throws Exception;
+	public IInstanceDefinition newInstance(long form_local_id) throws Exception;
 	/**
 	 * Basic operation to delete an instance.
 	 * @param instance_local_id the unique identifier of the instance, generally provided by a {@link InstanceDefinition} Object.
@@ -74,5 +74,5 @@ public interface IJavaToDatabase {
 	 * @param form the {@link FormClass} Object containing the necessary information.
 	 * @throws Exception if the operation could not be performed.
 	 */
-	public void saveInstance(InstanceDefinition instance, FormClass form) throws Exception;
+	public void saveInstance(IInstanceDefinition instance, FormClass form) throws Exception;
 }

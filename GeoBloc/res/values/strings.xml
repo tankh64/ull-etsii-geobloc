@@ -11,6 +11,15 @@
 	<string name="created_dir">Directorio %s creado correctamente</string>
 	<string name="TextView01">Formulario %s cargado</string>
 	
+	<!-- Mensajes genéricos -->
+	<string name="ready">Listo</string>
+	<string name="checkingForConnectivity">Comprobando la conexión a Internet...</string>
+	<string name="noConnectivity">No disponible conexión a Internet.</string>
+	<string name="connectivityAvailable">Conexión a Internet disponible.</string>
+	
+	<string name="taskComplete">Tarea completada.</string>
+	<string name="download">Descargar</string>
+	<string name="delete">Borrar</string>
 	
 	<!-- Nombres de botones de la Actividad Menú Principal -->
 	<string name="staticFormSelectionSpinnerText">Seleccione Formulario:</string>
@@ -59,6 +68,16 @@
 	
 	<!-- FormsManager Layout and List Items -->
 	<string name="formsManager_downloadTitle">Descarga de Formularios</string>
+	<string name="formsManager_downlaodLstList">Fecha de última lista: </string>
+	<string name="formsManager_donwloadingServerList">Descargando lista del servidor...</string>
+	<string name="formsManager_processingServerList">Procesando datos del servidor...</string>
+	<string name="formsManager_list_item_FormVersionTextViewText">Versión: </string>
+	<string name="formsManager_list_itemFormStatusTextViewText">Estado: </string>
+	<string name="formsManager_list_itemFormStatusUpdate">Actualización Disp.</string>
+	<string name="formsManager_list_itemFormStatusNew">Nuevo </string>
+	<string name="formsManager_list_itemFormStatusCurrent">Más reciente</string>
+	<string name="formsManager_list_itemFormStatusNotFound">No encontrado</string>
+	
 	<string name="formsManager_deleteTitle">Borrado de Formularios</string>
 	
 	<!-- FormsDownloader Layout -->

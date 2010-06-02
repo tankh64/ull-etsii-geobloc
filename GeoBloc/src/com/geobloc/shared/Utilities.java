@@ -5,9 +5,12 @@ package com.geobloc.shared;
 
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
@@ -109,5 +112,32 @@ public class Utilities {
 		
     	name += getDateAndTimeString();
 		return name;
+	}
+	
+	/**
+	 * This method provides an easy way to detect whether Internet connectivity is available or not.
+	 * It will check that, if we're on a mobile network, we're not doing roaming.
+	 * @param context Necessary to get access to system information.
+	 * @return true if there is connectivity and it is recommended (no roaming), false otherwise.
+	 */
+	public static boolean evaluateConnectivityAvailable(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connMgr.getActiveNetworkInfo();
+		
+        if (info == null)
+        	return false; // no connectivity at all
+        
+		int netType = info.getType();
+		TelephonyManager mTelephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		if (netType == ConnectivityManager.TYPE_WIFI) {
+			return info.isConnected();
+		}
+		else
+			if (netType == ConnectivityManager.TYPE_MOBILE
+				&& !mTelephony.isNetworkRoaming()) {
+				return info.isConnected();
+			} else {
+				return false;
+			}
 	}
 }

@@ -6,6 +6,11 @@
 	    <attr name="state" format="integer" />
 	</declare-styleable>
 	
+	<declare-styleable name="ProgressItem">
+	    <attr name="progress_label" format="string" />
+	    <attr name="bar_visible" format="boolean" />
+	</declare-styleable>
+	
 	<declare-styleable name="GalleryPhoto">
         <attr name="android:galleryItemBackground" />
     </declare-styleable>
