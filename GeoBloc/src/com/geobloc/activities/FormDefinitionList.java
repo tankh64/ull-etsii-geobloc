@@ -162,6 +162,8 @@ public class FormDefinitionList extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setTitle(getString(R.string.app_name)+" > "+getString(R.string.new_form));
+        
         setListAdapter(new EfficientAdapter(this));
         
         // Obtenemos la lista de Esquemas de Formularios Locales
