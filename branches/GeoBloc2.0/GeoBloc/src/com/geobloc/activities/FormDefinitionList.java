@@ -1,4 +1,5 @@
 /*
+ *
  * Copyright (C) 2008 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +17,14 @@
 
 package com.geobloc.activities;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.geobloc.FormList;
 import com.geobloc.R;
-import com.geobloc.db.FormDefinition;
+import com.geobloc.db.DbForm;
+import com.geobloc.shared.IFormDefinition;
 import com.geobloc.shared.Utilities;
 
 import android.app.ListActivity;
@@ -55,7 +59,7 @@ import android.graphics.Bitmap;
  * avoiding calls to findViewById() every time getView() is invoked.
  */
 public class FormDefinitionList extends ListActivity {
-	private static final String TAG = "FormDefinitionList";
+        private static final String TAG = "FormDefinitionList";
 
     private static class EfficientAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -133,13 +137,14 @@ public class FormDefinitionList extends ListActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            FormDefinition form = listForm.get(position);
+            IFormDefinition form = listForm.get(position);
             
             // Bind the data efficiently with the holder.
             holder.title.setText((form.getForm_name()));
             holder.description.setText(form.getForm_description());
             holder.icon.setImageBitmap(mIcon);
-            holder.date.setText(form.getForm_date());
+            DateFormat df = DateFormat.getInstance();
+            holder.date.setText(df.format(form.getForm_date()));
             holder.version.setText(String.valueOf(form.getForm_version()));
 
             return convertView;
@@ -156,7 +161,7 @@ public class FormDefinitionList extends ListActivity {
     
     /****************** FormTemplateList **************/
     
-    private static ArrayList<FormDefinition> listForm = new ArrayList<FormDefinition>();
+    private static ArrayList<IFormDefinition> listForm = new ArrayList<IFormDefinition>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,38 +173,47 @@ public class FormDefinitionList extends ListActivity {
         
         // Obtenemos la lista de Esquemas de Formularios Locales
         try {
-        	//listForm = getListOfLocalForms ();
+                //listForm = getListOfLocalForms ();
         } catch (Exception ex) {
-        	Log.e(TAG, ex.getMessage());
+                Log.e(TAG, ex.getMessage());
         }
         
         // Si no tenemos nada, mostramos la de ejemplo
         if ((listForm == null) || (listForm.size() == 0)){
-        	 listForm = new ArrayList<FormDefinition>();	// Form definition list
-        	 
-        	FormDefinition form1 = new FormDefinition("Fresas", "serverform11212", 0, "Formulario de fresas", "02/03/2010", -1);
-        	FormDefinition form2 = new FormDefinition("Naranjas", "serverform11213", 1, "Formulario de naranjas", "04/03/2010", -1);
-        	FormDefinition form3 = new FormDefinition("Tomates", "serverform11214", 2, "Formulario de tomates", "02/03/2009", -1);
-        	FormDefinition form4 = new FormDefinition("Papas", "serverform11215", 2, "Formulario de papitas negras", "02/03/2010", -1);
+                 listForm = new ArrayList<IFormDefinition>();    // Form definition list
+                 
+                 /*
+                FormDefinition form1 = new FormDefinition("Fresas", "serverform11212", 0, "Formulario de fresas", "02/03/2010", -1);
+                FormDefinition form2 = new FormDefinition("Naranjas", "serverform11213", 1, "Formulario de naranjas", "04/03/2010", -1);
+                FormDefinition form3 = new FormDefinition("Tomates", "serverform11214", 2, "Formulario de tomates", "02/03/2009", -1);
+                FormDefinition form4 = new FormDefinition("Papas", "serverform11215", 2, "Formulario de papitas negras", "02/03/2010", -1);
+                */
 
-        	listForm.add(form1);
-        	listForm.add(form2);
-        	listForm.add(form3);
-        	listForm.add(form4);
+                DbForm form1 = new DbForm("Fresas", "serverform11212", 0, null, "Formulario de fresas", new Date(), -1, 0);
+             	DbForm form2 = new DbForm("Naranjas", "serverform11213", 1, null, "Formulario de naranjas", new Date(), -1, 0);
+             	DbForm form3 = new DbForm("Tomates", "serverform11214", 2, null, "Formulario de tomates", new Date(), -1, 0);
+             	DbForm form4 = new DbForm("Papas", "serverform11215", 2, null, "Formulario de papitas negras", new Date(), -1, 0);
+     			
+                listForm.add(form1);
+                listForm.add(form2);
+                listForm.add(form3);
+                listForm.add(form4);
+                
+                 
         }
 
     }
     
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Utilities.showToast(getApplicationContext(), "Selected the "+position, Toast.LENGTH_SHORT);
-    	
-    	// TODO: must return the "formLocalId" and "filename"
+        Utilities.showToast(getApplicationContext(), "Selected the "+position, Toast.LENGTH_SHORT);
+        
+        // TODO: must return the "formLocalId" and "filename"
         Intent result = new Intent();
         //result.putExtra(FormList.FILE_NAME, archivo.getName());
         //result.putExtra(FormList.FILE_PATH, __GEOBLOC_FORMS_DIRECTORY__+"/"+archivo.getName());
         setResult(RESULT_OK, result);
-    	finish();
+        finish();
     }
     
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.geobloc"
   android:id="@+id/formsManager_viewFlipper"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
@@ -27,6 +28,15 @@
   			android:layout_height="wrap_content">
   		</TextView>
   	</LinearLayout>
+
+  	<TextView
+  		android:id="@+id/formsManager_downloadLastListDate"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:textColor="#FFFFFF"
+  		android:text="@string/formsManager_downlaodLstList"
+  		android:layout_below="@id/formsManager_downloadFormsHeader">
+  	</TextView>
   	
   	<!-- Feet -->
   	<LinearLayout
@@ -35,6 +45,13 @@
   		android:layout_height="wrap_content"
   		android:layout_width="fill_parent"
   		android:layout_alignParentBottom="true">
+  		<Button
+  			android:id="@+id/formsManager_downloadButton"
+  			android:layout_height="wrap_content"
+  			android:layout_width="fill_parent"
+  			android:textSize="15sp"
+  			android:text="@string/download">
+  		</Button>  		
   	</LinearLayout>
   	
   	<!-- List -->
@@ -42,7 +59,7 @@
   		android:id="@+id/formsManager_downloadListView"
   		android:layout_height="fill_parent"
   		android:layout_width="fill_parent"
-  		android:layout_below="@id/formsManager_downloadFormsHeader"
+  		android:layout_below="@id/formsManager_downloadLastListDate"
   		android:layout_above="@id/formsManager_downloadFormsBottom">
   	</ListView>
   	
@@ -53,6 +70,7 @@
   	android:id="@+id/formsManager_deleteFormsLayout"
   	android:layout_width="fill_parent"
   	android:layout_height="fill_parent">
+
   </RelativeLayout>
   <!-- header -->
   	<LinearLayout

@@ -58,7 +58,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	//public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "http://ull-etsii-geobloc.appspot.com/get_basicformfile";
 	
 	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "notAvailable";
-	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "notAvailable";
+	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "Hello";
 	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "notAvailable";
 	// default directory paths
 	public static String __DEFAULT_FORMS_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/forms/";
