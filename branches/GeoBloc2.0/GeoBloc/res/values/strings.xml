@@ -85,19 +85,26 @@
 	<string name="instance_manager_list_itemFormInstanceCompleteYes">Si</string>
 	<string name="instance_manager_list_itemFormInstanceCompleteNo">No</string>
 	
-<string name="cover_title">GeoBloc</string>
-<string name="cover_subtile_2">Gerencia de Urbanismo de La Laguna</string>
-<string name="no_more_pages_at_left">No existen más páginas del formulario a la izquierda</string>
-<string name="no_more_pages_at_rigth">No existen más páginas del formulario a la derecha</string>
-<string name="help_form_mov">Mueva su dedo horizontalmente en la pantalla para desplazarse por el formulario</string>
-<string name="form_loaded">Formulario del tipo %s cargado</string>
+	<!-- Subtítulos de las páginas -->
+	<string name="new_form">Nuevo Formulario</string> <!-- Lista de Esquemas de Formularios -->
+	<string name="list_local_instances">Recuperar Formulario</string>
+	
+	<!-- Títulos de la página de inicio-->
+	<string name="cover_title">GeoBloc</string>
+	<string name="cover_subtile_2">Gerencia de Urbanismo de La Laguna</string>
+	
+	<!-- Página de formularios -->
+	<string name="no_more_pages_at_left">No existen más páginas del formulario a la izquierda</string>
+	<string name="no_more_pages_at_rigth">No existen más páginas del formulario a la derecha</string>
+	<string name="help_form_mov">Mueva su dedo horizontalmente en la pantalla para desplazarse por el formulario</string>
+	<string name="form_loaded">Formulario del tipo %s cargado</string>
+	<string name="form_version">Version %s</string>
 
-<string name="form_version">Version %s</string>
+	<string name="load_photo">Se ha cargado %s foto</string>
+	<string name="load_photos">Se han cargado %s fotos</string>
+	<string name="no_load_photos">No se han cargado fotos</string>
 
-<string name="version">0.1</string>
-<string name="load_photo">Se ha cargado %s foto</string>
-<string name="load_photos">Se han cargado %s fotos</string>
-<string name="no_load_photos">No se han cargado fotos</string>
+	<string name="version">0.1</string>
 
     <string name="planet_prompt">Choose a planet</string>
     <string-array name="planets_array">
