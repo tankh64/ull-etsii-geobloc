@@ -181,7 +181,6 @@ public class FormActivity extends Activity {
                     Toast.LENGTH_SHORT);
         	finish();
         }
-
         initConfig();
         
         /** to use the custom title */
@@ -198,8 +197,6 @@ public class FormActivity extends Activity {
         } else {
             // El viewFlipper ya existe
         }
-
-        
 	}
 	
 	/**
@@ -209,9 +206,6 @@ public class FormActivity extends Activity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
 		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_BACKGROUND_COLOR__+">");
-		
-		String pepe = prefs.getString(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, "-1");
-		
 		Utilities.background = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, "-1"));
 		Log.v(TAG, "Es    <"+Utilities.background+">");
 		
@@ -375,8 +369,6 @@ public class FormActivity extends Activity {
 										} else {
 											startActivityForResult(intent, CAMERA_ACTIVITY);
 										}
-										
-										//startActivityForResult(intent, CAMERA_ACTIVITY);
 									}
 	    				        	
 	    				        });
@@ -393,7 +385,6 @@ public class FormActivity extends Activity {
 										intent.setType("image/*");
 										intent.setAction(Intent.ACTION_GET_CONTENT);
 										startActivityForResult(intent, GALLERY_ACTIVITY);
-										//startActivity(intent);
 									}
 	    				        	
 	    				        });

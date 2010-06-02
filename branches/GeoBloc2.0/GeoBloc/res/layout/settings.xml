@@ -60,7 +60,8 @@
   		android:title="@string/formColorBackground"
   		android:summary="@string/formColorBackgroundDescription"
 		android:entries="@array/Array"
-		android:entryValues="@array/Values" >
+		android:entryValues="@array/Values"
+		android:defaultValue="-1">
   	</ListPreference>
   	<ListPreference
   		android:key="formTextColor"
@@ -68,7 +69,8 @@
   		android:title="@string/formColorText"
   		android:summary="@string/formColorTextDescription"
 		android:entries="@array/Array"
-		android:entryValues="@array/Values" >
+		android:entryValues="@array/Values"
+		android:defaultValue="-12303292">
   	</ListPreference>
   	<CheckBoxPreference
   		android:key="formPhotoSize"

@@ -49,9 +49,8 @@
 			android:label="@string/formsSenderButtonText">
 		</activity>
 <activity android:name=".activities.FormActivity" android:screenOrientation="portrait"></activity>
-<activity android:name=".activities.FormLocalList"></activity>
 
-<activity android:name=".activities.FormTemplateList"></activity>
+<activity android:name=".activities.FormDefinitionList"></activity>
 
 </application>
     <uses-sdk android:minSdkVersion="4" />
