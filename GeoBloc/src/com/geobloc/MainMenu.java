@@ -3,6 +3,7 @@ package com.geobloc;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,11 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
-import com.geobloc.activities.FormLocalList;
 import com.geobloc.activities.FormsDownloader;
 import com.geobloc.activities.FormsManager;
 import com.geobloc.activities.InstanceManager;
-import com.geobloc.activities.FormTemplateList;
+import com.geobloc.activities.FormDefinitionList;
 import com.geobloc.activities.SecondStaticFormPrototype;
 import com.geobloc.activities.StaticFormPrototype;
 import com.geobloc.shared.GBSharedPreferences;
@@ -35,12 +35,14 @@ import com.geobloc.shared.Utilities;
 
 public class MainMenu extends Activity {
 	
+	private static final String TAG = "MainMenu";
+	
 	// For result from Activity
-	private static final int LIST_FORM = 0;
+	private static final int LIST_FORM = 0;					// List of FormDefinition
 	private static final int QUESTION_FORM = LIST_FORM + 1;
 	private static final int PARSING_XML = LIST_FORM + 2;
 	
-	private static final int TEST = LIST_FORM + 9;
+	private static final int SIMPLE_LIST_FORM = LIST_FORM + 9;
 	
 	// Buttons
 	private Button mCreateFormButton;
@@ -63,23 +65,20 @@ public class MainMenu extends Activity {
         mCreateFormButton = (Button) findViewById(R.id.ButtonMainMenu1);
         mCreateFormButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                
-            	/*Intent i = new Intent (getApplicationContext(), FormLocalList.class);*/
-            	Intent i = new Intent (getApplicationContext(), FormTemplateList.class);
+            	Intent i = new Intent (getApplicationContext(), FormDefinitionList.class);
                 startActivityForResult(i, LIST_FORM);
             }
             
  
         });
         
-     // Create Test Button
+        // Create Test Button
         mTestButton = (Button) findViewById(R.id.ButtonMainMenu2);
         mTestButton.setText(getString(R.string.ButtonMainMenu2));
         mTestButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                
             	Intent i = new Intent (getApplicationContext(), FormList.class);
-                startActivityForResult(i, TEST);
+                startActivityForResult(i, SIMPLE_LIST_FORM);
             }
         });
     }
@@ -92,20 +91,31 @@ public class MainMenu extends Activity {
     	
     		case LIST_FORM:
 
-    			/*if(resultCode == RESULT_OK){
+    			/* Nos deberá devolver el "formLocalId" y el path completo del fichero
+    			 * We will return the "formLocalId" and the full file path
+    			 */
+    			if(resultCode == RESULT_OK){
     				Bundle extras = data.getExtras();
-    				String filename = extras.getString (FormList.FILE_NAME);
-    				String filepath = extras.getString (FormList.FILE_PATH);
     				
-    				Intent i = new Intent (getApplicationContext(), ParsingXML.class);
-    				i.putExtra(ParsingXML.FILE_NAME, filepath);
-    				startActivityForResult(i, PARSING_XML);
+    				if (extras != null) {
+    					if (extras.containsKey(FormList.FILE_NAME) && (extras.containsKey(FormList.FILE_PATH))) { 
+    						String filename = extras.getString (FormList.FILE_NAME);
+    						String filepath = extras.getString (FormList.FILE_PATH);
+    				
+    						Log.i(TAG, "Filename es "+filename);
+    						Log.i(TAG, "Filepath es "+filepath);
+    				
+    						Intent i = new Intent (getApplicationContext(),FormActivity.class);
+    						i.putExtra(FormActivity.FILE_NAME, filename);
+    						i.putExtra(FormActivity.FILE_PATH, filepath);
+    						startActivityForResult(i, PARSING_XML);
+    					} else {
+    						Log.e(TAG, "LIST_FORM no devuelve un nombre de fichero");
+    					}
+    				} else {
+    					Log.e(TAG, "LIST_FORM no devuelve nada (null)");
+    				}
     			}
-    			else {
-    				Utilities.showToast(getApplicationContext(),
-    							"Actividad NO devuelve correctamente",
-    							Toast.LENGTH_SHORT);
-    			}*/
     			break;
     		
     		case QUESTION_FORM:
@@ -124,17 +134,26 @@ public class MainMenu extends Activity {
     		case PARSING_XML:
     			break;
     			
-    		case TEST:
+    		case SIMPLE_LIST_FORM:
 
     			if(resultCode == RESULT_OK){
     				Bundle extras = data.getExtras();
-    				String filename = extras.getString (FormList.FILE_NAME);
-    				String filepath = extras.getString (FormList.FILE_PATH);
     				
-    				Intent i = new Intent (getApplicationContext(),FormActivity.class);
-    				i.putExtra(FormActivity.FILE_NAME, filename);
-    				i.putExtra(FormActivity.FILE_PATH, filepath);
-    				startActivityForResult(i, PARSING_XML);
+    				if (extras != null) {
+    					if (extras.containsKey(FormList.FILE_NAME) && (extras.containsKey(FormList.FILE_PATH))) {
+    						String filename = extras.getString (FormList.FILE_NAME);
+    						String filepath = extras.getString (FormList.FILE_PATH);
+    				
+    						Intent i = new Intent (getApplicationContext(),FormActivity.class);
+    						i.putExtra(FormActivity.FILE_NAME, filename);
+    						i.putExtra(FormActivity.FILE_PATH, filepath);
+    						startActivityForResult(i, PARSING_XML);
+    					} else {
+    						Log.e(TAG, "SIMPLE_LIST_FORM no devuelve un nombre de fichero");
+    					}
+    				} else {
+     					Log.e(TAG, "SIMPLE_LIST_FORM no devuelve nada (null)");
+     				}
     			}
     			break;
     	}
