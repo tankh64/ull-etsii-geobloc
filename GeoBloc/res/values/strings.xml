@@ -51,8 +51,8 @@
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
 	
 	<string name="formPreferencesTitle">Preferencias del Formulario</string>
-	<string name="formColorBackgroundDescription">Color de fondo del formulario por defecto</string>
-	<string name="formColorBackground">Fondo del formulario</string>
+	<string name="formColorThemeDescription">Temas de color de los formularios por defecto</string>
+	<string name="formColorTheme">Tema del formulario</string>
 	<string name="formColorTextDescription">Color del texto del formulario por defecto</string>
 	<string name="formColorText">Color del Texto</string>
 	<string name="formPhotoSizeTitle">Tamaño de foto grande</string> 

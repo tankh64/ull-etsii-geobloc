@@ -47,6 +47,8 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
         but.setText("Añadir foto desde galeria");
         but = (Button)findViewById(R.id.clearButton);
         but.setText("Borrar fotos");
+        
+        this.setBackgroundColor(Utilities.background);
 	}
 
 	public MediaWidget(Context context, AttributeSet attrs) {
