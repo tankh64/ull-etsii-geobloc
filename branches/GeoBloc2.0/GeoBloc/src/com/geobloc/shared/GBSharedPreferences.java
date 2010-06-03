@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditTextPreference numberOfInternetAttempts;
 	private CheckBoxPreference slidingButtonsAnimationEnabled;
 	private CheckBoxPreference photoSizeBigEnable;
+	private ListPreference formThemeColor;
 	
 	private EditText et;
 	private SharedPreferences prefs;
@@ -45,8 +47,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
 	public static String __SLIDING_BUTTONS_ANIMATION_KEY__ = "slidingButtonsAnimationKey";
 	// forms preferences
-	public static String __FORM_BACKGROUND_COLOR__ = "formColor";
-	public static String __FORM_TEXT_COLOR__ = "formTextColor";
+	public static String __FORM_THEME_COLOR__ = "formThemeColor";
 	public static String __FORM_REQUIRED_COLOR__ = "colorRequired";
 	public static String __FORM_PHOTO_SIZE_BIG__ = "formPhotoSize";
 	
@@ -104,6 +105,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
 		slidingButtonsAnimationEnabled = (CheckBoxPreference) findPreference(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__);
 		photoSizeBigEnable = (CheckBoxPreference) findPreference(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__);
+		formThemeColor = (ListPreference) findPreference (GBSharedPreferences.__FORM_THEME_COLOR__);
 		
 		// default baseServerAddress
 		setEditTextDefaultConfig(baseServerAddress, 
@@ -140,6 +142,9 @@ public class GBSharedPreferences extends PreferenceActivity {
 		
 		photoSizeBigEnable.setChecked(prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, 
 				GBSharedPreferences.__DEFAULT_FORM_PHOTO_SIZE_BIG__));
+		
+		if (formThemeColor.getEntry() == null)
+			formThemeColor.setValueIndex(0);
 	}
 	
 	private void setEditTextDefaultConfig(EditTextPreference edt, String defaultText) {

@@ -199,19 +199,40 @@ public class FormActivity extends Activity {
         }
 	}
 	
+	/*
+	 * Establece los colores según el tema del programa
+	 */
+	private void setColors (int idTheme) {
+		switch (idTheme) {
+		// Oscuro
+		case 0: Utilities.background = getResources().getColor(R.color.BackgroundDark);
+				Utilities.fontColor = getResources().getColor(R.color.TextColorDark);
+			break;
+		// Calro
+		case 1: Utilities.background = getResources().getColor(R.color.BackgroundLigth);
+				Utilities.fontColor = getResources().getColor(R.color.TextColorLigth);
+				/* Utilities.background = Color.WHITE;
+				Utilities.fontColor = Color.argb(20, 25, 25, 25); */
+			break;
+			default:
+				Utilities.background = R.color.SoftGreen;
+				Utilities.fontColor = R.color.CandyRed;
+				break;
+		}
+	}
+	
+	
 	/**
 	 * Initial config
 	 */
 	public void initConfig () {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
-		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_BACKGROUND_COLOR__+">");
-		Utilities.background = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_BACKGROUND_COLOR__, "-1"));
-		Log.v(TAG, "Es    <"+Utilities.background+">");
+		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_THEME_COLOR__+">");
 		
-		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_TEXT_COLOR__+">");
-		Utilities.fontColor = Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_TEXT_COLOR__, "-12303292"));
-		Log.v(TAG, "Es    <"+Utilities.fontColor+">");
+		String pepe = prefs.getString(GBSharedPreferences.__FORM_THEME_COLOR__, "0");
+		
+		setColors (Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_THEME_COLOR__, "0")));
 		
 		Log.v(TAG, "Photo Big Size");
 		Utilities.photoSizeBigEnable = prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, false);
@@ -403,6 +424,7 @@ public class FormActivity extends Activity {
 	    				        });
 	    				        
 	    				        TextView texto = (TextView) ((View)wdget).findViewById (R.id.loadPhotos);
+	    				        texto.setTextColor(Utilities.fontColor);
 	    				        texto.setText(getString(R.string.no_load_photos));
 	    				        
 	    				        // We also want to show context menu for longpressed items in the gallery
@@ -588,7 +610,8 @@ public class FormActivity extends Activity {
     	
     	Utilities.showToast(getApplicationContext(), "Existen "+(formH.getNumPages()+2)+" páginas", Toast.LENGTH_LONG);
     	
-    	lAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_list_item_1, mArray);
+    	//With (android.R.layout.simple_list_item_1) can't see the text
+    	lAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, mArray);
     	
     	AlertDialog dial = new AlertDialog.Builder(FormActivity.this)
         .setTitle("Ir a la página")
