@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -66,4 +67,8 @@ public class MultipleListWidget extends LinearLayout implements QuestionWidget {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public void mySetListener(OnTouchListener list) {
+		
+	}
 }
