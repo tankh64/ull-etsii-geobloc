@@ -6,18 +6,23 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.geobloc.activities.FormActivity;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
 
 public class FieldWidget extends LinearLayout implements QuestionWidget {
+	
+	TextView Text;
+	EditText ed;
 	
 	public FieldWidget(Context context) {
 		super(context);
@@ -35,12 +40,12 @@ public class FieldWidget extends LinearLayout implements QuestionWidget {
 		
         /* Contendrá el Texto y el EditText */
         /* Texto antes del EditText */
-        TextView Text = new TextView(getContext());
+        Text = new TextView(getContext());
         Text.setTextSize(20);
         Text.setText(((DataInputQuestionPrompt)qP).getQuestionTitle()+":  ");
         Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
         
-        EditText ed = new EditText(getContext());
+        ed = new EditText(getContext());
         ed.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
         ed.setText(((DataInputQuestionPrompt)qP).getQuestionInput());
         
@@ -74,6 +79,11 @@ public class FieldWidget extends LinearLayout implements QuestionWidget {
 		if (qP.isRequired()) {
 			this.setBackgroundColor(Utilities.requiredColor);
 		}
+		
+		/**
+		 * NOTA: Si le añadimos el listener a todas las vistas funcionaría el "OnFlin"
+		 */
+		//ed.setOnTouchListener(FormActivity.gestureListener);
 
 	}
 
@@ -82,6 +92,11 @@ public class FieldWidget extends LinearLayout implements QuestionWidget {
 		// TODO Auto-generated method stub
 		((EditText)this.getChildAt(1)).setText("");
 	}
-
-
+	
+	@Override
+	public void mySetListener(OnTouchListener list) {
+		ed.setOnTouchListener(list);
+		Text.setOnTouchListener(list);
+	}
+	
 }

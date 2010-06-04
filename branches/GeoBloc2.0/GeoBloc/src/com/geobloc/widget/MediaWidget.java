@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,5 +66,9 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public void mySetListener(OnTouchListener list) {
+		
+	}
 }

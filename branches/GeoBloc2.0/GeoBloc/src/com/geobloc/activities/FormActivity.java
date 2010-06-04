@@ -84,7 +84,7 @@ public class FormActivity extends Activity {
     private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
+	public static View.OnTouchListener gestureListener; /* Static para probar */
 	private Animation slideLeftIn;
 	private Animation slideLeftOut;
 	private Animation slideRightIn;
@@ -240,15 +240,16 @@ public class FormActivity extends Activity {
 	    
 	    gestureDetector = new GestureDetector(new MyGestureDetector());
 	    gestureListener = new View.OnTouchListener() {
+	    	@Override
 	    	public boolean onTouch(View v, MotionEvent event) {
 	    		if (gestureDetector.onTouchEvent(event)) {
 	    			return true;
 	    		}
 	    		return false;
 	    	}
-	    };
+	    };  
+	    //viewFlipper.setOnTouchListener(gestureListener);
 	    /**********************/
-		
         
         loadTask = new LoadFormTask();
         loadTask.setContext(getApplicationContext());
@@ -419,7 +420,13 @@ public class FormActivity extends Activity {
 	    	    			/** create the appropriate widget depending on the question */
 	    	    			wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), this, (ViewGroup)viewFlipper);
 	    	    			vistaR.addView((View)wdget);
+	    	    			
+	    	    			//((View)wdget).setOnTouchListener(gestureListener);
+	    	    			
+	    	    			wdget.mySetListener(gestureListener);
+	    	    			
 	    	    		}
+	    	    		scrollV.setOnTouchListener(gestureListener);
 	    	    		
 	    	    		scrollV.addView(vistaR);
 	    	    		viewFlipper.addView(scrollV, page+1); 			
@@ -665,4 +672,5 @@ public class FormActivity extends Activity {
 			default: texto.setText(getString(R.string.load_photos,""+imageAdapter.getCount()));
 		}
 	}
+
 }

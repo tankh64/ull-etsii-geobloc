@@ -3,6 +3,7 @@ package com.geobloc.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.View.OnTouchListener;
 import android.widget.TextView;
 
 import com.geobloc.prompt.LabelQuestionPrompt;
@@ -44,5 +45,9 @@ public class LabelWidget extends TextView implements QuestionWidget {
 		// TODO Auto-generated method stub
 		this.setText("");
 	}
-
+	
+	@Override
+	public void mySetListener(OnTouchListener list) {
+		
+	}
 }

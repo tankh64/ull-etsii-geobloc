@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,4 +43,8 @@ public class CheckboxWidget extends CheckBox implements QuestionWidget {
 		
 	}
 	
+	@Override
+	public void mySetListener(OnTouchListener list) {
+		
+	}
 }

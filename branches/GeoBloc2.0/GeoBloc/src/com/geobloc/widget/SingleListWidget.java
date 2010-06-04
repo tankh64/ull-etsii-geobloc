@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -63,4 +64,8 @@ public class SingleListWidget extends RadioGroup implements QuestionWidget {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public void mySetListener(OnTouchListener list) {
+		setOnTouchListener(list);
+	}
 }
