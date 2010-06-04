@@ -48,7 +48,6 @@ public class MultipleListWidget extends LinearLayout implements QuestionWidget {
 		
 		TextView Text = new TextView(getContext());
         Text.setTextSize(20);
-        Text.setTextColor(Utilities.fontColor);
         Text.setText(((MultipleListQuestionPrompt)qP).getQuestionTitle()+":  ");
         addView(Text);
         
@@ -56,7 +55,6 @@ public class MultipleListWidget extends LinearLayout implements QuestionWidget {
         int size = ((MultipleListQuestionPrompt)qP).getSizeOfList();
         for (int i=0; i<size; i++) {
         	rCheckBox = new CheckBox (getContext());
-    		rCheckBox.setTextColor(Utilities.fontColor);
     		rCheckBox.setText(((MultipleListQuestionPrompt)qP).getItem(i).getLabel());
     		addView(rCheckBox);
         }		

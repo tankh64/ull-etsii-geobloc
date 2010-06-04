@@ -45,7 +45,6 @@ public class SingleListWidget extends RadioGroup implements QuestionWidget {
 		
 		TextView Text = new TextView(getContext());
         Text.setTextSize(20);
-        Text.setTextColor(Utilities.fontColor);
         Text.setText(((SingleListQuestionPrompt)qP).getQuestionTitle()+":  ");
         addView(Text);
         
@@ -53,7 +52,6 @@ public class SingleListWidget extends RadioGroup implements QuestionWidget {
         int size = ((SingleListQuestionPrompt)qP).getSizeOfList();
         for (int i=0; i<size; i++) {
         	rButton = new RadioButton (getContext());
-    		rButton.setTextColor(Utilities.fontColor);
     		rButton.setText(((SingleListQuestionPrompt)qP).getItem(i).getLabel());
     		addView(rButton);
         }		

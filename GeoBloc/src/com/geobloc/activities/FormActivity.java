@@ -48,6 +48,7 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
@@ -167,6 +168,10 @@ public class FormActivity extends Activity {
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
+		/***** Set the Theme ******/
+		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		Utilities.setThemeForActivity(this, Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_THEME_COLOR__, "0")));
+		/**************************/
 		super.onCreate(savedInstanceState);
 		
 		// Aqui debemos conocer el nombre del fichero
@@ -199,40 +204,13 @@ public class FormActivity extends Activity {
         }
 	}
 	
-	/*
-	 * Establece los colores según el tema del programa
-	 */
-	private void setColors (int idTheme) {
-		switch (idTheme) {
-		// Oscuro
-		case 0: Utilities.background = getResources().getColor(R.color.BackgroundDark);
-				Utilities.fontColor = getResources().getColor(R.color.TextColorDark);
-			break;
-		// Calro
-		case 1: Utilities.background = getResources().getColor(R.color.BackgroundLigth);
-				Utilities.fontColor = getResources().getColor(R.color.TextColorLigth);
-				/* Utilities.background = Color.WHITE;
-				Utilities.fontColor = Color.argb(20, 25, 25, 25); */
-			break;
-			default:
-				Utilities.background = R.color.SoftGreen;
-				Utilities.fontColor = R.color.CandyRed;
-				break;
-		}
-	}
-	
+
 	
 	/**
 	 * Initial config
 	 */
 	public void initConfig () {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		
-		Log.v(TAG, "Esto: <"+GBSharedPreferences.__FORM_THEME_COLOR__+">");
-		
-		String pepe = prefs.getString(GBSharedPreferences.__FORM_THEME_COLOR__, "0");
-		
-		setColors (Integer.parseInt(prefs.getString(GBSharedPreferences.__FORM_THEME_COLOR__, "0")));
 		
 		Log.v(TAG, "Photo Big Size");
 		Utilities.photoSizeBigEnable = prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, false);
@@ -283,21 +261,16 @@ public class FormActivity extends Activity {
 		/* Insert first page of the form */
 		ViewFlipper.inflate(getApplicationContext(), R.layout.first_page_flipper, viewFlipper);
 		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutInit);
-		lL.setBackgroundColor(Utilities.background);
 		
 		/** Rellenamos el Titulo y la descripción del formulario */
 		/*** Colocamos texto en el viewFlipper */
 		TextView tView = (TextView)findViewById(R.id.TitleForm);
-		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.form_loaded, formH.getNameForm()));
 		tView = (TextView)findViewById(R.id.FormVersion);
-		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.form_version, formH.getVersionForm()));
 		tView = (TextView)findViewById(R.id.FormDescription);
-		tView.setTextColor(Utilities.fontColor);
 		tView.setText(formH.getDescription());
 		tView = (TextView)findViewById(R.id.TextFingerMov);
-		tView.setTextColor(Utilities.fontColor);
 		tView.setText(getString(R.string.help_form_mov));
 		/**********/		
 	}
@@ -305,8 +278,7 @@ public class FormActivity extends Activity {
 	private void inflateLastPage() {
 		/* Insert last page of the form */
 		ViewFlipper.inflate(getApplicationContext(), R.layout.last_page_flipper, viewFlipper);
-		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutEnd);
-		lL.setBackgroundColor(Utilities.background);	
+		LinearLayout lL = (LinearLayout) findViewById(R.id.FormLayoutEnd);	
 	}
 	
 	private void postTaskFinished() {
@@ -424,7 +396,6 @@ public class FormActivity extends Activity {
 	    				        });
 	    				        
 	    				        TextView texto = (TextView) ((View)wdget).findViewById (R.id.loadPhotos);
-	    				        texto.setTextColor(Utilities.fontColor);
 	    				        texto.setText(getString(R.string.no_load_photos));
 	    				        
 	    				        // We also want to show context menu for longpressed items in the gallery
@@ -435,14 +406,12 @@ public class FormActivity extends Activity {
 	    			case LOCATION: break;
 	    			case DATA:
 	    				ScrollView scrollV = new ScrollView(context);
-	    				scrollV.setBackgroundColor(Utilities.background);
 	    				
 	    				LinearLayout vistaR = new LinearLayout(context);
 	    	    		vistaR.setPadding(5, 5, 5, 5);
 	    	    		vistaR.setOrientation(LinearLayout.VERTICAL);
 	    	    		vistaR.setHorizontalScrollBarEnabled(true);
 	    	    		vistaR.setVerticalScrollBarEnabled(true);
-	    	    		vistaR.setBackgroundColor(Utilities.background);
 	    	    		
 	    	    		int numQuestions = formH.getNumQuestionOfPage(page);
 	    	    		

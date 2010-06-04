@@ -28,7 +28,6 @@ public class CheckboxWidget extends CheckBox implements QuestionWidget {
 	
 	public void buildView (QuestionPrompt qP) {
 
-		this.setTextColor(Utilities.fontColor);
 		this.setText(((CheckboxQuestionPrompt)qP).getTitle());
 		
 		if (qP.isRequired()) {

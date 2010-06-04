@@ -46,8 +46,8 @@ public class ThreeStateCheckBox extends LinearLayout {
 		setDrawShadowEnabled(drawShadow);
 		setState(state);
 		label = (TextView) findViewById(R.id.label);
-		label.setTextColor(Color.WHITE);
-		label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+		//label.setTextColor(Color.WHITE);
+		//label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 		setText(labelText);
 	}
 
@@ -90,9 +90,9 @@ public class ThreeStateCheckBox extends LinearLayout {
 		setDrawShadowEnabled(drawShadow);
 		setState(state);
 		label = (TextView) findViewById(R.id.label);
-		label.setTextColor(Color.WHITE);
+		//label.setTextColor(Color.WHITE);
+		//label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 		setText(labelText);
-		label.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 	}
 	
 	public boolean isStatePressed() {
