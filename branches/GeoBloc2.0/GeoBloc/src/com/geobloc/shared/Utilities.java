@@ -37,8 +37,8 @@ public class Utilities {
 	public static String COMBO_LIST_TYPE = "combo";
 	
 	public static Color CBackground;
-	public static int background = Color.WHITE;
-	public static int fontColor = Color.DKGRAY;
+	// Deprecated public static int background = Color.WHITE;
+	// Deprecated public static int fontColor = Color.DKGRAY;
 	public static int requiredColor = Color.rgb(255,200,0);
 	public static boolean photoSizeBigEnable = false;
 	
@@ -140,5 +140,17 @@ public class Utilities {
 			} else {
 				return false;
 			}
+	}
+	
+	
+	public static void setThemeForActivity (Activity ac, int idTheme) {
+		switch (idTheme) {
+		// Oscuro
+		case 0: ac.setTheme(android.R.style.Theme);
+				break;
+		case 1: ac.setTheme(android.R.style.Theme_Light);
+				break;
+				default: ac.setTheme(android.R.style.Theme);
+		}
 	}
 }

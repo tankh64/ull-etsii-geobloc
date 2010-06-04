@@ -37,7 +37,6 @@ public class FieldWidget extends LinearLayout implements QuestionWidget {
         /* Texto antes del EditText */
         TextView Text = new TextView(getContext());
         Text.setTextSize(20);
-        Text.setTextColor(Utilities.fontColor);
         Text.setText(((DataInputQuestionPrompt)qP).getQuestionTitle()+":  ");
         Text.setLayoutParams (new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
         
