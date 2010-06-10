@@ -159,6 +159,8 @@ public class FormActivity extends Activity {
 	
 	LinearLayout vista;
 	
+	//Intent cameraIntent;
+	static int pageCamera;
 	Gallery g;
 	ImageAdapterPhoto imageAdapter;
 	
@@ -356,9 +358,13 @@ public class FormActivity extends Activity {
 										// TODO Auto-generated method stub
 										//imageAdapter.addPhoto();
 										Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+										//cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+										
+										pageCamera = viewFlipper.getDisplayedChild() + 1;
 										
 										if (Utilities.photoSizeBigEnable) {
 											intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+											intent.putExtra("PAGE_NUMBER", viewFlipper.getDisplayedChild());
 											startActivityForResult(intent, CAMERA_ACTIVITY);
 										} else {
 											startActivityForResult(intent, CAMERA_ACTIVITY);
@@ -391,7 +397,7 @@ public class FormActivity extends Activity {
 									public void onClick(View arg0) {
 										// TODO Auto-generated method stub
 										imageAdapter.clearPhotos();
-										reload();
+										reload(viewFlipper.getDisplayedChild()+1);
 									}
 	    				        	
 	    				        });
@@ -496,7 +502,7 @@ public class FormActivity extends Activity {
         		break;
         	case DELETE_PHOTO:
         		imageAdapter.deletePhoto(info.position);
-                reload();
+                reload(viewFlipper.getDisplayedChild()+1);
         		break;
         }
         return super.onContextItemSelected(item);
@@ -625,19 +631,25 @@ public class FormActivity extends Activity {
 		case CAMERA_ACTIVITY:
 			Bundle b = intent.getExtras();
 			Bitmap bm = (Bitmap) b.get("data");
+			
+			getImageAdapterFromPage(pageCamera);
 			imageAdapter.addPhoto(bm);
 
-			if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
-				if (b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+			if (b != null) { // large image?
+				//if (b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+				if (Utilities.photoSizeBigEnable) {
 					Log.i(TAG, "This is a large image");
+					Utilities.showToast(getApplicationContext(), "This is a large image", Toast.LENGTH_SHORT);
 					//showToast(this,"Large image");
-				// Should have to do nothing for big images -- should already saved in MediaStore ... but
-				MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+					// Should have to do nothing for big images -- should already saved in MediaStore ... but
+					MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
 				} else {
 					Log.i(TAG, "This is a small image");
+					Utilities.showToast(getApplicationContext(), "This is a small image", Toast.LENGTH_SHORT);
 				//showToast(this,"Small image");
 				//MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
 				}
+            	Utilities.showToast(getApplicationContext(), "Llamada de la página "+pageCamera, Toast.LENGTH_SHORT);
 			}
 			break;
 			
@@ -654,13 +666,24 @@ public class FormActivity extends Activity {
 			}	
 			break;
 		}
-		reload();
+		reload(viewFlipper.getDisplayedChild()+1);
 		//displayGallery();
 	}
 	
-	private void reload () {
+	/**
+	 * returns the ImageAdapterPhoto of a particular page of the form
+	 * @param page
+	 */
+	private void getImageAdapterFromPage (int page) {
+		g = (Gallery) (viewFlipper.getChildAt(page-1)).findViewById(R.id.gallery);
+		imageAdapter = (ImageAdapterPhoto) g.getAdapter();
+		//return imageAdapter;
+	}
+	
+	private void reload (int page) {
 		g = (Gallery) findViewById(R.id.gallery);
 		g.setAdapter(imageAdapter);
+		//getImageAdapterFromPage(page);
 		
 		TextView texto = (TextView) findViewById(R.id.loadPhotos);
 		
