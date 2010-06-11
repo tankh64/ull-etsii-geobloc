@@ -355,10 +355,7 @@ public class FormActivity extends Activity {
 
 									@Override
 									public void onClick(View arg0) {
-										// TODO Auto-generated method stub
-										//imageAdapter.addPhoto();
 										Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-										//cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 										
 										pageCamera = viewFlipper.getDisplayedChild() + 1;
 										
@@ -379,8 +376,9 @@ public class FormActivity extends Activity {
 
 									@Override
 									public void onClick(View arg0) {
-										// TODO Auto-generated method stub
-										imageAdapter.addPhotoFromGallery();
+										pageCamera = viewFlipper.getDisplayedChild() + 1;
+										/*getImageAdapterFromPage(viewFlipper.getDisplayedChild()+1);
+										imageAdapter.addPhotoFromGallery();*/
 										Intent intent = new Intent();
 										intent.setType("image/*");
 										intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -395,7 +393,7 @@ public class FormActivity extends Activity {
 
 									@Override
 									public void onClick(View arg0) {
-										// TODO Auto-generated method stub
+										getImageAdapterFromPage(viewFlipper.getDisplayedChild()+1);
 										imageAdapter.clearPhotos();
 										reload(viewFlipper.getDisplayedChild()+1);
 									}
@@ -426,8 +424,6 @@ public class FormActivity extends Activity {
 	    	    			/** create the appropriate widget depending on the question */
 	    	    			wdget = CreateWidget.createWidget(formH.getQuestionOfPage(question, page), this, (ViewGroup)viewFlipper);
 	    	    			vistaR.addView((View)wdget);
-	    	    			
-	    	    			//((View)wdget).setOnTouchListener(gestureListener);
 	    	    			
 	    	    			wdget.mySetListener(gestureListener);
 	    	    			
@@ -658,6 +654,7 @@ public class FormActivity extends Activity {
 			Uri uri = intent.getData();
 		    ContentResolver cr = getApplicationContext().getContentResolver();
 		    try {
+		    	getImageAdapterFromPage(pageCamera);
 				Bitmap bitmap = BitmapFactory.decodeStream( cr.openInputStream(uri) );
 				imageAdapter.addPhoto(bitmap);
 			} catch (FileNotFoundException e) {
@@ -671,21 +668,21 @@ public class FormActivity extends Activity {
 	}
 	
 	/**
-	 * returns the ImageAdapterPhoto of a particular page of the form
+	 * sets the ImageAdapterPhoto of a particular page of the form
 	 * @param page
 	 */
 	private void getImageAdapterFromPage (int page) {
 		g = (Gallery) (viewFlipper.getChildAt(page-1)).findViewById(R.id.gallery);
 		imageAdapter = (ImageAdapterPhoto) g.getAdapter();
-		//return imageAdapter;
 	}
 	
 	private void reload (int page) {
-		g = (Gallery) findViewById(R.id.gallery);
+		View actualPage = viewFlipper.getChildAt(page-1);
+		g = (Gallery) actualPage.findViewById(R.id.gallery);
+		imageAdapter = (ImageAdapterPhoto) g.getAdapter();
 		g.setAdapter(imageAdapter);
-		//getImageAdapterFromPage(page);
 		
-		TextView texto = (TextView) findViewById(R.id.loadPhotos);
+		TextView texto = (TextView) actualPage.findViewById(R.id.loadPhotos);
 		
 		switch (imageAdapter.getCount()) {
 			case 0: texto.setText(getString(R.string.no_load_photos));
