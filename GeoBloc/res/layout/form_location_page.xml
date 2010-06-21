@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+     
+
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/locationPage" android:orientation="vertical"><ToggleButton android:id="@+id/connectLocation" android:layout_margin="10dp" android:text='"GPS"' android:layout_alignParentLeft="true" android:textOff="Buscar Localización" android:textOn="Desactivar Búsqueda" android:layout_width="120dp" android:layout_height="60dp"></ToggleButton>
+
+
+
+
+<ProgressBar android:id="@+id/progressbarLocation" android:layout_toRightOf="@+id/connectLocation" android:layout_margin="10dp" android:layout_alignParentTop="true" android:layout_centerVertical="true" android:layout_width="60dp" android:layout_height="60dp"></ProgressBar>
+
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textInfoLocation" android:layout_margin="10dp" android:text='"El GPS no ha obtenido ninguna posición"' android:layout_centerHorizontal="true" android:layout_below="@+id/progressbarLocation" android:textSize="20dp" android:gravity="center"></TextView>
+<Button android:text="Activar GPS" android:layout_margin="10dp" android:layout_alignParentRight="true" android:id="@+id/settingsGPS" android:layout_width="100dp" android:layout_height="50dp"></Button>
+</RelativeLayout>

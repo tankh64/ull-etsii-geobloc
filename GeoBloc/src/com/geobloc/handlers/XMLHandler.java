@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import com.geobloc.form.FormClass;
 import com.geobloc.form.FormDataPage;
+import com.geobloc.form.FormLocationPage;
 import com.geobloc.form.FormPage;
 import com.geobloc.form.FormPhotoPage;
 import com.geobloc.prompt.CheckboxQuestionPrompt;
@@ -198,6 +199,7 @@ public class XMLHandler extends DefaultHandler {
     			break;
     		case IGB_LOCATION_PAGE:
     			this.in_gb_locationPage = true;
+    			myPage = (FormPage) new FormLocationPage();
     			break;
     		case IGB_NAME:
     			this.in_gb_name = true;
@@ -321,6 +323,8 @@ public class XMLHandler extends DefaultHandler {
 			break;
 		case IGB_LOCATION_PAGE:
 			this.in_gb_locationPage = false;
+        	myForm.addPage((FormLocationPage)myPage);
+        	Log.v(TAG, "New Location page added");
 			break;
 		case IGB_NAME:
 			this.in_gb_name = false;
@@ -503,6 +507,11 @@ public class XMLHandler extends DefaultHandler {
     			}
     		}
     		else if (this.in_gb_photoPage) {
+    			if (this.in_gb_pageName) {
+    				myPage.setNamePage(cadena);
+    			}
+    		}
+    		else if (this.in_gb_locationPage) {
     			if (this.in_gb_pageName) {
     				myPage.setNamePage(cadena);
     			}

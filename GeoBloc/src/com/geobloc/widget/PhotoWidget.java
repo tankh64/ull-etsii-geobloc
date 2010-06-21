@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-public class MediaWidget extends RelativeLayout implements QuestionWidget {
+public class PhotoWidget extends RelativeLayout implements QuestionWidget {
 	
 	private static final int REQUEST_CAMERA = 0;
 	
@@ -30,7 +30,7 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
 	
 	LayoutInflater inflater;
 	
-	public MediaWidget(Context context, ViewGroup parent) {
+	public PhotoWidget(Context context, ViewGroup parent) {
 		super(context);
 		
 		mContext = context;
@@ -41,7 +41,7 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
 		inflater.inflate(R.layout.gallery, null);*/
 				
 		/* Así funciona, pero añade un Nivel mas en la jerarquía */
-		inflate(context, R.layout.gallery, this);
+		inflate(context, R.layout.form_photo_gallery_page, this);
         Button but = (Button)findViewById(R.id.takePhotoButton);
         but.setText("Hacer foto");
         but = (Button)findViewById(R.id.loadFromGalleryButton);
@@ -50,7 +50,7 @@ public class MediaWidget extends RelativeLayout implements QuestionWidget {
         but.setText("Borrar fotos");
 	}
 
-	public MediaWidget(Context context, AttributeSet attrs) {
+	public PhotoWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		

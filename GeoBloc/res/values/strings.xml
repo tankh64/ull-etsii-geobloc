@@ -122,6 +122,12 @@
 	<string name="load_photo">Se ha cargado %s foto</string>
 	<string name="load_photos">Se han cargado %s fotos</string>
 	<string name="no_load_photos">No se han cargado fotos</string>
+	
+	<!-- Location Page -->
+	<string name="not_position">El GPS no ha encontrado ninguna ubicación</string>
+	<string name="searching_position">Buscando nueva ubicación GPS</string>
+	<string name="find_position">Posición: %s - %s</string>
+	<string name="activateGPS">Debe activar GPS en los ajustes del teléfono</string>
 
 	<string name="version">0.1</string>
 
