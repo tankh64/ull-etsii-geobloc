@@ -14,7 +14,8 @@ import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
-import com.geobloc.widget.MediaWidget;
+import com.geobloc.widget.LocationWidget;
+import com.geobloc.widget.PhotoWidget;
 import com.geobloc.widget.QuestionWidget;
 import com.geobloc.widget.CreateWidget;
 
@@ -206,6 +207,35 @@ public class FormActivity extends Activity {
         }
 	}
 	
+	@Override
+	protected void onResume () {
+		super.onResume();
+		
+		// Chequea las páginas de GeoLocalización y las modifica según el estado del telefono
+		checkLocationPages();
+	}
+	
+	/**
+	 * Chequea las páginas de GeoLocalización y las modifica según el estado del telefono
+	 */
+	private void checkLocationPages () {
+		if (formH == null)
+			return;
+		if (viewFlipper == null)
+			return;
+		
+		int pageAtFlipper;
+		for (int page=0; page < formH.getNumPages(); page++) {	
+			pageAtFlipper = page + 1;
+    		PageType mType = (formH.getPage(page)).getPageType();
+    		
+    		if (mType == PageType.LOCATION) {
+    			LocationWidget wdget = (LocationWidget) viewFlipper.getChildAt(pageAtFlipper);
+    			if (wdget != null)
+    				wdget.checkGPSStatus();
+    		}
+		}
+	}
 
 	
 	/**
@@ -329,7 +359,7 @@ public class FormActivity extends Activity {
 	    		}
 	    		switch (mType) {
 	    		
-	    			case PHOTO: wdget = new MediaWidget (context, (ViewGroup)viewFlipper);
+	    			case PHOTO: wdget = new PhotoWidget (context, (ViewGroup)viewFlipper);
 	    						viewFlipper.addView((View) wdget, page+1);
 	    						
 	    						// Reference the Gallery view
@@ -407,8 +437,10 @@ public class FormActivity extends Activity {
 	    				        registerForContextMenu(g);
 	    						break;
 	    			case AUDIO:	
-	    			case VIDEO: 
-	    			case LOCATION: break;
+	    			case VIDEO: break;
+	    			case LOCATION: 	wdget = new LocationWidget (context, (ViewGroup)viewFlipper);
+									viewFlipper.addView((View) wdget, page+1);
+								break;
 	    			case DATA:
 	    				ScrollView scrollV = new ScrollView(context);
 	    				
