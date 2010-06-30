@@ -658,7 +658,12 @@ public class FormActivity extends Activity {
 		
 		case CAMERA_ACTIVITY:
 			Bundle b = intent.getExtras();
-			Bitmap bm = (Bitmap) b.get("data");
+			Bitmap fullbm = (Bitmap) b.get("data");
+			
+			Bitmap bm = Bitmap.createScaledBitmap(fullbm,100, 100, true);
+			/*BitmapFactory.Options options=new BitmapFactory.Options();
+			options.inSampleSize = 8;
+			Bitmap preview_bitmap=BitmapFactory.decodeStream(bm,null,options);*/
 			
 			getImageAdapterFromPage(pageCamera);
 			imageAdapter.addPhoto(bm);
@@ -686,8 +691,13 @@ public class FormActivity extends Activity {
 			Uri uri = intent.getData();
 		    ContentResolver cr = getApplicationContext().getContentResolver();
 		    try {
+		    	// Obtenemos un thumbnail de la imágen
+		    	BitmapFactory.Options options=new BitmapFactory.Options();
+				options.inSampleSize = 8;
+				Bitmap bitmap=BitmapFactory.decodeStream(cr.openInputStream(uri),null,options);
+		    	
 		    	getImageAdapterFromPage(pageCamera);
-				Bitmap bitmap = BitmapFactory.decodeStream( cr.openInputStream(uri) );
+				//Bitmap bitmap = BitmapFactory.decodeStream( cr.openInputStream(uri) );
 				imageAdapter.addPhoto(bitmap);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
