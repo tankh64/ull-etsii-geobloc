@@ -35,7 +35,14 @@
   		android:title="@string/numberOfInternetAttempts"
   		android:summary="@string/numberOfInternetAttemptsDescription">
   	</EditTextPreference>
+  	<EditTextPreference
+  		android:key="lastTimeApplicationCheckedForANewListOfFormsInTheServer"
+  		android:name="lastTimeApplicationCheckedForANewListOfFormsInTheServer"
+  		android:enabled="false"
+  		android:title="@string/dateOfLastServerFormsListQuery">
+  	</EditTextPreference>
   </PreferenceCategory>
+  
   <PreferenceCategory
   	android:title="@string/sharedPersistancePreferencesTitle">
   	<EditTextPreference
@@ -69,6 +76,7 @@
   		android:summary="@string/formPhotoSizeDescription" >
   	</CheckBoxPreference>
   </PreferenceCategory>
+  
   <PreferenceCategory
   	android:title="@string/animationsCategory">
   	<CheckBoxPreference
@@ -78,5 +86,19 @@
   		android:summary="@string/slidingButtonsAnimationDescription">
   	</CheckBoxPreference>	
   </PreferenceCategory>
-  
+  <PreferenceCategory
+  	android:title="@string/sharedAdvancedPreferencesTitle">
+  	<CheckBoxPreference
+  		android:key="enableOptionsForUserApplicationDebugging"
+  		android:name="enableOptionsForUserApplicationDebugging"
+  		android:title="@string/enableUserDebuggingFeatures"
+  		android:summary="@string/enableUserDebuggingFeaturesDescription">
+  	</CheckBoxPreference>
+  	<EditTextPreference
+  		android:key="dropLocalFormsTableKey"
+  		android:name="dropLocalFormsTableKey"
+  		android:title="@string/dropLocalFormsTable"
+  		android:summary="@string/dropLocalFormsTableDescription">
+  	</EditTextPreference>
+  </PreferenceCategory>
 </PreferenceScreen>

@@ -26,9 +26,11 @@ import com.geobloc.R;
 public class ProgressItem extends LinearLayout {
 
 	private ProgressBar bar;
+	private ProgressBar progressBar;
 	private TextView text;
 	
 	private boolean barVisible;
+	private boolean progressBarVisible;
 	private String label;
 	
 	public ProgressItem(Context context) {
@@ -37,7 +39,7 @@ public class ProgressItem extends LinearLayout {
 		inflate(getContext(), R.layout.progress_item, this);
 		bar = (ProgressBar) findViewById(R.id.progress_item_bar);
 		text = (TextView) findViewById(R.id.progress_item_text);
-		
+		progressBar = (ProgressBar) findViewById(R.id.progress_item_progressBar);
 	}
 	
 	public ProgressItem(final Context context, AttributeSet attrs) {
@@ -47,7 +49,7 @@ public class ProgressItem extends LinearLayout {
 		// get attributes		
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ProgressItem, 0, 0);
 		barVisible = a.getBoolean(R.styleable.ProgressItem_bar_visible, true);
-		
+		progressBarVisible = a.getBoolean(R.styleable.ProgressItem_progressBar_visible, true);
 		label = a.getString(R.styleable.ProgressItem_progress_label);
 		if (label == null)
 			label = "";
@@ -71,6 +73,9 @@ public class ProgressItem extends LinearLayout {
 		bar = (ProgressBar) findViewById(R.id.progress_item_bar);
 		if (!barVisible)
 			toggleBarVisibility();
+		progressBar = (ProgressBar) findViewById(R.id.progress_item_progressBar);
+		if (!progressBarVisible)
+			progressBar.setVisibility(View.GONE);
 		text = (TextView) findViewById(R.id.progress_item_text);
 		text.setText(label);
 	}
@@ -91,6 +96,20 @@ public class ProgressItem extends LinearLayout {
 		return bar;
 	}
 	
+	public ProgressBar getProgressBar() {
+		return progressBar;
+	}
+	
+	public void setPtrogressBarProgress(int current, int max) {
+		if (progressBar.getMax() != max)
+			progressBar.setMax(max);
+		progressBar.setProgress(current);
+	}
+	
+	/**
+	 * Toggles the visibility of the indeterminate bar right next to the text. 
+	 * It doesn't toggle between the indeterminate bar and the traditional progress bar.
+	 */	
 	public void toggleBarVisibility() {
 		if (bar.getVisibility() == View.VISIBLE)
 			bar.setVisibility(View.GONE);

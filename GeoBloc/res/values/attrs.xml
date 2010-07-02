@@ -9,6 +9,7 @@
 	<declare-styleable name="ProgressItem">
 	    <attr name="progress_label" format="string" />
 	    <attr name="bar_visible" format="boolean" />
+	    <attr name="progressBar_visible" format="boolean" />
 	</declare-styleable>
 	
 	<declare-styleable name="GalleryPhoto">

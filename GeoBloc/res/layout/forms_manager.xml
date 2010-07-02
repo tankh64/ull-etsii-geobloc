@@ -34,7 +34,7 @@
   		android:layout_width="fill_parent"
   		android:layout_height="wrap_content"
   		android:textColor="#FFFFFF"
-  		android:text="@string/formsManager_downlaodLstList"
+  		android:text="@string/formsManager_downlaodLastListDate"
   		android:layout_below="@id/formsManager_downloadFormsHeader">
   	</TextView>
   	
@@ -44,13 +44,15 @@
   		android:orientation="horizontal"
   		android:layout_height="wrap_content"
   		android:layout_width="fill_parent"
-  		android:layout_alignParentBottom="true">
+  		android:layout_alignParentBottom="true"
+  		android:background="@color/Transparent">
   		<Button
   			android:id="@+id/formsManager_downloadButton"
   			android:layout_height="wrap_content"
   			android:layout_width="fill_parent"
   			android:textSize="15sp"
-  			android:text="@string/download">
+  			android:text="@string/download"
+  			android:onClick="formsManagerOnClickListener">
   		</Button>  		
   	</LinearLayout>
   	

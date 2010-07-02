@@ -3,14 +3,18 @@ package com.geobloc.db;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
 
+import android.app.Application;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.geobloc.shared.IFormDefinition;
+import com.geobloc.shared.IJavaToDatabaseForm;
+import com.geobloc.shared.JavaForms;
 
 /**
  * Class to represent the basic info of a form to be used by different classes.
@@ -28,33 +32,102 @@ public class DbForm implements IFormDefinition {
 	 * 
 	 */
 	
-	// database private primary key
+	/**
+	 *  database private primary key
+	 */
 	public static final String __LOCALFORMSDB_ID_KEY__ = "_id";
-	// server primary key
+	/**
+	 *  server primary key
+	 */
 	public static final String __LOCALFORMSDB_FORM_ID_KEY__ = "form_id";
-	// server primary key
+	/**
+	 *  server primary key
+	 */
 	public static final String __LOCALFORMSDB_FORM_VERSION_KEY__ = "form_version";
-	// full path to form.xml file in SD Card
+	/**
+	 *  full path to form.xml file in SD Card
+	 */
 	public static final String __LOCALFORMSDB_FORM_FILE_PATH__ = "form_file_path";
-	// form given name
+	/**
+	 *  form given name
+	 */
 	public static final String __LOCALFORMSDB_FORM_NAME_KEY__ = "form_name";
-	// form description info
+	/**
+	 *  form description info
+	 */
 	public static final String __LOCALFORMSDB_FORM_DESCRIPTION_KEY__ = "form_description";
-	// form upload date given by server
+	/**
+	 *  form upload date given by server
+	 */
 	public static final String __LOCALFORMSDB_FORM_DATE_KEY__ = "form_date";
-	/*
-	 * Can take the following values:
-	 * 0 -> new (we don't have it)
-	 * 1 -> latest version
-	 * 2 -> there's a more recent version
-	 * 3 -> not found in server
+
+	/**
+	 * If state is equal, then the form is only in the server (new for the device)
 	 */
 	public static final int __FORM_SERVER_STATE_NEW__ = 0;
-	public static final int __FORM_SERVER_STATE_LATEST_VERSION__ = 1;
-	public static final int __FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__ = 2;
+	/**
+	 * If equal, the device has an older version than the server and can be updated.
+	 */
+	public static final int __FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__ = 1;
+	/**
+	 * If equal, the device has the latest version and does not require update.
+	 */
+	public static final int __FORM_SERVER_STATE_LATEST_VERSION__ = 2;
+	/**
+	 * If equal, the form has not been found on the server. Erasing is recommended.
+	 */
 	public static final int __FORM_SERVER_STATE_NOT_FOUND__ = 3;
+	/**
+	 * If a form's state is lower or equal than, then it can only be found in the server (there is no copy on the device9
+	 */
+	public static final int __FORM_STATE_SERVER_ONLY__ = 0; // equal or lower than
+	/**
+	 * If the form's state is greater or equal than, then there's a local copy of the form, but versions might not match. 
+	 */
+	public static final int __FORM_STATE_LOCAL__ = 1; // equal or greater than
+	/**
+	 * Can take the following values:
+	 * 0 -> new (we don't have it)
+	 * 1 -> there's a more recent version
+	 * 2 -> latest version
+	 * 3 -> not found in server
+	 * 
+	 * it's local if state > 0, else it's on the server only
+	 */
 	public static final String __LOCALFORMSDB_FORM_SERVERSTATE_KEY__ = "server_state";
 
+	/*
+	 * SERVER KEYS
+	 */
+	/**
+	 * Parameter name of the requested form's server id.
+	 */
+	public static final String __SERVER_FORM_ID_PARAMETER__ = "id";
+	/**
+	 * Key to recover a form's name from the server's response.
+	 */
+	public static final String __SERVER_FORM_NAME_KEY__ = "gb_name";
+	/**
+	 * Key to recover a form's id from the server's response.
+	 */
+	public static final String __SERVER_FORM_ID_KEY__ = "gb_form_id";
+	/**
+	 * Key to recover the form's current version from the server's response.
+	 */
+	public static final String __SERVER_FORM_VERSION_KEY__ = "gb_form_version";
+	/**
+	 * Key to recover the form's published date from the server's response.
+	 */
+	public static final String __SERVER_FORM_DATE_KEY__ = "gb_date";
+	/**
+	 * Key to recover the form's current description from the server's response.
+	 */
+	public static final String __SERVER_FORM_DESCRIPTION_KEY__ = "gb_description";
+	/**
+	 * Key to recover the form's XML file contents from the server's response.
+	 */
+	public static final String __SERVER_FORM_XML_KEY__ = "gb_xml";
+	
 
 	private long id = -1;
 	private String form_id; // id in server
@@ -82,33 +155,42 @@ public class DbForm implements IFormDefinition {
 		form_server_state = serverState;
 	}
 	
-	
+	/**
+	 * A method to query all forms in the database.
+	 * @param db An open database with reading permissions.
+	 * @return A cursor containing all the forms in the database.
+	 */
 	public static Cursor getAll(SQLiteDatabase db) {
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__, null);
 		return c;
 		
 	}
-	
-	
-	/*
-	public static Cursor getAllLocal(SQLiteDatabase db) {
-		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__+ 
-				" WHERE " + DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__, null);
-		return c;
-		
+	/**
+	 * An auxiliary method required to aid detection of updated forms in the database when it is updated 
+	 * with the server's list.
+	 * @param db An open database with reading permissions.
+	 * @return A {@link HashMap} with every form stored in the database's logical id (form_id) paired with 
+	 * a boolean set to false.
+	 */
+	public static HashMap<String, Boolean> getLocalHashMap(SQLiteDatabase db) {
+		Cursor c = DbForm.getAll(db);
+		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+		c.moveToFirst();
+		while (!c.isAfterLast()) {
+			map.put(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_ID_KEY__)), false);
+			c.moveToNext();
+		}
+		return map;
 	}
-	*/
 	
-	
+	/**
+	 * A method which allows us to get a form as a Java Object from its local database id, not its logical 
+	 * id by which it is known to the server.
+	 * @param db An open database with writing permissions.
+	 * @param id The form's local id.
+	 * @return A {@link DbForm} loaded with the desired form from its local database id.
+	 */
 	public static DbForm loadFrom(SQLiteDatabase db, long id) {
-		
-		/*
-		String[] DBFORM_FROM = {DbFormInstance.__LOCALPACKAGESDB_ID__, DbFormInstance.__LOCALPACKAGESDB_NAME_KEY__,
-				DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__, DbFormInstance.__LOCALPACKAGESDB_COMPLETEDDATE_KEY__, 
-				DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__, 
-				DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, };
-		*/
-		
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__ + 
 				" WHERE " + DbForm.__LOCALFORMSDB_ID_KEY__ + " = " + id, null);
 		
@@ -122,7 +204,13 @@ public class DbForm implements IFormDefinition {
 			return null;
 		
 	}
-	
+	/**
+	 * It allows faster access to the database by providing a method to get a form in a Java Object form 
+	 * providing the form's logical "form_id", not the local id with which it is stored in the local database.
+	 * @param db An open database with reading permissions.
+	 * @param form_id The form's logical id; version is not required since we only keep one copy of a specific form.
+	 * @return A {@link DbForm} loaded with the desired form id or null if it wasn't found.
+	 */
 	public static DbForm findByFormId(SQLiteDatabase db, String form_id) {
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__ + 
 				" WHERE " + DbForm.__LOCALFORMSDB_FORM_ID_KEY__ + " = '" + form_id + "'", null);
@@ -137,7 +225,12 @@ public class DbForm implements IFormDefinition {
 			return null;
 	}
 	
-	
+	/**
+	 * Loads an entry from the database into the current {@link DbForm} Object, effectively losing its 
+	 * previous contents. The {@link Object} must've been initialized first.
+	 * @param c A cursor pointing to an entry in the database.
+	 * @return A copy of the same Object after loading the contents from the database.
+	 */
 	public DbForm loadFrom(Cursor c) {
 		id = c.getLong(c.getColumnIndex(DbForm.__LOCALFORMSDB_ID_KEY__));
 		form_id = c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_ID_KEY__));
@@ -176,7 +269,9 @@ public class DbForm implements IFormDefinition {
 	public String getForm_file_path() {
 		return form_file_path;
 	}
-
+	public String getForm_file_name() {
+		return form_file_path.substring(form_file_path.lastIndexOf('/'));
+	}
 	public void setForm_file_path(String formFilePath) {
 		form_file_path = formFilePath;
 	}
@@ -212,7 +307,10 @@ public class DbForm implements IFormDefinition {
 		form_server_state = serverState;
 	}
 	
-	
+	/**
+	 * Deletes the matching entry in the database to the DbForm Object.
+	 * @param db An open database with writing permissions.
+	 */
 	public void delete(SQLiteDatabase db) {
 		if (id != -1) {
 			Log.i(LOG_TAG, "Deleting row in the database with id= " + id);
@@ -221,8 +319,11 @@ public class DbForm implements IFormDefinition {
 		}
 	}
 	
-	
-	
+	/**
+	 * Saves the DbForm's contents into the database. If the entry exists (id is not -1) then it automatically 
+	 * updates the database entry, else it will insert it as a new entry.
+	 * @param db An open database with writing permissions.
+	 */	
 	public void save(SQLiteDatabase db) {
 		ContentValues cv = new ContentValues();
 		
@@ -260,6 +361,14 @@ public class DbForm implements IFormDefinition {
 				Log.e(LOG_TAG, "Update of with id= " + id + " in the database failed.");
 		}
 	}
-	
-
+	/**
+	 * Method designed to allow the parser to access the Forms database content without knowing its design 
+	 * through an {@link Object} implementing the {@link IJavaToDatabaseForm} interface.
+	 * @param context The context in which the object will be used.
+	 * @return An initialized object meeting the {@link IJavaToDatabaseForm} interface.
+	 */
+	public static IJavaToDatabaseForm getParserInterfaceInstance(Context context) {
+		return new JavaForms(context);
+		
+	}
 }

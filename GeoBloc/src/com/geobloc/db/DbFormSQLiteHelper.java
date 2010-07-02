@@ -1,14 +1,17 @@
 package com.geobloc.db;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.GBSharedPreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
@@ -67,9 +70,10 @@ public class DbFormSQLiteHelper extends SQLiteOpenHelper {
 		manager.openOrBuildPackage(packageDirectory);
 		List<File> forms = manager.getAllFiles();
 		DbForm dbf;
+		int i = 0;
 		for (File myForm : forms) {
 			dbf = new DbForm();
-			dbf.setForm_id("formAlpha152237");
+			dbf.setForm_id("formFoundInTheSDCardDefaultFolder" + i);
 			dbf.setForm_version(1);
 			dbf.setForm_name(myForm.getName());
 			dbf.setForm_description("Found in the SD Card.");
@@ -77,7 +81,28 @@ public class DbFormSQLiteHelper extends SQLiteOpenHelper {
 			dbf.setForm_file_path(myForm.getAbsolutePath());
 			dbf.setServer_state(DbForm.__FORM_SERVER_STATE_LATEST_VERSION__);
 			dbf.save(db);
+			i++;
 		}
+	}
+	
+	/**
+	 * This method is extremely dangerous to use without proper handling. It's purpose is to forcefully 
+	 * oblige the forms table to re-build itself upon the next read/write operation, and has been 
+	 * implemented only for the sake of aiding development and for very advanced features.
+	 * @param context Context (or Activity) from which this method is being called.
+	 */
+	public void destroyTable(Context context) {
+		SQLiteDatabase db = (new DbFormSQLiteHelper(context)).getWritableDatabase();
+		Log.w(LOG_TAG, "Dropping table " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__);
+		db.execSQL("DROP TABLE IF EXISTS " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__);
+		// erase last update list time
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor ed = prefs.edit();
+		DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.UK);
+		ed.putString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, df.format(new Date()));
+		ed.commit();
+		// erase all forms in the forms folder
+		GeoBlocPackageManager pm = new GeoBlocPackageManager();
 	}
 
 }

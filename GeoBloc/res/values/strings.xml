@@ -12,14 +12,20 @@
 	<string name="TextView01">Formulario %s cargado</string>
 	
 	<!-- Mensajes genéricos -->
+	<string name="debugging">Depuración</string>
 	<string name="ready">Listo</string>
 	<string name="checkingForConnectivity">Comprobando la conexión a Internet...</string>
 	<string name="noConnectivity">No disponible conexión a Internet.</string>
 	<string name="connectivityAvailable">Conexión a Internet disponible.</string>
+	<string name="noElementsSelected">No hay elementos seleccionados.</string>
 	
 	<string name="taskComplete">Tarea completada.</string>
 	<string name="download">Descargar</string>
+	<string name="downloading">Descargando...</string>
+	<string name="working">Trabajando...</string>
 	<string name="delete">Borrar</string>
+	<string name="update">Actualizar</string>
+	<string name="report">Informe</string>
 	
 	<!-- Nombres de botones de la Actividad Menú Principal -->
 	<string name="staticFormSelectionSpinnerText">Seleccione Formulario:</string>
@@ -35,6 +41,7 @@
 	<string name="sharedPreferencesTitle">Preferencias</string>
 	<string name="sharedInternetPreferencesTitle">Preferencias de internet</string>
 	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
+	<string name="sharedAdvancedPreferencesTitle">Preferencias avanzadas (sólo usuarios expertos)</string>
 	<string name="baseServerAddress">Dirección base</string>
 	<string name="baseServerAddressDescription">Dirección base donde se encuentran los servicios en Internet</string>
 	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
@@ -45,10 +52,15 @@
 	<string name="downloadFormsServletAddressDescription">Dirección del servlet para descargar paquetes</string>
 	<string name="numberOfInternetAttempts">Intentos de conexión</string>
 	<string name="numberOfInternetAttemptsDescription">Nº de veces que se intentarán las operaciones de Internet</string>
+	<string name="dateOfLastServerFormsListQuery">Fecha de última actualización de formularios</string>
 	<string name="packagesPath">Directorio de paquetes</string>
 	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
 	<string name="formsPath">Directorio de formularios</string>
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
+	<string name="dropLocalFormsTable">Borrar tabla de formularios locales</string>
+	<string name="dropLocalFormsTableDescription">Borra todos los registros de formularios, y borra también todos los formularios guardados. No afecta a las instancias guardadas,</string>
+	<string name="enableUserDebuggingFeatures">Depuración a nivel de usuario</string>
+	<string name="enableUserDebuggingFeaturesDescription">Permite ver opciones deshabilitadas por defecto</string>
 	
 	<string name="formPreferencesTitle">Preferencias del Formulario</string>
 	<string name="formColorThemeDescription">Temas de color de los formularios por defecto</string>
@@ -68,9 +80,13 @@
 	
 	<!-- FormsManager Layout and List Items -->
 	<string name="formsManager_downloadTitle">Descarga de Formularios</string>
-	<string name="formsManager_downlaodLstList">Fecha de última lista: </string>
+	<string name="formsManager_downlaodLastListDate">Fecha de última lista: </string>
 	<string name="formsManager_donwloadingServerList">Descargando lista del servidor...</string>
 	<string name="formsManager_processingServerList">Procesando datos del servidor...</string>
+	<string name="formsManager_errorProcessingServerList">Ocurrió un error procesando los datos del servidor.</string>
+	<string name="formsManager_errosEncounteredDuringDownload">Se produjeron errores durante la operación.</string>
+	<string name="formsManager_itemDownloadedSuccesfully">fue descargado correctamente.</string>
+	<string name="formsManager_itemEncounteredErrors">no pudo ser descargado.</string>
 	<string name="formsManager_list_item_FormVersionTextViewText">Versión: </string>
 	<string name="formsManager_list_itemFormStatusTextViewText">Estado: </string>
 	<string name="formsManager_list_itemFormStatusUpdate">Actualización Disp.</string>
