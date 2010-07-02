@@ -51,6 +51,9 @@
 		<service
 			android:name=".services.UpdateFormsDatabaseService">
 		</service>
+		<service
+			android:name=".services.DownloadFormsService">
+		</service>
 <activity android:name=".activities.FormActivity" android:screenOrientation="portrait"></activity>
 
 <activity android:name=".activities.FormDefinitionList"></activity>

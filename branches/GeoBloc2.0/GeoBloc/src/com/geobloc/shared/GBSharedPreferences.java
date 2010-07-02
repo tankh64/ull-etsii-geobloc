@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+
+import android.preference.Preference;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -27,11 +29,14 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditTextPreference uploadPackagesServletAddress;
 	private EditTextPreference listOfAvailableFormsServletAddress;
 	private EditTextPreference downloadFormsServletAddress;
+	private EditTextPreference lastServletListCheck;
 	private EditTextPreference packagesPath;
 	private EditTextPreference formsPath;
 	private EditTextPreference numberOfInternetAttempts;
 	private CheckBoxPreference slidingButtonsAnimationEnabled;
 	private CheckBoxPreference photoSizeBigEnable;
+	private EditTextPreference dropLocalFormsTable;
+	private CheckBoxPreference userApplicationDebugging;
 	private ListPreference formThemeColor;
 	
 	private EditText et;
@@ -41,11 +46,14 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __BASE_SERVER_ADDRESS_KEY__ = "baseServerAddressKey";
 	public static String __UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__ = "uploadPackagesServletAddress";
 	public static String __DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__ = "downloadFormsServletAddress";
+	public static String __LAST_SERVER_LIST_CHECK_KEY__ = "lastTimeApplicationCheckedForANewListOfFormsInTheServer";
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
 	public static String __FORMS_PATH_KEY__ = "formsPath";
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
 	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
 	public static String __SLIDING_BUTTONS_ANIMATION_KEY__ = "slidingButtonsAnimationKey";
+	public static String __DELETE_LOCALFORMS_TABLE_KEY__ = "dropLocalFormsTableKey";
+	public static String __ENABLE_DEBUGGING_FEATURES_KEY__ = "enableOptionsForUserApplicationDebugging";
 	// forms preferences
 	public static String __FORM_THEME_COLOR__ = "formThemeColor";
 	public static String __FORM_REQUIRED_COLOR__ = "colorRequired";
@@ -59,8 +67,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 	//public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "http://ull-etsii-geobloc.appspot.com/get_basicformfile";
 	
 	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "notAvailable";
-	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "Hello";
-	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "notAvailable";
+	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "getFormsList";
+	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "sendFormServlet";
 	// default directory paths
 	public static String __DEFAULT_FORMS_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/forms/";
 	public static String __DEFAULT_PACKAGES_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/packages/";
@@ -83,9 +91,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 	// other
 	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
 	public final static int __DEFAULT__ANIMATION_TIME__ = 2500;
-	
-	// server OK Signature
-	public static String __OK_SIGNATURE__ = "12122009_ALL_OK";
+	public static String __OK_SIGNATURE__ = "ALLRITE";
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,11 +107,14 @@ public class GBSharedPreferences extends PreferenceActivity {
 		uploadPackagesServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__);
 		listOfAvailableFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__);
 		downloadFormsServletAddress = (EditTextPreference) findPreference(GBSharedPreferences.__DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__);
+		lastServletListCheck = (EditTextPreference) findPreference(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__);
 		formsPath = (EditTextPreference) findPreference(GBSharedPreferences.__FORMS_PATH_KEY__);
 		packagesPath = (EditTextPreference) findPreference(GBSharedPreferences.__PACKAGES_PATH_KEY__);
 		numberOfInternetAttempts = (EditTextPreference) findPreference(GBSharedPreferences.__NUMBER_OF_INTERNET_ATTEMPTS_KEY__);
 		slidingButtonsAnimationEnabled = (CheckBoxPreference) findPreference(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__);
 		photoSizeBigEnable = (CheckBoxPreference) findPreference(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__);
+		userApplicationDebugging = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_DEBUGGING_FEATURES_KEY__);
+		dropLocalFormsTable = (EditTextPreference) findPreference (GBSharedPreferences.__DELETE_LOCALFORMS_TABLE_KEY__);
 		formThemeColor = (ListPreference) findPreference (GBSharedPreferences.__FORM_THEME_COLOR__);
 		
 		// default baseServerAddress
@@ -127,6 +137,13 @@ public class GBSharedPreferences extends PreferenceActivity {
 		setEditTextDefaultConfig(numberOfInternetAttempts, 
 				GBSharedPreferences.__DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__);
 		
+		//lastServletListCheck.setSummary(lastServletListCheck.getText().toString());
+		setEditTextDefaultConfig(lastServletListCheck, "");
+		if (lastServletListCheck.getText() != null)
+			lastServletListCheck.setSummary(lastServletListCheck.getText().toString());
+		else
+			lastServletListCheck.setSummary("");
+		
 		// default forms path
 		setEditTextDefaultConfig(formsPath, GBSharedPreferences.__DEFAULT_FORMS_PATH__);
 		
@@ -138,13 +155,27 @@ public class GBSharedPreferences extends PreferenceActivity {
 		//slidingButtonsAnimationEnabled.setDefaultValue(GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
 		slidingButtonsAnimationEnabled.setChecked(prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__));
-		//slidingButtonsAnimationEnabled.setDefaultValue(GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
 		
 		photoSizeBigEnable.setChecked(prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, 
 				GBSharedPreferences.__DEFAULT_FORM_PHOTO_SIZE_BIG__));
 		
+		userApplicationDebugging.setDefaultValue(false);
+		
+		dropLocalFormsTable.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		
+		
+
+		
 		if (formThemeColor.getEntry() == null)
 			formThemeColor.setValueIndex(0);
+
 	}
 	
 	private void setEditTextDefaultConfig(EditTextPreference edt, String defaultText) {
