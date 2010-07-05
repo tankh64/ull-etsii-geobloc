@@ -25,6 +25,7 @@ import com.geobloc.FormList;
 import com.geobloc.R;
 import com.geobloc.db.DbForm;
 import com.geobloc.shared.IFormDefinition;
+import com.geobloc.shared.IJavaToDatabaseForm;
 import com.geobloc.shared.Utilities;
 
 import android.app.ListActivity;
@@ -162,6 +163,7 @@ public class FormDefinitionList extends ListActivity {
     /****************** FormTemplateList **************/
     
     private static ArrayList<IFormDefinition> listForm = new ArrayList<IFormDefinition>();
+    IJavaToDatabaseForm formsInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,25 +172,20 @@ public class FormDefinitionList extends ListActivity {
         setTitle(getString(R.string.app_name)+" > "+getString(R.string.new_form));
         
         setListAdapter(new EfficientAdapter(this));
+
+        formsInterface = DbForm.getParserInterfaceInstance(this);
         
         // Obtenemos la lista de Esquemas de Formularios Locales
         try {
-                //listForm = getListOfLocalForms ();
+        	listForm = (ArrayList<IFormDefinition>) formsInterface.getListOfLocalForms();
         } catch (Exception ex) {
-                Log.e(TAG, ex.getMessage());
+        	Log.e(TAG, ex.getMessage());
         }
         
         // Si no tenemos nada, mostramos la de ejemplo
-        if ((listForm == null) || (listForm.size() == 0)){
-                 listForm = new ArrayList<IFormDefinition>();    // Form definition list
-                 
-                 /*
-                FormDefinition form1 = new FormDefinition("Fresas", "serverform11212", 0, "Formulario de fresas", "02/03/2010", -1);
-                FormDefinition form2 = new FormDefinition("Naranjas", "serverform11213", 1, "Formulario de naranjas", "04/03/2010", -1);
-                FormDefinition form3 = new FormDefinition("Tomates", "serverform11214", 2, "Formulario de tomates", "02/03/2009", -1);
-                FormDefinition form4 = new FormDefinition("Papas", "serverform11215", 2, "Formulario de papitas negras", "02/03/2010", -1);
-                */
-
+        /*if ((listForm == null) || (listForm.size() == 0)){
+                listForm = new ArrayList<IFormDefinition>();    // Form definition list
+                
                 DbForm form1 = new DbForm("Fresas", "serverform11212", 0, null, "Formulario de fresas", new Date(), -1, 0);
              	DbForm form2 = new DbForm("Naranjas", "serverform11213", 1, null, "Formulario de naranjas", new Date(), -1, 0);
              	DbForm form3 = new DbForm("Tomates", "serverform11214", 2, null, "Formulario de tomates", new Date(), -1, 0);
@@ -197,10 +194,8 @@ public class FormDefinitionList extends ListActivity {
                 listForm.add(form1);
                 listForm.add(form2);
                 listForm.add(form3);
-                listForm.add(form4);
-                
-                 
-        }
+                listForm.add(form4);    
+        }*/
 
     }
     
@@ -208,10 +203,24 @@ public class FormDefinitionList extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Utilities.showToast(getApplicationContext(), "Selected the "+position, Toast.LENGTH_SHORT);
         
+        IFormDefinition form = listForm.get(position);
+        long localId = form.getForm_local_id();
+        
+        Utilities.showToast(getApplicationContext(), "Selected the localId: "+localId, Toast.LENGTH_SHORT);
+        
         // TODO: must return the "formLocalId" and "filename"
         Intent result = new Intent();
         //result.putExtra(FormList.FILE_NAME, archivo.getName());
-        //result.putExtra(FormList.FILE_PATH, __GEOBLOC_FORMS_DIRECTORY__+"/"+archivo.getName());
+        String path = "";
+        
+        try {
+        	path = formsInterface.getPathLocalForm(localId);
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+        
+        result.putExtra(FormList.FILE_PATH, path);
+        
         setResult(RESULT_OK, result);
         finish();
     }

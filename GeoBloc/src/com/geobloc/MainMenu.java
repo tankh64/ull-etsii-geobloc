@@ -98,7 +98,7 @@ public class MainMenu extends Activity {
     				Bundle extras = data.getExtras();
     				
     				if (extras != null) {
-    					if (extras.containsKey(FormList.FILE_NAME) && (extras.containsKey(FormList.FILE_PATH))) { 
+    					if (extras.containsKey(FormList.FILE_NAME) || (extras.containsKey(FormList.FILE_PATH))) { 
     						String filename = extras.getString (FormList.FILE_NAME);
     						String filepath = extras.getString (FormList.FILE_PATH);
     				
