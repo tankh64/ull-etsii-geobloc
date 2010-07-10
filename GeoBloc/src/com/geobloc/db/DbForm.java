@@ -346,8 +346,10 @@ public class DbForm implements IFormDefinition {
 		{
 			res = db.insert(DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__, 
 				DbForm.__LOCALFORMSDB_FORM_NAME_KEY__, cv);
-			if (res != -1)
+			if (res != -1) {
+				id = res;
 				Log.d(LOG_TAG, "Saved as a new row in the database succesfully.");
+			}
 			else
 				Log.e(LOG_TAG, "Saving of the new row failed.");
 		}
@@ -355,10 +357,10 @@ public class DbForm implements IFormDefinition {
 			// else we update
 			res = db.update(DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__, cv
 					, DbForm.__LOCALFORMSDB_ID_KEY__ + " = " + id, null);
-			if (res != -1) 
-				Log.d(LOG_TAG, "Update of with id= " + id + " in the database was succesful.");
+			if (res == 1)
+				Log.d(LOG_TAG, "Update of row with id= " + id + " in the database was succesful.");
 			else
-				Log.e(LOG_TAG, "Update of with id= " + id + " in the database failed.");
+				Log.e(LOG_TAG, "Update of row with id= " + id + " in the database failed.");
 		}
 	}
 	/**

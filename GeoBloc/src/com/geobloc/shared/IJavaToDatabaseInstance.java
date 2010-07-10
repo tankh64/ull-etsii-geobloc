@@ -25,7 +25,9 @@ public interface IJavaToDatabaseInstance {
 	 */
 	public List<IInstanceDefinition> getListOfLocalInstances() throws Exception;
 	/**
-	 * Allows us to create a new instance based on the given form
+	 * Given a form's local id, this method will create a new instance and return a Java representation of it.
+	 * The package will be created in the SDCard, as well as a new entry in the instances database.
+	 * To save any changes, use the saveInstance method.
 	 * @param form_local_id the unique identifier to the local form, usually provided by a {@link DbForm}
 	 * @return {@link InstanceDefinition} representing the newly created instance.
 	 * @throws Exception if something goes wrong.
@@ -44,4 +46,9 @@ public interface IJavaToDatabaseInstance {
 	 * @throws Exception if the operation could not be performed.
 	 */
 	public void saveInstance(IInstanceDefinition instance, FormClass form) throws Exception;
+	/**
+	 * Very important method. Needs to be called in the onDestroy() call of the Activity or in a similar method of 
+	 * the class using a {@link IJavaToDatabaseInstance} Object.
+	 */
+	public void close();
 }

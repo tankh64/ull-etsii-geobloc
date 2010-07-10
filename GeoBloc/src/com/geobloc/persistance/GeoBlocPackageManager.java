@@ -115,15 +115,15 @@ public class GeoBlocPackageManager {
 	}
 	
 	public boolean eraseDirectory(String directoryname) {
-		boolean success = true;
+		boolean success = false;
 		boolean finished = false;
 		List<File> directories = this.getAllDirectories();
 		String s;
-		//for (int i = 0; i < directories.size(); i++) {
 		int i = 0;
 		while ((!finished) && (i < directories.size())) {
 			s = directories.get(i).getName();
 			if (s.contains(directoryname)) {
+				success = true;
 				File directoryToBeErased = directories.get(i);
 				// first erase all files in the directory
 				for (File f : directoryToBeErased.listFiles()) {	

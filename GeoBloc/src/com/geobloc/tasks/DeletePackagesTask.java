@@ -84,7 +84,7 @@ public class DeletePackagesTask extends AsyncTask<Long, String, String> {
 			List<File> packages = pm.getAllDirectories();
 			int i = 0;
 			while ((!found) && (i < packages.size())) {
-				if (dbi.getPackageLocation().contains(packages.get(i).getAbsolutePath())) {
+				if (dbi.getPackage_path().contains(packages.get(i).getAbsolutePath())) {
 					found = true;
 					deleted = pm.eraseDirectory(packages.get(i).getName());
 					if (deleted)

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
-import com.geobloc.activities.FormsDownloader;
 import com.geobloc.activities.FormsManager;
 import com.geobloc.activities.InstanceManager;
 import com.geobloc.activities.FormDefinitionList;
@@ -158,18 +157,21 @@ public class MainMenu extends Activity {
     			break;
     	}
     }
-
     
-    public void formsDownloaderButtonOnClickHandler(View target)
-    {
-    	Intent i = new Intent(this, FormsManager.class);
-    	startActivity(i);
-    }
-    
-    public void formsSenderButtonOnClickHandler(View target) {
-    	//Utilities.showToast(this, "Merry XMas!!", Toast.LENGTH_LONG);
-    	Intent i = new Intent(this, InstanceManager.class);
-    	startActivity(i);
+    public void mainMenuOnClickHandler(View target) {
+    	Intent i = null;
+    	switch (target.getId()) {
+    		case R.id.mainMenu_formsManagerButton:
+    			i = new Intent(this, FormsManager.class);
+    			break;
+    		case R.id.mainMenu_instancesManagerButton:
+    			i = new Intent(this, InstanceManager.class);
+    			break;
+    		default:
+    			break;
+    	}
+    	if (i != null)
+    		startActivity(i);
     }
     
     /*

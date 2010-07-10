@@ -43,6 +43,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 				list.add((IFormDefinition)dbf);
 			c.moveToNext();
 		}
+		//c.close();
 		return list;
 	}
 
@@ -66,4 +67,8 @@ public class JavaForms implements IJavaToDatabaseForm {
 		return dbf.getForm_file_path();
 	}
 
+	@Override
+	public void close() {
+		db.close();		
+	}
 }

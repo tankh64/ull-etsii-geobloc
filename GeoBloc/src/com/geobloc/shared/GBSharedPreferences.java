@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 
+import android.preference.DialogPreference;
 import android.preference.Preference;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
@@ -35,30 +36,40 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private EditTextPreference numberOfInternetAttempts;
 	private CheckBoxPreference slidingButtonsAnimationEnabled;
 	private CheckBoxPreference photoSizeBigEnable;
-	private EditTextPreference dropLocalFormsTable;
+	private CheckBoxPreference sendIncompleteInstances;
+	//private DialogPreference dropLocalFormsTable;
 	private CheckBoxPreference userApplicationDebugging;
 	private ListPreference formThemeColor;
 	
 	private EditText et;
 	private SharedPreferences prefs;
 	
-	// preference keys
+	// internet preference keys
 	public static String __BASE_SERVER_ADDRESS_KEY__ = "baseServerAddressKey";
 	public static String __UPLOAD_PACKAGES_SERVLET_ADDRESS_KEY__ = "uploadPackagesServletAddress";
 	public static String __DOWNLOAD_FORMS_SERVLET_ADDRESS_KEY__ = "downloadFormsServletAddress";
+	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
 	public static String __LAST_SERVER_LIST_CHECK_KEY__ = "lastTimeApplicationCheckedForANewListOfFormsInTheServer";
+	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
+	
+	// persistance preference keys
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
 	public static String __FORMS_PATH_KEY__ = "formsPath";
-	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
-	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
+	
+	// animation preferences
 	public static String __SLIDING_BUTTONS_ANIMATION_KEY__ = "slidingButtonsAnimationKey";
+	
+	// advanced preferences
 	public static String __DELETE_LOCALFORMS_TABLE_KEY__ = "dropLocalFormsTableKey";
 	public static String __ENABLE_DEBUGGING_FEATURES_KEY__ = "enableOptionsForUserApplicationDebugging";
+	
 	// forms preferences
 	public static String __FORM_THEME_COLOR__ = "formThemeColor";
 	public static String __FORM_REQUIRED_COLOR__ = "colorRequired";
 	public static String __FORM_PHOTO_SIZE_BIG__ = "formPhotoSize";
 	
+	// instance preferences
+	public static String __SEND_INCOMPLETE_KEY__ = "allowSendingIncompleteInstances";
 	
 	// default internet addresses
 	public static String __DEFAULT_BASE_SERVER_ADDRESS__ = "http://tomcat.etsii.ull.es/geobloc/";
@@ -114,7 +125,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 		slidingButtonsAnimationEnabled = (CheckBoxPreference) findPreference(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__);
 		photoSizeBigEnable = (CheckBoxPreference) findPreference(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__);
 		userApplicationDebugging = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_DEBUGGING_FEATURES_KEY__);
-		dropLocalFormsTable = (EditTextPreference) findPreference (GBSharedPreferences.__DELETE_LOCALFORMS_TABLE_KEY__);
+		sendIncompleteInstances = (CheckBoxPreference) findPreference(GBSharedPreferences.__SEND_INCOMPLETE_KEY__);
+		//dropLocalFormsTable = (DialogPreference) findPreference (GBSharedPreferences.__DELETE_LOCALFORMS_TABLE_KEY__);
 		formThemeColor = (ListPreference) findPreference (GBSharedPreferences.__FORM_THEME_COLOR__);
 		
 		// default baseServerAddress
@@ -160,18 +172,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 				GBSharedPreferences.__DEFAULT_FORM_PHOTO_SIZE_BIG__));
 		
 		userApplicationDebugging.setDefaultValue(false);
-		
-		dropLocalFormsTable.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-		
-		
-
+		sendIncompleteInstances.setChecked(prefs.getBoolean(GBSharedPreferences.__SEND_INCOMPLETE_KEY__, true));
 		
 		if (formThemeColor.getEntry() == null)
 			formThemeColor.setValueIndex(0);

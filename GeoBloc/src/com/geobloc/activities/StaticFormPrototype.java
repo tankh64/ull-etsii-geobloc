@@ -133,12 +133,12 @@ public class StaticFormPrototype extends Activity {
     	
     	// add form to database (completed)
     	DbFormInstance dbi = new DbFormInstance();
-    	dbi.setName(formPackage.getPackageName());
+    	dbi.setLabel(formPackage.getPackageName());
     	dbi.setCreatedDate(new Date());
-    	dbi.setPackageLocation(formPackage.getPackageFullpath());
-    	dbi.setCompletedDate(new Date());
+    	dbi.setPackage_path(formPackage.getPackageFullpath());
+    	dbi.setDate(new Date());
     	dbi.setCompressedPackageFileLocation(null);
-    	dbi.setCompleted(true);
+    	dbi.setComplete(true);
     	
     	SQLiteDatabase db =(new DbFormInstanceSQLiteHelper(getBaseContext())).getWritableDatabase();
     	dbi.save(db);

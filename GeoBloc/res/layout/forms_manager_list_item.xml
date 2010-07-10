@@ -18,7 +18,8 @@
   	android:layout_width="fill_parent"
   	android:layout_height="wrap_content"
   	android:textSize="18sp"
-  	android:textStyle="bold">
+  	android:textStyle="bold"
+  	android:singleLine="true">
   </TextView>
   
   <!-- Below the form name, the version -->
@@ -45,7 +46,7 @@
     <!-- On the right bottom corner, the form's status (update avaiable(green), current version, new(yellow) -->
   <TextView
   	android:id="@+id/forms_manager_list_itemFormStatusInfoTextView"
-  	android:textStyle="bold|italic"
+  	android:textStyle="bold"
   	android:layout_alignParentRight="true"
   	android:paddingRight="7dp"
   	android:layout_below="@id/forms_manager_list_itemFormNameTextView"
@@ -59,6 +60,7 @@
   	android:layout_toLeftOf="@id/forms_manager_list_itemFormStatusInfoTextView"
   	android:layout_below="@id/forms_manager_list_itemFormNameTextView"
   	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content">
+  	android:layout_height="wrap_content"
+  	android:textSize="16sp">
   </TextView>
 </RelativeLayout>

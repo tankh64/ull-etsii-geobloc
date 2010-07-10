@@ -10,8 +10,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
-import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -112,6 +113,32 @@ public class SDFilePersistance extends Activity {
 			e.printStackTrace();
 			success = false;
 			Log.e(LOG_TAG, "Exception while making a ZIP file.");
+		}
+		return success;
+	}
+	
+	public static boolean copyFile(String sourceFile, String destFile) {
+		boolean success = true;
+		try {
+			File source = new File(sourceFile);
+			File destination = new File(destFile);
+			
+			InputStream in = new FileInputStream(source);
+			OutputStream out = new FileOutputStream(destination);
+			byte[] buffer = new byte[1024];
+			
+			int len = 0;
+			while ((len = in.read(buffer)) > 0) {
+				out.write(buffer, 0, len);
+			}
+			in.close();
+			out.close();
+			Log.i(LOG_TAG, "Succesfully copied source= " + sourceFile + " to destination= " + destFile);
+		}
+		catch (Exception e) {
+			Log.e(LOG_TAG, "Encountered an error while copying file " + sourceFile + " to " + destFile);
+			e.printStackTrace();
+			success = false;
 		}
 		return success;
 	}

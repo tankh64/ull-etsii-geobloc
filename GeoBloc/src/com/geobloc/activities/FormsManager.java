@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnTouchListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -81,7 +82,6 @@ public class FormsManager extends Activity {
 	private Animation slideRightOut;
 	
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;	
 	
 	private boolean enableButtonSetAnimation = true;
 	private ViewGroup updateButtonSet;
@@ -195,16 +195,26 @@ public class FormsManager extends Activity {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.forms_manager);
 		
+        // load preferences and resources
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		res = this.getResources();
         
+		// debug and gather options
+		serverDebugInfo = "";
+		enableButtonSetAnimation = prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
+				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
+		
+		// load views
 		this.flipper = (ViewFlipper)findViewById(R.id.formsManager_viewFlipper);
 		this.downloadView = findViewById(R.id.formsManager_downloadFormsLayout);
 		this.serverList = (ListView)findViewById(R.id.formsManager_downloadListView);
 		this.lastUpdateDateTextView = (TextView) findViewById(R.id.formsManager_downloadLastListDate);
 		this.lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, ""));
+		this.updateButtonSet = (ViewGroup) findViewById(R.id.formsManager_downloadFormsBottom);
+		
+		// load flick gesture
 		gestureDetector = new GestureDetector(new MyGestureDetector());
-		serverList.setOnTouchListener(new View.OnTouchListener() {
+		OnTouchListener touchListener = new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
@@ -212,8 +222,10 @@ public class FormsManager extends Activity {
                 }
                 return false;
 			}
-		});
-
+		};
+		serverList.setOnTouchListener(touchListener);
+		
+		// create and set header in internet dependent list
 		this.connectivityListItem = new ProgressItem(getBaseContext());
 		this.connectivityListItem.toggleBarVisibility();
 		this.connectivityListItem.getProgressBar().setVisibility(View.GONE);
@@ -222,15 +234,15 @@ public class FormsManager extends Activity {
 		serverList.addHeaderView(this.connectivityListItem);
 		serverList.setBackgroundColor(Color.TRANSPARENT);
 		
+		// connect lists with databases
 		formsDb = (new DbFormSQLiteHelper(getBaseContext())).getWritableDatabase();
 		formsCursor = DbForm.getAll(formsDb);
-		formsCursor.moveToFirst();
-		
+		formsCursor.moveToFirst();	
 		startManagingCursor(formsCursor);
-		
 		formsAdapter = new DbFormAdapter(formsCursor);
 		serverList.setAdapter(formsAdapter);
 		
+		// load all animations
 		bounceLeft = AnimationUtils.loadAnimation(this, R.anim.bounce_left);
 		bounceRight = AnimationUtils.loadAnimation(this, R.anim.bounce_right);
 		slideLeftIn  = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
@@ -238,10 +250,7 @@ public class FormsManager extends Activity {
 		slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
 		slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
 		
-		serverDebugInfo = "";
-		enableButtonSetAnimation = prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
-				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
-		updateButtonSet = (ViewGroup) findViewById(R.id.formsManager_downloadFormsBottom);
+		// make other changes upon options
 		if (enableButtonSetAnimation) {
         	updateButtonSet.setVisibility(View.GONE);
         	//completedInstancesButtonSet.setVisibility(View.GONE);
@@ -265,6 +274,8 @@ public class FormsManager extends Activity {
 		bindService(serviceIntent,
 				onService, Context.BIND_AUTO_CREATE);
 		*/
+		
+		// load services
 		doBindServices();
 
 		
@@ -399,8 +410,11 @@ public class FormsManager extends Activity {
 				*/
 				lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, ""));
 				formsCursor.requery();
+				formsAdapter.notifyDataSetChanged();
+				/*
 				formsAdapter = new DbFormAdapter(formsCursor);
 				serverList.setAdapter(formsAdapter);
+				*/
 				connectivityListItem.setText(getString(R.string.ready));
 				connectivityListItem.setBackgroundColor(Color.GREEN);
 				animateServerList();
@@ -442,39 +456,11 @@ public class FormsManager extends Activity {
 		this.connectivityListItem.setBackgroundColor(Color.TRANSPARENT);
 		
 		if (connectivityBitmap == null) {
-			connectivityBitmap = scaleToContainer(R.drawable.connectivity, downloadView);
+			connectivityBitmap = Utilities.scaleToContainer(getResources(), R.drawable.connectivity, downloadView);
 		}
     	
 		if (noConnectivityBitmap == null) {
-			//noConnectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_connectivity);
-			//noConnectivityBitmap = Bitmap.createScaledBitmap(noConnectivityBitmap, downloadView.getWidth(), downloadView.getHeight(), true);
-			
-			noConnectivityBitmap = scaleToContainer(R.drawable.no_connectivity, downloadView);
-			/*
-			noConnectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_connectivity);
-			noConnectivityBitmap = Bitmap.createBitmap(noConnectivityBitmap);
-			int bmpHeight = noConnectivityBitmap.getHeight();
-			int bmpWidth = noConnectivityBitmap.getWidth();
-			
-			int containerWidth = downloadView.getWidth();
-			int containerHeight = downloadView.getHeight();
-			if((bmpWidth>bmpHeight)&&(bmpWidth>containerWidth))
-			{
-			    double ratio = ( (double)containerWidth/(double)bmpWidth );
-			    bmpWidth=(int)containerWidth;
-			    bmpHeight=(int)(ratio*bmpHeight);
-			}
-			else if((bmpHeight>bmpWidth)&&(bmpHeight>containerHeight))
-			{
-			    double ratio = ( (double)containerHeight/(double)bmpHeight );
-			    bmpHeight=(int)containerHeight;
-			    bmpWidth=(int)(ratio*bmpWidth);
-			}
-
-			noConnectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.no_connectivity);
-			//noConnectivityBitmap = Bitmap.createScaledBitmap(noConnectivityBitmap, bmpWidth, bmpHeight, true);
-			noConnectivityBitmap = Bitmap.createBitmap(noConnectivityBitmap, 0, 0, bmpWidth, bmpHeight);
-			*/
+			noConnectivityBitmap = Utilities.scaleToContainer(getResources(), R.drawable.no_connectivity, downloadView);
 			
 		}
 
@@ -496,35 +482,6 @@ public class FormsManager extends Activity {
 			return false;
 		}
 	}
-
-	private Bitmap scaleToContainer(int resource, View container) {
-		//connectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.connectivity);
-		Bitmap mySrc = BitmapFactory.decodeResource(getResources(), resource);
-		mySrc = Bitmap.createBitmap(mySrc);
-		//connectivityBitmap = Bitmap.createScaledBitmap(connectivityBitmap, downloadView.getWidth(), downloadView.getHeight(), true);
-		int bmpHeight = mySrc.getHeight();
-		int bmpWidth = mySrc.getWidth();
-		
-		int containerWidth = container.getWidth();
-		int containerHeight = container.getHeight();
-		if((bmpWidth>bmpHeight)&&(bmpWidth>containerWidth))
-		{
-		    double ratio = ( (double)containerWidth/(double)bmpWidth );
-		    bmpWidth=(int)containerWidth;
-		    bmpHeight=(int)(ratio*bmpHeight);
-		}
-		else if((bmpHeight>bmpWidth)&&(bmpHeight>containerHeight))
-		{
-		    double ratio = ( (double)containerHeight/(double)bmpHeight );
-		    bmpHeight=(int)containerHeight;
-		    bmpWidth=(int)(ratio*bmpWidth);
-		}
-
-		//onnectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.connectivity);
-		mySrc = BitmapFactory.decodeResource(getResources(), resource);
-		//return Bitmap.createScaledBitmap(mySrc, bmpWidth, bmpHeight, true);
-		return Bitmap.createBitmap(mySrc, 0, 0, bmpWidth, bmpHeight);
-	}
 	
 	private void updateServerList() {
 		if (canPerformInternetAction()) {
@@ -534,7 +491,7 @@ public class FormsManager extends Activity {
 	}
 	
 	private void downloadForms() {
-		if (formsAdapter.areElementsSelected()) {
+		if (formsAdapter.areThereElementsSelected()) {
 			if (canPerformInternetAction()) {
 				this.connectivityListItem.setText(getString(R.string.downloading));
 				this.connectivityListItem.getProgressBar().setVisibility(View.VISIBLE);
@@ -590,7 +547,7 @@ public class FormsManager extends Activity {
 		 * Checks whether there are elements selected.
 		 * @return True if there is at least one element selected from the list.
 		 */
-		public boolean areElementsSelected() {
+		public boolean areThereElementsSelected() {
 			return (serverCheckedItems.size() > 0);
 		}
 		/**
@@ -607,6 +564,26 @@ public class FormsManager extends Activity {
 			if (enableButtonSetAnimation) {
 				if ((serverCheckedItems.size() < 1) && (updateButtonSet.getVisibility() == View.VISIBLE))
 					toggleButtonSetAnimation(0);
+			}
+		}
+		/**
+		 * Checks all selectable items from the list.
+		 */
+		private void checkAllItems() {
+			DbFormWrapper wrapper;
+			View v = null;
+			// let's be good; we first load the View
+			if (this.getCount() > 0) {
+				v = getView(0, null, null);
+				wrapper = (DbFormWrapper) v.getTag();
+				if (!wrapper.getCb().isChecked())
+					this.toggleSelected(wrapper);
+			}
+			// and then we reuse it
+			for (int i = 1; i < this.getCount(); i++) {
+				wrapper = (DbFormWrapper) this.getView(i, v, null).getTag();
+				if (!wrapper.getCb().isChecked())
+					this.toggleSelected(wrapper);
 			}
 		}
 		/**
@@ -795,15 +772,9 @@ public class FormsManager extends Activity {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.forms_manager_menu, menu);
     	if (prefs.getBoolean(GBSharedPreferences.__ENABLE_DEBUGGING_FEATURES_KEY__, false)) {
-    		MenuItem item = menu.findItem(R.id.formsManager_showDebug);
+    		MenuItem item = menu.findItem(R.id.formsManager_menuShowDebug);
     		item.setVisible(true);
     	}
-    	/*
-    		inflater.inflate(R.menu.forms_manager_debug_menu, menu);
-    	else
-    		inflater.inflate(R.menu.forms_manager_menu, menu);
-    	*/
-    		//menu.getItem(R.id.formsManager_showDebug).setVisible(true);
     	return true;
     }
     
@@ -813,7 +784,10 @@ public class FormsManager extends Activity {
     	case (R.id.formsManager_menuUpdate):
     		updateServerList();
 			break;
-    	case (R.id.formsManager_showDebug):
+    	case (R.id.formsManager_menuSelectAll):
+    		formsAdapter.checkAllItems();
+    		break;
+    	case (R.id.formsManager_menuShowDebug):
     		Utilities.showTitleAndMessageDialog(this, getString(R.string.debugging), serverDebugInfo);
     		break;
     	// More items go here (if any) ...

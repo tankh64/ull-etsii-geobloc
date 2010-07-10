@@ -6,8 +6,13 @@
 		android:title="@string/update"
 		android:icon="@drawable/refresh_32x32">
 	</item>
-		<item
-		android:id="@+id/formsManager_showDebug"
+	<item
+		android:id="@+id/formsManager_menuSelectAll"
+		android:title="@string/selectAll"
+		android:icon="@drawable/check_alt_32x32">
+	</item>
+	<item
+		android:id="@+id/formsManager_menuShowDebug"
 		android:title="@string/debugging"
 		android:icon="@drawable/iphone_24x32"
 		android:visible="false">

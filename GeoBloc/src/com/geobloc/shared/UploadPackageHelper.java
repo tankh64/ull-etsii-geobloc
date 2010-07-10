@@ -153,7 +153,7 @@ public class UploadPackageHelper implements IStandardTaskListener {
 			if (file.exists())
 				file.delete();
 		}
-		String packageName = dbi.getName().substring(0,dbi.getName().lastIndexOf('_'));
+		String packageName = dbi.getPackage_path().substring(0,dbi.getPackage_path().lastIndexOf('_'));
 		packageName += Utilities.getDateAndTimeString().substring(0, Utilities.getDateAndTimeString().length()-1);
 		String zipFilename = pm.getPackageFullpath() + packageName + ".zip";
 		boolean success = pm.buildZIPfromPackage(zipFilename);

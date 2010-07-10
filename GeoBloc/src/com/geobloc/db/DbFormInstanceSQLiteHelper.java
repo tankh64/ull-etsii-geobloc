@@ -18,7 +18,7 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String LOG_TAG = "Localforms";
 	
-	private static final String DATABASE_NAME = "localpackages.db";
+	private static final String DATABASE_NAME = "local.db";
 	private static final int SCHEMA_VERSION = 5;
 	
 	private Context context;
@@ -35,13 +35,15 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		
 		db.execSQL("CREATE TABLE " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
-				" (_id INTEGER PRIMARY KEY AUTOINCREMENT, " + DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__ + " TEXT, " + 
-				DbFormInstance.__LOCALPACKAGESDB_NAME_KEY__ + " TEXT, " + 
+				" (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__ + " TEXT, " + 
+				DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__ + " TEXT, " + 
+				DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__ + " TEXT, " + 
 				DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__ + " TEXT, " + 
 				DbFormInstance.__LOCALPACKAGESDB_COMPLETEDDATE_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__ + " INTEGER);");
-		buildDatabase(db);
+		//buildDatabase(db);
 	}
 
 	@Override
@@ -65,14 +67,26 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 		manager.openPackage(packageDirectory);
 		List<File> packages = manager.getAllDirectories();
 		DbFormInstance dbi;
+		/*
+		DbForm form = new DbForm();
+		form.setForm_date(new Date());
+		form.setForm_description("Dummy form");
+		form.setForm_file_path(null);
+		form.setForm_id("dummy");
+		form.setForm_version(1);
+		form.setServer_state(2);
+		form.save();
+		*/
 		for (File myPackages : packages) {
 			dbi = new DbFormInstance();
-			dbi.setName(myPackages.getName());
-			dbi.setPackageLocation(myPackages.getAbsolutePath());
+			dbi.setForm(null);
+			//dbi.setForm(form);
+			dbi.setLabel(myPackages.getName());
+			dbi.setPackage_path(myPackages.getAbsolutePath());
 			dbi.setCreatedDate(new Date(myPackages.lastModified()));
-			dbi.setCompletedDate(null);
+			dbi.setDate(null);
 			dbi.setCompressedPackageFileLocation(null);
-			dbi.setCompleted(false);
+			dbi.setComplete(false);
 			dbi.save(db);
 		}
 	}
@@ -83,11 +97,12 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 	
 	public static void autoAdd(SQLiteDatabase db) {
 		DbFormInstance dbi = new DbFormInstance();
-		dbi.setName("autoAdded");
-		dbi.setPackageLocation("Unknown");
+		dbi.setLabel("autoAdded");
+		dbi.setForm(null);
+		dbi.setPackage_path("Unknown");
 		dbi.setCreatedDate(new Date());
-		dbi.setCompletedDate(null);
-		dbi.setCompleted(false);
+		dbi.setDate(null);
+		dbi.setComplete(false);
 		dbi.save(db);
 	}
 

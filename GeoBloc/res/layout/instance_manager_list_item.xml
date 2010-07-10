@@ -33,7 +33,7 @@
   </TextView>
   <TextView
   	android:id="@+id/instance_manager_list_itemFormInstanceCompletedTextView"
-  	android:text="@string/instance_manager_list_itemFormInstanceCompletedTextViewText"
+  	android:text="@string/instanceManager_list_itemFormInstanceCompletedTextViewText"
   	android:paddingRight="2dp"
   	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
   	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"

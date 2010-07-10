@@ -1,81 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper
   	xmlns:android="http://schemas.android.com/apk/res/android"
-  	android:id="@+id/myInstancesViewFlipper"
+  	android:id="@+id/instanceManager_viewFlipper"
   	android:layout_width="fill_parent"
   	android:layout_height="fill_parent">
-  	<!-- Left page, the one with incomplete instances -->
+  	<!-- Right page, the one with complete instances, ready to be sent -->
 	<RelativeLayout
-		android:id="@+id/allInstancesLayout"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-		<TextView
-			android:id="@+id/allInstancesTextView1"
-  			android:layout_width="fill_parent"
-  			android:layout_height="wrap_content"
-  			android:text="@string/instance_manager_allInstancesLabel"
-  			android:textColor="@color/White"
-  			android:background="@color/ULLPurple"
-  			android:layout_alignParentTop="true"
-  			android:layout_alignParentLeft="true">
-  		</TextView>
-  		<TextView
-  			android:layout_width="wrap_content"
-  			android:layout_height="wrap_content"
-  			android:text="@string/instance_manager_completeInstancesLabel"
-  			android:textColor="@color/Unselected"
-  			android:background="@color/ULLPurple"
-  			android:layout_alignParentTop="true"
-  			android:layout_alignParentRight="true">
-  		</TextView>
-  		<RelativeLayout
-  			android:id="@+id/allInstancesBottomButtons"
-  			android:layout_width="fill_parent"
-  			android:layout_height="wrap_content"
-  			android:layout_alignParentBottom="true">
-  			<Button
-  				android:id="@+id/allInstancesEraseButton"
-  				android:layout_width="fill_parent"
-  				android:layout_height="wrap_content"
-  				android:text="@string/instance_manager_allInstancesEraseButton"
-  				android:onClick="allInstancesButtonOnClick">
-  			</Button>
-  		</RelativeLayout>
-  		
-  		<ListView
-  			android:id="@+id/allInstancesListView"
-  			android:layout_width="fill_parent"
-  			android:layout_height="fill_parent"
-  			android:layout_below="@id/allInstancesTextView1"
-  			android:layout_above="@id/allInstancesBottomButtons">
-  		</ListView>
-  		
-	</RelativeLayout>
-	
-	<!-- Right page, the one with complete instances, ready to be sent -->
-	<RelativeLayout
-  		android:id="@+id/completeInstancesLayout"
+  		android:id="@+id/instanceManager_sendInstancesLayout"
   		android:layout_width="fill_parent"
   		android:layout_height="fill_parent">
-  		<TextView
-  			android:id="@+id/allInstancesTextView2"
+  		<!-- header -->
+  		<LinearLayout
+  			android:id="@+id/instanceManager_sendInstancesHeader"
+  			android:orientation="horizontal"
+  			android:background="@drawable/geobloc_header_one"
+  			android:layout_alignParentTop="true"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
-  			android:text="@string/instance_manager_allInstancesLabel"
-  			android:textColor="@color/Unselected"
-  			android:background="@color/ULLPurple"
-  			android:layout_alignParentTop="true"
-  			android:layout_alignParentLeft="true">
-  		</TextView>
-  		<TextView
-  			android:layout_width="wrap_content"
-  			android:layout_height="wrap_content"
-  			android:text="@string/instance_manager_completeInstancesLabel"
-  			android:textColor="@color/White"
-  			android:background="@color/ULLPurple"
-  			android:layout_alignParentTop="true"
-  			android:layout_alignParentRight="true">
-  		</TextView>
+  			android:gravity="right">
+  			<TextView
+  				android:textColor="#FFFFFF"
+  				android:padding="10dp"
+  				android:textSize="20sp"
+  				android:text="@string/instanceManager_sendInstancesTitle"
+  				android:singleLine="true"
+  				android:layout_width="wrap_content"
+  				android:layout_height="wrap_content">
+  			</TextView>
+  		</LinearLayout>
+  		
+  		<!-- Feet -->
   		<RelativeLayout
   			android:id="@+id/completeInstancesBottomButtons"
   			android:layout_width="fill_parent"
@@ -94,7 +48,7 @@
   				android:layout_height="wrap_content"
   				android:layout_alignParentLeft="true"
   				android:layout_toLeftOf="@id/buttonSetCenterStub"
-  				android:text="@string/instance_manager_completeInstancesSendButton"
+  				android:text="@string/instanceManager_completeInstancesSendButton"
 	  			android:onClick="allInstancesButtonOnClick">
   			</Button>
   			<Button
@@ -103,18 +57,65 @@
   				android:layout_height="wrap_content"
   				android:layout_toRightOf="@id/buttonSetCenterStub"
   				android:layout_alignParentRight="true"
-  				android:text="@string/instance_manager_completeInstancesMarkIncomplete"
+  				android:text="@string/instanceManager_completeInstancesMarkIncomplete"
 	  			android:onClick="allInstancesButtonOnClick">
   			</Button>
-
   		</RelativeLayout>
   		
+  		<!-- List -->
   		<ListView
   			android:id="@+id/completeInstancesListView"
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
-  			android:layout_below="@id/allInstancesTextView2"
+  			android:layout_below="@id/instanceManager_sendInstancesHeader"
   			android:layout_above="@id/completeInstancesBottomButtons">
   		</ListView>  		
   	</RelativeLayout>  	
+  	<!-- Left page, the one with incomplete instances -->
+	<RelativeLayout
+		android:id="@+id/instanceManager_allInstancesLayout"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<!-- header -->
+	  	<LinearLayout
+	  		android:id="@+id/instanceManager_allInstancesHeader"
+	  		android:orientation="horizontal"
+	  		android:background="@drawable/geobloc_header_one"
+	  		android:layout_alignParentTop="true"
+	  		android:layout_width="fill_parent"
+	  		android:layout_height="wrap_content"
+	  		android:gravity="left">
+	  		<TextView
+	  			android:textColor="#FFFFFF"
+	  			android:padding="10dp"
+	  			android:textSize="20sp"
+	  			android:text="@string/instanceManager_allInstancesTitle"
+	  			android:singleLine="true"
+	  			android:layout_width="wrap_content"
+	  			android:layout_height="wrap_content">
+	  		</TextView>
+	  	</LinearLayout>
+  		<RelativeLayout
+  			android:id="@+id/allInstancesBottomButtons"
+  			android:layout_width="fill_parent"
+  			android:layout_height="wrap_content"
+  			android:layout_alignParentBottom="true">
+  			<Button
+  				android:id="@+id/allInstancesEraseButton"
+  				android:layout_width="fill_parent"
+  				android:layout_height="wrap_content"
+  				android:text="@string/instanceManager_allInstancesEraseButton"
+  				android:onClick="allInstancesButtonOnClick">
+  			</Button>
+  		</RelativeLayout>
+  		
+  		<ListView
+  			android:id="@+id/allInstancesListView"
+  			android:layout_width="fill_parent"
+  			android:layout_height="fill_parent"
+  			android:layout_below="@id/instanceManager_allInstancesHeader"
+  			android:layout_above="@id/allInstancesBottomButtons">
+  		</ListView>
+  		
+	</RelativeLayout>
 </ViewFlipper>
