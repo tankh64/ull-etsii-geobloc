@@ -18,6 +18,8 @@
 	<string name="noConnectivity">No disponible conexión a Internet.</string>
 	<string name="connectivityAvailable">Conexión a Internet disponible.</string>
 	<string name="noElementsSelected">No hay elementos seleccionados.</string>
+	<string name="selectAll">Seleccionar todos</string>
+	<string name="warningAllDataWillBeLost">¿Está usted seguro? Todos los datos serán borrados y no podrán recuperarse.</string>
 	
 	<string name="taskComplete">Tarea completada.</string>
 	<string name="download">Descargar</string>
@@ -40,8 +42,6 @@
 	<!-- SharedPreferences -->
 	<string name="sharedPreferencesTitle">Preferencias</string>
 	<string name="sharedInternetPreferencesTitle">Preferencias de internet</string>
-	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
-	<string name="sharedAdvancedPreferencesTitle">Preferencias avanzadas (sólo usuarios expertos)</string>
 	<string name="baseServerAddress">Dirección base</string>
 	<string name="baseServerAddressDescription">Dirección base donde se encuentran los servicios en Internet</string>
 	<string name="uploadPackagesServletAdress">Servlet Paquetes</string>
@@ -52,13 +52,17 @@
 	<string name="downloadFormsServletAddressDescription">Dirección del servlet para descargar paquetes</string>
 	<string name="numberOfInternetAttempts">Intentos de conexión</string>
 	<string name="numberOfInternetAttemptsDescription">Nº de veces que se intentarán las operaciones de Internet</string>
-	<string name="dateOfLastServerFormsListQuery">Fecha de última actualización de formularios</string>
+	
+	<string name="sharedPersistancePreferencesTitle">Preferencias de persistencia</string>
 	<string name="packagesPath">Directorio de paquetes</string>
 	<string name="packagesPathDescription">Dirección de almacenamiento SD donde se guardarán los paquetes</string>
 	<string name="formsPath">Directorio de formularios</string>
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
-	<string name="dropLocalFormsTable">Borrar tabla de formularios locales</string>
-	<string name="dropLocalFormsTableDescription">Borra todos los registros de formularios, y borra también todos los formularios guardados. No afecta a las instancias guardadas,</string>
+	
+	<string name="sharedAdvancedPreferencesTitle">Preferencias avanzadas</string>
+	<string name="dateOfLastServerFormsListQuery">Fecha de última actualización de formularios</string>
+	<string name="dropLocalFormsTable">Borrar formularios</string>
+	<string name="dropLocalFormsTableDescription">Borra todos los registros de formularios, y sus archivos locales.</string>
 	<string name="enableUserDebuggingFeatures">Depuración a nivel de usuario</string>
 	<string name="enableUserDebuggingFeaturesDescription">Permite ver opciones deshabilitadas por defecto</string>
 	
@@ -68,7 +72,11 @@
 	<string name="formColorTextDescription">Color del texto del formulario por defecto</string>
 	<string name="formColorText">Color del Texto</string>
 	<string name="formPhotoSizeTitle">Tamaño de foto grande</string> 
-	<string name="formPhotoSizeDescription">Establece el tamaño de las fotos de los formularios al mayor</string> 
+	<string name="formPhotoSizeDescription">Establece el tamaño de las fotos de los formularios al mayor</string>
+	
+	<string name="instancePreferencesTitle">Preferencias de Instancias</string>
+	<string name="instanceAllowSendIncomplete">Enviar instancias no completas</string>
+	<string name="instanceAllowSendIncompleteDescription">Permitir el envío de instancias sin marcar como completas.</string> 
 
 	<string name="animationsCategory">Preferencias de Animaciones</string>
 	<string name="slidingButtonsAnimation">Botones Deslizantes</string>
@@ -96,29 +104,18 @@
 	
 	<string name="formsManager_deleteTitle">Borrado de Formularios</string>
 	
-	<!-- FormsDownloader Layout -->
-	<string name="forms_downloaderTextViewText">Lista de formularios disponibles</string>
-	<string name="forms_downloaderActionDLButtonText">Descargar</string>
-	<string name="forms_downloaderActionERButtonText">Eliminar</string>
-	<string name="forms_downloaderEraseModeButtonTextOn">Modo Borrar</string>
-	<string name="forms_downloaderEraseModeButtonTextOff">Modo Borrar</string>
-	<string name="forms_downloader_list_item_FormVersionTextViewText">Versión: </string>
-	<string name="forms_downloader_list_itemFormStatusTextViewText">Estado: </string>
-	<string name="forms_downloader_list_itemFormStatusUpdate">Actualización Disp.</string>
-	<string name="forms_downloader_list_itemFormStatusNew">Nuevo </string>
-	<string name="forms_downloader_list_itemFormStatusCurrent">Más reciente</string>
 	
 		<!-- InstanceManager Layout and List Items -->
-	<string name="instance_manager_allInstancesLabel">Todas las instancias</string>
-	<string name="instance_manager_completeInstancesLabel">Instancias completas</string>
-	<string name="instance_manager_allInstancesEraseButton">Borrar</string>
-	<string name="instance_manager_completeInstancesSendButton">Enviar</string>
-	<string name="instance_manager_completeInstancesMarkIncomplete">Marcar Incompleto</string>
-	<string name="instance_manager_list_itemFormInstanceCreatedDateText">Creado: </string>
-	<string name="instance_manager_list_itemFormInstanceCompletedDateText">Completado: </string>
-	<string name="instance_manager_list_itemFormInstanceCompletedTextViewText">Completado: </string>
-	<string name="instance_manager_list_itemFormInstanceCompleteYes">Si</string>
-	<string name="instance_manager_list_itemFormInstanceCompleteNo">No</string>
+	<string name="instanceManager_sendInstancesTitle">Envío de instancias</string>
+	<string name="instanceManager_allInstancesTitle">Todas las instancias</string>
+	<string name="instanceManager_allInstancesEraseButton">Borrar</string>
+	<string name="instanceManager_completeInstancesSendButton">Enviar</string>
+	<string name="instanceManager_completeInstancesMarkIncomplete">Marcar Incompleto</string>
+	<string name="instanceManager_list_itemFormInstanceCreatedDateText">Creado: </string>
+	<string name="instanceManager_list_itemFormInstanceCompletedDateText">Completado: </string>
+	<string name="instanceManager_list_itemFormInstanceCompletedTextViewText">Completado: </string>
+	<string name="instanceManager_list_itemFormInstanceCompleteYes">Si</string>
+	<string name="instanceManager_list_itemFormInstanceCompleteNo">No</string>
 	
 	<!-- Subtítulos de las páginas -->
 	<string name="new_form">Nuevo Formulario</string> <!-- Lista de Esquemas de Formularios -->

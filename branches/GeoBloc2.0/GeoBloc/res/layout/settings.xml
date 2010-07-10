@@ -76,7 +76,15 @@
   		android:summary="@string/formPhotoSizeDescription" >
   	</CheckBoxPreference>
   </PreferenceCategory>
-  
+  <PreferenceCategory
+  	android:title="@string/instancePreferencesTitle">
+  	<CheckBoxPreference
+  		android:key="allowSendingIncompleteInstances"
+  		android:name="allowSendingIncompleteInstances"
+  		android:title="@string/instanceAllowSendIncomplete"
+  		android:summary="@string/instanceAllowSendIncompleteDescription">
+  	</CheckBoxPreference>
+  </PreferenceCategory>
   <PreferenceCategory
   	android:title="@string/animationsCategory">
   	<CheckBoxPreference
@@ -94,11 +102,15 @@
   		android:title="@string/enableUserDebuggingFeatures"
   		android:summary="@string/enableUserDebuggingFeaturesDescription">
   	</CheckBoxPreference>
-  	<EditTextPreference
+  	<!--
+  	<DialogPreference
   		android:key="dropLocalFormsTableKey"
   		android:name="dropLocalFormsTableKey"
   		android:title="@string/dropLocalFormsTable"
-  		android:summary="@string/dropLocalFormsTableDescription">
-  	</EditTextPreference>
+  		android:summary="@string/dropLocalFormsTableDescription"
+  		android:dialogTitle="@string/dropLocalFormsTable"
+  		android:dialogMessage="@string/warningAllDataWillBeLost">
+  	</DialogPreference>
+  	-->
   </PreferenceCategory>
 </PreferenceScreen>

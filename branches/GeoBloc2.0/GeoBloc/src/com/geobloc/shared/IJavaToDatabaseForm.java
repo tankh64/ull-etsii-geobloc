@@ -40,4 +40,9 @@ public interface IJavaToDatabaseForm {
 	 * @return String 
 	 */
 	public String getPathLocalForm(long form_local_id);
+	/**
+	 * Very important method. Needs to be called in the onDestroy() call of the Activity or in a similar method of 
+	 * the class using a {@link IJavaToDatabaseForm} Object.
+	 */
+	public void close();
 }

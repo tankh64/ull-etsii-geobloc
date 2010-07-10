@@ -27,20 +27,20 @@
 		android:padding="30dp">
 	</Button>
 	<Button
-		android:id="@+id/formsDownloaderButton"
+		android:id="@+id/mainMenu_formsManagerButton"
 		android:text="@string/formsDownloaderButtonText"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:padding="30dp"
-		android:onClick="formsDownloaderButtonOnClickHandler">
+		android:onClick="mainMenuOnClickHandler">
 	</Button>
 	<Button
-		android:id="@+id/formsSenderButton"
+		android:id="@+id/mainMenu_instancesManagerButton"
 		android:text="@string/formsSenderButtonText"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:padding="30dp"
-		android:onClick="formsSenderButtonOnClickHandler">
+		android:onClick="mainMenuOnClickHandler">
 	</Button>
 	<!-- 
 	<Spinner

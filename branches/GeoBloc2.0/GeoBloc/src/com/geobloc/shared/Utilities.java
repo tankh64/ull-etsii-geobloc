@@ -8,10 +8,14 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -91,25 +95,14 @@ public class Utilities {
 		return "_" + date + "_" + time;
 	}
 	
-	/*
-	 * Builds a new package's name which follows this structure: formName + phoneID + Date&Time
-	 * phoneID can be the phone's IMEI if it is a GSM device, MEID if it is a CDMA device, etc.
+	/**
+	 * Builds a new package's name which follows this structure: formName + Date&Time.
+	 * Identifier of the device is included inside the instance XML file.
 	 * 
 	 */
 	public static String buildPackageName(Context context, String formName) {
 		String name = formName;
-		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-		String id = tm.getDeviceId();
-		// some devices do not have ID (MIDs, tablets, etc.)
-		if (id != null)
-			name += "_" + id;
-		
-    	Calendar cal = Calendar.getInstance();
-    	String date = cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH)+1) 
-			+ "-" + cal.get(Calendar.YEAR);
-    	String time = cal.get(Calendar.HOUR_OF_DAY) 
-    		+ "-" + cal.get(Calendar.MINUTE) 
-			+ "-" + cal.get(Calendar.SECOND)+"/";
+		name += "_";
 		
     	name += getDateAndTimeString();
 		return name;
@@ -141,7 +134,43 @@ public class Utilities {
 				return false;
 			}
 	}
-	
+	/**
+	 * Scales a given photo from resource to the specified View's size. It takes care of keeping aspect ratio, so if the 
+	 * so for example if the photo is wider than the View, it will scale it down until it fits. Note that if 
+	 * the View is not inflated (height and width are zero) it can produce an Exception/force close the app. 
+	 * @param res Access to the context's resources.
+	 * @param resource The photo to scale.
+	 * @param container The view to which the photo must be scaled down to.
+	 * @return
+	 */
+	public static Bitmap scaleToContainer(Resources res, int resource, View container) {
+		//connectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.connectivity);
+		Bitmap mySrc = BitmapFactory.decodeResource(res, resource);
+		mySrc = Bitmap.createBitmap(mySrc);
+		//connectivityBitmap = Bitmap.createScaledBitmap(connectivityBitmap, downloadView.getWidth(), downloadView.getHeight(), true);
+		int bmpHeight = mySrc.getHeight();
+		int bmpWidth = mySrc.getWidth();
+		
+		int containerWidth = container.getWidth();
+		int containerHeight = container.getHeight();
+		if((bmpWidth>bmpHeight)&&(bmpWidth>containerWidth))
+		{
+		    double ratio = ( (double)containerWidth/(double)bmpWidth );
+		    bmpWidth=(int)containerWidth;
+		    bmpHeight=(int)(ratio*bmpHeight);
+		}
+		else if((bmpHeight>bmpWidth)&&(bmpHeight>containerHeight))
+		{
+		    double ratio = ( (double)containerHeight/(double)bmpHeight );
+		    bmpHeight=(int)containerHeight;
+		    bmpWidth=(int)(ratio*bmpWidth);
+		}
+
+		//onnectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.connectivity);
+		mySrc = BitmapFactory.decodeResource(res, resource);
+		//return Bitmap.createScaledBitmap(mySrc, bmpWidth, bmpHeight, true);
+		return Bitmap.createBitmap(mySrc, 0, 0, bmpWidth, bmpHeight);
+	}
 	
 	public static void setThemeForActivity (Activity ac, int idTheme) {
 		switch (idTheme) {

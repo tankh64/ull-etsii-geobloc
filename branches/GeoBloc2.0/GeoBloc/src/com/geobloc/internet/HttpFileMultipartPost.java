@@ -29,6 +29,7 @@ import com.geobloc.persistance.GeoBlocPackageManager;
  *
  */
 public class HttpFileMultipartPost {
+	/*
 	//public void executeMultipartPost(List<String> files, String url)throws Exception     {
 	public String executeMultipartPost(String fileDirectory, String file, String url, HttpClient httpClient)
 	throws Exception     {
@@ -76,7 +77,7 @@ public class HttpFileMultipartPost {
 		}
         return stringResponse;
     }
-	
+	*/
 	public String executeMultipartPackagePost(String packageDirectory, String url, HttpClient httpClient) 
 	throws Exception     {
 		String stringResponse = "Error!";

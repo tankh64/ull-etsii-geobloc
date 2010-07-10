@@ -3,13 +3,19 @@
  */
 package com.geobloc.db;
 
-import static android.provider.BaseColumns._ID;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.geobloc.shared.IFormDefinition;
+import com.geobloc.shared.IInstanceDefinition;
+import com.geobloc.shared.IJavaToDatabaseForm;
+import com.geobloc.shared.IJavaToDatabaseInstance;
+import com.geobloc.shared.JavaForms;
+import com.geobloc.shared.JavaInstances;
+
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -22,7 +28,7 @@ import android.util.Log;
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
-public class DbFormInstance {
+public class DbFormInstance implements IInstanceDefinition {
 	private static final String LOG_TAG = "DbFormInstance";
 	
 	/*
@@ -30,12 +36,37 @@ public class DbFormInstance {
 	 * 
 	 */
 	
+	/**
+	 * Database key for the instance's local id.
+	 */
 	public static final String __LOCALPACKAGESDB_ID__ = "_id";
-	public static final String __LOCALPACKAGESDB_NAME_KEY__ = "name";
-	public static final String __LOCALPACKAGESDB_LOCATION_KEY__ = "packageLocation";
+	/**
+	 * Database key for the instance's attached form's local id.
+	 */
+	public static final String __LOCALPACKAGESDB_FORM_ID_KEY__ = "localFormId";
+	/**
+	 * Database key for the instance's label, which is also local and does not exist in the server.
+	 */
+	public static final String __LOCALPACKAGESDB_LABEL_KEY__ = "label";
+	/**
+	 * Database key for the instance's folder full path.
+	 */
+	public static final String __LOCALPACKAGESDB_PATH_KEY__ = "packageLocation";
+	/**
+	 * Database key for the date in which the instance was created.
+	 */
 	public static final String __LOCALPACKAGESDB_CREATEDDATE_KEY__ = "createdDate";
+	/**
+	 * Database key for the date in which the instance was marked as complete (could be null).
+	 */
 	public static final String __LOCALPACKAGESDB_COMPLETEDDATE_KEY__ = "completedDate";
+	/**
+	 * Database key for the full path to the packaged instance ZIP file (could be null if it hasn't been tried to send).
+	 */
 	public static final String __LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__ = "compressedPackageFile";
+	/**
+	 * Database key for the completed state of the instance.
+	 */
 	public static final String __LOCALPACKAGESDB_COMPLETED_KEY__ = "completed";
 	
 	/*
@@ -43,30 +74,41 @@ public class DbFormInstance {
 	 */
 	
 	private long id = -1;
-	private String name = "";
-	private String packageLocation = "";
+	private DbForm form = null;
+	private String label = "";
+	private String packagePath = "";
 	private String compressedPackageFileLocation = "";
 	private Date createdDate;
 	private Date completedDate;
 	private boolean completed;
 	
+	/**
+	 * Performs a query to return all locally registered instances. In other words, returns a cursor with all 
+	 * the local instances.
+	 * @param db An open database with reading permissions.
+	 * @return A cursor containing a row for each instance registered in the database.
+	 */
 	public static Cursor getAll(SQLiteDatabase db) {
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__, null);
 		return c;
 	}
-	
+	/**
+	 * Performs a query to return all completed instances.
+	 * @param db An open database with reading permissions.
+	 * @return A cursor containing a row for each completed instance registered in the database.
+	 */
 	public static Cursor getAllCompleted(SQLiteDatabase db) {
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__+ 
 				" WHERE " + DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__, null);
 		return c;
 	}
-	
+	/**
+	 * Returns a {@link DbFormInstance} object loaded from the database.
+	 * @param db An open database with reading permissions.
+	 * @param id The local id of the instance to load.
+	 * @return
+	 */
 	public static DbFormInstance loadFrom(SQLiteDatabase db, long id) {
-		
-		String[] DBFORMINSTANCE_FROM = {DbFormInstance.__LOCALPACKAGESDB_ID__, DbFormInstance.__LOCALPACKAGESDB_NAME_KEY__,
-				DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__, DbFormInstance.__LOCALPACKAGESDB_COMPLETEDDATE_KEY__, 
-				DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__, 
-				DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, };
 		
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
 				" WHERE " + DbFormInstance.__LOCALPACKAGESDB_ID__ + " = " + id, null);
@@ -74,17 +116,26 @@ public class DbFormInstance {
 		c.moveToFirst();
 		if (c.isFirst()) {
 			DbFormInstance dbi = new DbFormInstance();
-			dbi.loadFrom(c);
+			dbi.loadFrom(db, c);
 			return dbi;
 		}
 		else
 			return null;
 	}
-	
-	public DbFormInstance loadFrom(Cursor c) {
+	/**
+	 * Loads a row in the database representing an instance into the current {@link DbFormInstance} object.
+	 * @param db An open database with reading permissions.
+	 * @param c A cursor pointing to the row with the instance to load.
+	 * @return A {@link DbFormInstance} object representing the instance the cursor is pointing to.
+	 */
+	public DbFormInstance loadFrom(SQLiteDatabase db, Cursor c) {
 		id = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_ID__));
-		name=c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_NAME_KEY__));
-		packageLocation = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__));
+		if (c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)) != -1)
+			form = DbForm.loadFrom(db, c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)));
+		else 
+			form = null;
+		label=c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__));
+		packagePath = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__));
 		compressedPackageFileLocation = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__));
 		DateFormat df = DateFormat.getDateInstance();
 		try {
@@ -110,57 +161,116 @@ public class DbFormInstance {
 		
 		return (this);
 	}
-	
-	public String getName() {
-		return name;
+	/**
+	 * @return A {@link DbForm} object representing the form attached to this instance.
+	 */
+	public DbForm getForm() {
+		return form;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-
-	public String getPackageLocation() {
-		return packageLocation;
-	}
-
-	public void setPackageLocation(String packageLocation) {
-		this.packageLocation = packageLocation;
-	}
-
+	/**
+	 * Allows to change the form attached to the current object.
+	 * @param form The form to attach to this instance.
+	 */
+	public void setForm(DbForm form) {
+		this.form = form;
+	}	
+	/**
+	 * 
+	 * @return The full path of the compressed binary file containing the instance's data. It can be null if the ZIP file hasn't been created yet.
+	 */
 	public String getCompressedPackageFileLocation() {
 		return compressedPackageFileLocation;
 	}
-	
+	/**
+	 * Allows us to set which is the binary file representing this instance. 
+	 * @param compressedPackageFileLocation full path to the binary file.
+	 */
 	public void setCompressedPackageFileLocation(
 			String compressedPackageFileLocation) {
 		this.compressedPackageFileLocation = compressedPackageFileLocation;
 	}
-
+	/**
+	 * 
+	 * @return The {@link Date} in which this instance was created.
+	 */
 	public Date getCreatedDate() {
 		return createdDate;
 	}
-
+	/**
+	 * Allows us to set the date in which the instance was created.
+	 * @param createdDate {@link Date} in which the instance was created.
+	 */
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-
-	public Date getCompletedDate() {
-		return completedDate;
-	}
-
-	public void setCompletedDate(Date completedDate) {
-		this.completedDate = completedDate;
-	}
-
+	/**
+	 * 
+	 * @return true if the instance has been marked as complete.
+	 */
 	public boolean isCompleted() {
 		return completed;
 	}
-
-	public void setCompleted(boolean completed) {
-		this.completed = completed;
+	
+	@Override
+	public Date getDate() {
+		return completedDate;
 	}
 
+	@Override
+	public IFormDefinition getForm_definition() {
+		return (IFormDefinition) form;
+	}
+
+	@Override
+	public long getInstance_local_id() {
+		return id;
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
+	}
+
+	@Override
+	public String getPackage_path() {
+		return this.packagePath;
+	}
+
+	@Override
+	public boolean isComplete() {
+		return completed;
+	}
+
+	@Override
+	public void setComplete(boolean complete) {
+		completed = complete;
+	}
+
+	@Override
+	public void setDate(Date date) {
+		completedDate = date;
+	}
+
+	@Override
+	public void setForm_definition(IFormDefinition formDefinition) {
+		form = (DbForm) formDefinition;
+	}
+
+	@Override
+	public void setInstance_local_id(long instanceLocalId) {
+		id = instanceLocalId;
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	@Override
+	public void setPackage_path(String packagePath) {
+		this.packagePath = packagePath;
+	}
+	
 	public void delete(SQLiteDatabase db) {
 		if (id != -1) {
 			Log.i(LOG_TAG, "Deleting row in the database with id= " + id);
@@ -168,14 +278,24 @@ public class DbFormInstance {
 					DbFormInstance.__LOCALPACKAGESDB_ID__ + " = " + id, null);
 		}
 	}
-	
+	/**
+	 * Saves the current {@link DbFormInstance} object into the database. This operation does not throw exceptions, and the 
+	 * result is written to the system log. The method will automatically create a new row if the instance has not been saved before 
+	 * (id == -1) and will update it if the id is not -1.
+	 * NOTE: There are no checks regarding the attached form. 
+	 * @param db An open database with writing permissions.
+	 */
 	public void save(SQLiteDatabase db) {
 		ContentValues cv = new ContentValues();
 		
 		if (id != -1)
 			cv.put(DbFormInstance.__LOCALPACKAGESDB_ID__, id);
-		cv.put(DbFormInstance.__LOCALPACKAGESDB_NAME_KEY__, name);
-		cv.put(DbFormInstance.__LOCALPACKAGESDB_LOCATION_KEY__, packageLocation);
+		if (form != null)
+			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, form.getForm_id());
+		else
+			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, -1);
+		cv.put(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__, label);
+		cv.put(DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__, packagePath);
 		cv.put(DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__, compressedPackageFileLocation);
 		
 		String myDateString;
@@ -194,15 +314,34 @@ public class DbFormInstance {
 		long res;
 		if (id == -1) 
 		{
-			Log.i(LOG_TAG, "Saving as a new row in the database");
 			res = db.insert(DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__, 
-				DbFormInstance.__LOCALPACKAGESDB_NAME_KEY__, cv);
+				DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__, cv);
+			if (res != -1) {
+				id = res;
+				Log.d(LOG_TAG, "Saved as a new row in the database succesfully.");
+			}
+			else
+				Log.e(LOG_TAG, "Saving of the new row failed.");
 		}
 		else {
 			// else we update
-			Log.i(LOG_TAG, "Updating row in the database where id= " + id);
 			res = db.update(DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__, cv
 					, DbFormInstance.__LOCALPACKAGESDB_ID__ + " = " + id, null);
+			if (res == 1)
+				Log.d(LOG_TAG, "Update of row with id= " + id + " in the database was succesful.");
+			else
+				Log.e(LOG_TAG, "Update of row with id= " + id + " in the database failed.");
 		}
 	}
+	/**
+	 * Method designed to allow the parser to access the Instances database content without knowing its design 
+	 * through an {@link Object} implementing the {@link IJavaToDatabaseInstance} interface.
+	 * @param context The context in which the object will be used.
+	 * @return An initialized object meeting the {@link IJavaToDatabaseInstance} interface.
+	 */
+	public static IJavaToDatabaseInstance getParserInterfaceInstance(Context context) {
+		return new JavaInstances(context);
+		
+	}
+
 }
