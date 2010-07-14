@@ -4,6 +4,7 @@ import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,7 +18,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-public class CheckboxThreeWidget extends ThreeStateCheckBox implements QuestionWidget {
+public class CheckboxThreeWidget extends ThreeStateCheckBox implements IQuestionWidget {
 
 	
 	public CheckboxThreeWidget(Context context) {
@@ -58,6 +59,16 @@ public class CheckboxThreeWidget extends ThreeStateCheckBox implements QuestionW
 	@Override
 	public void mySetListener(OnTouchListener list) {
 		
+	}
+
+	@Override
+	public Object getAnswer() {
+		return this.getState();
+	}
+
+	@Override
+	public WidgetType getType() {
+		return WidgetType.CHECKBOXTHREE;
 	}
 
 }

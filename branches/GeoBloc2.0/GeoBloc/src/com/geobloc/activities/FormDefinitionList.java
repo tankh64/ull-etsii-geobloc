@@ -61,6 +61,9 @@ import android.graphics.Bitmap;
  */
 public class FormDefinitionList extends ListActivity {
         private static final String TAG = "FormDefinitionList";
+        
+        public static final String FILE_PATH = "filepath";
+        public static final String LOCAL_ID = "localId";
 
     private static class EfficientAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -219,10 +222,19 @@ public class FormDefinitionList extends ListActivity {
             Log.e(TAG, ex.getMessage());
         }
         
-        result.putExtra(FormList.FILE_PATH, path);
+        result.putExtra(FormDefinitionList.FILE_PATH, path);
+        result.putExtra(FormDefinitionList.LOCAL_ID, localId);
         
         setResult(RESULT_OK, result);
         finish();
+    }
+    
+    
+    @Override
+    protected void onDestroy () {
+    	formsInterface.close();
+    	
+    	super.onDestroy();
     }
     
 }

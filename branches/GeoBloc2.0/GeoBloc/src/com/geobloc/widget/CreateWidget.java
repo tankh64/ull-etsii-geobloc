@@ -8,9 +8,9 @@ import com.geobloc.prompt.QuestionPrompt;
 
 public class CreateWidget {
 	
-	static public QuestionWidget createWidget (QuestionPrompt qP, Context context, ViewGroup parent) {
+	static public IQuestionWidget createWidget (QuestionPrompt qP, Context context, ViewGroup parent) {
 		
-		QuestionWidget widget;
+		IQuestionWidget widget;
 		
 		switch (qP.getType()) {
 		

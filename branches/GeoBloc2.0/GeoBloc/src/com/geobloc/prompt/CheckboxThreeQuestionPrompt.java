@@ -13,6 +13,8 @@ public class CheckboxThreeQuestionPrompt extends QuestionPrompt {
 	
 	String action;
 	
+	int state = 0;
+	
 	public CheckboxThreeQuestionPrompt (String titleText, AttributeTag att) {
 		
 		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
@@ -56,5 +58,18 @@ public class CheckboxThreeQuestionPrompt extends QuestionPrompt {
 	
 	public String getAction () {
 		return this.action;
+	}
+
+	private void setValue (int value) {
+		this.state = value;
+	}
+	
+	private int getValue () {
+		return this.state;
+	}
+	
+	@Override
+	public Object getAnswer() {
+		return getValue();
 	}
 }

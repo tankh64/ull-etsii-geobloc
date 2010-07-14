@@ -97,16 +97,20 @@ public class MainMenu extends Activity {
     				Bundle extras = data.getExtras();
     				
     				if (extras != null) {
-    					if (extras.containsKey(FormList.FILE_NAME) || (extras.containsKey(FormList.FILE_PATH))) { 
-    						String filename = extras.getString (FormList.FILE_NAME);
+    					if (extras.containsKey(FormDefinitionList.LOCAL_ID) || (extras.containsKey(FormDefinitionList.FILE_PATH))) { 
+    						//String filename = extras.getString (FormList.FILE_NAME);
     						String filepath = extras.getString (FormList.FILE_PATH);
+    						long localId = extras.getLong(FormDefinitionList.LOCAL_ID);
     				
-    						Log.i(TAG, "Filename es "+filename);
+    						//Log.i(TAG, "Filename es "+filename);
     						Log.i(TAG, "Filepath es "+filepath);
+    						Log.i(TAG, "localId es "+localId);
     				
-    						Intent i = new Intent (getApplicationContext(),FormActivity.class);
-    						i.putExtra(FormActivity.FILE_NAME, filename);
+    						Intent i = new Intent (getApplicationContext(), FormActivity.class);
+    						//i.putExtra(FormActivity.FILE_NAME, filename);
     						i.putExtra(FormActivity.FILE_PATH, filepath);
+    						i.putExtra(FormActivity.LOCAL_ID, localId);
+    						
     						startActivityForResult(i, PARSING_XML);
     					} else {
     						Log.e(TAG, "LIST_FORM no devuelve un nombre de fichero");

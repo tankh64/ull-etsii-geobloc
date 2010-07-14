@@ -50,6 +50,14 @@ public class LabelQuestionPrompt extends QuestionPrompt {
 	public String getQuestionTitle () {
 		return title;
 	}
+
+	/**
+	 * Devuelve en éste caso el texto de la etiqueta
+	 */
+	@Override
+	public Object getAnswer() {
+		return getQuestionTitle();
+	}
 	
 
 }

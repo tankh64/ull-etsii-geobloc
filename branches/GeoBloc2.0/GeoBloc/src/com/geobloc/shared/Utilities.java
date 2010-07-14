@@ -49,7 +49,8 @@ public class Utilities {
 	/*
 	 * Type for the "Widget"
 	 */
-	public enum WidgetType {LABEL, STRING, INT, BUTTON, CHECKBOX};
+	public enum WidgetType {FIELD, CHECKBOX, CHECKBOXTHREE, LABEL, SINGLELIST,
+		MULTIPLELIST, PHOTO, VIDEO, LOCATION, STRING, INT, BUTTON};
 	
 	/*
 	 * Types for the FIELD

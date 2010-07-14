@@ -21,11 +21,6 @@ public abstract class QuestionPrompt {
 	
 	private boolean required;
 	
-	///////// Builders
-	/*
-	public QuestionPrompt (String name) {
-		setQuestionName(name);
-	}*/
 	public QuestionPrompt () {
 		Log.i(TAG, "Constructor"+TAG);
 	}
@@ -70,4 +65,10 @@ public abstract class QuestionPrompt {
 	public boolean isRequired () {
 		return required;
 	}
+	
+	/**
+	 * Returns the Answer of the question
+	 * @return
+	 */
+	public abstract Object getAnswer ();
 }

@@ -20,6 +20,8 @@ public class SingleListQuestionPrompt extends QuestionPrompt {
 	
 	/** items from the list */
 	private List<ItemList> listItem;
+	/** List Item selected */
+	private int selected;
 	
 	// Deberá tener la lista de opciones ...
 	
@@ -65,8 +67,8 @@ public class SingleListQuestionPrompt extends QuestionPrompt {
 	 * @param label
 	 * @param value
 	 */
-	public void addItemToList (String label, String value) {
-		ItemList item = new ItemList (label, value);
+	public void addItemToList (String label, String value, String idItem) {
+		ItemList item = new ItemList (label, value, idItem);
 		listItem.add(item);
 	}
 	/**
@@ -83,6 +85,12 @@ public class SingleListQuestionPrompt extends QuestionPrompt {
 	
 	public ItemList getItem (int pos) {
 		return listItem.get(pos);
+	}
+
+
+	@Override
+	public Object getAnswer() {
+		return listItem.get(selected);
 	}
 
 }

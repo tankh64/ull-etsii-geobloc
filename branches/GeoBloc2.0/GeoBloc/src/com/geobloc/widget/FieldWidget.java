@@ -18,11 +18,13 @@ import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
-public class FieldWidget extends LinearLayout implements QuestionWidget {
+public class FieldWidget extends LinearLayout implements IQuestionWidget {
 	
 	TextView Text;
 	EditText ed;
+	DataInputQuestionPrompt qP;
 	
 	public FieldWidget(Context context) {
 		super(context);
@@ -37,6 +39,7 @@ public class FieldWidget extends LinearLayout implements QuestionWidget {
 	@Override
 	public void buildView(QuestionPrompt qP) {
 		// TODO Auto-generated method stub
+		this.qP = (DataInputQuestionPrompt) qP;
 		
         /* Contendrá el Texto y el EditText */
         /* Texto antes del EditText */
@@ -94,9 +97,19 @@ public class FieldWidget extends LinearLayout implements QuestionWidget {
 	}
 	
 	@Override
+	public Object getAnswer () {
+		return ed.getText().toString();
+	}
+	
+	@Override
 	public void mySetListener(OnTouchListener list) {
 		ed.setOnTouchListener(list);
 		Text.setOnTouchListener(list);
+	}
+
+	@Override
+	public WidgetType getType() {
+		return WidgetType.FIELD;
 	}
 	
 }

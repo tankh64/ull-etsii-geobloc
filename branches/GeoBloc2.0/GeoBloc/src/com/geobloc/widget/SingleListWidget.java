@@ -19,9 +19,13 @@ import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.SingleListQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
-public class SingleListWidget extends RadioGroup implements QuestionWidget {
+public class SingleListWidget extends RadioGroup implements IQuestionWidget {
 	private static String TAG = "ListWidget";
+	
+	int selected;
+	SingleListQuestionPrompt sListQ;
 
 	public SingleListWidget(Context context) {
 		super(context);
@@ -32,17 +36,12 @@ public class SingleListWidget extends RadioGroup implements QuestionWidget {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
-	
-
 
 	@Override
 	public void buildView(QuestionPrompt qP) {
-		// TODO Auto-generated method stub
-	    /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-	            getContext(), R.array.planets_array, android.R.layout.simple_spinner_item);
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    this.setAdapter(adapter);*/
 		this.setPadding(0, 20, 0, 20);
+		
+		this.sListQ = (SingleListQuestionPrompt)qP;
 		
 		TextView Text = new TextView(getContext());
         Text.setTextSize(20);
@@ -53,6 +52,7 @@ public class SingleListWidget extends RadioGroup implements QuestionWidget {
         int size = ((SingleListQuestionPrompt)qP).getSizeOfList();
         for (int i=0; i<size; i++) {
         	rButton = new RadioButton (getContext());
+        	rButton.setId(i+1);
     		rButton.setText(((SingleListQuestionPrompt)qP).getItem(i).getLabel());
     		addView(rButton);
         }		
@@ -67,5 +67,17 @@ public class SingleListWidget extends RadioGroup implements QuestionWidget {
 	@Override
 	public void mySetListener(OnTouchListener list) {
 		setOnTouchListener(list);
+	}
+
+	@Override
+	public Object getAnswer() {
+		selected = this.getCheckedRadioButtonId() - 1;
+		
+		return (sListQ).getItem(selected);
+	}
+	
+	@Override
+	public WidgetType getType() {
+		return WidgetType.SINGLELIST;
 	}
 }

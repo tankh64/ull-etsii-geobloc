@@ -13,6 +13,9 @@ public class CheckboxQuestionPrompt extends QuestionPrompt {
 	
 	String action;
 	
+	/* CheckBox state (0-No, 1-Yes) */
+	int state = 0;
+	
 	public CheckboxQuestionPrompt (String titleText, AttributeTag att) {
 		
 		if (att.attMap.containsKey(Utilities.ATTR_ID)) {
@@ -56,5 +59,18 @@ public class CheckboxQuestionPrompt extends QuestionPrompt {
 	
 	public String getAction () {
 		return this.action;
+	}
+
+	private void setValue (int value) {
+		this.state = value;
+	}
+	
+	private int getValue () {
+		return this.state;
+	}
+	
+	@Override
+	public Object getAnswer() {
+		return getValue();
 	}
 }
