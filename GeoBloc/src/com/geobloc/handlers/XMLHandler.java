@@ -14,6 +14,7 @@ import com.geobloc.form.FormDataPage;
 import com.geobloc.form.FormLocationPage;
 import com.geobloc.form.FormPage;
 import com.geobloc.form.FormPhotoPage;
+import com.geobloc.form.FormVideoPage;
 import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.CheckboxThreeQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
@@ -127,6 +128,7 @@ public class XMLHandler extends DefaultHandler {
     /** Label and value list */
     private ArrayList<String> labelList;
     private ArrayList<String> valueList;
+    private ArrayList<String> idList; 
     
     /** Aux variables for Labels and Values of list */
     private String auxLabel;
@@ -193,6 +195,7 @@ public class XMLHandler extends DefaultHandler {
     			break;
     		case IGB_VIDEO_PAGE:
     			this.in_gb_videoPage = true;
+    			myPage = (FormPage) new FormVideoPage();
     			break;
     		case IGB_AUDIO_PAGE:
     			this.in_gb_audioPage = true;
@@ -249,6 +252,8 @@ public class XMLHandler extends DefaultHandler {
     			/** We create a new list of values and labels */
     			labelList = new ArrayList<String>();
     			valueList = new ArrayList<String>();
+    			idList = new ArrayList<String>();
+    			/** and identifiers too */
     			break;
     		case IGB_LIST_LABEL:
     			this.in_gb_listLabel = true;
@@ -317,6 +322,8 @@ public class XMLHandler extends DefaultHandler {
 			break;
 		case IGB_VIDEO_PAGE:
 			this.in_gb_videoPage = false;
+        	myForm.addPage((FormVideoPage)myPage);
+        	Log.v(TAG, "New video page added");
 			break;
 		case IGB_AUDIO_PAGE:
 			this.in_gb_audioPage = false;
@@ -406,7 +413,7 @@ public class XMLHandler extends DefaultHandler {
 					break;
 				}
 				for (int i=0; i<labelList.size(); i++) {
-					listPrompt.addItemToList(labelList.get(i), valueList.get(i));
+					listPrompt.addItemToList(labelList.get(i), valueList.get(i), idList.get(i));
 				}
 				((FormDataPage)myPage).addQuestion(listPrompt);
 			}
@@ -422,7 +429,7 @@ public class XMLHandler extends DefaultHandler {
 					break;
 				}
 				for (int i=0; i<labelList.size(); i++) {
-					listPrompt.addItemToList(labelList.get(i), valueList.get(i));
+					listPrompt.addItemToList(labelList.get(i), valueList.get(i), idList.get(i));
 				}
 				((FormDataPage)myPage).addQuestion(listPrompt);
 			}
@@ -432,6 +439,7 @@ public class XMLHandler extends DefaultHandler {
 			clearValues();
 			labelList.clear();
 			valueList.clear();
+			idList.clear();
 			break;
 		case IGB_LIST_LABEL:
 			this.in_gb_listLabel = false;
@@ -440,8 +448,14 @@ public class XMLHandler extends DefaultHandler {
 			/* Ahora debemos insertar el label y value */
 			this.in_gb_listItem = false;
 			
+			String idItemList = "";
+			if (attMap.attMap.containsKey(Utilities.ATTR_ID)) {
+				idItemList = attMap.attMap.get(Utilities.ATTR_ID);
+			}
+			
 			labelList.add(auxLabel);
 			valueList.add(auxValue);
+			idList.add(idItemList);
 			break;
 		case IGB_LIST_ITEM_LABEL:
 			this.in_gb_listItemLabel = false;
@@ -507,6 +521,11 @@ public class XMLHandler extends DefaultHandler {
     			}
     		}
     		else if (this.in_gb_photoPage) {
+    			if (this.in_gb_pageName) {
+    				myPage.setNamePage(cadena);
+    			}
+    		}
+    		else if (this.in_gb_videoPage) {
     			if (this.in_gb_pageName) {
     				myPage.setNamePage(cadena);
     			}

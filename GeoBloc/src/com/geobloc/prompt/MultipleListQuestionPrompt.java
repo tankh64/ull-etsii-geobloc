@@ -1,7 +1,10 @@
 package com.geobloc.prompt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.xml.sax.Attributes;
 
@@ -20,6 +23,8 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 	
 	/** items from the list */
 	private List<ItemList> listItem;
+	
+	private HashMap<ItemList, Boolean> mapSelected;
 	
 	// Deberá tener la lista de opciones ...
 	
@@ -40,6 +45,8 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 		this.setType();
 		
 		listItem = new ArrayList();
+		
+		mapSelected = new HashMap<ItemList, Boolean>();
 	}
 
 
@@ -65,8 +72,8 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 	 * @param label
 	 * @param value
 	 */
-	public void addItemToList (String label, String value) {
-		ItemList item = new ItemList (label, value);
+	public void addItemToList (String label, String value, String idItem) {
+		ItemList item = new ItemList (label, value, idItem);
 		listItem.add(item);
 	}
 	/**
@@ -83,6 +90,28 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 	
 	public ItemList getItem (int pos) {
 		return listItem.get(pos);
+	}
+
+
+	@Override
+	public Object getAnswer() {
+		List<ItemList> selectedItems = new ArrayList<ItemList>();
+
+		for (int i=0; i<listItem.size(); i++) {
+			// Si el ID está seleccionado, lo insertamos en la lista de seleccionados
+			if (mapSelected.containsKey(listItem.get(i).getId())) {
+				selectedItems.add(listItem.get(i));
+				Log.v(TAG, "Está seleccionado -"+listItem.get(i).getId()+
+						"- <"+listItem.get(i).getLabel()+
+						">"+listItem.get(i).getValue());
+			}
+			else {
+				Log.v(TAG, "NO Está seleccionado -"+listItem.get(i).getId()+
+						"- <"+listItem.get(i).getLabel()+
+						">"+listItem.get(i).getValue());
+			}
+		}
+		return selectedItems;
 	}
 
 }

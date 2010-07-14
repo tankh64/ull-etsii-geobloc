@@ -7,20 +7,24 @@ import java.util.ArrayList;
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
 import com.geobloc.adapters.ImageAdapterPhoto;
-import com.geobloc.form.FormDataPage;
+import com.geobloc.db.DbFormInstance;
 import com.geobloc.form.FormPage.PageType;
 import com.geobloc.handlers.FormHandler;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
+import com.geobloc.shared.IInstanceDefinition;
+import com.geobloc.shared.IJavaToDatabaseInstance;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
 import com.geobloc.widget.LocationWidget;
 import com.geobloc.widget.PhotoWidget;
-import com.geobloc.widget.QuestionWidget;
+import com.geobloc.widget.IQuestionWidget;
 import com.geobloc.widget.CreateWidget;
+import com.geobloc.widget.VideoWidget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -40,6 +44,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -49,13 +54,10 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -78,8 +80,11 @@ import android.widget.AdapterView.OnItemClickListener;
 public class FormActivity extends Activity {
 	private static final String TAG = "FormActivity";
 	
-	private static final int CAMERA_ACTIVITY = 1;
-	private static final int GALLERY_ACTIVITY = 2;
+	private static final int CAMERA_PHOTO_ACTIVITY = 1;
+	private static final int GALLERY_PHOTO_ACTIVITY = 2;
+	
+	private static final int CAMERA_VIDEO_ACTIVITY = 3;
+	private static final int GALLERY_VIDEO_ACTIVITY = 4;
 	
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -101,6 +106,7 @@ public class FormActivity extends Activity {
     private static final int VIEW_PHOTO = 0;
     private static final int DELETE_PHOTO = 1;
 
+    private static final int DIALOG_EXIT_OR_NOT = 0;
     
 	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
 
@@ -146,9 +152,14 @@ public class FormActivity extends Activity {
 	
 	public static final String FILE_NAME = "filename";
 	public static final String FILE_PATH = "filepath";
+	public static final String LOCAL_ID = "localId";
 	
 	private String filename;
 	private String filepath;
+	private long localId;
+	
+	IJavaToDatabaseInstance instanceInterface;
+	IInstanceDefinition myInstance;
 	
 	private static ProgressDialog pDialog;
 	private LoadFormTask loadTask;
@@ -180,8 +191,9 @@ public class FormActivity extends Activity {
 		// Aqui debemos conocer el nombre del fichero
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
-        	filename = bundle.getString(FormActivity.FILE_NAME);
+        	//filename = bundle.getString(FormActivity.FILE_NAME);
         	filepath = bundle.getString(FormActivity.FILE_PATH);
+        	localId = bundle.getLong(FormActivity.LOCAL_ID);
         }
         else {
         	Utilities.showToast(getApplicationContext(),
@@ -315,6 +327,15 @@ public class FormActivity extends Activity {
 	}
 	
 	private void postTaskFinished() {
+		
+		/* Debemos crear la nueva instancia, si da error, debemos salir */
+	     instanceInterface = DbFormInstance.getParserInterfaceInstance(this);
+	     try {
+	    	   myInstance = instanceInterface.newInstance(localId);
+	      } catch (Exception e) {
+	            e.printStackTrace();
+	      }
+		
 		inflateFirstPage();
 		setFlipperPages();
 		inflateLastPage();
@@ -348,7 +369,9 @@ public class FormActivity extends Activity {
 	private void setFlipperPages () {
 		//Context context = FormActivity.this;
 		Context context = getApplicationContext();
-		QuestionWidget wdget;
+		IQuestionWidget wdget;
+		
+		Button button;
 		
 	    if (formH != null) {
 	    	for (int page=0; page < formH.getNumPages(); page++) {
@@ -380,7 +403,7 @@ public class FormActivity extends Activity {
 	    				        
 	    				        
 	    				        // ************  Makephoto button
-	    				        Button button = (Button) ((View)wdget).findViewById (R.id.takePhotoButton);
+	    				        button = (Button) ((View)wdget).findViewById (R.id.takePhotoButton);
 	    				        button.setOnClickListener(new OnClickListener() {
 
 									@Override
@@ -392,9 +415,9 @@ public class FormActivity extends Activity {
 										if (Utilities.photoSizeBigEnable) {
 											intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
 											intent.putExtra("PAGE_NUMBER", viewFlipper.getDisplayedChild());
-											startActivityForResult(intent, CAMERA_ACTIVITY);
+											startActivityForResult(intent, CAMERA_PHOTO_ACTIVITY);
 										} else {
-											startActivityForResult(intent, CAMERA_ACTIVITY);
+											startActivityForResult(intent, CAMERA_PHOTO_ACTIVITY);
 										}
 									}
 	    				        	
@@ -412,7 +435,7 @@ public class FormActivity extends Activity {
 										Intent intent = new Intent();
 										intent.setType("image/*");
 										intent.setAction(Intent.ACTION_GET_CONTENT);
-										startActivityForResult(intent, GALLERY_ACTIVITY);
+										startActivityForResult(intent, GALLERY_PHOTO_ACTIVITY);
 									}
 	    				        	
 	    				        });
@@ -436,11 +459,71 @@ public class FormActivity extends Activity {
 	    				        // We also want to show context menu for longpressed items in the gallery
 	    				        registerForContextMenu(g);
 	    						break;
-	    			case AUDIO:	
-	    			case VIDEO: break;
+	    			
+	    						
+	    			
+	    			case AUDIO:	break;
+	    			
+	    			
+	    			case VIDEO:	wdget = new VideoWidget (context, (ViewGroup)viewFlipper);
+								viewFlipper.addView((View) wdget, page+1);
+								
+	    				        // ************  Capture video button
+	    				        button = (Button) ((View)wdget).findViewById (R.id.takeVideoButton);
+	    				        button.setOnClickListener(new OnClickListener() {
+
+									@Override
+									public void onClick(View arg0) {
+										Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+										pageCamera = viewFlipper.getDisplayedChild() + 1;
+										
+										Utilities.showToast(getApplicationContext(), "Debemos capturar un video", Toast.LENGTH_SHORT);
+										startActivityForResult (intent, CAMERA_VIDEO_ACTIVITY);
+										
+										/**
+										 * Deberemos aqui cancelar el botón de capturar video,
+										 * porque ya ha sido capturado un video.
+										 * TODO: En realidad aqui no va, sino en el
+										 * onActivityResult()
+										 */
+										//arg0.setEnabled(false);
+									}
+	    				        	
+	    				        });
+	    				        
+	    				        // ************  Gallery video button
+	    				        button = (Button) ((View)wdget).findViewById (R.id.loadFromGalleryButton);
+	    				        button.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View arg0) {
+										pageCamera = viewFlipper.getDisplayedChild() + 1;		
+										Utilities.showToast(getApplicationContext(), "Debemos obtener un video desde la galería", Toast.LENGTH_SHORT);
+									}
+	    				        	
+	    				        });
+	    				        
+	    				        
+	    				        // Delete video button
+	    				        button = (Button) ((View)wdget).findViewById (R.id.clearButton);
+	    				        button.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View arg0) {
+										pageCamera = viewFlipper.getDisplayedChild() + 1;		
+										Utilities.showToast(getApplicationContext(), "Debemos borrar el video actual", Toast.LENGTH_SHORT);
+										(viewFlipper.getChildAt(pageCamera-1)).findViewById(R.id.takeVideoButton).setEnabled(true);
+										arg0.setEnabled(false);
+									}
+	    				        	
+	    				        });
+	    				        button.setEnabled(false);
+	    				        
+	    				        
+	    						break;
+	    						
 	    			case LOCATION: 	wdget = new LocationWidget (context, (ViewGroup)viewFlipper);
 									viewFlipper.addView((View) wdget, page+1);
 								break;
+								
 	    			case DATA:
 	    				ScrollView scrollV = new ScrollView(context);
 	    				
@@ -656,7 +739,7 @@ public class FormActivity extends Activity {
 
 		/* Debo diferenciar desde que página fue llamada la cámara o la galería, para incluirla en su lugar */
 		
-		case CAMERA_ACTIVITY:
+		case CAMERA_PHOTO_ACTIVITY:
 			Bundle b = intent.getExtras();
 			Bitmap fullbm = (Bitmap) b.get("data");
 			
@@ -684,9 +767,11 @@ public class FormActivity extends Activity {
 				}
             	Utilities.showToast(getApplicationContext(), "Llamada de la página "+pageCamera, Toast.LENGTH_SHORT);
 			}
+			
+			reload(viewFlipper.getDisplayedChild()+1);
 			break;
 			
-		case GALLERY_ACTIVITY:
+		case GALLERY_PHOTO_ACTIVITY:
 			
 			Uri uri = intent.getData();
 		    ContentResolver cr = getApplicationContext().getContentResolver();
@@ -703,9 +788,25 @@ public class FormActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
+			
+			reload(viewFlipper.getDisplayedChild()+1);
+			break;
+			
+		case CAMERA_VIDEO_ACTIVITY:
+			
+			/*
+			 * Viene de "grabar" o no un video
+			 */
+			Utilities.showToast(getApplicationContext(), "Video para la pagina: "+pageCamera, Toast.LENGTH_LONG);
+			
+			(viewFlipper.getChildAt(pageCamera-1)).findViewById(R.id.takeVideoButton).setEnabled(false);
+			(viewFlipper.getChildAt(pageCamera-1)).findViewById(R.id.clearButton).setEnabled(true);
+			
 			break;
 		}
-		reload(viewFlipper.getDisplayedChild()+1);
+		
+		
+		//reload(viewFlipper.getDisplayedChild()+1);
 		//displayGallery();
 	}
 	
@@ -734,5 +835,94 @@ public class FormActivity extends Activity {
 			default: texto.setText(getString(R.string.load_photos,""+imageAdapter.getCount()));
 		}
 	}
+	
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	    	showDialog(DIALOG_EXIT_OR_NOT);
+	        return true;
+	    }
 
+	    return super.onKeyDown(keyCode, event);
+	}
+
+	
+	@Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case DIALOG_EXIT_OR_NOT:
+            return new AlertDialog.Builder(FormActivity.this)
+                .setIcon(R.drawable.alert_dialog_icon)
+                .setTitle("Guardar los cambios antes de salir")
+                .setMessage("Desea guardar los cambios del formulario antes de salir (no está implementado todavía)")
+                .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    	saveForm();
+                        /* User clicked OK so do some stuff */
+                    }
+                })
+                .setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+             	       try {
+             	    	   instanceInterface.deleteInstance(myInstance.getInstance_local_id());
+             		   } catch (Exception e) {
+             			   e.printStackTrace();
+             		   }
+             		   finish();
+                    }
+                })
+                .create();
+        }
+        return null;
+	}
+	
+	
+	/**
+	 * Guardo los datos del formulario actual, mediante el formH
+	 * y guardo la instancia tambien
+	 */
+	private void saveForm () {
+		/*
+		 * Debo recorrer todo el formulario (visual)
+		 * y guardar los datos que contiene.
+		 */
+		for (int page = 1; page < viewFlipper.getChildCount(); page++) {
+			View child = viewFlipper.getChildAt(page);
+			
+			Log.i (TAG, "Class -> <"+child.getClass().toString()+">");
+			if (child.getClass().toString().contains("android.widget.ScrollView")) {
+				child = ((ScrollView)child).getChildAt(0); // éste es el linear que tendrá los widgets
+				Log.i (TAG, "Dentro Class -> <"+child.getClass().toString()+">");
+				
+				// Recorremos todos los Widgets
+				for (int i=0; i<((LinearLayout)child).getChildCount(); i++) {
+					IQuestionWidget widget = (IQuestionWidget) ((LinearLayout)child).getChildAt(i);
+					
+					switch (widget.getType()) {
+						case FIELD:	Log.i(TAG, "Respuesta: "+widget.getAnswer());
+									break;
+					}
+				}
+			}
+			
+
+			
+			/*switch (((IQuestionWidget)child).getType()) {
+			case FIELD:
+						break;
+				//CHECKBOX, CHECKBOXTHREE, LABEL, SINGLELIST, MULTIPLELIST, PHOTO, VIDEO, LOCATION
+			}*/
+		}
+		
+		
+	}
+	
+	
+	@Override
+	protected void onDestroy () {
+		instanceInterface.close();
+		
+		super.onDestroy();
+	}
 }

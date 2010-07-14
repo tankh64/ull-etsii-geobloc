@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+     
+<RelativeLayout android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/photoGalleryLayout">
+
+	<Gallery android:id="@+id/gallery"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_margin="10px"/>
+
+
+<Button android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_above="@+id/loadFromGalleryButton" android:layout_margin="10px" android:layout_width="200px" android:id="@+id/takeVideoButton"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/loadFromGalleryButton" android:layout_centerHorizontal="true" android:layout_centerInParent="true" android:layout_above="@+id/clearButton" android:layout_margin="10px" android:layout_width="200px"></Button>
+<Button android:id="@+id/clearButton" android:layout_centerHorizontal="true" android:layout_height="wrap_content" android:layout_margin="10px" android:layout_width="200px" android:layout_above="@+id/loadVideos"></Button>
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_centerInParent="true" android:layout_margin="20dp" android:id="@+id/loadVideos"></TextView>
+</RelativeLayout>

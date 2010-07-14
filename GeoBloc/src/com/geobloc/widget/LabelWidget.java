@@ -1,16 +1,15 @@
 package com.geobloc.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
-import android.view.View.OnTouchListener;
 import android.widget.TextView;
 
 import com.geobloc.prompt.LabelQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
-public class LabelWidget extends TextView implements QuestionWidget {
+public class LabelWidget extends TextView implements IQuestionWidget {
 
 	public LabelWidget(Context context) {
 		super(context);
@@ -49,5 +48,15 @@ public class LabelWidget extends TextView implements QuestionWidget {
 	@Override
 	public void mySetListener(OnTouchListener list) {
 		
+	}
+
+	@Override
+	public Object getAnswer() {
+		return this.getText();
+	}
+	
+	@Override
+	public WidgetType getType() {
+		return WidgetType.LABEL;
 	}
 }

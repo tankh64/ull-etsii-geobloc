@@ -65,11 +65,11 @@ public final class LoadFormTask extends AsyncTask<String, Void, FormHandler>{
 		/*** Filename of the form */
 		String filename = params[0];
 		
-		try {
+		/*try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		try {
 			/* Creamos un SAXParser. */

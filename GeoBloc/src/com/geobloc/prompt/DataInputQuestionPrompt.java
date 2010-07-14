@@ -101,4 +101,9 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	public Utilities.FieldType getFieldType () {
 		return fieldType;
 	}
+
+	@Override
+	public Object getAnswer() {
+		return getQuestionInput();
+	}
 }

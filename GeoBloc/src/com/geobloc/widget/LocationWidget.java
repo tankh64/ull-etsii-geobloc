@@ -5,6 +5,7 @@ import com.geobloc.prompt.CheckboxQuestionPrompt;
 import com.geobloc.prompt.DataInputQuestionPrompt;
 import com.geobloc.prompt.QuestionPrompt;
 import com.geobloc.shared.Utilities;
+import com.geobloc.shared.Utilities.WidgetType;
 
 import android.app.Activity;
 import android.content.Context;
@@ -35,8 +36,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class LocationWidget extends RelativeLayout implements QuestionWidget {
+public class LocationWidget extends RelativeLayout implements IQuestionWidget {
 	protected static final String TAG = "LocationWidget";
+	
+	//private String longitud;
+	//private String latitud;
+	private Location location;
 	
 	Context mContext;
 	LayoutInflater inflater;
@@ -112,6 +117,9 @@ public class LocationWidget extends RelativeLayout implements QuestionWidget {
 				text.setText(mContext.getString(R.string.find_position, arg0.getLatitude(), arg0.getLongitude()));
 				Log.i(TAG, "Received location Update");
 				
+				// Lo que devolveremos cuando nos pidan la respuesta
+				location = arg0;
+				
 				gpsButton.setChecked(false);
 				progressBar.setVisibility(ProgressBar.INVISIBLE);
 				checkGPSStatus();
@@ -156,6 +164,7 @@ public class LocationWidget extends RelativeLayout implements QuestionWidget {
 		gpsButton.setChecked(false);
 		text.setBackgroundColor(Color.TRANSPARENT);
 		text.setText("Se ha desactivado la búsqueda de posición");
+		location = null;
 	}
 
 	@Override
@@ -204,6 +213,16 @@ public class LocationWidget extends RelativeLayout implements QuestionWidget {
 			settingsButton.setVisibility(VISIBLE);
 			gpsButton.setEnabled(false);
 		}
+	}
+
+	@Override
+	public Object getAnswer() {
+		return location;
+	}
+	
+	@Override
+	public WidgetType getType() {
+		return WidgetType.LOCATION;
 	}
 	
 }

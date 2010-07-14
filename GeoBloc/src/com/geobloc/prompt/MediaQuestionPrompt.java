@@ -18,4 +18,9 @@ public class MediaQuestionPrompt extends QuestionPrompt {
 	public void setType() {
 		type = QuestionType.GB_MEDIA;	
 	}
+
+	@Override
+	public Object getAnswer() {
+		return null;
+	}
 }

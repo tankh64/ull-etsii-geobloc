@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-public class PhotoWidget extends RelativeLayout implements IQuestionWidget {
+public class VideoWidget extends RelativeLayout implements IQuestionWidget {
 	
 	private static final int REQUEST_CAMERA = 0;
 	
@@ -31,27 +31,22 @@ public class PhotoWidget extends RelativeLayout implements IQuestionWidget {
 	
 	LayoutInflater inflater;
 	
-	public PhotoWidget(Context context, ViewGroup parent) {
+	public VideoWidget(Context context, ViewGroup parent) {
 		super(context);
 		
 		mContext = context;
-		
-		/*inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.gallery, null);*/
-		/*inflater = LayoutInflater.from(context);
-		inflater.inflate(R.layout.gallery, null);*/
 				
 		/* Así funciona, pero añade un Nivel mas en la jerarquía */
-		inflate(context, R.layout.form_photo_gallery_page, this);
-        Button but = (Button)findViewById(R.id.takePhotoButton);
-        but.setText("Hacer foto");
+		inflate(context, R.layout.form_video_gallery_page, this);
+        Button but = (Button)findViewById(R.id.takeVideoButton);
+        but.setText("Capturar Video");
         but = (Button)findViewById(R.id.loadFromGalleryButton);
-        but.setText("Añadir foto desde galeria");
+        but.setText("Añadir video desde galeria");
         but = (Button)findViewById(R.id.clearButton);
-        but.setText("Borrar fotos");
+        but.setText("Borrar video");
 	}
 
-	public PhotoWidget(Context context, AttributeSet attrs) {
+	public VideoWidget(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		
@@ -81,6 +76,6 @@ public class PhotoWidget extends RelativeLayout implements IQuestionWidget {
 	
 	@Override
 	public WidgetType getType() {
-		return WidgetType.PHOTO;
+		return WidgetType.VIDEO;
 	}
 }
