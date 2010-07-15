@@ -3,6 +3,8 @@
  */
 package com.geobloc.xml;
 
+import java.util.ArrayList;
+
 import org.xmlpull.v1.XmlSerializer;
 
 /**
@@ -15,8 +17,9 @@ import org.xmlpull.v1.XmlSerializer;
  * 
  * New structure:
  * <tag>
- * 	<tagA> fieldA </tagA>
- *  <tagB> fieldB </tagB>
+ * 	<tag0> field0 </tag0>
+ *  <tag1> field1 </tag1>
+ *  <tagi> fieldi </tagi>
  * </tag>
  * 
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
@@ -25,23 +28,19 @@ import org.xmlpull.v1.XmlSerializer;
 public class FormTextField implements ITextField {
 	
 	private String tag;
-	private String tagA;
-	private String tagB;
-	private String fieldA;
-	private String fieldB;
+	private ArrayList<String> tags;
+	private ArrayList<String> fields;
 
 	public FormTextField(){
 		tag = "No tag";
-		fieldA = "Empty.";
-		fieldB = "Empty.";
+		tags = new ArrayList<String>();
+		fields = new ArrayList<String>();
 	}
 	
-	public FormTextField(String tag, String tagA, String tagB, String name, String contents) {
+	public FormTextField(String tag) {
 		setFieldTag(tag);
-		setTagA(tagA);
-		setTagB(tagB);
-		setFieldA(name);
-		setFieldB(contents);
+		tags = new ArrayList<String>();
+		fields = new ArrayList<String>();
 	}
 		
 	
@@ -52,66 +51,45 @@ public class FormTextField implements ITextField {
 	public void setFieldTag(String tag) {
 		this.tag = tag;
 	}
+
+	public void addTag(String tag, String field) {
+		tags.add(tag);
+		fields.add(field);
+	}
 	
-	public void setTagA(String tagA) {
-		this.tagA = tagA;
+	@Override
+	public String getFieldi(int i) {
+		if (i < fields.size())
+			return fields.get(i);
+		return null;
 	}
 
-	public String getTagA() {
-		return tagA;
+	@Override
+	public String getTagi(int i) {
+		if (i < tags.size())
+			return tags.get(i);
+		return null;
 	}
 
-	public void setTagB(String tagB) {
-		this.tagB = tagB;
+	@Override
+	public void setFieldi(String field, int i) {
+		fields.add(i, field);
 	}
 
-	public String getTagB() {
-		return tagB;
-	}
-
-	/* (non-Javadoc)
-	 * @see dh.android.xml.ITextField#getFieldName()
-	 */
-	//@Override
-	public String getFieldA() {
-		return fieldA;
-	}
-
-	/* (non-Javadoc)
-	 * @see dh.android.xml.ITextField#getFieldValue()
-	 */
-	//@Override
-	public String getFieldB() {
-		return fieldB;
-	}
-
-	/* (non-Javadoc)
-	 * @see dh.android.xml.ITextField#setFieldName(java.lang.String)
-	 */
-	//@Override
-	public void setFieldA(String a) {
-		this.fieldA = a;
-	}
-
-	/* (non-Javadoc)
-	 * @see dh.android.xml.ITextField#setFieldValue(java.lang.String)
-	 */
-	//@Override
-	public void setFieldB(String b) {
-		this.fieldB = b;
+	@Override
+	public void setTagi(String tag, int i) {
+		tags.add(i, tag);
 	}
 	
 	public void toXML(XmlSerializer serializer) {
 		try {
 			serializer.startTag("", getFieldTag());
-			serializer.text("\n" + IField.__IFIELD_IDENTATION__+ IField.__IFIELD_IDENTATION__);
-			serializer.startTag("", getTagA());
-			serializer.text(getFieldA());
-			serializer.endTag("", getTagA());
-			serializer.text("\n" + IField.__IFIELD_IDENTATION__+ IField.__IFIELD_IDENTATION__);
-			serializer.startTag("", getTagB());
-			serializer.text(getFieldB());
-			serializer.endTag("", getTagB());
+			for (int i = 0; i < fields.size(); i++) {
+				serializer.text("\n" + IField.__IFIELD_IDENTATION__+ IField.__IFIELD_IDENTATION__);
+				serializer.startTag("", tags.get(i));
+				serializer.text(fields.get(i));
+				serializer.endTag("", tags.get(i));
+			}
 			serializer.text("\n" + IField.__IFIELD_IDENTATION__);
     		serializer.endTag("", getFieldTag());
     		serializer.text("\n");

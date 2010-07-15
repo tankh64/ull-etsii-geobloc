@@ -3,7 +3,6 @@
  */
 package com.geobloc.shared;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +19,10 @@ import com.geobloc.db.DbFormInstanceSQLiteHelper;
 import com.geobloc.form.FormClass;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.persistance.SDFilePersistance;
+import com.geobloc.xml.IField;
+import com.geobloc.xml.MultiField;
+import com.geobloc.xml.TextMultiField;
+import com.geobloc.xml.TextXMLWriter;
 
 /**
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
@@ -107,6 +110,7 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 		DbFormInstance dbi = new DbFormInstance();
 		dbi.setLabel(packageName.substring(0, packageName.length()-1));
 		dbi.setForm(dbf);
+		dbi.setInstance_form_version(dbf.getForm_version());
 		dbi.setCompressedPackageFileLocation(null);
 		dbi.setPackage_path(path);
 		dbi.setComplete(false);
@@ -120,10 +124,6 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 			pm.eraseDirectory(packageName.substring(0, packageName.length()-1));
 			throw new Exception("Could not create instance. Database operation failed.");
 		}
-		if (pm.openOrBuildPackage(dbi.getPackage_path())) {
-			pm.addFile("textFile", "TEXT");
-			pm.addFile("binaryFile", new byte[16]);
-		}
 		return (IInstanceDefinition) dbi;
 	}
 
@@ -133,8 +133,36 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	@Override
 	public void saveInstance(IInstanceDefinition instance, FormClass form)
 			throws Exception {
-		// TODO Auto-generated method stub
-
+		DbFormInstance dbi = (DbFormInstance) instance;
+		// build XML file
+		List<IField> myFields = new ArrayList<IField>();
+		TextMultiField instanceFields = new TextMultiField("gb_instance");
+		
+		instanceFields.addTag("gb_scheme", instance.getForm_definition().getForm_name());
+		instanceFields.addTag("gb_device", Utilities.getDeviceID(context));
+		instanceFields.addTag("gb_formId", instance.getForm_definition().getForm_id());
+		instanceFields.addTag("gb_formVersion", Long.toString(instance.getInstance_form_version()));
+		
+		String complete = "";
+		if (instance.isComplete())
+			complete = "TRUE";
+		else
+			complete = "FALSE";
+		instanceFields.addTag("gb_complete", complete);
+		myFields.add(instanceFields);
+		
+		// saving
+		TextXMLWriter writer = new TextXMLWriter();
+    	String xml = writer.WriteXML(myFields);
+    	if (pm.openPackage(instance.getPackage_path())) {
+    		if (!pm.addFile("instance.xml", xml))
+    			throw new Exception ("Could not write instance.xml file");
+    	}
+    	else
+    		throw new Exception ("Could not open instance package/folder.");
+		// update instance copy in the database
+		dbi.setDate(new Date());
+		dbi.save(db);
 	}
 
 }

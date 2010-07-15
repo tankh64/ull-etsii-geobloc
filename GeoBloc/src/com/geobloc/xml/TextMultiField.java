@@ -25,29 +25,23 @@ import org.xmlpull.v1.XmlSerializer;
 public class TextMultiField implements IField, ITextField {
 
 	private String tag;
-	private String tagA;
-	private String tagB;
-	private String fieldA;
-	private String fieldB;
+	private ArrayList<String> tags = new ArrayList<String>();
+	private ArrayList<String> fields = new ArrayList<String>();
 	
-	private List<IField> fields;
+	private List<IField> ifields;
 	
 	public TextMultiField() {
-		fields = new ArrayList<IField>();
-		tag = "tag";
-		tagA = "tagA";
-		tagB = "tagB";
-		fieldA = "fieldA";
-		fieldB = "fieldB";
+		ifields = new ArrayList<IField>();
+		tags = new ArrayList<String>();
+		fields = new ArrayList<String>();
 	}
 	
-	public TextMultiField(String tag, String tagA, String tagB, String fieldA, String fieldB) {
-		fields = new ArrayList<IField>();
+	public TextMultiField(String tag) {
+		ifields = new ArrayList<IField>();
 		this.tag = tag;
-		this.tagA = tagA;
-		this.tagB = tagB;
-		this.fieldA = fieldA;
-		this.fieldB = fieldB;
+		tags = new ArrayList<String>();
+		fields = new ArrayList<String>();
+
 	}
 	
 	/* (non-Javadoc)
@@ -66,57 +60,51 @@ public class TextMultiField implements IField, ITextField {
 		this.tag = tag;
 	}
 
-	@Override
-	public String getFieldA() {
-		return fieldA;
-	}
-
-	@Override
-	public String getFieldB() {
-		return fieldB;
-	}
-
-	@Override
-	public void setFieldA(String a) {
-		fieldA = a;		
-	}
-
-	@Override
-	public void setFieldB(String b) {
-		fieldB = b;
-	}
-
-	public void setTagA(String tagA) {
-		this.tagA = tagA;
-	}
-
-	public String getTagA() {
-		return tagA;
-	}
-
-	public void setTagB(String tagB) {
-		this.tagB = tagB;
-	}
-
-	public String getTagB() {
-		return tagB;
-	}
-	
-	public void addField(IField field) {
+	public void addTag(String tag, String field) {
+		tags.add(tag);
 		fields.add(field);
 	}
 	
+	@Override
+	public String getFieldi(int i) {
+		if (i < fields.size())
+			return fields.get(i);
+		return null;
+	}
+
+	@Override
+	public String getTagi(int i) {
+		if (i < tags.size())
+			return tags.get(i);
+		return null;
+	}
+
+	@Override
+	public void setFieldi(String field, int i) {
+		fields.add(i, field);
+	}
+
+	@Override
+	public void setTagi(String tag, int i) {
+		tags.add(i, tag);
+	}
+	
+	public void addField(IField field) {
+		ifields.add(field);
+	}
+	
 	public void removeField(IField field) {
-		fields.remove(field);
+		ifields.remove(field);
 	}
 	
 	public List<IField> getFields() {
-		return fields;
+		return ifields;
 	}
 
 	public void setFields(List<IField> fields) {
-		this.fields = fields;
+		this.ifields = fields;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.geobloc.xml.IField#toXML(org.xmlpull.v1.XmlSerializer)
@@ -124,17 +112,16 @@ public class TextMultiField implements IField, ITextField {
 	public void toXML(XmlSerializer serializer) {
 		try {
 			serializer.startTag("", this.getFieldTag());
-			serializer.text("\n" + IField.__IFIELD_IDENTATION__ + IField.__IFIELD_IDENTATION__);
-			serializer.startTag("", getTagA());
-			serializer.text(getFieldA());
-			serializer.endTag("", getTagA());
-			serializer.text("\n" + IField.__IFIELD_IDENTATION__+ IField.__IFIELD_IDENTATION__);
-			serializer.startTag("", getTagB());
-			serializer.text(getFieldB());
-			serializer.endTag("", getTagB());
+			for (int i = 0; i < fields.size(); i++) {
+				serializer.text("\n" + IField.__IFIELD_IDENTATION__ + IField.__IFIELD_IDENTATION__);
+				serializer.startTag("", tags.get(i));
+				serializer.text(fields.get(i));
+				serializer.endTag("", tags.get(i));
+			}
+
 			serializer.text("\n");
 			//serializer.attribute("", "number", String.valueOf(fields.size()));
-			for (IField field : fields) {
+			for (IField field : ifields) {
 				// NOTE: Each IField should indent according to depth
 				serializer.text(IField.__IFIELD_IDENTATION__);
 				field.toXML(serializer);

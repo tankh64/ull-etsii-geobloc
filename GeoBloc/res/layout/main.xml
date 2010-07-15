@@ -4,6 +4,25 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#83216A">
+    <LinearLayout
+  		android:id="@+id/mainMenuHeader"
+  		android:orientation="horizontal"
+  		android:background="@drawable/geobloc_header_one"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:gravity="center"
+  		android:paddingBottom="20dp">
+  		<TextView
+  			android:id="@+id/ProgramName"
+  			android:textColor="#FFFFFF"
+  			android:padding="10dp"
+  			android:textSize="20sp"
+  			android:singleLine="true"
+  			android:layout_width="wrap_content"
+  			android:layout_height="wrap_content">
+  		</TextView>
+  	</LinearLayout>
+  	<!-- 
 	<TextView  
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content" 
@@ -13,6 +32,7 @@
     	android:textSize="20px" 
     	android:id="@+id/ProgramName"
     	/>
+    -->
 	<Button 
 		android:layout_height="wrap_content" 
 		android:layout_width="fill_parent" 

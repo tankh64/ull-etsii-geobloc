@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.geobloc.db.DbForm;
-import com.geobloc.db.InstanceDefinition;
 import com.geobloc.form.FormClass;
 
 /**

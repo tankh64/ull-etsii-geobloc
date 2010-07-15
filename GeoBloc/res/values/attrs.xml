@@ -12,6 +12,11 @@
 	    <attr name="progressBar_visible" format="boolean" />
 	</declare-styleable>
 	
+	<declare-styleable name="ExpandableTextView">
+		<attr name="expandableTextViewTitle" format="string" />
+		<attr name="expandableTextViewBody" format="string" />
+		<attr name="expandableTextViewOpen" format="boolean" />
+	</declare-styleable>
 	<declare-styleable name="GalleryPhoto">
         <attr name="android:galleryItemBackground" />
     </declare-styleable>

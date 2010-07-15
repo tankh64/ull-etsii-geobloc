@@ -84,8 +84,8 @@ public class InstanceManager extends Activity {
 	private View.OnTouchListener gestureListener;	
 	
 	private boolean enableButtonSetAnimation = true;
-	private RelativeLayout allInstancesButtonSet;
-	private RelativeLayout completedInstancesButtonSet;
+	private RelativeLayout eraseButtonSet;
+	private RelativeLayout sendButtonSet;
 	
 	class MyGestureDetector extends SimpleOnGestureListener {
 		
@@ -123,64 +123,6 @@ public class InstanceManager extends Activity {
 		}
 	}
 	
-	private void toggleButtonSetAnimation(final int mode) {
-		Animation anim;
-		boolean slideIn = false;
-		if ((mode == 0) && (allInstancesButtonSet.getVisibility() == View.GONE) || ((mode == 1) && completedInstancesButtonSet.getVisibility() == View.GONE))
-			slideIn = true;
-		if (slideIn) {
-			//
-			anim = new TranslateAnimation(0.0f, 0.0f, allInstancesButtonSet.getLayoutParams().height, 0.0f);
-			anim.setInterpolator(new AccelerateInterpolator(0.3f));
-			anim.setAnimationListener(new Animation.AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-					// Not needed	
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// Not needed
-				}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					if (mode == 0)
-						allInstancesButtonSet.setVisibility(View.VISIBLE);
-					else
-						completedInstancesButtonSet.setVisibility(View.VISIBLE);
-				}
-			});
-		}
-		else {
-			anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, allInstancesButtonSet.getLayoutParams().height);
-			anim.setInterpolator(new AccelerateInterpolator(0.5f));
-			anim.setAnimationListener(new Animation.AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-					// Not needed
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// Not needed	
-				}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					if (mode == 0)
-						allInstancesButtonSet.setVisibility(View.GONE);
-					else
-						completedInstancesButtonSet.setVisibility(View.GONE);
-				}
-			});
-		}
-		if (mode == 0)
-			allInstancesButtonSet.startAnimation(anim);
-		else
-			completedInstancesButtonSet.startAnimation(anim);
-	}
-	
 	private void initConfig(Bundle savedInstanceState) {
 		//Hide the title bar
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -193,8 +135,8 @@ public class InstanceManager extends Activity {
 		
 		// get views
 		this.flipper = (ViewFlipper)findViewById(R.id.instanceManager_viewFlipper);
-		this.allInstancesButtonSet = (RelativeLayout) findViewById(R.id.allInstancesBottomButtons);
-        this.completedInstancesButtonSet = (RelativeLayout) findViewById(R.id.completeInstancesBottomButtons);
+		this.eraseButtonSet = (RelativeLayout) findViewById(R.id.allInstancesBottomButtons);
+        this.sendButtonSet = (RelativeLayout) findViewById(R.id.completeInstancesBottomButtons);
         this.eraseList = (ListView) findViewById(R.id.allInstancesListView);
         this.sendList = (ListView) findViewById(R.id.completeInstancesListView);
 		
@@ -235,19 +177,19 @@ public class InstanceManager extends Activity {
 		else
 			sendInstancesModel = DbFormInstance.getAllCompleted(db2);
 		startManagingCursor(sendInstancesModel);
-		instancesAdapter = new DbFormInstanceAdapter2(sendInstancesModel);
+		instancesAdapter = new DbFormInstanceAdapter2(sendInstancesModel, sendButtonSet);
 		sendList.setAdapter(instancesAdapter);
 		
         enableButtonSetAnimation = prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
         ;
         if (enableButtonSetAnimation) {
-        	allInstancesButtonSet.setVisibility(View.GONE);
-        	completedInstancesButtonSet.setVisibility(View.GONE);
+        	eraseButtonSet.setVisibility(View.GONE);
+        	sendButtonSet.setVisibility(View.GONE);
         }
         else {
-        	allInstancesButtonSet.setVisibility(View.VISIBLE);
-        	completedInstancesButtonSet.setVisibility(View.VISIBLE);
+        	eraseButtonSet.setVisibility(View.VISIBLE);
+        	sendButtonSet.setVisibility(View.VISIBLE);
         }
 		
 		// get all animations
@@ -480,9 +422,11 @@ public class InstanceManager extends Activity {
 	class DbFormInstanceAdapter2 extends CursorAdapter {
 		
 		private ArrayList<Long> checkedItems;
+		private ViewGroup buttonSet;
 		
-		DbFormInstanceAdapter2 (Cursor c) {
+		DbFormInstanceAdapter2 (Cursor c, ViewGroup buttonSet) {
 			super(InstanceManager.this, c);
+			this.buttonSet = buttonSet;
 			checkedItems = new ArrayList<Long>();
 		}
 
@@ -537,10 +481,10 @@ public class InstanceManager extends Activity {
 			}
 			
 			if (enableButtonSetAnimation) {
-				if ((checkedItems.size() > 0) && (allInstancesButtonSet.getVisibility() == View.GONE))
-					toggleButtonSetAnimation(0);
-				if ((checkedItems.size() < 1) && (allInstancesButtonSet.getVisibility() == View.VISIBLE))
-					toggleButtonSetAnimation(0);
+				if ((checkedItems.size() > 0) && (eraseButtonSet.getVisibility() == View.GONE))
+					Utilities.toggleSlidingAnimation(buttonSet, true);
+				if ((checkedItems.size() < 1) && (eraseButtonSet.getVisibility() == View.VISIBLE))
+					Utilities.toggleSlidingAnimation(buttonSet, false);
 			}
 		}
 	}
@@ -597,7 +541,7 @@ public class InstanceManager extends Activity {
 			 */
 			getCompletedText().setVisibility(View.VISIBLE);
 			getCreatedDate().setText(getString(R.string.instanceManager_list_itemFormInstanceCreatedDateText) + " " + c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__)));
-			if (isComplete())
+			if (!isComplete())
 				getCompleted().setText(R.string.instanceManager_list_itemFormInstanceCompleteNo);
 			else
 				getCompleted().setText(R.string.instanceManager_list_itemFormInstanceCompleteYes);

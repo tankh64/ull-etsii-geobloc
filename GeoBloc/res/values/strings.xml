@@ -19,11 +19,14 @@
 	<string name="connectivityAvailable">Conexión a Internet disponible.</string>
 	<string name="noElementsSelected">No hay elementos seleccionados.</string>
 	<string name="selectAll">Seleccionar todos</string>
+	<string name="description">Descripción</string>
 	<string name="warningAllDataWillBeLost">¿Está usted seguro? Todos los datos serán borrados y no podrán recuperarse.</string>
 	
 	<string name="taskComplete">Tarea completada.</string>
 	<string name="download">Descargar</string>
 	<string name="downloading">Descargando...</string>
+	<string name="deleting">Borrando...</string>
+	<string name="completedItems">Completado %d de %d</string>
 	<string name="working">Trabajando...</string>
 	<string name="delete">Borrar</string>
 	<string name="update">Actualizar</string>
@@ -93,10 +96,12 @@
 	<string name="formsManager_processingServerList">Procesando datos del servidor...</string>
 	<string name="formsManager_errorProcessingServerList">Ocurrió un error procesando los datos del servidor.</string>
 	<string name="formsManager_errosEncounteredDuringDownload">Se produjeron errores durante la operación.</string>
-	<string name="formsManager_itemDownloadedSuccesfully">fue descargado correctamente.</string>
-	<string name="formsManager_itemEncounteredErrors">no pudo ser descargado.</string>
+	<string name="formsManager_itemDownloadedSuccessfully">fue descargado correctamente.</string>
+	<string name="formsManager_itemDownloadEncounteredErrors">no pudo ser descargado.</string>
+	<string name="formsManager_itemDeletedSuccessfully"> fue eliminado correctamente.</string>
+	<string name="formsManager_itemDeleteEncounteredErrors"> no pudo ser eliminado.</string>
 	<string name="formsManager_list_item_FormVersionTextViewText">Versión: </string>
-	<string name="formsManager_list_itemFormStatusTextViewText">Estado: </string>
+	<string name="formsManager_list_itemFormStatusTextViewText">Estado </string>
 	<string name="formsManager_list_itemFormStatusUpdate">Actualización Disp.</string>
 	<string name="formsManager_list_itemFormStatusNew">Nuevo </string>
 	<string name="formsManager_list_itemFormStatusCurrent">Más reciente</string>
@@ -142,7 +147,7 @@
 	<string name="find_position">Posición: %s - %s</string>
 	<string name="activateGPS">Debe activar GPS en los ajustes del teléfono</string>
 
-	<string name="version">0.1</string>
+	<string name="version">0.6</string>
 
     <string name="planet_prompt">Choose a planet</string>
     <string-array name="planets_array">

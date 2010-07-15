@@ -41,9 +41,14 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	public static final String __LOCALPACKAGESDB_ID__ = "_id";
 	/**
-	 * Database key for the instance's attached form's local id.
+	 * Database key for the instance's attached form's local id. However, its information might not 
+	 * be accurate, since the attached form might've been updated or even non-existent.
 	 */
 	public static final String __LOCALPACKAGESDB_FORM_ID_KEY__ = "localFormId";
+	/**
+	 * The version this instance is attached to, forever.
+	 */
+	public static final String __LOCALPACKAGES_DB_FORM_VERSION_KEY__ = "localFormVersion";
 	/**
 	 * Database key for the instance's label, which is also local and does not exist in the server.
 	 */
@@ -74,6 +79,7 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	
 	private long id = -1;
+	private long formVersion = -1;
 	private DbForm form = null;
 	private String label = "";
 	private String packagePath = "";
@@ -130,6 +136,7 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	public DbFormInstance loadFrom(SQLiteDatabase db, Cursor c) {
 		id = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_ID__));
+		formVersion = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__));
 		if (c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)) != -1)
 			form = DbForm.loadFrom(db, c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)));
 		else 
@@ -227,6 +234,11 @@ public class DbFormInstance implements IInstanceDefinition {
 	}
 
 	@Override
+	public long getInstance_form_version() {
+		return formVersion;
+	}
+	
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -260,7 +272,12 @@ public class DbFormInstance implements IInstanceDefinition {
 	public void setInstance_local_id(long instanceLocalId) {
 		id = instanceLocalId;
 	}
-
+	
+	@Override
+	public void setInstance_form_version(long formVersion) {
+		this.formVersion = formVersion;
+	}
+	
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
@@ -294,6 +311,7 @@ public class DbFormInstance implements IInstanceDefinition {
 			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, form.getForm_id());
 		else
 			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, -1);
+		cv.put(DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__, formVersion);
 		cv.put(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__, label);
 		cv.put(DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__, packagePath);
 		cv.put(DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__, compressedPackageFileLocation);

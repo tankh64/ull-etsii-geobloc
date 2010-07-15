@@ -37,7 +37,6 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private CheckBoxPreference slidingButtonsAnimationEnabled;
 	private CheckBoxPreference photoSizeBigEnable;
 	private CheckBoxPreference sendIncompleteInstances;
-	//private DialogPreference dropLocalFormsTable;
 	private CheckBoxPreference userApplicationDebugging;
 	private ListPreference formThemeColor;
 	
@@ -126,7 +125,6 @@ public class GBSharedPreferences extends PreferenceActivity {
 		photoSizeBigEnable = (CheckBoxPreference) findPreference(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__);
 		userApplicationDebugging = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_DEBUGGING_FEATURES_KEY__);
 		sendIncompleteInstances = (CheckBoxPreference) findPreference(GBSharedPreferences.__SEND_INCOMPLETE_KEY__);
-		//dropLocalFormsTable = (DialogPreference) findPreference (GBSharedPreferences.__DELETE_LOCALFORMS_TABLE_KEY__);
 		formThemeColor = (ListPreference) findPreference (GBSharedPreferences.__FORM_THEME_COLOR__);
 		
 		// default baseServerAddress

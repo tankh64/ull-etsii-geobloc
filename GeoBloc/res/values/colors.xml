@@ -8,10 +8,13 @@
 	<color name="ULLPurple">#FF660066</color>
 	<color name="CheckedRed">#FFA52A2A</color>
 	<color name="Unselected">#FF999999</color>
-<color name="BackgroundDark">#202020</color>
-<color name="Black">#FF000000</color>
-<color name="ULLGradientStart">#AF1A9B</color>
-<color name="ULLGradientEnd">#8F2882</color>
+	<color name="BackgroundDark">#202020</color>
+	<color name="Black">#FF000000</color>
+	<color name="ULLGradientStart">#AF1A9B</color>
+	<color name="ULLGradientEnd">#8F2882</color>
+	<color name="TransparentRed">#A0A52A2A</color>
+	<color name="ULLChecked">#A08F2882</color>
+	<color name="TransparentGray">#A0F0F0F0</color>
 
 
 <color name="TextColorDark">#EEEEEE</color>

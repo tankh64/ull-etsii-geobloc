@@ -37,13 +37,14 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
 				" (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__ + " TEXT, " + 
+				DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__ + " INTEGER, " + 
 				DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__ + " TEXT, " + 
 				DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__ + " TEXT, " + 
 				DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__ + " TEXT, " + 
 				DbFormInstance.__LOCALPACKAGESDB_COMPLETEDDATE_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__ + " INTEGER);");
-		//buildDatabase(db);
+		buildDatabase(db);
 	}
 
 	@Override
@@ -82,6 +83,7 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 			dbi.setForm(null);
 			//dbi.setForm(form);
 			dbi.setLabel(myPackages.getName());
+			dbi.setInstance_form_version(-1);
 			dbi.setPackage_path(myPackages.getAbsolutePath());
 			dbi.setCreatedDate(new Date(myPackages.lastModified()));
 			dbi.setDate(null);
