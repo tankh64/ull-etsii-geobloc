@@ -5,20 +5,10 @@ package com.geobloc.services;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
-
-import com.geobloc.ApplicationEx;
-import com.geobloc.R;
-import com.geobloc.db.DbForm;
-import com.geobloc.db.DbFormSQLiteHelper;
-import com.geobloc.internet.SimpleHttpGet;
-import com.geobloc.persistance.GeoBlocPackageManager;
-import com.geobloc.services.UpdateFormsDatabaseService.LocalBinder;
-import com.geobloc.shared.GBSharedPreferences;
 
 import android.app.Service;
 import android.content.Intent;
@@ -26,10 +16,17 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Binder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.geobloc.ApplicationEx;
+import com.geobloc.R;
+import com.geobloc.db.DbForm;
+import com.geobloc.db.DbFormSQLiteHelper;
+import com.geobloc.internet.SimpleHttpGet;
+import com.geobloc.persistance.GeoBlocPackageManager;
+import com.geobloc.shared.GBSharedPreferences;
 
 /**
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
@@ -112,8 +109,17 @@ public class DownloadFormsService extends Service {
 
 	class PerformDownloadForms extends AsyncTask<Long, Integer, String> {
 		
+		private HashMap<String, Long> map;
+		
+		@Override
+		public void onPreExecute() 	{
+			super.onPreExecute();
+			map = DbForm.getFormIdLocalHashMap(db);
+		}
+		
 		private boolean processAndSave(String response, DbForm dbf) {
 			boolean succesful = true;
+			String filename;
 			try {
 				JSONObject json = new JSONObject(response);
 				//dbf.setForm_name(json.getString(DbForm.__SERVER_FORM_NAME_KEY__));
@@ -128,7 +134,15 @@ public class DownloadFormsService extends Service {
 					dbf.setForm_date(null);
 					e.printStackTrace();
 				}
-				dbf.setForm_file_path(pm.getPackageFullpath()+dbf.getForm_id()+".xml");
+				// detect previously used filenames
+				// This could be useful when switching from one server to another
+				filename = dbf.getForm_id();
+				if (map.containsKey(dbf.getForm_id())) {
+					filename += "A";
+					map.put(filename, (long)-1);
+				}
+				filename += ".xml";
+				dbf.setForm_file_path(pm.getPackageFullpath()+filename);
 				pm.addFile(dbf.getForm_file_name(), json.getString(DbForm.__SERVER_FORM_XML_KEY__));
 				dbf.save(db);
 			}
@@ -159,16 +173,16 @@ public class DownloadFormsService extends Service {
 					requestUrl = url;
 					requestUrl += "?id=" + dbf.getForm_id();
 					response = get.performHttpGetRequest(attempts, requestUrl, httpClient, null);
-					serverResponses += response + "\n";
+					serverResponses += "Response for item with id=" + dbf.getForm_id() + ":\n";
+					serverResponses += response + "\n\n";
 					report += " - " + dbf.getForm_name() + " ";
 					if (!processAndSave(response, dbf)) {
 						errorsEncountered = true;
-						report += getString(R.string.formsManager_itemEncounteredErrors) + "\n";
+						report += getString(R.string.formsManager_itemDownloadEncounteredErrors) + "\n\n";
 					}
 					else
-						report += getString(R.string.formsManager_itemDownloadedSuccesfully) + "\n";
+						report += getString(R.string.formsManager_itemDownloadedSuccessfully) + "\n\n";
 					i++;
-					//publishProgress((int) ((i*2 / (float) count) * 100), count);
 					publishProgress(i, ids.length);
 				}	
 				catch (Exception e) {

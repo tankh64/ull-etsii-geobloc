@@ -12,10 +12,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
 /**
@@ -73,7 +77,7 @@ public class Utilities {
 		toast.show();
 	}
 	
-	/*
+	/**
 	 * Displays a simple Dialog with an OK button. Used fot the common task of giving some information to the 
 	 * user without switching to another Activity. Needs Activity context, ApplicationContext will make 
 	 * the caller crash.
@@ -96,6 +100,22 @@ public class Utilities {
 		return "_" + date + "_" + time;
 	}
 	
+	/**
+	 * Utility to get the current device's ID. This ID number is unique and uniquely identifies the phone. 
+	 * Notice that some devices do not have ID number, and that not all devices have the same ID number, 
+	 * since GSM/WCDMA devices use IMEI while CDMA devices use MEID. Since Android runs in other devices, 
+	 * not only in phones, there might not be a device ID number.
+	 * @param context The caller's context
+	 * @return The device's IMEI number or "noID" if there isn't.
+	 */
+	public static String getDeviceID(Context context) {
+		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		String id = tm.getDeviceId();
+		// some devices do not have IDs (tablets, MIDs, etc.)
+		if (id == null)
+			id = "noID";
+		return id;
+	}
 	/**
 	 * Builds a new package's name which follows this structure: formName + Date&Time.
 	 * Identifier of the device is included inside the instance XML file.
@@ -136,21 +156,21 @@ public class Utilities {
 			}
 	}
 	/**
-	 * Scales a given photo from resource to the specified View's size. It takes care of keeping aspect ratio, so if the 
-	 * so for example if the photo is wider than the View, it will scale it down until it fits. Note that if 
+	 * Scales an image to the specified View's size. It takes care of keeping aspect ratio, so if the 
+	 * so for example if the image is wider than the View, it will scale it down until it fits. Note that if 
 	 * the View is not inflated (height and width are zero) it can produce an Exception/force close the app. 
 	 * @param res Access to the context's resources.
-	 * @param resource The photo to scale.
-	 * @param container The view to which the photo must be scaled down to.
+	 * @param resource The image to scale.
+	 * @param container The view to which the image must be scaled down to.
 	 * @return
 	 */
-	public static Bitmap scaleToContainer(Resources res, int resource, View container) {
-		//connectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.connectivity);
-		Bitmap mySrc = BitmapFactory.decodeResource(res, resource);
-		mySrc = Bitmap.createBitmap(mySrc);
-		//connectivityBitmap = Bitmap.createScaledBitmap(connectivityBitmap, downloadView.getWidth(), downloadView.getHeight(), true);
-		int bmpHeight = mySrc.getHeight();
-		int bmpWidth = mySrc.getWidth();
+	public static Bitmap scaleDownToContainer(Resources res, int resource, View container) {		
+		Bitmap mySrc;
+
+		Drawable bmp = res.getDrawable(resource);
+
+		int bmpHeight = bmp.getIntrinsicHeight();
+		int bmpWidth = bmp.getIntrinsicWidth();
 		
 		int containerWidth = container.getWidth();
 		int containerHeight = container.getHeight();
@@ -166,11 +186,94 @@ public class Utilities {
 		    bmpHeight=(int)containerHeight;
 		    bmpWidth=(int)(ratio*bmpWidth);
 		}
-
-		//onnectivityBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.connectivity);
 		mySrc = BitmapFactory.decodeResource(res, resource);
-		//return Bitmap.createScaledBitmap(mySrc, bmpWidth, bmpHeight, true);
-		return Bitmap.createBitmap(mySrc, 0, 0, bmpWidth, bmpHeight);
+		return Bitmap.createScaledBitmap(mySrc, bmpWidth, bmpHeight, true);
+	}
+	/**
+	 * Scales a given image from resource to the specified height and width of its container. It takes care 
+	 * of keeping aspect ratio, so if the image is wider than its container, it will be scaled down until 
+	 * it fits. The resulting image will not be bigger than the desired width and height, it will 
+	 * probably be smaller.
+	 * @param res Access to the context's resources.
+	 * @param resource The image to resize or scale down.
+	 * @param containerHeight The desired height of the image
+	 * @param containerWidth The desired width of the image
+	 * @return Bitmap with the scaled down image.
+	 */
+	public static Bitmap scaleDownToContainer(Resources res, int resource, int containerHeight, int containerWidth) {		
+		Bitmap mySrc;
+
+		Drawable bmp = res.getDrawable(resource);
+
+		int bmpHeight = bmp.getIntrinsicHeight();
+		int bmpWidth = bmp.getIntrinsicWidth();
+		
+		if((bmpWidth>bmpHeight)&&(bmpWidth>containerWidth))
+		{
+		    double ratio = ( (double)containerWidth/(double)bmpWidth );
+		    bmpWidth=(int)containerWidth;
+		    bmpHeight=(int)(ratio*bmpHeight);
+		}
+		else if((bmpHeight>bmpWidth)&&(bmpHeight>containerHeight))
+		{
+		    double ratio = ( (double)containerHeight/(double)bmpHeight );
+		    bmpHeight=(int)containerHeight;
+		    bmpWidth=(int)(ratio*bmpWidth);
+		}
+		mySrc = BitmapFactory.decodeResource(res, resource);
+		return Bitmap.createScaledBitmap(mySrc, bmpWidth, bmpHeight, true);
+	}
+	
+	/**
+	 * Performs a sliding animation on the desired view. The view can either slide in or slide out.
+	 * It was designed with the purpose of sliding in and out the buttons at the bottom of both 
+	 * FormsManager and InstanceManager.
+	 * @param slidingView The View we want to slide in or out.
+	 * @param slideIn true for sliding in, false for sliding out animation.
+	 */
+	public static void toggleSlidingAnimation(final View slidingView, final boolean slideIn) {
+		Animation anim;
+		if (slideIn) {
+			anim = new TranslateAnimation(0.0f, 0.0f, slidingView.getLayoutParams().height, 0.0f);
+			anim.setInterpolator(new AccelerateInterpolator(0.3f));
+			anim.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+					// Not needed	
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					// Not needed
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					slidingView.setVisibility(View.VISIBLE);
+				}
+			});
+		}
+		else {
+			anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, slidingView.getLayoutParams().height);
+			anim.setInterpolator(new AccelerateInterpolator(0.5f));
+			anim.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+					// Not needed
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					// Not needed	
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					slidingView.setVisibility(View.GONE);
+				}
+			});
+		}
+		slidingView.startAnimation(anim);
 	}
 	
 	public static void setThemeForActivity (Activity ac, int idTheme) {

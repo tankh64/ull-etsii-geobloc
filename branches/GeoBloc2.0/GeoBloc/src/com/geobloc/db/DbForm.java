@@ -160,10 +160,21 @@ public class DbForm implements IFormDefinition {
 	 * @param db An open database with reading permissions.
 	 * @return A cursor containing all the forms in the database.
 	 */
-	public static Cursor getAll(SQLiteDatabase db) {
+	public static Cursor getAllForms(SQLiteDatabase db) {
 		Cursor c = db.rawQuery("SELECT * FROM " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__, null);
 		return c;
 		
+	}
+	/**
+	 * Performs a query returning all forms stored locally on the device.
+	 * @param db An open database with reading permissions.
+	 * @return A cursor containing all the local forms stored.
+	 */
+	public static Cursor getAllLocalForms(SQLiteDatabase db) {
+		Cursor c = db.rawQuery("SELECT * FROM " + DbFormSQLiteHelper.__LOCALFORMSDB_TABLE_NAME__ + 
+				" WHERE " + DbForm.__LOCALFORMSDB_FORM_SERVERSTATE_KEY__ + " >= " + DbForm.__FORM_STATE_LOCAL__, 
+				null);
+		return c;
 	}
 	/**
 	 * An auxiliary method required to aid detection of updated forms in the database when it is updated 
@@ -173,7 +184,7 @@ public class DbForm implements IFormDefinition {
 	 * a boolean set to false.
 	 */
 	public static HashMap<String, Boolean> getLocalHashMap(SQLiteDatabase db) {
-		Cursor c = DbForm.getAll(db);
+		Cursor c = DbForm.getAllForms(db);
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		c.moveToFirst();
 		while (!c.isAfterLast()) {
@@ -182,7 +193,26 @@ public class DbForm implements IFormDefinition {
 		}
 		return map;
 	}
-	
+	/**
+	 * An auxiliary method used to detect when we're downloading new forms that there aren't any two forms 
+	 * with the same filename, which leads to more than one form attached 
+	 * to a single file, which means we lose one form's data.
+	 * @param db An open database with reading permissions.
+	 * @return A {@link HashMap} with every form stored in the database's filename and local id.  
+	 */
+	public static HashMap<String, Long> getFormIdLocalHashMap(SQLiteDatabase db) {
+		DbForm dbf = new DbForm();
+		Cursor c = DbForm.getAllForms(db);
+		HashMap<String, Long> map = new HashMap<String, Long>();
+		c.moveToFirst();
+		while (!c.isAfterLast()) {
+			dbf.loadFrom(c);
+			if (dbf.getServer_state() >= DbForm.__FORM_STATE_LOCAL__)
+				map.put(dbf.getForm_file_name(), dbf.getForm_local_id());
+			c.moveToNext();
+		}
+		return map;
+	}
 	/**
 	 * A method which allows us to get a form as a Java Object from its local database id, not its logical 
 	 * id by which it is known to the server.
@@ -270,7 +300,7 @@ public class DbForm implements IFormDefinition {
 		return form_file_path;
 	}
 	public String getForm_file_name() {
-		return form_file_path.substring(form_file_path.lastIndexOf('/'));
+		return form_file_path.substring(form_file_path.lastIndexOf('/')+1);
 	}
 	public void setForm_file_path(String formFilePath) {
 		form_file_path = formFilePath;

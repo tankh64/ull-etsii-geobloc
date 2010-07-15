@@ -102,15 +102,5 @@
   		android:title="@string/enableUserDebuggingFeatures"
   		android:summary="@string/enableUserDebuggingFeaturesDescription">
   	</CheckBoxPreference>
-  	<!--
-  	<DialogPreference
-  		android:key="dropLocalFormsTableKey"
-  		android:name="dropLocalFormsTableKey"
-  		android:title="@string/dropLocalFormsTable"
-  		android:summary="@string/dropLocalFormsTableDescription"
-  		android:dialogTitle="@string/dropLocalFormsTable"
-  		android:dialogMessage="@string/warningAllDataWillBeLost">
-  	</DialogPreference>
-  	-->
   </PreferenceCategory>
 </PreferenceScreen>

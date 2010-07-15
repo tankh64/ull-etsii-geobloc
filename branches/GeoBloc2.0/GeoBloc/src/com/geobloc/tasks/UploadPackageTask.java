@@ -105,7 +105,7 @@ public class UploadPackageTask extends AsyncTask<String, Integer, String> {
 			try {
 				
 				// we got HttpClient in the constructor
-				serverResponse = post.executeMultipartPackagePost(packagePath, serverAddress, httpClient);
+				//serverResponse = post.executeMultipartPackagePost(packagePath, serverAddress, httpClient);
 				
 				// should be enough to check
 				if (serverResponse.contains((CharSequence)GBSharedPreferences.__OK_SIGNATURE__)) {

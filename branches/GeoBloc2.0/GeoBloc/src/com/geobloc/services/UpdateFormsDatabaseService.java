@@ -46,7 +46,6 @@ public class UpdateFormsDatabaseService extends Service {
 	private final LocalBinder binder = new LocalBinder();
 	
 	private SQLiteDatabase db;
-	private DbForm dbf;
 	
 	public static final String BROADCAST_ACTION=
 		"com.geobloc.services.UpdateFormsDatabaseEvent";
@@ -139,6 +138,7 @@ public class UpdateFormsDatabaseService extends Service {
 				try {
 					JSONArray array = new JSONArray(response);
 					JSONObject json;
+					DbForm dbf;
 					HashMap<String, Boolean> map = DbForm.getLocalHashMap(db);
 					for (int i = 0; i < array.length(); i++) {
 						json = array.getJSONObject(i);
@@ -166,11 +166,24 @@ public class UpdateFormsDatabaseService extends Service {
 						else {
 							// erase form from map because it's in the server list
 							map.remove(dbf.getForm_id());
-							// check for update 
+							// check for update
 							if (dbf.getForm_version() < json.getInt(DbForm.__SERVER_FORM_VERSION_KEY__)) {
 								dbf.setForm_version(DbForm.__FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__);
-								dbf.save(db);
+								dbf.setForm_name(json.getString(DbForm.__SERVER_FORM_NAME_KEY__));
+								dbf.setForm_description(json.getString(DbForm.__SERVER_FORM_DESCRIPTION_KEY__));
+								try {
+									dbf.setForm_date(df.parse(json.getString(DbForm.__SERVER_FORM_DATE_KEY__)));
+								}
+								catch (ParseException e) {
+									Log.e(LOG_TAG, "Parsing " + json.getString(DbForm.__SERVER_FORM_DATE_KEY__) + " for form_id=" + dbf.getForm_id() + " failed. Filling up with null");
+									dbf.setForm_date(null);
+									e.printStackTrace();
+								}
 							}
+							// set as latest version if it was previously set as 'Not Found'
+							if (dbf.getServer_state() == DbForm.__FORM_SERVER_STATE_NOT_FOUND__)
+								dbf.setServer_state(DbForm.__FORM_SERVER_STATE_LATEST_VERSION__);
+							dbf.save(db);
 						}
 					}
 					if (!map.isEmpty()) {
@@ -208,9 +221,6 @@ public class UpdateFormsDatabaseService extends Service {
 			String url = params[0];
 			SimpleHttpGet get = new SimpleHttpGet();
 			String response = get.performHttpGetRequest(attempts, url, httpClient, null);
-			/*
-			 * IMPORTANT TO CHECK IN DOWNLOAD SERVICE THAT THERE ARENT TWO FORMS WITH THE SAME FILENAME
-			 */
 			ret = updateDatabase(response);
 			if (ret)
 				Log.i(LOG_TAG, "Update from URL: " + url + " finished succesfully.");

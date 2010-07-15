@@ -33,7 +33,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 	@Override
 	public List<IFormDefinition> getListOfLocalForms() throws Exception {
 		ArrayList<IFormDefinition> list = new ArrayList<IFormDefinition>();
-		Cursor c = DbForm.getAll(db);
+		Cursor c = DbForm.getAllForms(db);
 		c.moveToFirst();
 		
 		while (!c.isAfterLast()) {

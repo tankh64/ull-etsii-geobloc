@@ -68,7 +68,8 @@
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
   			android:layout_below="@id/instanceManager_sendInstancesHeader"
-  			android:layout_above="@id/completeInstancesBottomButtons">
+  			android:layout_above="@id/completeInstancesBottomButtons"
+  			android:cacheColorHint="#00000000">
   		</ListView>  		
   	</RelativeLayout>  	
   	<!-- Left page, the one with incomplete instances -->
@@ -114,7 +115,8 @@
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
   			android:layout_below="@id/instanceManager_allInstancesHeader"
-  			android:layout_above="@id/allInstancesBottomButtons">
+  			android:layout_above="@id/allInstancesBottomButtons"
+  			android:cacheColorHint="#00000000">
   		</ListView>
   		
 	</RelativeLayout>

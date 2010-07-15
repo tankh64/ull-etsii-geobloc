@@ -82,19 +82,29 @@ public class StaticFormPrototype extends Activity {
     private List<IField> getFields() {
     	List<IField> myFields = new ArrayList<IField>();
     	FormTextField field;
-    	TextMultiField fields = new TextMultiField("fields", "field1", "field2", "field1Content", "field2Content");
+    	TextMultiField fields = new TextMultiField("fields");
+    	fields.addTag("field1", "field1Content");
+    	fields.addTag("field2", "field2Content");
     	
     	// numForm
-    	field = new FormTextField("field", "field1", "field2", "numForm", numForm.getText().toString());
+    	field = new FormTextField("field");
+    	field.addTag("field1", "numForm");
+    	field.addTag("field2", numForm.getText().toString());
     	fields.addField(field);
     	// inspector
-    	field = new FormTextField("field", "field1", "field2", "inspector", inspector.getText().toString());
+    	field = new FormTextField("field");
+    	field.addTag("field1", "inspector");
+    	field.addTag("field2", inspector.getText().toString());
     	fields.addField(field);
     	// numVisita
-    	field = new FormTextField("field", "field1", "field2", "numVisita", numVisita.getText().toString());
+    	field = new FormTextField("field");
+    	field.addTag("field1", "numVisita");
+    	field.addTag("field2", numVisita.getText().toString());
     	fields.addField(field);
     	// observaciones
-    	field = new FormTextField("field", "field1", "field2", "observaciones", observaciones.getText().toString());
+    	field = new FormTextField("field");
+    	field.addTag("field1", "observaciones");
+    	field.addTag("field2", observaciones.getText().toString());
     	fields.addField(field);
     	
     	

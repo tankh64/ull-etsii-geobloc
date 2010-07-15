@@ -4,6 +4,9 @@
 package com.geobloc.activities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -17,13 +20,14 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,13 +38,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -48,12 +54,13 @@ import com.geobloc.R;
 import com.geobloc.animations.FormsDownloaderListViewAnimation;
 import com.geobloc.db.DbForm;
 import com.geobloc.db.DbFormSQLiteHelper;
+import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.services.DownloadFormsService;
 import com.geobloc.services.UpdateFormsDatabaseService;
 import com.geobloc.shared.GBSharedPreferences;
-import com.geobloc.shared.IFormDefinition;
-import com.geobloc.shared.IJavaToDatabaseForm;
 import com.geobloc.shared.Utilities;
+import com.geobloc.tasks.DeleteFormsTask;
+import com.geobloc.widget.ExpandableTextView;
 import com.geobloc.widget.ProgressItem;
 
 /**
@@ -71,7 +78,11 @@ public class FormsManager extends Activity {
 	private static int __NUMBER_OF_PAGES__ = 2;
 	
 	private ViewFlipper flipper;
-	private int currentPage = 1; // we start with the download page (to the right)
+	/**
+	 * 0 == LEFT PAGE (Delete Forms List)
+	 * 1 == RIGHT PAGE (Server List)
+	 */
+	private int currentPage = 1;
 	
 	private Animation bounceRight;
 	private Animation bounceLeft;
@@ -85,12 +96,19 @@ public class FormsManager extends Activity {
 	
 	private boolean enableButtonSetAnimation = true;
 	private ViewGroup updateButtonSet;
+	private ViewGroup deleteButtonSet;
 	//private RelativeLayout completedInstancesButtonSet;
 	
 	class MyGestureDetector extends SimpleOnGestureListener {
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			if (localStorageBitmap == null) {
+				localStorageBitmap = Utilities.scaleDownToContainer(res, R.drawable.local_storage, deleteView.getMeasuredHeight(), deleteView.getMeasuredWidth());
+				bmp = new BitmapDrawable(res, localStorageBitmap);
+				bmp.setGravity(Gravity.CENTER);
+				deleteView.setBackgroundDrawable(bmp);
+			}
 			try {
                 if (Math.abs(e1.getY() - e2.getY()) > GBSharedPreferences.SWIPE_MAX_OFF_PATH)
                     return false;
@@ -125,70 +143,6 @@ public class FormsManager extends Activity {
 		}
 	}
 	
-	private void toggleButtonSetAnimation(final int mode) {
-		Animation anim;
-		boolean slideIn = false;
-		if ((mode == 0) && (updateButtonSet.getVisibility() == View.GONE) || ((mode == 1) && updateButtonSet.getVisibility() == View.GONE))
-			slideIn = true;
-		if (slideIn) {
-			//
-			anim = new TranslateAnimation(0.0f, 0.0f, updateButtonSet.getLayoutParams().height, 0.0f);
-			anim.setInterpolator(new AccelerateInterpolator(0.3f));
-			anim.setAnimationListener(new Animation.AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-					// Not needed	
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// Not needed
-				}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					if (mode == 0)
-						updateButtonSet.setVisibility(View.VISIBLE);
-					/*
-					else
-						completedInstancesButtonSet.setVisibility(View.VISIBLE);
-					*/
-				}
-			});
-		}
-		else {
-			anim = new TranslateAnimation(0.0f, 0.0f, 0.0f, updateButtonSet.getLayoutParams().height);
-			anim.setInterpolator(new AccelerateInterpolator(0.5f));
-			anim.setAnimationListener(new Animation.AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-					// Not needed
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// Not needed	
-				}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					if (mode == 0)
-						updateButtonSet.setVisibility(View.GONE);
-					/*
-					else
-						completedInstancesButtonSet.setVisibility(View.GONE);
-					*/
-				}
-			});
-		}
-		if (mode == 0)
-			updateButtonSet.startAnimation(anim);
-		/*
-		else
-			completedInstancesButtonSet.startAnimation(anim);
-		*/
-	}
-	
 	private void initConfig() {
 		
 		//Hide the title bar
@@ -207,10 +161,13 @@ public class FormsManager extends Activity {
 		// load views
 		this.flipper = (ViewFlipper)findViewById(R.id.formsManager_viewFlipper);
 		this.downloadView = findViewById(R.id.formsManager_downloadFormsLayout);
+		this.deleteView = findViewById(R.id.formsManager_deleteFormsLayout);
 		this.serverList = (ListView)findViewById(R.id.formsManager_downloadListView);
+		this.deleteFormsList = (ListView)findViewById(R.id.formsManager_deleteFormsListView);
 		this.lastUpdateDateTextView = (TextView) findViewById(R.id.formsManager_downloadLastListDate);
 		this.lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, ""));
 		this.updateButtonSet = (ViewGroup) findViewById(R.id.formsManager_downloadFormsBottom);
+		this.deleteButtonSet = (ViewGroup) findViewById(R.id.formsManager_deleteFormsBottom);
 		
 		// load flick gesture
 		gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -224,23 +181,42 @@ public class FormsManager extends Activity {
 			}
 		};
 		serverList.setOnTouchListener(touchListener);
+		deleteFormsList.setOnTouchListener(touchListener);
 		
-		// create and set header in internet dependent list
-		this.connectivityListItem = new ProgressItem(getBaseContext());
-		this.connectivityListItem.toggleBarVisibility();
-		this.connectivityListItem.getProgressBar().setVisibility(View.GONE);
-		this.connectivityListItem.setText(getString(R.string.ready));
-		this.connectivityListItem.setFocusable(false);
-		serverList.addHeaderView(this.connectivityListItem);
+		// create and set header in server (right) list
+		this.serverConnectivityListItem = new ProgressItem(getBaseContext());
+		this.serverConnectivityListItem.toggleBarVisibility();
+		this.serverConnectivityListItem.getProgressBar().setVisibility(View.GONE);
+		this.serverConnectivityListItem.setText(getString(R.string.ready));
+		this.serverConnectivityListItem.setFocusable(false);
+		serverList.addHeaderView(this.serverConnectivityListItem);
 		serverList.setBackgroundColor(Color.TRANSPARENT);
+		
+		// create and set header in erase (left) list
+		this.deleteProgressListItem = new ProgressItem(getBaseContext());
+		this.deleteProgressListItem.getText().setVisibility(View.GONE);
+		this.deleteProgressListItem.getBar().setVisibility(View.GONE);
+		this.deleteProgressListItem.getProgressBar().setVisibility(View.GONE);
+		deleteFormsList.addHeaderView(this.deleteProgressListItem);
+		deleteFormsList.setBackgroundColor(Color.TRANSPARENT);
 		
 		// connect lists with databases
 		formsDb = (new DbFormSQLiteHelper(getBaseContext())).getWritableDatabase();
-		formsCursor = DbForm.getAll(formsDb);
+		
+		formsCursor = DbForm.getAllForms(formsDb);
 		formsCursor.moveToFirst();	
 		startManagingCursor(formsCursor);
-		formsAdapter = new DbFormAdapter(formsCursor);
+		formsAdapter = new DbFormAdapter(this, formsCursor, 0, updateButtonSet, enableButtonSetAnimation);
 		serverList.setAdapter(formsAdapter);
+		
+		// left list
+		deleteFormsCursor = DbForm.getAllLocalForms(formsDb);
+		//deleteFormsCursor.moveToFirst();
+		startManagingCursor(deleteFormsCursor);
+		deleteFormsAdapter = new DbFormAdapter(this, deleteFormsCursor, 1, deleteButtonSet, enableButtonSetAnimation);
+		deleteFormsList.setAdapter(deleteFormsAdapter);
+		
+		
 		
 		// load all animations
 		bounceLeft = AnimationUtils.loadAnimation(this, R.anim.bounce_left);
@@ -253,31 +229,16 @@ public class FormsManager extends Activity {
 		// make other changes upon options
 		if (enableButtonSetAnimation) {
         	updateButtonSet.setVisibility(View.GONE);
-        	//completedInstancesButtonSet.setVisibility(View.GONE);
+        	deleteButtonSet.setVisibility(View.GONE);
         }
         else {
         	updateButtonSet.setVisibility(View.VISIBLE);
-        	//completedInstancesButtonSet.setVisibility(View.VISIBLE);
+        	deleteButtonSet.setVisibility(View.VISIBLE);
         }
-		/*
-        gestureListener = new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)) {
-                    return true;
-                }
-                return false;
-            }
-        };
-        */
-		/*
-		serviceIntent = new Intent(this, UpdateFormsDatabaseService.class); 
-		bindService(serviceIntent,
-				onService, Context.BIND_AUTO_CREATE);
-		*/
 		
 		// load services
 		doBindServices();
-
+		didItOnce = false;
 		
 	}
 	
@@ -289,7 +250,9 @@ public class FormsManager extends Activity {
 	
 	private SQLiteDatabase formsDb;
 	private Cursor formsCursor;
+	private Cursor deleteFormsCursor;
 	private DbFormAdapter formsAdapter;
+	private DbFormAdapter deleteFormsAdapter;
 	
 	private ListView serverList;
 	private String serverDebugInfo;
@@ -298,16 +261,22 @@ public class FormsManager extends Activity {
 	private UpdateFormsDatabaseService.LocalBinder lb;
 	private DownloadFormsService downloadService = null;
 	private boolean serverServiceBound = false;
-	private ListView deleteList;
+	private ListView deleteFormsList;
 	
-	private ProgressItem connectivityListItem;
+	private ProgressItem serverConnectivityListItem;
+	private ProgressItem deleteProgressListItem;
 	
 	private View downloadView;
+	private View deleteView;
 	private Bitmap connectivityBitmap;
 	private Bitmap noConnectivityBitmap;
+	private Bitmap localStorageBitmap;
+	private BitmapDrawable bmp;
 	
 	private SharedPreferences prefs;
 	private Resources res;
+	
+	private boolean didItOnce;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -323,6 +292,18 @@ public class FormsManager extends Activity {
 				new IntentFilter(UpdateFormsDatabaseService.BROADCAST_ACTION));
 		registerReceiver(downloadReceiver,
 				new IntentFilter(DownloadFormsService.BROADCAST_ACTION));
+
+	}
+	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus && !didItOnce) {
+			this.canPerformInternetAction();
+			this.serverConnectivityListItem.getText().setText(getString(R.string.ready));
+			this.serverConnectivityListItem.getBar().setVisibility(View.GONE);
+			didItOnce = true;
+		}
 	}
 	
 	@Override
@@ -397,10 +378,10 @@ public class FormsManager extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			serverDebugInfo = intent.getStringExtra("serverResponse");
 			boolean success = intent.getBooleanExtra("result", false);
-			connectivityListItem.getBar().setVisibility(View.GONE);
+			serverConnectivityListItem.getBar().setVisibility(View.GONE);
 			if (!success) {
-				connectivityListItem.setText(getString(R.string.formsManager_errorProcessingServerList));
-				connectivityListItem.setBackgroundColor(Color.RED);
+				serverConnectivityListItem.setText(getString(R.string.formsManager_errorProcessingServerList));
+				serverConnectivityListItem.setBackgroundColor(Color.RED);
 			}
 			else {
 				/*
@@ -415,8 +396,8 @@ public class FormsManager extends Activity {
 				formsAdapter = new DbFormAdapter(formsCursor);
 				serverList.setAdapter(formsAdapter);
 				*/
-				connectivityListItem.setText(getString(R.string.ready));
-				connectivityListItem.setBackgroundColor(Color.GREEN);
+				serverConnectivityListItem.setText(getString(R.string.ready));
+				serverConnectivityListItem.setBackgroundColor(Color.GREEN);
 				animateServerList();
 			}		
 		}
@@ -429,22 +410,25 @@ public class FormsManager extends Activity {
 			boolean update = intent.getBooleanExtra("update", false);
 			boolean success = !intent.getBooleanExtra("result", false);
 			if (update) {
-				connectivityListItem.setText("Completado " + intent.getIntExtra("next", 0) + " de " + intent.getIntExtra("total", 0));
-				connectivityListItem.setPtrogressBarProgress(intent.getIntExtra("next", 0), intent.getIntExtra("total", 0));
+				//serverConnectivityListItem.setText("Completado " + intent.getIntExtra("next", 0) + " de " + intent.getIntExtra("total", 0));
+				serverConnectivityListItem.setText(getString(R.string.completedItems, intent.getIntExtra("next", 0), intent.getIntExtra("total", 0)));
+				serverConnectivityListItem.setPtrogressBarProgress(intent.getIntExtra("next", 0), intent.getIntExtra("total", 0));
 			}
 			else {
-				connectivityListItem.getBar().setVisibility(View.GONE);
-				connectivityListItem.getProgressBar().setVisibility(View.GONE);
+				serverConnectivityListItem.getBar().setVisibility(View.GONE);
+				serverConnectivityListItem.getProgressBar().setVisibility(View.GONE);
 				serverDebugInfo = intent.getStringExtra("serverResponse");
 				formsCursor.requery();
 				formsAdapter.notifyDataSetChanged();
+				deleteFormsCursor.requery();
+				deleteFormsAdapter.notifyDataSetChanged();
 				if (!success) {
-					connectivityListItem.setText(getString(R.string.formsManager_errosEncounteredDuringDownload));
-					connectivityListItem.setBackgroundColor(Color.RED);				
+					serverConnectivityListItem.setText(getString(R.string.formsManager_errosEncounteredDuringDownload));
+					serverConnectivityListItem.setBackgroundColor(Color.RED);				
 				}
 				else {
-					connectivityListItem.setText(getString(R.string.ready));
-					connectivityListItem.setBackgroundColor(Color.GREEN);
+					serverConnectivityListItem.setText(getString(R.string.ready));
+					serverConnectivityListItem.setBackgroundColor(Color.GREEN);
 				}
 				Utilities.showTitleAndMessageDialog(context, getString(R.string.report), intent.getStringExtra("report"));
 			}
@@ -453,14 +437,14 @@ public class FormsManager extends Activity {
 	};
 	
 	private boolean canPerformInternetAction() {
-		this.connectivityListItem.setBackgroundColor(Color.TRANSPARENT);
+		this.serverConnectivityListItem.setBackgroundColor(Color.TRANSPARENT);
 		
 		if (connectivityBitmap == null) {
-			connectivityBitmap = Utilities.scaleToContainer(getResources(), R.drawable.connectivity, downloadView);
+			connectivityBitmap = Utilities.scaleDownToContainer(getResources(), R.drawable.connectivity, downloadView);
 		}
     	
 		if (noConnectivityBitmap == null) {
-			noConnectivityBitmap = Utilities.scaleToContainer(getResources(), R.drawable.no_connectivity, downloadView);
+			noConnectivityBitmap = Utilities.scaleDownToContainer(getResources(), R.drawable.no_connectivity, downloadView);
 			
 		}
 
@@ -468,24 +452,28 @@ public class FormsManager extends Activity {
 		 * NEED TO IMPROVE THIS BY KEEPING TRACK OF CONNECTIVITY
 		 */
 		if (Utilities.evaluateConnectivityAvailable(getBaseContext())) {
-			this.connectivityListItem.getBar().setVisibility(View.VISIBLE);
-			this.connectivityListItem.setText(getString(R.string.working));
-			downloadView.setBackgroundDrawable(new BitmapDrawable(connectivityBitmap));
+			this.serverConnectivityListItem.getBar().setVisibility(View.VISIBLE);
+			this.serverConnectivityListItem.setText(getString(R.string.working));
+			bmp = new BitmapDrawable(res, connectivityBitmap);
+			bmp.setGravity(Gravity.CENTER);
+			downloadView.setBackgroundDrawable(bmp);
 			return true;
 			
 		}
 		else {
-			this.connectivityListItem.getBar().setVisibility(View.GONE);
-			this.connectivityListItem.setText(getString(R.string.noConnectivity));
-			this.connectivityListItem.setBackgroundColor(Color.RED);
-			downloadView.setBackgroundDrawable(new BitmapDrawable(noConnectivityBitmap));
+			this.serverConnectivityListItem.getBar().setVisibility(View.GONE);
+			this.serverConnectivityListItem.setText(getString(R.string.noConnectivity));
+			this.serverConnectivityListItem.setBackgroundColor(Color.RED);
+			bmp = new BitmapDrawable(res, noConnectivityBitmap);
+			bmp.setGravity(Gravity.CENTER);
+			downloadView.setBackgroundDrawable(bmp);
 			return false;
 		}
 	}
 	
 	private void updateServerList() {
 		if (canPerformInternetAction()) {
-			this.connectivityListItem.setText(getString(R.string.formsManager_donwloadingServerList));
+			this.serverConnectivityListItem.setText(getString(R.string.formsManager_donwloadingServerList));
 			updateService.updateFormsDatabase();
 		}
 	}
@@ -493,36 +481,110 @@ public class FormsManager extends Activity {
 	private void downloadForms() {
 		if (formsAdapter.areThereElementsSelected()) {
 			if (canPerformInternetAction()) {
-				this.connectivityListItem.setText(getString(R.string.downloading));
-				this.connectivityListItem.getProgressBar().setVisibility(View.VISIBLE);
+				this.serverConnectivityListItem.setText(getString(R.string.downloading));
+				this.serverConnectivityListItem.getProgressBar().setVisibility(View.VISIBLE);
 				Long[] array = new Long[formsAdapter.getListOfCheckedIds().size()];
 				for (int i = 0; i < array.length; i++)
 					array[i] = formsAdapter.getListOfCheckedIds().get(i);
 				//downloadService.downloadForms((Long[])formsAdapter.getListOfCheckedIds().toArray());
-				this.connectivityListItem.setPtrogressBarProgress(0, array.length);
+				this.serverConnectivityListItem.setPtrogressBarProgress(0, array.length);
 				formsAdapter.uncheckAllItems();
 				downloadService.downloadForms(array);
+				serverList.scrollTo(0, 0);
 			}
 		}
 	}
 	
+	private class DeleteFormsTaskListener implements IStandardTaskListener {
+
+		private Context context;
+		
+		public DeleteFormsTaskListener (Context context) {
+			this.context = context;
+		}
+		
+		@Override
+		public void progressUpdate(int progress, int total) {
+			deleteProgressListItem.setText(getString(R.string.completedItems, progress, total));
+			deleteProgressListItem.setPtrogressBarProgress(progress, total);
+		}
+
+		@Override
+		public void taskComplete(Object result) {
+			deleteProgressListItem.getText().setVisibility(View.GONE);
+			deleteProgressListItem.getBar().setVisibility(View.GONE);
+			deleteProgressListItem.getProgressBar().setVisibility(View.GONE);
+			formsCursor.requery();
+			formsAdapter.notifyDataSetChanged();
+			deleteFormsCursor.requery();
+			deleteFormsAdapter.notifyDataSetChanged();
+			Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+		}
+		
+	}
+	
+	private void eraseForms() {
+		if (deleteFormsAdapter.areThereElementsSelected()) {
+			deleteProgressListItem.getText().setVisibility(View.VISIBLE);
+			deleteProgressListItem.getText().setText(getString(R.string.deleting));
+			deleteProgressListItem.getBar().setVisibility(View.VISIBLE);
+			deleteProgressListItem.getProgressBar().setVisibility(View.VISIBLE);
+			DeleteFormsTaskListener taskListener = new DeleteFormsTaskListener(this);
+			DeleteFormsTask deleteTask = new DeleteFormsTask();
+			deleteTask.setContext(this);
+			deleteTask.setSQLiteDatabase(formsDb);
+			deleteTask.setListener(taskListener);
+			Long[] params = new Long[deleteFormsAdapter.getListOfCheckedIds().size()];
+			for (int i = 0; i < params.length; i++)
+				params[i] = deleteFormsAdapter.getListOfCheckedIds().get(i);
+			deleteFormsAdapter.uncheckAllItems();
+			deleteTask.execute(params);
+			deleteFormsList.scrollTo(0, 0);
+			
+		}
+	}
 	
 	private void animateServerList()     {
 		serverList.startAnimation(new FormsDownloaderListViewAnimation());
 	}
 	
 	public void formsManagerOnClickListener (View target) {
-		downloadForms();
+		switch (target.getId()) {
+		case R.id.formsManager_downloadButton:
+			downloadForms();
+			break;
+		case R.id.formsManager_deleteButton:
+			eraseForms();
+			break;
+		default:
+			break;
+		}
 	}
 	
-	class DbFormAdapter extends CursorAdapter {
+	public class DbFormAdapter extends CursorAdapter {
 		
-		private ArrayList<Long> serverCheckedItems;
+		private ArrayList<Long> checkedItems;
+		private ArrayList<Long> openItems;
+		/**
+		 * Mode 0 => Server List
+		 * Mode 1 => Erase Forms List
+		 */
+		private int mode;
+		private ViewGroup buttonSet;
+		private Context context;
+		private boolean enableButtonSetAnimation;
+		private Resources res;
 		
-		DbFormAdapter (Cursor c) {
-			super(FormsManager.this, c);
+		public DbFormAdapter (Context context, Cursor c, int mode, ViewGroup buttonSet, boolean enableSlidingButtons) {
+			super(context, c);
+			this.mode = mode;
 			int n = c.getCount();
-			serverCheckedItems = new ArrayList<Long>(n);
+			this.buttonSet = buttonSet;
+			this.context = context;
+			this.enableButtonSetAnimation = enableSlidingButtons;
+			checkedItems = new ArrayList<Long>();
+			openItems = new ArrayList<Long>();
+			res = ((Activity)context).getResources();
 		}
 
 		@Override
@@ -534,9 +596,9 @@ public class FormsManager extends Activity {
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			LayoutInflater inflater = getLayoutInflater();
+			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			View view = inflater.inflate(R.layout.forms_manager_list_item, parent, false);
-			DbFormWrapper wrapper = new DbFormWrapper(view, this);
+			FormsManager.DbFormWrapper wrapper = new FormsManager.DbFormWrapper(context, view, this);// = new DbFormWrapper(view, this);
 			
 			view.setTag(wrapper);
 			wrapper.populateFrom(cursor);
@@ -548,28 +610,40 @@ public class FormsManager extends Activity {
 		 * @return True if there is at least one element selected from the list.
 		 */
 		public boolean areThereElementsSelected() {
-			return (serverCheckedItems.size() > 0);
+			return (checkedItems.size() > 0);
 		}
 		/**
 		 * @return ArrayList with the database IDs of the selected list items.
 		 */
 		public ArrayList<Long> getListOfCheckedIds() {
-			return serverCheckedItems;
+			return checkedItems;
 		}
 		/**
-		 * Unchecks all items from the list and triggers animations if necessary,
+		 * Unchecks all items from the list and triggers animations if necessary.
 		 */
 		public void uncheckAllItems() {
-			serverCheckedItems.clear();
+			checkedItems.clear();
+			
 			if (enableButtonSetAnimation) {
-				if ((serverCheckedItems.size() < 1) && (updateButtonSet.getVisibility() == View.VISIBLE))
-					toggleButtonSetAnimation(0);
+				if ((checkedItems.size() < 1) && (buttonSet.getVisibility() == View.VISIBLE))
+					Utilities.toggleSlidingAnimation(buttonSet, false);
 			}
+			
+			this.notifyDataSetChanged();
 		}
+		
+		/**
+		 * Closes all items descriptions.
+		 */
+		public void closeAllItems() {
+			openItems.clear();
+			this.notifyDataSetChanged();
+		}
+		
 		/**
 		 * Checks all selectable items from the list.
 		 */
-		private void checkAllItems() {
+		public void checkAllItems() {
 			DbFormWrapper wrapper;
 			View v = null;
 			// let's be good; we first load the View
@@ -585,44 +659,93 @@ public class FormsManager extends Activity {
 				if (!wrapper.getCb().isChecked())
 					this.toggleSelected(wrapper);
 			}
+			this.notifyDataSetChanged();
 		}
 		/**
 		 * Adds or removes items to the selected items list. It also triggers animations when 
 		 * necessary.
 		 * @param wrapper DbFormWrapper of the item to toggle.
 		 */
-		private void toggleSelected(DbFormWrapper wrapper) {
+		public void toggleSelected(DbFormWrapper wrapper) {
+			switch (mode) {
+				case 0:
+					toggleSelectedMode0(wrapper);
+					break;
+				default:
+					toggleSelectedMode1(wrapper);
+					break;
+			}
+			if (enableButtonSetAnimation) {
+				if ((checkedItems.size() > 0) && (buttonSet.getVisibility() == View.GONE))
+					Utilities.toggleSlidingAnimation(buttonSet, true);
+				if ((checkedItems.size() < 1) && (buttonSet.getVisibility() == View.VISIBLE))
+					Utilities.toggleSlidingAnimation(buttonSet, false);
+			}
+		}
+		
+		private void toggleSelectedMode0(DbFormWrapper wrapper) {
 			if (wrapper.getState() < DbForm.__FORM_SERVER_STATE_LATEST_VERSION__) {
-				if (!serverCheckedItems.contains(wrapper.getId())) {
-					serverCheckedItems.add(wrapper.getId());
-					wrapper.getRow().setBackgroundColor(res.getColor(R.color.ULLGradientStart));
+				if (!checkedItems.contains(wrapper.getId())) {
+					checkedItems.add(wrapper.getId());
+					wrapper.getRow().setBackgroundColor(res.getColor(R.color.ULLChecked));
 					wrapper.getCb().setChecked(true);
 					//row.setBackgroundColor(R.color.CheckedRed);
 				}
 				else {
-					serverCheckedItems.remove(wrapper.getId());
+					checkedItems.remove(wrapper.getId());
 					wrapper.getRow().setBackgroundColor(res.getColor(R.color.Transparent));
 					wrapper.getCb().setChecked(false);
 				}
 			}
-			if (enableButtonSetAnimation) {
-				if ((serverCheckedItems.size() > 0) && (updateButtonSet.getVisibility() == View.GONE))
-					toggleButtonSetAnimation(0);
-				if ((serverCheckedItems.size() < 1) && (updateButtonSet.getVisibility() == View.VISIBLE))
-					toggleButtonSetAnimation(0);
+
+		}
+		
+		private void toggleSelectedMode1(DbFormWrapper wrapper) {
+			if (!checkedItems.contains(wrapper.getId())) {
+				checkedItems.add(wrapper.getId());
+				wrapper.getRow().setBackgroundColor(res.getColor(R.color.TransparentRed));
+				wrapper.getCb().setChecked(true);
+			}
+			else {
+				checkedItems.remove(wrapper.getId());
+				wrapper.getRow().setBackgroundColor(res.getColor(R.color.Transparent));
+				wrapper.getCb().setChecked(false);
 			}
 		}
+		
+		private void toggleOpen (DbFormWrapper wrapper) {
+			if (!openItems.contains(wrapper.getId())) {
+				openItems.add(wrapper.getId());
+				wrapper.getFormDescription().setOpen(true);
+			}
+			else {
+				openItems.remove(wrapper.getId());
+				wrapper.getFormDescription().setOpen(false);
+			}
+		}
+		
 		/**
-		 * Handles state of the list item's. Whether they should be enabled, disabled, background color, 
+		 * Handles state of the list items. Whether they should be enabled, disabled, background color, 
 		 * checkbox checked, state information towards the user, etc.
 		 * @param wrapper DbFormWrapper of the list item to handle.
 		 */
-		private void wrapperLogic (DbFormWrapper wrapper) {
+		public void wrapperLogic (DbFormWrapper wrapper) {
+			switch (mode) {
+			case 0:
+				wrapperLogicMode0(wrapper);
+				break;
+			default:
+				wrapperLogicMode1(wrapper);
+				break;
+			}
+		}
+		
+		private void wrapperLogicMode0(DbFormWrapper wrapper) {
 			/*
 			 * Selected / Unselected logic
 			 */
-			if (serverCheckedItems.contains(wrapper.getId())) {
-				wrapper.getRow().setBackgroundColor(res.getColor(R.color.ULLGradientEnd));
+			if (checkedItems.contains(wrapper.getId())) {
+				wrapper.getRow().setBackgroundColor(res.getColor(R.color.ULLChecked));
 				wrapper.getCb().setChecked(true);
 			}
 			else {
@@ -631,124 +754,185 @@ public class FormsManager extends Activity {
 			}
 
 			/*
+			 * Open / Closed logic
+			 */
+			if (openItems.contains(wrapper.getId())) {
+				wrapper.getFormDescription().setOpen(true);
+			}
+			else
+				wrapper.getFormDescription().setOpen(false);
+			
+			/*
 			 * State logic
 			 */
+			wrapper.getFormName().setTextColor(Color.WHITE);
+			wrapper.getFormVersion().setTextColor(Color.WHITE);
+			wrapper.getFormVersionTitle().setTextColor(Color.WHITE);
+			wrapper.getFormDescription().getTitle().setTextColor(Color.WHITE);
+			wrapper.getFormDescription().getBody().setTextColor(Color.WHITE);
 			if (wrapper.getState() > DbForm.__FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__) {
 				wrapper.getCb().setEnabled(false);
-				wrapper.getRow().setBackgroundColor(Color.GRAY);
+				wrapper.getRow().setBackgroundColor(res.getColor(R.color.TransparentGray));
+				wrapper.getFormName().setTextColor(Color.BLACK);
+				wrapper.getFormVersion().setTextColor(Color.BLACK);
+				wrapper.getFormVersionTitle().setTextColor(Color.BLACK);
+				wrapper.getFormDescription().getTitle().setTextColor(Color.BLACK);
+				wrapper.getFormDescription().getBody().setTextColor(Color.BLACK);
 			}
 			switch (wrapper.getState()) {
 				case DbForm.__FORM_SERVER_STATE_NEW__:
-					wrapper.getStatus().setText(getString(R.string.formsManager_list_itemFormStatusNew));
+					wrapper.getStatus().setText(context.getString(R.string.formsManager_list_itemFormStatusNew));
 					wrapper.getStatus().setTextColor(Color.GREEN);
 					break;
 				case DbForm.__FORM_SERVER_STATE_LATEST_VERSION__:
-					wrapper.getStatus().setText(getString(R.string.formsManager_list_itemFormStatusCurrent));
+					wrapper.getStatus().setText(context.getString(R.string.formsManager_list_itemFormStatusCurrent));
 					wrapper.getStatus().setTextColor(Color.CYAN);
 					break;
 				case DbForm.__FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__:
-					wrapper.getStatus().setText(getString(R.string.formsManager_list_itemFormStatusUpdate));
+					wrapper.getStatus().setText(context.getString(R.string.formsManager_list_itemFormStatusUpdate));
 					wrapper.getStatus().setTextColor(Color.YELLOW);
 					break;
 				case DbForm.__FORM_SERVER_STATE_NOT_FOUND__:
 				default:
-					wrapper.getStatus().setText(getString(R.string.formsManager_list_itemFormStatusNotFound));
+					wrapper.getStatus().setText(context.getString(R.string.formsManager_list_itemFormStatusNotFound));
 					wrapper.getStatus().setTextColor(Color.RED);
 					break;
 			}
 		}
+		
+		private void wrapperLogicMode1(DbFormWrapper wrapper) {
+			/*
+			 * Selected / Unselected logic
+			 */
+			wrapper.getFormDescription().setVisibility(View.GONE);
+			if (checkedItems.contains(wrapper.getId())) {
+				wrapper.getRow().setBackgroundColor(res.getColor(R.color.TransparentRed));
+				wrapper.getCb().setChecked(true);
+			}
+			else {
+				wrapper.getRow().setBackgroundColor(res.getColor(R.color.Transparent));
+				wrapper.getCb().setChecked(false);
+			}
+			
+			wrapper.getStatus().setVisibility(View.GONE);
+		}
 	}
-	
-	class DbFormWrapper {
-		private DbForm dbf = null;
-		private long id;
-		private int version;
-		private CheckBox cb;
+
+    public class DbFormWrapper {
+    	private Context context;
+    	private DbForm dbf = null;
+    	private long id;
+    	private int version;
+    	private String description;
+    	private CheckBox cb;
     	private TextView formName;
     	private TextView formVersion;
     	private TextView status;
-		private View row = null;
-		private DbFormAdapter adapter = null;
-		private int state;
-		private DbFormWrapper myself;
-		
-		public DbFormWrapper (View view, DbFormAdapter adapter) {
-			row = view;
-			this.adapter = adapter;
-			myself = this;
-		}
-		
-		void populateFrom(Cursor c) {
-			/*
-			 * DUE TO PERFORMANCE ISSUES WE CANNOT USE THIS CODE
-			if (dbf == null)
-				dbf = new DbForm();
-			dbf.loadFrom(c);
-			*/
-			id = c.getLong(c.getColumnIndex(DbForm.__LOCALFORMSDB_ID_KEY__));
-			version = c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_VERSION_KEY__));
-			getFormName().setText(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_NAME_KEY__)));
-			getFormVersion().setText(c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_VERSION_KEY__)) + ".0");
-			state = c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_SERVERSTATE_KEY__));
-			
-			getCb().setEnabled(true);
-			getRow().setBackgroundColor(Color.TRANSPARENT);
-			
-		}
+    	private TextView formVersionTitle;
+    	private ExpandableTextView formDescription;
+    	private View row = null;
+    	private DbFormAdapter adapter = null;
+    	private int state;
+    	private DbFormWrapper myself;
 
-		public View getRow() {
-			return row;
-		}
-		
-		public int getState() {
-			return state;
-		}
-		
-		public long getId() {
-			return id;
-		}
-		
-		public CheckBox getCb() {
-			if (cb == null) {
-				cb = (CheckBox) row.findViewById(R.id.forms_manager_list_itemCb);
-				cb.setOnClickListener(new View.OnClickListener() {
+    	
+    	public DbFormWrapper (Context context, View view, final DbFormAdapter adapter) {
+    		this.adapter = adapter;
+    		myself = this;
+    		row = view;
+
+    	}
+    	
+    	public void populateFrom(Cursor c) {
+    		/*
+    		 * DUE TO PERFORMANCE ISSUES WE CANNOT USE THIS CODE
+    		if (dbf == null)
+    			dbf = new DbForm();
+    		dbf.loadFrom(c);
+    		*/
+    		id = c.getLong(c.getColumnIndex(DbForm.__LOCALFORMSDB_ID_KEY__));
+    		version = c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_VERSION_KEY__));
+    		getFormName().setText(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_NAME_KEY__)));
+    		getFormVersion().setText(c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_VERSION_KEY__)) + ".0");
+    		state = c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_SERVERSTATE_KEY__));
+    		getFormDescription().getBody().setText(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_DESCRIPTION_KEY__)));
+    		
+    		getCb().setEnabled(true);
+    		getRow().setBackgroundColor(Color.TRANSPARENT);
+    		
+    	}
+
+    	public View getRow() {
+    		return row;
+    	}
+    	
+    	public int getState() {
+    		return state;
+    	}
+    	
+    	public long getId() {
+    		return id;
+    	}
+    	
+    	public CheckBox getCb() {
+    		if (cb == null) {
+    			cb = (CheckBox) row.findViewById(R.id.forms_manager_list_itemCb);
+    			cb.setOnClickListener(new View.OnClickListener() {
+    				@Override
+    				public void onClick(View v) {
+    					adapter.toggleSelected(myself);
+    				}
+    			});
+    		}
+    		return cb;
+    	}
+
+    	public TextView getFormName() {
+    		if (formName == null) {
+    			formName = (TextView) row.findViewById(R.id.forms_manager_list_itemFormNameTextView);
+    		}
+    		return formName;
+    	}
+
+    	public TextView getFormVersion() {
+    		if (formVersion == null)
+    			formVersion = (TextView) row.findViewById(R.id.forms_manager_list_itemFormVersionNumberTextView);
+    		return formVersion;
+    	}
+
+    	public TextView getStatus() {
+    		if (status == null)
+    			status = (TextView) row.findViewById(R.id.forms_manager_list_itemFormStatusTextView);
+    		return status;
+    	}
+    	
+    	public TextView getFormVersionTitle() {
+    		if (formVersionTitle == null) {
+    			formVersionTitle = (TextView) row.findViewById(R.id.forms_manager_list_itemFormVersionTextView);
+	    		formVersionTitle.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						adapter.toggleSelected(myself);
 					}
 				});
-			}
-			return cb;
-		}
-
-		public TextView getFormName() {
-			if (formName == null) {
-				formName = (TextView) row.findViewById(R.id.forms_manager_list_itemFormNameTextView);
-				formName.setOnTouchListener(new View.OnTouchListener() {
+    		}
+    		return formVersionTitle;
+    	}
+    	
+    	public ExpandableTextView getFormDescription() {
+    		if (formDescription == null) {
+    			formDescription = (ExpandableTextView) row.findViewById(R.id.forms_manager_list_itemFormDescriptionExpTextView);
+    			formDescription.setOnClickListener(new View.OnClickListener() {
 					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-						adapter.toggleSelected(myself);
-						return false;
+					public void onClick(View v) {
+						adapter.toggleOpen(myself);
 					}
 				});
-			}
-			return formName;
-		}
-
-		public TextView getFormVersion() {
-			if (formVersion == null)
-				formVersion = (TextView) row.findViewById(R.id.forms_manager_list_itemFormVersionNumberTextView);
-			return formVersion;
-		}
-
-		public TextView getStatus() {
-			if (status == null)
-				status = (TextView) row.findViewById(R.id.forms_manager_list_itemFormStatusTextView);
-			return status;
-		}
-		
-		
-	}
+    		}
+    		return formDescription;
+    	}
+    }
+	
 	
 	/*
 	 * This needs to be removed once we set the listener on the erase listview
@@ -771,11 +955,26 @@ public class FormsManager extends Activity {
     	super.onCreateOptionsMenu(menu);
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.forms_manager_menu, menu);
+    	
     	if (prefs.getBoolean(GBSharedPreferences.__ENABLE_DEBUGGING_FEATURES_KEY__, false)) {
+    		// debugging enabled
     		MenuItem item = menu.findItem(R.id.formsManager_menuShowDebug);
     		item.setVisible(true);
     	}
     	return true;
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	super.onPrepareOptionsMenu(menu);
+    	MenuItem item = menu.findItem(R.id.formsManager_menuUpdate);
+    	if (currentPage == 0) {
+    		// left page
+    		item.setVisible(false);
+    	}
+    	else
+    		item.setVisible(true);
+		return true;
     }
     
     @Override 
@@ -785,7 +984,10 @@ public class FormsManager extends Activity {
     		updateServerList();
 			break;
     	case (R.id.formsManager_menuSelectAll):
-    		formsAdapter.checkAllItems();
+    		if (currentPage == 1)
+    			formsAdapter.checkAllItems();
+    		else
+    			deleteFormsAdapter.checkAllItems();
     		break;
     	case (R.id.formsManager_menuShowDebug):
     		Utilities.showTitleAndMessageDialog(this, getString(R.string.debugging), serverDebugInfo);
@@ -794,5 +996,7 @@ public class FormsManager extends Activity {
     	}
     	return false; 
     }
-	
+
 }
+
+

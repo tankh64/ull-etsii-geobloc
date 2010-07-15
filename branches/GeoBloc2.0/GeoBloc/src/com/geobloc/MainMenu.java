@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,14 +48,13 @@ public class MainMenu extends Activity {
 	private Button mCreateFormButton;
 	private Button mTestButton;
 	
-	// Spinner
-	
-	//
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Hide the title bar
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         
         TextView tv = (TextView) findViewById(R.id.ProgramName);

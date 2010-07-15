@@ -134,7 +134,10 @@ public class UploadPackageHelper implements IStandardTaskListener {
     			else
     				value = "FALSE";
     		}
-    		field = new FormTextField("widget", "field1", "field2", name, value);
+    		//field = new FormTextField("widget", "field1", "field2", name, value);
+    		field = new FormTextField("widget");
+    		field.addTag("field1", name);
+    		field.addTag("field2", value);
     		fields.addField(field);
     		childFlag++;
     	}
@@ -143,7 +146,7 @@ public class UploadPackageHelper implements IStandardTaskListener {
 		return myFields;
 	}
 
-	/*
+	/**
 		Builds the package file to be sent.
 	*/
 	public static boolean preparePackage(DbFormInstance dbi, SQLiteDatabase db, GeoBlocPackageManager pm) {

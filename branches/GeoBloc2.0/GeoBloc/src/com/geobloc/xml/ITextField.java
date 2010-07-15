@@ -15,10 +15,10 @@ import org.xmlpull.v1.XmlSerializer;
  */
 public interface ITextField extends IField {
 	
-	public String getFieldA();
-	public String getFieldB();
-	public void setFieldA(String a);
-	public void setFieldB(String b);
+	public String getTagi(int i);
+	public void setTagi(String tag, int i);
+	public String getFieldi(int i);
+	public void setFieldi(String field, int i);
 	
 	public void toXML(XmlSerializer serializer);
 
