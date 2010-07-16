@@ -70,8 +70,10 @@ public class UpdateFormsDatabaseService extends Service {
 	}
 
 	public void onDestroy() {
-		if (db != null)
+		if (db != null) {
 			db.close();
+			Log.i(LOG_TAG, "Forms database closed.");
+		}
 	}
 	
 	public void updateFormsDatabase() {
@@ -96,39 +98,6 @@ public class UpdateFormsDatabaseService extends Service {
 	}
 
 	class PerformDatabaseUpdate extends AsyncTask<String, Integer, Boolean> {
-
-		/*
-		private String fetchServerList() {
-			// boolean to check for Exception
-			boolean exception = false;
-
-			// boolean to exit loop (success or failrue)
-			boolean done = false;
-			
-			SimpleHttpGet get;
-			String response = null;
-			
-			for (int i = 1; (!exception && !done && (i <= attempts)); i++) {
-				get = new SimpleHttpGet();
-				// tell the handler in which attempt we are
-				//handler.sendEmptyMessage(i);
-				try {
-					response = get.executeHttpGetRequest(url, httpClient);
-					// should be enough to check
-					if (response != null)
-						done = true;
-				}
-				catch (Exception e){
-					Log.e(LOG_TAG, "Exception ocurred while executing HttpGet request to the server.");
-					// if exception, exit loop
-					exception = true;
-					e.printStackTrace();
-					response = null;
-				}
-			}
-			return response;
-		}
-		*/
 		
 		private boolean updateDatabase(String response) {
 			boolean updateSuccesful = true;
@@ -168,7 +137,14 @@ public class UpdateFormsDatabaseService extends Service {
 							map.remove(dbf.getForm_id());
 							// check for update
 							if (dbf.getForm_version() < json.getInt(DbForm.__SERVER_FORM_VERSION_KEY__)) {
-								dbf.setForm_version(DbForm.__FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__);
+								// if we're new, we set version to the latest
+								if (dbf.getServer_state() == DbForm.__FORM_SERVER_STATE_NEW__)
+									dbf.setForm_version(json.getInt(DbForm.__SERVER_FORM_VERSION_KEY__));
+								else {
+									// else, we tell the user there's a more recent version available keeping version 
+									// intact until download, unless we store ours and the server's, of course
+									dbf.setServer_state(DbForm.__FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__);
+								}
 								dbf.setForm_name(json.getString(DbForm.__SERVER_FORM_NAME_KEY__));
 								dbf.setForm_description(json.getString(DbForm.__SERVER_FORM_DESCRIPTION_KEY__));
 								try {

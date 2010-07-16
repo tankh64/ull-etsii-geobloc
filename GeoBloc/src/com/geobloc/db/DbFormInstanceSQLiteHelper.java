@@ -16,14 +16,14 @@ import com.geobloc.shared.GBSharedPreferences;
 
 public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 
-	private static final String LOG_TAG = "Localforms";
+	private static final String LOG_TAG = "DbFormInstanceSQLiteHelper";
 	
-	private static final String DATABASE_NAME = "local.db";
-	private static final int SCHEMA_VERSION = 5;
+	private static final String DATABASE_NAME = "localPackages.db";
+	private static final int SCHEMA_VERSION = 3;
 	
 	private Context context;
 	
-	public static final String __LOCALPACKAGESDB_TABLE_NAME__ = "localpackages";
+	public static final String __LOCALPACKAGESDB_TABLE_NAME__ = "localPackages";
 	
 	public DbFormInstanceSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, SCHEMA_VERSION);
@@ -45,11 +45,12 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 				DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__ + " INTEGER);");
 		buildDatabase(db);
+		Log.i(LOG_TAG, "Database built with schema version " + SCHEMA_VERSION + ".");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(LOG_TAG, "Upgrading database, which will destroy all old data.");
+		Log.w(LOG_TAG, "Upgrading database; old data will be destroyed.");
 		db.execSQL("DROP TABLE IF EXISTS " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__);
 		onCreate(db);
 
@@ -65,25 +66,14 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 		String packageDirectory =  prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, 
 				GBSharedPreferences.__DEFAULT_PACKAGES_PATH__);
 		GeoBlocPackageManager manager = new GeoBlocPackageManager();
-		manager.openPackage(packageDirectory);
+		manager.openOrBuildPackage(packageDirectory);
 		List<File> packages = manager.getAllDirectories();
 		DbFormInstance dbi;
-		/*
-		DbForm form = new DbForm();
-		form.setForm_date(new Date());
-		form.setForm_description("Dummy form");
-		form.setForm_file_path(null);
-		form.setForm_id("dummy");
-		form.setForm_version(1);
-		form.setServer_state(2);
-		form.save();
-		*/
 		for (File myPackages : packages) {
 			dbi = new DbFormInstance();
 			dbi.setForm(null);
-			//dbi.setForm(form);
 			dbi.setLabel(myPackages.getName());
-			dbi.setInstance_form_version(-1);
+			dbi.setInstance_form_version(1);
 			dbi.setPackage_path(myPackages.getAbsolutePath());
 			dbi.setCreatedDate(new Date(myPackages.lastModified()));
 			dbi.setDate(null);
@@ -91,21 +81,6 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 			dbi.setComplete(false);
 			dbi.save(db);
 		}
-	}
-	
-	/*
-	 * TESTING PURPOSES ONLY
-	 */
-	
-	public static void autoAdd(SQLiteDatabase db) {
-		DbFormInstance dbi = new DbFormInstance();
-		dbi.setLabel("autoAdded");
-		dbi.setForm(null);
-		dbi.setPackage_path("Unknown");
-		dbi.setCreatedDate(new Date());
-		dbi.setDate(null);
-		dbi.setComplete(false);
-		dbi.save(db);
 	}
 
 }

@@ -152,7 +152,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 		if (lastServletListCheck.getText() != null)
 			lastServletListCheck.setSummary(lastServletListCheck.getText().toString());
 		else
-			lastServletListCheck.setSummary("");
+			lastServletListCheck.setSummary(getString(R.string.notAvailable));
 		
 		// default forms path
 		setEditTextDefaultConfig(formsPath, GBSharedPreferences.__DEFAULT_FORMS_PATH__);

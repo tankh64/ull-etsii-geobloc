@@ -31,6 +31,7 @@
 	<string name="delete">Borrar</string>
 	<string name="update">Actualizar</string>
 	<string name="report">Informe</string>
+	<string name="notAvailable">No disponible</string>
 	
 	<!-- Nombres de botones de la Actividad Menú Principal -->
 	<string name="staticFormSelectionSpinnerText">Seleccione Formulario:</string>
@@ -147,7 +148,7 @@
 	<string name="find_position">Posición: %s - %s</string>
 	<string name="activateGPS">Debe activar GPS en los ajustes del teléfono</string>
 
-	<string name="version">0.6</string>
+	<string name="version">0.61</string>
 
     <string name="planet_prompt">Choose a planet</string>
     <string-array name="planets_array">

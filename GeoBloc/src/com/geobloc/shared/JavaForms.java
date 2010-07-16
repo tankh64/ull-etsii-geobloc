@@ -9,6 +9,7 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.geobloc.db.DbForm;
 import com.geobloc.db.DbFormSQLiteHelper;
@@ -19,7 +20,7 @@ import com.geobloc.db.DbFormSQLiteHelper;
  *
  */
 public class JavaForms implements IJavaToDatabaseForm {
-
+	private static final String LOG_TAG = "JavaForms";
 	private SQLiteDatabase db;
 	private DbForm dbf;
 	
@@ -32,6 +33,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 	 */
 	@Override
 	public List<IFormDefinition> getListOfLocalForms() throws Exception {
+		Log.i(LOG_TAG, "List of Local Forms requested.");
 		ArrayList<IFormDefinition> list = new ArrayList<IFormDefinition>();
 		Cursor c = DbForm.getAllForms(db);
 		c.moveToFirst();
@@ -43,7 +45,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 				list.add((IFormDefinition)dbf);
 			c.moveToNext();
 		}
-		//c.close();
+		c.close();
 		return list;
 	}
 
@@ -52,6 +54,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 	 */
 	@Override
 	public IFormDefinition getLocalFormDefinition(long formLocalId) {
+		Log.i(LOG_TAG, "Form with localId='" + formLocalId + "' requested.");
 		dbf = new DbForm();
 		dbf = DbForm.loadFrom(db, formLocalId);
 		return (IFormDefinition)dbf;
@@ -62,6 +65,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 	 */
 	@Override
 	public String getPathLocalForm(long formLocalId) {
+		Log.i(LOG_TAG, "File path of form with localId='" + formLocalId + "' requested.");
 		dbf = new DbForm();
 		dbf = DbForm.loadFrom(db, formLocalId);
 		return dbf.getForm_file_path();
@@ -69,6 +73,7 @@ public class JavaForms implements IJavaToDatabaseForm {
 
 	@Override
 	public void close() {
+		Log.i(LOG_TAG, "Closing database.");
 		db.close();		
 	}
 }

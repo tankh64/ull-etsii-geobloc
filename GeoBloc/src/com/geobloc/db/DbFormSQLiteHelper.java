@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.geobloc.R;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.shared.GBSharedPreferences;
 
@@ -21,8 +22,8 @@ public class DbFormSQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String LOG_TAG = "Localforms";
 	
-	private static final String DATABASE_NAME = "local.db";
-	private static final int SCHEMA_VERSION = 1;
+	private static final String DATABASE_NAME = "localForms.db";
+	private static final int SCHEMA_VERSION = 3;
 	
 	private Context context;
 	
@@ -45,6 +46,10 @@ public class DbFormSQLiteHelper extends SQLiteOpenHelper {
 				DbForm.__LOCALFORMSDB_FORM_DESCRIPTION_KEY__ + " TEXT, " +
 				DbForm.__LOCALFORMSDB_FORM_DATE_KEY__ + " TEXT, " +
 				DbForm.__LOCALFORMSDB_FORM_SERVERSTATE_KEY__ + " INTEGER);");
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor ed = prefs.edit();
+		ed.putString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, context.getString(R.string.notAvailable));
+		ed.commit();
 		Log.i(LOG_TAG, "Database created for schema version " + SCHEMA_VERSION + ".");
 		buildDatabase(db);
 	}

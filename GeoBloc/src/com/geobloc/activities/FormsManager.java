@@ -165,7 +165,7 @@ public class FormsManager extends Activity {
 		this.serverList = (ListView)findViewById(R.id.formsManager_downloadListView);
 		this.deleteFormsList = (ListView)findViewById(R.id.formsManager_deleteFormsListView);
 		this.lastUpdateDateTextView = (TextView) findViewById(R.id.formsManager_downloadLastListDate);
-		this.lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, ""));
+		this.lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, getString(R.string.notAvailable)));
 		this.updateButtonSet = (ViewGroup) findViewById(R.id.formsManager_downloadFormsBottom);
 		this.deleteButtonSet = (ViewGroup) findViewById(R.id.formsManager_deleteFormsBottom);
 		
@@ -890,6 +890,12 @@ public class FormsManager extends Activity {
     	public TextView getFormName() {
     		if (formName == null) {
     			formName = (TextView) row.findViewById(R.id.forms_manager_list_itemFormNameTextView);
+    			formName.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						adapter.toggleSelected(myself);	
+					}
+				});
     		}
     		return formName;
     	}
@@ -907,15 +913,8 @@ public class FormsManager extends Activity {
     	}
     	
     	public TextView getFormVersionTitle() {
-    		if (formVersionTitle == null) {
+    		if (formVersionTitle == null)
     			formVersionTitle = (TextView) row.findViewById(R.id.forms_manager_list_itemFormVersionTextView);
-	    		formVersionTitle.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						adapter.toggleSelected(myself);
-					}
-				});
-    		}
     		return formVersionTitle;
     	}
     	

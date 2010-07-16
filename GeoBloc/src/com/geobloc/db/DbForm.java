@@ -191,6 +191,7 @@ public class DbForm implements IFormDefinition {
 			map.put(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_ID_KEY__)), false);
 			c.moveToNext();
 		}
+		c.close();
 		return map;
 	}
 	/**
@@ -208,9 +209,10 @@ public class DbForm implements IFormDefinition {
 		while (!c.isAfterLast()) {
 			dbf.loadFrom(c);
 			if (dbf.getServer_state() >= DbForm.__FORM_STATE_LOCAL__)
-				map.put(dbf.getForm_file_name(), dbf.getForm_local_id());
+				map.put(dbf.getForm_file_name().substring(0, dbf.getForm_file_name().indexOf('.')), dbf.getForm_local_id());
 			c.moveToNext();
 		}
+		c.close();
 		return map;
 	}
 	/**
@@ -228,11 +230,11 @@ public class DbForm implements IFormDefinition {
 		if (c.isFirst()) {
 			DbForm dbf = new DbForm();
 			dbf.loadFrom(c);
+			c.close();
 			return dbf;
 		}
-		else
-			return null;
-		
+		c.close();
+		return null;		
 	}
 	/**
 	 * It allows faster access to the database by providing a method to get a form in a Java Object form 
@@ -249,15 +251,17 @@ public class DbForm implements IFormDefinition {
 		if (c.isFirst()) {
 			DbForm dbf = new DbForm();
 			dbf.loadFrom(c);
+			c.close();
 			return dbf;
 		}
-		else
-			return null;
+		c.close();
+		return null;
 	}
 	
 	/**
 	 * Loads an entry from the database into the current {@link DbForm} Object, effectively losing its 
 	 * previous contents. The {@link Object} must've been initialized first.
+	 * NOTE: The cursor passed as parameter is not closed nor deactivated within this call.
 	 * @param c A cursor pointing to an entry in the database.
 	 * @return A copy of the same Object after loading the contents from the database.
 	 */

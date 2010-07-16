@@ -28,7 +28,8 @@ public class DeletePackagesTask extends AsyncTask<Long, String, String> {
 	private static final String LOG_TAG = "DeletePackagesTask";
 	
 	private Context context;
-	private SQLiteDatabase db;
+	private SQLiteDatabase instancesDb;
+	private SQLiteDatabase formsDb;
 	private GeoBlocPackageManager pm;
 	private SharedPreferences prefs;
 	private String packagesPath;
@@ -44,8 +45,12 @@ public class DeletePackagesTask extends AsyncTask<Long, String, String> {
 		this.context = context;
 	}
 	
-	public void setSQLiteDatabase(SQLiteDatabase db) {
-		this.db = db;
+	public void setInstanceSQLiteDatabase(SQLiteDatabase db) {
+		this.instancesDb = db;
+	}
+	
+	public void setFormsSQLiteDatabase(SQLiteDatabase db) {
+		this.formsDb = db;
 	}
 	
 	private void initConfig() {
@@ -77,7 +82,7 @@ public class DeletePackagesTask extends AsyncTask<Long, String, String> {
 	}
 	
 	private boolean deletePackage(Long id) {
-		DbFormInstance dbi = DbFormInstance.loadFrom(db, id);
+		DbFormInstance dbi = DbFormInstance.loadFrom(instancesDb, formsDb, id);
 		boolean found = false;
 		boolean deleted = false;
 		if (dbi != null) {
@@ -88,7 +93,7 @@ public class DeletePackagesTask extends AsyncTask<Long, String, String> {
 					found = true;
 					deleted = pm.eraseDirectory(packages.get(i).getName());
 					if (deleted)
-						dbi.delete(db);
+						dbi.delete(instancesDb);
 				}
 				i++;
 			}
