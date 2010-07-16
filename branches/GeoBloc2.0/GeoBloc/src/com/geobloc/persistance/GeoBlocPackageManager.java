@@ -88,11 +88,15 @@ public class GeoBlocPackageManager {
 		packageName = packageDirectory.substring(packageDirectory.lastIndexOf('/')+1);
 		packageDirectory = fullpath;
 		directory = new File(fullpath);
-		directory.mkdirs();
-		if (directory.isDirectory())
-			ok = true;
+		if (!directory.isDirectory()) {
+			directory.mkdirs();
+			if (directory.isDirectory())
+				ok = true;
+			else
+				ok = false;
+		}
 		else
-			ok = false;
+			ok = true;
 		return ok;
 	}
 	

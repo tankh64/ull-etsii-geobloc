@@ -922,7 +922,6 @@ public class FormActivity extends Activity {
 	@Override
 	protected void onDestroy () {
 		instanceInterface.close();
-		
 		super.onDestroy();
 	}
 }

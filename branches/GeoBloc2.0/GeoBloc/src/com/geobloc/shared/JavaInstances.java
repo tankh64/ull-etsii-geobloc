@@ -12,15 +12,16 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.geobloc.db.DbForm;
 import com.geobloc.db.DbFormInstance;
 import com.geobloc.db.DbFormInstanceSQLiteHelper;
+import com.geobloc.db.DbFormSQLiteHelper;
 import com.geobloc.form.FormClass;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.persistance.SDFilePersistance;
 import com.geobloc.xml.IField;
-import com.geobloc.xml.MultiField;
 import com.geobloc.xml.TextMultiField;
 import com.geobloc.xml.TextXMLWriter;
 
@@ -29,8 +30,9 @@ import com.geobloc.xml.TextXMLWriter;
  *
  */
 public class JavaInstances implements IJavaToDatabaseInstance {
+	private static final String LOG_TAG = "JavaInstances";
 
-	private SQLiteDatabase db;
+	private SQLiteDatabase formsDb, instancesDb;
 	private Context context;
 	private SharedPreferences prefs;
 	private GeoBlocPackageManager pm;
@@ -38,7 +40,8 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	public JavaInstances(Context context){
 		this.context = context;
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		db = (new DbFormInstanceSQLiteHelper(this.context)).getWritableDatabase();
+		formsDb = (new DbFormSQLiteHelper(this.context)).getReadableDatabase();
+		instancesDb = (new DbFormInstanceSQLiteHelper(this.context)).getWritableDatabase();
 		pm = new GeoBlocPackageManager();
 	}
 	
@@ -47,7 +50,9 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	 */
 	@Override
 	public void close() {
-		db.close();
+		Log.i(LOG_TAG, "Closing databases.");
+		formsDb.close();
+		instancesDb.close();
 	}
 
 	/* (non-Javadoc)
@@ -55,16 +60,21 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	 */
 	@Override
 	public void deleteInstance(long instanceLocalId) throws Exception {
-		DbFormInstance dbi = DbFormInstance.loadFrom(db, instanceLocalId);
-		if (dbi == null)
+		Log.i(LOG_TAG, "Deletion of instance with locald='" + instanceLocalId + "' requested.");
+		DbFormInstance dbi = DbFormInstance.loadFrom(instancesDb, formsDb, instanceLocalId);
+		if (dbi == null) {
+			Log.e(LOG_TAG, "Cannot perform delete operation. The instance does not exist.");
 			throw new Exception("The instance does not exist. Load operation returned null.");
+		}
 		// first, we erase from external storage
 		pm.openOrBuildPackage(prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, GBSharedPreferences.__DEFAULT_PACKAGES_PATH__));
 		String[] strings = dbi.getPackage_path().split("/");
-		if (!pm.eraseDirectory(strings[strings.length-1]))
+		if (!pm.eraseDirectory(strings[strings.length-1])) {
+			Log.e(LOG_TAG, "Cannot perform delete operation. Delete in external storage failed.");
 			throw new Exception("Could not perform operation. Delete operation in external storage failed.");
+		}
 		// erased from external storage, now we erase the entry
-		dbi.delete(db);
+		dbi.delete(instancesDb);
 	}
 
 	/* (non-Javadoc)
@@ -72,17 +82,18 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	 */
 	@Override
 	public List<IInstanceDefinition> getListOfLocalInstances() throws Exception {
+		Log.i(LOG_TAG, "List of local instances requested.");
 		ArrayList<IInstanceDefinition> list = new ArrayList<IInstanceDefinition>();
-		Cursor c = DbFormInstance.getAll(db);
+		Cursor c = DbFormInstance.getAll(instancesDb);
 		DbFormInstance dbi;
 		c.moveToFirst();
 		while (!c.isAfterLast()) {
 			dbi = new DbFormInstance();
-			dbi.loadFrom(db, c);
+			dbi.loadFrom(instancesDb, c);
 			list.add((IInstanceDefinition)dbi);
 			c.moveToNext();
 		}
-		//c.close();
+		c.close();
 		return list;
 	}
 
@@ -91,17 +102,23 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	 */
 	@Override
 	public IInstanceDefinition newInstance(long formLocalId) throws Exception {
-		DbForm dbf = DbForm.loadFrom(db, formLocalId);
-		if (dbf == null)
+		Log.i(LOG_TAG, "New instance from form with locald='" + formLocalId + "' requested.");
+		DbForm dbf = DbForm.loadFrom(formsDb, formLocalId);
+		if (dbf == null) {
+			Log.e(LOG_TAG, "Could not create instance. The form does not exist.");
 			throw new Exception("The form does not exist. Load operation returned null.");
+		}
 		// form exists, now let's create the package in the external storage
 		String path =  prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, GBSharedPreferences.__DEFAULT_PACKAGES_PATH__);
 		String packageName = Utilities.buildPackageName(context, dbf.getForm_id());
 		path += packageName;
-		if (!pm.openOrBuildPackage(path))
+		if (!pm.openOrBuildPackage(path)) {
+			Log.e(LOG_TAG, "Could not create instance. Could not create package directory..");
 			throw new Exception("Could not create package directory.");
+		}
 		// add the form.xml file to the package
 		if (!SDFilePersistance.copyFile(dbf.getForm_file_path(), pm.getPackageFullpath()+"form.xml")) {
+			Log.e(LOG_TAG, "Could not create instance. Copy operation of the instance0s form file failed.");
 			pm.openOrBuildPackage(prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, GBSharedPreferences.__DEFAULT_PACKAGES_PATH__));
 			pm.eraseDirectory(packageName.substring(0, packageName.length()-1));
 			throw new Exception("Could not finish creating package. Copy operation of the instance's form failed.");
@@ -116,10 +133,11 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 		dbi.setComplete(false);
 		dbi.setCreatedDate(new Date());
 		dbi.setDate(null);
-		dbi.save(db);
+		dbi.save(instancesDb);
 		// we need to reload
-		dbi = DbFormInstance.loadFrom(db, dbi.getInstance_local_id());
+		dbi = DbFormInstance.loadFrom(instancesDb, formsDb, dbi.getInstance_local_id());
 		if (dbi == null) {
+			Log.e(LOG_TAG, "Could not create instance. Database operation failed.");
 			pm.openOrBuildPackage(prefs.getString(GBSharedPreferences.__PACKAGES_PATH_KEY__, GBSharedPreferences.__DEFAULT_PACKAGES_PATH__));
 			pm.eraseDirectory(packageName.substring(0, packageName.length()-1));
 			throw new Exception("Could not create instance. Database operation failed.");
@@ -133,6 +151,7 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 	@Override
 	public void saveInstance(IInstanceDefinition instance, FormClass form)
 			throws Exception {
+		Log.i(LOG_TAG, "Saving of instance with locald='" + instance.getInstance_local_id() + "' requested.");
 		DbFormInstance dbi = (DbFormInstance) instance;
 		// build XML file
 		List<IField> myFields = new ArrayList<IField>();
@@ -155,14 +174,18 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 		TextXMLWriter writer = new TextXMLWriter();
     	String xml = writer.WriteXML(myFields);
     	if (pm.openPackage(instance.getPackage_path())) {
-    		if (!pm.addFile("instance.xml", xml))
-    			throw new Exception ("Could not write instance.xml file");
+    		if (!pm.addFile("instance.xml", xml)) {
+    			Log.e(LOG_TAG, "Save operation failed. Could not write 'instance.xml' file.");
+    			throw new Exception ("Could not write 'instance.xml' file");
+    		}
     	}
-    	else
+    	else {
+    		Log.e(LOG_TAG, "Save operation failed. Could not open instance package/folder");
     		throw new Exception ("Could not open instance package/folder.");
+    	}
 		// update instance copy in the database
 		dbi.setDate(new Date());
-		dbi.save(db);
+		dbi.save(instancesDb);
 	}
 
 }

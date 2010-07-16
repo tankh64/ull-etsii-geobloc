@@ -38,7 +38,8 @@ import com.geobloc.shared.GBSharedPreferences;
  *
  */
 public class DownloadFormsService extends Service {
-	public static String LOG_TAG = "DownloadFormsService";
+	private static String LOG_TAG = "DownloadFormsService";
+	private static String extension = ".xml";
 	
 	private HttpClient httpClient;
 	private int attempts;
@@ -83,8 +84,10 @@ public class DownloadFormsService extends Service {
 	}
 	
 	public void onDestroy() {
-		if (db != null)
+		if (db != null) {
 			db.close();
+			Log.i(LOG_TAG, "Forms database closed.");
+		}
 	}
 	
 	public void downloadForms(Long[] ids) {
@@ -137,11 +140,12 @@ public class DownloadFormsService extends Service {
 				// detect previously used filenames
 				// This could be useful when switching from one server to another
 				filename = dbf.getForm_id();
-				if (map.containsKey(dbf.getForm_id())) {
+				while (map.containsKey(filename)) {
 					filename += "A";
-					map.put(filename, (long)-1);
 				}
-				filename += ".xml";
+				// we're just using map to make this faster, we don't really care about the value
+				map.put(filename, (long)-1);
+				filename += extension;
 				dbf.setForm_file_path(pm.getPackageFullpath()+filename);
 				pm.addFile(dbf.getForm_file_name(), json.getString(DbForm.__SERVER_FORM_XML_KEY__));
 				dbf.save(db);

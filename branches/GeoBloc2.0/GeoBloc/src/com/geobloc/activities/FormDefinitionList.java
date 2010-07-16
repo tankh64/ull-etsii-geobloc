@@ -233,7 +233,6 @@ public class FormDefinitionList extends ListActivity {
     @Override
     protected void onDestroy () {
     	formsInterface.close();
-    	
     	super.onDestroy();
     }
     

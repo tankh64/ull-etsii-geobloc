@@ -110,35 +110,38 @@ public class DbFormInstance implements IInstanceDefinition {
 	}
 	/**
 	 * Returns a {@link DbFormInstance} object loaded from the database.
-	 * @param db An open database with reading permissions.
+	 * @param instancesDb An open instances database with reading permissions.
+	 * @param formsDb An open forms database with reading permissions.
 	 * @param id The local id of the instance to load.
-	 * @return
+	 * @return A {@link DbFormInstance} object representing the row in the instances database with the specified local id.
 	 */
-	public static DbFormInstance loadFrom(SQLiteDatabase db, long id) {
+	public static DbFormInstance loadFrom(SQLiteDatabase instancesDb, SQLiteDatabase formsDb, long id) {
 		
-		Cursor c = db.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
+		Cursor c = instancesDb.rawQuery("SELECT * FROM " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
 				" WHERE " + DbFormInstance.__LOCALPACKAGESDB_ID__ + " = " + id, null);
 		
 		c.moveToFirst();
 		if (c.isFirst()) {
 			DbFormInstance dbi = new DbFormInstance();
-			dbi.loadFrom(db, c);
+			dbi.loadFrom(formsDb, c);
+			c.close();
 			return dbi;
 		}
-		else
-			return null;
+		c.close();
+		return null;
 	}
 	/**
 	 * Loads a row in the database representing an instance into the current {@link DbFormInstance} object.
-	 * @param db An open database with reading permissions.
+	 * @param formsDb An open forms database with reading permissions.
+	 * NOTE: The cursor passed as parameter is not closed nor deactivated within this call.
 	 * @param c A cursor pointing to the row with the instance to load.
 	 * @return A {@link DbFormInstance} object representing the instance the cursor is pointing to.
 	 */
-	public DbFormInstance loadFrom(SQLiteDatabase db, Cursor c) {
+	public DbFormInstance loadFrom(SQLiteDatabase formsDb, Cursor c) {
 		id = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_ID__));
 		formVersion = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__));
 		if (c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)) != -1)
-			form = DbForm.loadFrom(db, c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)));
+			form = DbForm.loadFrom(formsDb, c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)));
 		else 
 			form = null;
 		label=c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__));
