@@ -58,6 +58,7 @@
 
 <activity android:name=".activities.FormDefinitionList"></activity>
 
+<activity android:name=".activities.FormInstanceList"></activity>
 </application>
     <uses-sdk android:minSdkVersion="4" />
 

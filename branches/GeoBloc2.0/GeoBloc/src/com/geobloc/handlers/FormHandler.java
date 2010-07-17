@@ -111,4 +111,11 @@ public class FormHandler {
 		
 		return nameList;
 	}
+	
+	/**
+	 * Devuelve el formulario
+	 */
+	public FormClass getForm() {
+		return defForm;
+	}
 }

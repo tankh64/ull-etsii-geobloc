@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
+import com.geobloc.activities.FormInstanceList;
 import com.geobloc.activities.FormsManager;
 import com.geobloc.activities.InstanceManager;
 import com.geobloc.activities.FormDefinitionList;
@@ -76,7 +77,8 @@ public class MainMenu extends Activity {
         mTestButton.setText(getString(R.string.ButtonMainMenu2));
         mTestButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	Intent i = new Intent (getApplicationContext(), FormList.class);
+            	//Intent i = new Intent (getApplicationContext(), FormList.class);
+            	Intent i = new Intent (getApplicationContext(), FormInstanceList.class);
                 startActivityForResult(i, SIMPLE_LIST_FORM);
             }
         });
