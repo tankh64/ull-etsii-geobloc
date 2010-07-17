@@ -173,6 +173,8 @@ public class FormActivity extends Activity {
 	private LoadFormTask loadTask;
 	private IStandardTaskListener listener;
 	
+	private boolean saved = false;
+	
 	private static FormHandler formH;
 	
 	private SharedPreferences prefs;
@@ -876,7 +878,8 @@ public class FormActivity extends Activity {
                 .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
               	       try {
-             	    	   instanceInterface.deleteInstance(myInstance.getInstance_local_id());
+              	    	   if (saved != true)
+              	    		   instanceInterface.deleteInstance(myInstance.getInstance_local_id());
              		   } catch (Exception e) {
              			   e.printStackTrace();
              		   }
@@ -948,7 +951,7 @@ public class FormActivity extends Activity {
 		try {
 			myInstance.setDate(new Date());
 			instanceInterface.saveInstance(myInstance, formH.getForm());
-			finish();
+			saved = true;
 		} catch (Exception e) {
 			ErrorMessage("Error al guardar la instancia");
 			 e.printStackTrace();
