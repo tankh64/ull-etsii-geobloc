@@ -3,16 +3,20 @@ package com.geobloc.activities;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.geobloc.R;
 //import com.geobloc.activities.FormActivity.FormsLoader_FormsTaskListener;
 import com.geobloc.adapters.ImageAdapterPhoto;
+import com.geobloc.db.DbForm;
 import com.geobloc.db.DbFormInstance;
 import com.geobloc.form.FormPage.PageType;
 import com.geobloc.handlers.FormHandler;
 import com.geobloc.listeners.IStandardTaskListener;
 import com.geobloc.shared.GBSharedPreferences;
+import com.geobloc.shared.IFormDefinition;
 import com.geobloc.shared.IInstanceDefinition;
+import com.geobloc.shared.IJavaToDatabaseForm;
 import com.geobloc.shared.IJavaToDatabaseInstance;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
@@ -107,6 +111,9 @@ public class FormActivity extends Activity {
     private static final int DELETE_PHOTO = 1;
 
     private static final int DIALOG_EXIT_OR_NOT = 0;
+    private static final int DIALOG_ERROR = 1;
+    // mensaje de error en strError
+    private String strError = "Desconocido";
     
 	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
 
@@ -158,6 +165,7 @@ public class FormActivity extends Activity {
 	private String filepath;
 	private long localId;
 	
+	IJavaToDatabaseForm formInterface;
 	IJavaToDatabaseInstance instanceInterface;
 	IInstanceDefinition myInstance;
 	
@@ -330,9 +338,14 @@ public class FormActivity extends Activity {
 		
 		/* Debemos crear la nueva instancia, si da error, debemos salir */
 	     instanceInterface = DbFormInstance.getParserInterfaceInstance(this);
+	     formInterface = DbForm.getParserInterfaceInstance(this);
+	     IFormDefinition formDefinition;
 	     try {
 	    	   myInstance = instanceInterface.newInstance(localId);
+	    	   formDefinition = formInterface.getLocalFormDefinition(localId);
+	    	   myInstance.setForm_definition(formDefinition);
 	      } catch (Exception e) {
+	    	  ErrorMessage("Error al crear la nueva instancia de formulario");
 	            e.printStackTrace();
 	      }
 		
@@ -636,7 +649,7 @@ public class FormActivity extends Activity {
                 android.R.drawable.ic_media_next).setEnabled(
                 		viewFlipper.getDisplayedChild() != (viewFlipper.getChildCount()-1) ? true : false);
         menu.add(0, MENU_SAVE_COMPLETE, 0, "Save as Complete").setIcon(
-                android.R.drawable.ic_menu_save).setEnabled(false);
+                android.R.drawable.ic_menu_save).setEnabled(true);
         menu.add(0, MENU_SAVE_INCOMPLETE, 0, "Save as Incomplete").setIcon(
                 android.R.drawable.ic_menu_save).setEnabled(false);
 
@@ -651,7 +664,11 @@ public class FormActivity extends Activity {
         	case MENU_PREVIOUS_PAGE: previousPage();
         		break;
         	case MENU_NEXT_PAGE: nextPage();
-        		break;	
+        		break;
+        	case MENU_SAVE_COMPLETE: saveForm();
+        		break;
+        	case MENU_SAVE_INCOMPLETE: saveForm();
+        		break;
         	
         }
         return super.onOptionsItemSelected(item);
@@ -854,17 +871,11 @@ public class FormActivity extends Activity {
         case DIALOG_EXIT_OR_NOT:
             return new AlertDialog.Builder(FormActivity.this)
                 .setIcon(R.drawable.alert_dialog_icon)
-                .setTitle("Guardar los cambios antes de salir")
-                .setMessage("Desea guardar los cambios del formulario antes de salir (no está implementado todavía)")
-                .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                .setTitle("Atención")
+                .setMessage("Volver atrás eliminará cualquier cambio en el formulario no guardado con anterioridad. ¿Estás seguro de salir de la edición del formulario?")
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                    	saveForm();
-                        /* User clicked OK so do some stuff */
-                    }
-                })
-                .setNegativeButton("Salir", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-             	       try {
+              	       try {
              	    	   instanceInterface.deleteInstance(myInstance.getInstance_local_id());
              		   } catch (Exception e) {
              			   e.printStackTrace();
@@ -872,7 +883,23 @@ public class FormActivity extends Activity {
              		   finish();
                     }
                 })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
                 .create();
+        case DIALOG_ERROR:
+            return new AlertDialog.Builder(FormActivity.this)
+            .setIcon(R.drawable.alert_dialog_icon)
+            .setTitle("Error")
+            .setMessage(strError)
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+         		   //finish();
+                }
+            })
+            .create();
         }
         return null;
 	}
@@ -915,7 +942,17 @@ public class FormActivity extends Activity {
 			}*/
 		}
 		
-		
+		/**
+		 * Guardamos la instancia
+		 */
+		try {
+			myInstance.setDate(new Date());
+			instanceInterface.saveInstance(myInstance, formH.getForm());
+			finish();
+		} catch (Exception e) {
+			ErrorMessage("Error al guardar la instancia");
+			 e.printStackTrace();
+		}
 	}
 	
 	
@@ -923,5 +960,10 @@ public class FormActivity extends Activity {
 	protected void onDestroy () {
 		instanceInterface.close();
 		super.onDestroy();
+	}
+	
+	private void ErrorMessage (String localError) {
+		strError = localError;
+		showDialog(DIALOG_ERROR);
 	}
 }

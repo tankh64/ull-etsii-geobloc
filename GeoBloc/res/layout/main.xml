@@ -38,13 +38,13 @@
 		android:layout_width="fill_parent" 
 		android:id="@+id/ButtonMainMenu1" 
 		android:text="@string/ButtonMainMenu1"
-		android:padding="30dp">
+		android:padding="30dp" android:textSize="20dp">
 	</Button>
 	<Button 
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:id="@+id/ButtonMainMenu2"
-		android:padding="30dp">
+		android:padding="30dp" android:textSize="20dp">
 	</Button>
 	<Button
 		android:id="@+id/mainMenu_formsManagerButton"
@@ -52,7 +52,7 @@
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:padding="30dp"
-		android:onClick="mainMenuOnClickHandler">
+		android:onClick="mainMenuOnClickHandler" android:textSize="20dp">
 	</Button>
 	<Button
 		android:id="@+id/mainMenu_instancesManagerButton"
@@ -60,7 +60,7 @@
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:padding="30dp"
-		android:onClick="mainMenuOnClickHandler">
+		android:onClick="mainMenuOnClickHandler" android:textSize="20dp">
 	</Button>
 	<!-- 
 	<Spinner

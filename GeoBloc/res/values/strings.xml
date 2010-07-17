@@ -2,12 +2,12 @@
 <resources>
     <string name="hello">Hello World, MainMenu!</string>
     <string name="app_name">GeoBloc-ULL</string>
-	<string name="ButtonMainMenu1">Generar Formulario</string>
+	<string name="ButtonMainMenu1">Rellenar Nuevo Formulario</string>
 	<string name="menu_send_form">Enviar</string>
 	
 	<string name="list_form">Formularios</string>
 	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
-	<string name="ButtonMainMenu2">Rellenar nuevo formulario</string>
+	<string name="ButtonMainMenu2">Revisar Datos Guardados</string>
 	<string name="created_dir">Directorio %s creado correctamente</string>
 	<string name="TextView01">Formulario %s cargado</string>
 	
@@ -125,7 +125,9 @@
 	
 	<!-- Subtítulos de las páginas -->
 	<string name="new_form">Nuevo Formulario</string> <!-- Lista de Esquemas de Formularios -->
-	<string name="list_local_instances">Recuperar Formulario</string>
+	<string name="list_local_instances">Recuperar formulario</string>
+
+	
 	
 	<!-- Títulos de la página de inicio-->
 	<string name="cover_title">GeoBloc</string>
