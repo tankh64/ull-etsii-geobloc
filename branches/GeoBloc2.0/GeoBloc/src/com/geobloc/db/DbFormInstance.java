@@ -46,9 +46,15 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	public static final String __LOCALPACKAGESDB_FORM_ID_KEY__ = "localFormId";
 	/**
+	 * The form this instance is attached to, forever. Both the form id and the form's version need to 
+	 * be stored independently, besides the link to the current form in the system to prevent disruption if 
+	 * the form is upgraded or worse, deleted.
+	 */
+	public static final String __LOCALPACKAGES_DB_FORM_ID_KEY__ = "attachedFormId";
+	/**
 	 * The version this instance is attached to, forever.
 	 */
-	public static final String __LOCALPACKAGES_DB_FORM_VERSION_KEY__ = "localFormVersion";
+	public static final String __LOCALPACKAGES_DB_FORM_VERSION_KEY__ = "attachedFormVersion";
 	/**
 	 * Database key for the instance's label, which is also local and does not exist in the server.
 	 */
@@ -79,6 +85,8 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	
 	private long id = -1;
+	private long formLocalId = -1;
+	private String formId;
 	private long formVersion = -1;
 	private DbForm form = null;
 	private String label = "";
@@ -139,8 +147,10 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	public DbFormInstance loadFrom(SQLiteDatabase formsDb, Cursor c) {
 		id = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_ID__));
+		formLocalId = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__));
+		formId = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGES_DB_FORM_ID_KEY__));
 		formVersion = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__));
-		if (c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)) != -1)
+		if (formLocalId != -1)
 			form = DbForm.loadFrom(formsDb, c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)));
 		else 
 			form = null;
@@ -183,6 +193,11 @@ public class DbFormInstance implements IInstanceDefinition {
 	 */
 	public void setForm(DbForm form) {
 		this.form = form;
+		if (form != null) {
+			this.formLocalId = form.getForm_local_id();
+			this.formId = form.getForm_id();
+			this.formVersion = form.getForm_version();
+		}
 	}	
 	/**
 	 * 
@@ -237,6 +252,11 @@ public class DbFormInstance implements IInstanceDefinition {
 	}
 
 	@Override
+	public String getInstance_form_id() {
+		return formId;
+	}
+	
+	@Override
 	public long getInstance_form_version() {
 		return formVersion;
 	}
@@ -251,6 +271,11 @@ public class DbFormInstance implements IInstanceDefinition {
 		return this.packagePath;
 	}
 
+	public String getPackage_name() {
+		String a = packagePath.substring(0, packagePath.lastIndexOf('/'));
+		return a.substring(a.lastIndexOf('/')+1);
+	}
+	
 	@Override
 	public boolean isComplete() {
 		return completed;
@@ -313,7 +338,8 @@ public class DbFormInstance implements IInstanceDefinition {
 		if (form != null)
 			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, form.getForm_id());
 		else
-			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, -1);
+			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, formLocalId);
+		cv.put(DbFormInstance.__LOCALPACKAGES_DB_FORM_ID_KEY__, formId);
 		cv.put(DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__, formVersion);
 		cv.put(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__, label);
 		cv.put(DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__, packagePath);

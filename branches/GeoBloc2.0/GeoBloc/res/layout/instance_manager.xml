@@ -31,10 +31,11 @@
   		
   		<!-- Feet -->
   		<RelativeLayout
-  			android:id="@+id/completeInstancesBottomButtons"
+  			android:id="@+id/instanceManager_sendInstancesFooter"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
-  			android:layout_alignParentBottom="true">
+  			android:layout_alignParentBottom="true"
+  			android:paddingTop="7dp">
   			<TextView
   				android:id="@+id/buttonSetCenterStub"
   				android:layout_width="wrap_content"
@@ -43,43 +44,43 @@
   				android:visibility="invisible">
   			</TextView>
   			<Button
-  				android:id="@+id/completeInstancesSendButton"
+  				android:id="@+id/instanceManager_sendInstancesButton"
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
   				android:layout_alignParentLeft="true"
   				android:layout_toLeftOf="@id/buttonSetCenterStub"
-  				android:text="@string/instanceManager_completeInstancesSendButton"
+  				android:text="@string/instanceManager_sendInstancesButton"
 	  			android:onClick="allInstancesButtonOnClick">
   			</Button>
   			<Button
-  				android:id="@+id/completeInstancesMarkIncompleteButton"
+  				android:id="@+id/instanceManager_markIncompleteButton"
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
   				android:layout_toRightOf="@id/buttonSetCenterStub"
   				android:layout_alignParentRight="true"
-  				android:text="@string/instanceManager_completeInstancesMarkIncomplete"
+  				android:text="@string/instanceManager_markIncomplete"
 	  			android:onClick="allInstancesButtonOnClick">
   			</Button>
   		</RelativeLayout>
   		
   		<!-- List -->
   		<ListView
-  			android:id="@+id/completeInstancesListView"
+  			android:id="@+id/instanceManager_sendInstancesListView"
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
   			android:layout_below="@id/instanceManager_sendInstancesHeader"
-  			android:layout_above="@id/completeInstancesBottomButtons"
+  			android:layout_above="@id/instanceManager_sendInstancesFooter"
   			android:cacheColorHint="#00000000">
   		</ListView>  		
   	</RelativeLayout>  	
   	<!-- Left page, the one with incomplete instances -->
 	<RelativeLayout
-		android:id="@+id/instanceManager_allInstancesLayout"
+		android:id="@+id/instanceManager_deleteInstancesLayout"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 		<!-- header -->
 	  	<LinearLayout
-	  		android:id="@+id/instanceManager_allInstancesHeader"
+	  		android:id="@+id/instanceManager_deleteInstancesHeader"
 	  		android:orientation="horizontal"
 	  		android:background="@drawable/geobloc_header_one"
 	  		android:layout_alignParentTop="true"
@@ -90,32 +91,32 @@
 	  			android:textColor="#FFFFFF"
 	  			android:padding="10dp"
 	  			android:textSize="20sp"
-	  			android:text="@string/instanceManager_allInstancesTitle"
+	  			android:text="@string/instanceManager_sendInstancesTitle"
 	  			android:singleLine="true"
 	  			android:layout_width="wrap_content"
 	  			android:layout_height="wrap_content">
 	  		</TextView>
 	  	</LinearLayout>
   		<RelativeLayout
-  			android:id="@+id/allInstancesBottomButtons"
+  			android:id="@+id/instanceManager_deleteInstancesFooter"
   			android:layout_width="fill_parent"
   			android:layout_height="wrap_content"
   			android:layout_alignParentBottom="true">
   			<Button
-  				android:id="@+id/allInstancesEraseButton"
+  				android:id="@+id/instanceManager_deleteInstancesButton"
   				android:layout_width="fill_parent"
   				android:layout_height="wrap_content"
-  				android:text="@string/instanceManager_allInstancesEraseButton"
+  				android:text="@string/delete"
   				android:onClick="allInstancesButtonOnClick">
   			</Button>
   		</RelativeLayout>
   		
   		<ListView
-  			android:id="@+id/allInstancesListView"
+  			android:id="@+id/instanceManager_deleteInstancesListView"
   			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
-  			android:layout_below="@id/instanceManager_allInstancesHeader"
-  			android:layout_above="@id/allInstancesBottomButtons"
+  			android:layout_below="@id/instanceManager_deleteInstancesHeader"
+  			android:layout_above="@id/instanceManager_deleteInstancesFooter"
   			android:cacheColorHint="#00000000">
   		</ListView>
   		

@@ -48,7 +48,7 @@
 	</Button>
 	<Button
 		android:id="@+id/mainMenu_formsManagerButton"
-		android:text="@string/formsDownloaderButtonText"
+		android:text="@string/formsManagerButton"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:padding="30dp"
@@ -56,26 +56,11 @@
 	</Button>
 	<Button
 		android:id="@+id/mainMenu_instancesManagerButton"
-		android:text="@string/formsSenderButtonText"
+		android:text="@string/instanceManagerButton"
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"
 		android:padding="30dp"
 		android:onClick="mainMenuOnClickHandler" android:textSize="20dp">
-	</Button>
-	<!-- 
-	<Spinner
-		android:id="@+id/staticFormSelectionSpinner"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:prompt="@string/staticFormSelectionSpinnerText"/>
-	-->
-	<Button
-		android:id="@+id/staticFormStartButton"
-		android:text="@string/staticFormStartButtonText"
-		android:onClick="staticFormStartButtonOnClickHandler"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:visibility="invisible">
 	</Button>
 </LinearLayout>
 

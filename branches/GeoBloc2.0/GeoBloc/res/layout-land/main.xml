@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#83216A">
+    <LinearLayout
+  		android:id="@+id/mainMenuHeader"
+  		android:orientation="horizontal"
+  		android:background="@drawable/geobloc_header_one"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:gravity="center"
+  		android:paddingBottom="20dp">
+  		<TextView
+  			android:id="@+id/ProgramName"
+  			android:textColor="#FFFFFF"
+  			android:padding="10dp"
+  			android:textSize="20sp"
+  			android:singleLine="true"
+  			android:layout_width="wrap_content"
+  			android:layout_height="wrap_content">
+  		</TextView>
+  	</LinearLayout>
+
+    <LinearLayout
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:orientation="horizontal"
+    	>
+    	<LinearLayout
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    		android:orientation="vertical"
+    		android:layout_weight="10">
+    		<Button 
+				android:layout_height="wrap_content" 
+				android:layout_width="fill_parent" 
+				android:id="@+id/ButtonMainMenu1" 
+				android:text="@string/ButtonMainMenu1"
+				android:padding="30dp" android:textSize="20dp">
+			</Button>
+			<Button 
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:id="@+id/ButtonMainMenu2"
+				android:padding="30dp" android:textSize="20dp">
+			</Button>
+    	</LinearLayout>
+    	<LinearLayout
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    		android:orientation="vertical"
+    		android:layout_weight="10">
+    		<Button
+				android:id="@+id/mainMenu_formsManagerButton"
+				android:text="@string/formsManagerButton"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:padding="30dp"
+				android:onClick="mainMenuOnClickHandler" android:textSize="20dp">
+			</Button>
+			<Button
+				android:id="@+id/mainMenu_instancesManagerButton"
+				android:text="@string/instanceManagerButton"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:padding="30dp"
+				android:onClick="mainMenuOnClickHandler" android:textSize="20dp">
+			</Button>
+    	</LinearLayout>
+    </LinearLayout>
+</LinearLayout>

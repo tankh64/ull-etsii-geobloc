@@ -18,8 +18,8 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String LOG_TAG = "DbFormInstanceSQLiteHelper";
 	
-	private static final String DATABASE_NAME = "localPackages.db";
-	private static final int SCHEMA_VERSION = 3;
+	private static final String DATABASE_NAME = "geoblocInstances.db";
+	private static final int SCHEMA_VERSION = 11;
 	
 	private Context context;
 	
@@ -37,6 +37,7 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE " + DbFormInstanceSQLiteHelper.__LOCALPACKAGESDB_TABLE_NAME__ + 
 				" (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__ + " TEXT, " + 
+				DbFormInstance.__LOCALPACKAGES_DB_FORM_ID_KEY__ + " TEXT, " +
 				DbFormInstance.__LOCALPACKAGES_DB_FORM_VERSION_KEY__ + " INTEGER, " + 
 				DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__ + " TEXT, " + 
 				DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__ + " TEXT, " + 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android">
+  	<item
+		android:id="@+id/instanceManager_menuSelectAll"
+		android:title="@string/selectAll"
+		android:icon="@drawable/check_alt_32x32">
+	</item>
+	<item
+		android:id="@+id/instanceManager_menuShowDebug"
+		android:title="@string/debugging"
+		android:icon="@drawable/iphone_24x32"
+		android:visible="false">
+	</item>
+</menu>

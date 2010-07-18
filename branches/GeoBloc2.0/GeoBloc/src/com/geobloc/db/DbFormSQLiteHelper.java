@@ -20,10 +20,10 @@ import android.util.Log;
 
 public class DbFormSQLiteHelper extends SQLiteOpenHelper {
 
-	private static final String LOG_TAG = "Localforms";
+	private static final String LOG_TAG = "DbFormSQLiteHelper";
 	
-	private static final String DATABASE_NAME = "localForms.db";
-	private static final int SCHEMA_VERSION = 3;
+	private static final String DATABASE_NAME = "geoblocForms.db";
+	private static final int SCHEMA_VERSION = 11;
 	
 	private Context context;
 	
