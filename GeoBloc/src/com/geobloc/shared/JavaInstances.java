@@ -19,6 +19,9 @@ import com.geobloc.db.DbFormInstance;
 import com.geobloc.db.DbFormInstanceSQLiteHelper;
 import com.geobloc.db.DbFormSQLiteHelper;
 import com.geobloc.form.FormClass;
+import com.geobloc.form.FormDataPage;
+import com.geobloc.form.FormPage;
+import com.geobloc.form.FormPage.PageType;
 import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.persistance.SDFilePersistance;
 import com.geobloc.xml.IField;
@@ -153,26 +156,8 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 			throws Exception {
 		Log.i(LOG_TAG, "Saving of instance with locald='" + instance.getInstance_local_id() + "' requested.");
 		DbFormInstance dbi = (DbFormInstance) instance;
-		// build XML file
-		List<IField> myFields = new ArrayList<IField>();
-		TextMultiField instanceFields = new TextMultiField("gb_instance");
-		
-		instanceFields.addTag("gb_scheme", instance.getForm_definition().getForm_name());
-		instanceFields.addTag("gb_device", Utilities.getDeviceID(context));
-		instanceFields.addTag("gb_formId", instance.getForm_definition().getForm_id());
-		instanceFields.addTag("gb_formVersion", Long.toString(instance.getInstance_form_version()));
-		
-		String complete = "";
-		if (instance.isComplete())
-			complete = "TRUE";
-		else
-			complete = "FALSE";
-		instanceFields.addTag("gb_complete", complete);
-		myFields.add(instanceFields);
-		
-		// saving
-		TextXMLWriter writer = new TextXMLWriter();
-    	String xml = writer.WriteXML(myFields);
+		XMLBuilder builder = new XMLBuilder(context);
+		String xml = builder.transformToXML(instance, form);
     	if (pm.openPackage(instance.getPackage_path())) {
     		if (!pm.addFile("instance.xml", xml)) {
     			Log.e(LOG_TAG, "Save operation failed. Could not write 'instance.xml' file.");

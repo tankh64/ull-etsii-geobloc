@@ -10,19 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geobloc.activities.FormActivity;
+import com.geobloc.activities.FormDefinitionList;
 import com.geobloc.activities.FormInstanceList;
 import com.geobloc.activities.FormsManager;
 import com.geobloc.activities.InstanceManager;
-import com.geobloc.activities.FormDefinitionList;
-import com.geobloc.activities.SecondStaticFormPrototype;
-import com.geobloc.activities.StaticFormPrototype;
 import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
 
@@ -179,15 +175,7 @@ public class MainMenu extends Activity {
     	if (i != null)
     		startActivity(i);
     }
-    
-    /*
-     * TESTING
-     */
-    
-    public void staticFormStartButtonOnClickHandler(View target) {
-    	Intent i = new Intent(this, StaticFormPrototype.class);
-    	startActivity(i);
-    }
+
     
     /* --> Menu <-- */
     

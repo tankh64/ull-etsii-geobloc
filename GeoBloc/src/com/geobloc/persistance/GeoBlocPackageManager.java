@@ -218,9 +218,20 @@ public class GeoBlocPackageManager {
 		return directories;
 	}
 	
+	/**
+	 * Builds a ZIP file representing the instance/package filtering the 'form.xml' file.
+	 * @param zipFileName The desired package filename.
+	 * @return True if the operation was successful, false otherwise.
+	 */
 	public boolean buildZIPfromPackage(String zipFileName) {
-		if (!isPackageEmpty())
-			return SDFilePersistance.makeZIPFile(zipFileName, getAllFilePaths(), getAllFilenames());
+		if (!isPackageEmpty()) {
+			List<String> filepaths = this.getAllFilePaths();
+			List<String> filenames = this.getAllFilenames();
+			int location = filenames.indexOf("form.xml");
+			filepaths.remove(location);
+			filenames.remove(location);
+			return SDFilePersistance.makeZIPFile(zipFileName, filepaths, filenames);
+		}
 		else
 			return false;
 	}

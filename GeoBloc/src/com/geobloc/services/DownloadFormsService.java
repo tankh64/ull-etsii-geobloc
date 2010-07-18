@@ -88,6 +88,7 @@ public class DownloadFormsService extends Service {
 			db.close();
 			Log.i(LOG_TAG, "Forms database closed.");
 		}
+		super.onDestroy();
 	}
 	
 	public void downloadForms(Long[] ids) {

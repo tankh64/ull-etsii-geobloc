@@ -74,6 +74,7 @@ public class UpdateFormsDatabaseService extends Service {
 			db.close();
 			Log.i(LOG_TAG, "Forms database closed.");
 		}
+		super.onDestroy();
 	}
 	
 	public void updateFormsDatabase() {

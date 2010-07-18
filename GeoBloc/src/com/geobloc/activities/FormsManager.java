@@ -166,8 +166,8 @@ public class FormsManager extends Activity {
 		this.deleteFormsList = (ListView)findViewById(R.id.formsManager_deleteFormsListView);
 		this.lastUpdateDateTextView = (TextView) findViewById(R.id.formsManager_downloadLastListDate);
 		this.lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, getString(R.string.notAvailable)));
-		this.updateButtonSet = (ViewGroup) findViewById(R.id.formsManager_downloadFormsBottom);
-		this.deleteButtonSet = (ViewGroup) findViewById(R.id.formsManager_deleteFormsBottom);
+		this.updateButtonSet = (ViewGroup) findViewById(R.id.formsManager_downloadFormsFooter);
+		this.deleteButtonSet = (ViewGroup) findViewById(R.id.formsManager_deleteFormsFooter);
 		
 		// load flick gesture
 		gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -397,7 +397,7 @@ public class FormsManager extends Activity {
 				serverList.setAdapter(formsAdapter);
 				*/
 				serverConnectivityListItem.setText(getString(R.string.ready));
-				serverConnectivityListItem.setBackgroundColor(Color.GREEN);
+				serverConnectivityListItem.setBackgroundColor(res.getColor(R.color.TransparentGreen));
 				animateServerList();
 			}		
 		}
@@ -428,7 +428,7 @@ public class FormsManager extends Activity {
 				}
 				else {
 					serverConnectivityListItem.setText(getString(R.string.ready));
-					serverConnectivityListItem.setBackgroundColor(Color.GREEN);
+					serverConnectivityListItem.setBackgroundColor(res.getColor(R.color.TransparentGreen));
 				}
 				Utilities.showTitleAndMessageDialog(context, getString(R.string.report), intent.getStringExtra("report"));
 			}

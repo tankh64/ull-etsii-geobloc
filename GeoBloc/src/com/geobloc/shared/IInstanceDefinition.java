@@ -38,7 +38,12 @@ public interface IInstanceDefinition {
 	 * @param formDefinition
 	 */
 	public void setForm_definition(IFormDefinition formDefinition);
-	
+	/**
+	 * Because the current representation of the instance's form might be altered during the existence of 
+	 * an instance, the instance must now, on its own, the form it belongs to.
+	 * @return
+	 */
+	public String getInstance_form_id();
 	/**
 	 * @return the attached form's version when the instance was created.
 	 */

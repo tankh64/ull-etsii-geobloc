@@ -2,16 +2,17 @@
 <resources>
     <string name="hello">Hello World, MainMenu!</string>
     <string name="app_name">GeoBloc-ULL</string>
-	<string name="ButtonMainMenu1">Rellenar Nuevo Formulario</string>
+	<string name="ButtonMainMenu1">Nueva Instancia</string>
 	<string name="menu_send_form">Enviar</string>
 	
 	<string name="list_form">Formularios</string>
 	<string name="uncreated_dir">No se pudo crear el directorio %s</string>
-	<string name="ButtonMainMenu2">Revisar Datos Guardados</string>
+	<string name="ButtonMainMenu2">Abrir Instancia</string>
 	<string name="created_dir">Directorio %s creado correctamente</string>
 	<string name="TextView01">Formulario %s cargado</string>
 	
 	<!-- Mensajes genéricos -->
+	<string name="contextMenu">Menú Contextual</string>
 	<string name="debugging">Depuración</string>
 	<string name="ready">Listo</string>
 	<string name="checkingForConnectivity">Comprobando la conexión a Internet...</string>
@@ -34,14 +35,13 @@
 	<string name="notAvailable">No disponible</string>
 	
 	<!-- Nombres de botones de la Actividad Menú Principal -->
-	<string name="staticFormSelectionSpinnerText">Seleccione Formulario:</string>
-	<string name="staticFormStartButtonText">Test Formulario Estático</string>
+
 	<string name="menu_question_view_save">Guardar</string>
 	<string name="menu_question_view_save_and_send">Guardar y Enviar</string>
 	<string name="selected_file">Ha seleccionado el archivo %s</string>
 	<string name="parsed_file_ok">Parseado correcto del fichero %s</string>
-	<string name="formsDownloaderButtonText">Descarga de Formularios</string>
-	<string name="formsSenderButtonText">Envío de formularios</string>
+	<string name="formsManagerButton">Formularios</string>
+	<string name="instanceManagerButton">Instancias</string>
 	
 	<!-- SharedPreferences -->
 	<string name="sharedPreferencesTitle">Preferencias</string>
@@ -65,8 +65,6 @@
 	
 	<string name="sharedAdvancedPreferencesTitle">Preferencias avanzadas</string>
 	<string name="dateOfLastServerFormsListQuery">Fecha de última actualización de formularios</string>
-	<string name="dropLocalFormsTable">Borrar formularios</string>
-	<string name="dropLocalFormsTableDescription">Borra todos los registros de formularios, y sus archivos locales.</string>
 	<string name="enableUserDebuggingFeatures">Depuración a nivel de usuario</string>
 	<string name="enableUserDebuggingFeaturesDescription">Permite ver opciones deshabilitadas por defecto</string>
 	
@@ -113,15 +111,18 @@
 	
 		<!-- InstanceManager Layout and List Items -->
 	<string name="instanceManager_sendInstancesTitle">Envío de instancias</string>
-	<string name="instanceManager_allInstancesTitle">Todas las instancias</string>
-	<string name="instanceManager_allInstancesEraseButton">Borrar</string>
-	<string name="instanceManager_completeInstancesSendButton">Enviar</string>
-	<string name="instanceManager_completeInstancesMarkIncomplete">Marcar Incompleto</string>
+	<string name="instanceManager_deleteInstancesTitle">Borrado de instancias</string>
+	
+	<string name="instanceManager_sendInstancesButton">Enviar</string>
+	<string name="instanceManager_markIncomplete">Marcar Incompleto</string>
 	<string name="instanceManager_list_itemFormInstanceCreatedDateText">Creado: </string>
 	<string name="instanceManager_list_itemFormInstanceCompletedDateText">Completado: </string>
 	<string name="instanceManager_list_itemFormInstanceCompletedTextViewText">Completado: </string>
 	<string name="instanceManager_list_itemFormInstanceCompleteYes">Si</string>
 	<string name="instanceManager_list_itemFormInstanceCompleteNo">No</string>
+	<string name="instanceManager_itemUploadedSuccessfully">fue enviado correctamente.</string>
+	<string name="instanceManager_itemUploadEncounteredErrors">no pudo ser enviado.</string>
+	<string name="instanceManager_debugShowInstanceFile">Mostrar instance.xml</string>
 	
 	<!-- Subtítulos de las páginas -->
 	<string name="new_form">Nuevo Formulario</string> <!-- Lista de Esquemas de Formularios -->
@@ -150,7 +151,7 @@
 	<string name="find_position">Posición: %s - %s</string>
 	<string name="activateGPS">Debe activar GPS en los ajustes del teléfono</string>
 
-	<string name="version">0.61</string>
+	<string name="version">0.65</string>
 
     <string name="planet_prompt">Choose a planet</string>
     <string-array name="planets_array">

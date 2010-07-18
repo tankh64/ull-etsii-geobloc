@@ -76,7 +76,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	//public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "http://ull-etsii-geobloc.appspot.com/get_listofavailablebasicforms";
 	//public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "http://ull-etsii-geobloc.appspot.com/get_basicformfile";
 	
-	public static String __DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__ = "notAvailable";
+	public static String __DEFAULT_UPLOAD_PACKAGES_SERVLET_ADDRESS__ = "putInstance";
 	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "getFormsList";
 	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "sendFormServlet";
 	// default directory paths
@@ -101,7 +101,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 	// other
 	public static String __DEFAULT_NUMBER_OF_INTERNET_ATTEMPTS__ = "3";
 	public final static int __DEFAULT__ANIMATION_TIME__ = 2500;
-	public static String __OK_SIGNATURE__ = "ALLRITE";
+	public static final int __SERVER_RESPONSE_SUCCESS_L__ = 200;
+	public static final int __SERVER_RESPONSE_SUCCESS_U__ = 202;
 
 	
 	@Override
@@ -133,7 +134,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 		
 		// default uploadPackagesServletAddress
 		setEditTextDefaultConfig(uploadPackagesServletAddress, 
-				GBSharedPreferences.__DEFAULT_UPLOAD_PACKACGES_SERVLET_ADDRESS__);
+				GBSharedPreferences.__DEFAULT_UPLOAD_PACKAGES_SERVLET_ADDRESS__);
 		
 		// default listOfAvailableFormsAddress
 		setEditTextDefaultConfig(listOfAvailableFormsServletAddress, 
