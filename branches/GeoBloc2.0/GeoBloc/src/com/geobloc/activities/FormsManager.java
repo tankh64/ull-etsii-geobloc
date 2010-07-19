@@ -94,7 +94,8 @@ public class FormsManager extends Activity {
 	
 	private GestureDetector gestureDetector;
 	
-	private boolean enableButtonSetAnimation = true;
+	private boolean enableButtonSetAnimation = false;
+	private boolean enableBackgrounds = false;
 	private ViewGroup updateButtonSet;
 	private ViewGroup deleteButtonSet;
 	//private RelativeLayout completedInstancesButtonSet;
@@ -103,7 +104,7 @@ public class FormsManager extends Activity {
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if (localStorageBitmap == null) {
+			if ((enableBackgrounds) && (localStorageBitmap == null)) {
 				localStorageBitmap = Utilities.scaleDownToContainer(res, R.drawable.local_storage, deleteView.getMeasuredHeight(), deleteView.getMeasuredWidth());
 				bmp = new BitmapDrawable(res, localStorageBitmap);
 				bmp.setGravity(Gravity.CENTER);
@@ -157,6 +158,8 @@ public class FormsManager extends Activity {
 		serverDebugInfo = "";
 		enableButtonSetAnimation = prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
+		enableBackgrounds = prefs.getBoolean(GBSharedPreferences. __ENABLE_ACTIVITY_BACKGROUNDS_KEY__, 
+				GBSharedPreferences.__DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__);
 		
 		// load views
 		this.flipper = (ViewFlipper)findViewById(R.id.formsManager_viewFlipper);
@@ -298,7 +301,7 @@ public class FormsManager extends Activity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		if (hasFocus && !didItOnce) {
+		if (enableBackgrounds && hasFocus && !didItOnce) {
 			this.canPerformInternetAction();
 			this.serverConnectivityListItem.getText().setText(getString(R.string.ready));
 			this.serverConnectivityListItem.getBar().setVisibility(View.GONE);
@@ -454,9 +457,11 @@ public class FormsManager extends Activity {
 		if (Utilities.evaluateConnectivityAvailable(getBaseContext())) {
 			this.serverConnectivityListItem.getBar().setVisibility(View.VISIBLE);
 			this.serverConnectivityListItem.setText(getString(R.string.working));
-			bmp = new BitmapDrawable(res, connectivityBitmap);
-			bmp.setGravity(Gravity.CENTER);
-			downloadView.setBackgroundDrawable(bmp);
+			if (enableBackgrounds) {
+				bmp = new BitmapDrawable(res, connectivityBitmap);
+				bmp.setGravity(Gravity.CENTER);
+				downloadView.setBackgroundDrawable(bmp);
+			}
 			return true;
 			
 		}
@@ -464,9 +469,11 @@ public class FormsManager extends Activity {
 			this.serverConnectivityListItem.getBar().setVisibility(View.GONE);
 			this.serverConnectivityListItem.setText(getString(R.string.noConnectivity));
 			this.serverConnectivityListItem.setBackgroundColor(Color.RED);
-			bmp = new BitmapDrawable(res, noConnectivityBitmap);
-			bmp.setGravity(Gravity.CENTER);
-			downloadView.setBackgroundDrawable(bmp);
+			if (enableBackgrounds) {
+				bmp = new BitmapDrawable(res, noConnectivityBitmap);
+				bmp.setGravity(Gravity.CENTER);
+				downloadView.setBackgroundDrawable(bmp);
+			}
 			return false;
 		}
 	}

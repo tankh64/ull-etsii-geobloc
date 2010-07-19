@@ -58,7 +58,6 @@
   		android:summary="@string/packagesPathDescription">
   	</EditTextPreference>
   </PreferenceCategory>
-  
   <PreferenceCategory
   	android:title="@string/formPreferencesTitle">
   	<ListPreference
@@ -86,7 +85,13 @@
   	</CheckBoxPreference>
   </PreferenceCategory>
   <PreferenceCategory
-  	android:title="@string/animationsCategory">
+  	android:title="@string/visualPreferencesTitle">
+  	<CheckBoxPreference
+  		android:key="enableActivityBackgroundsKey"
+  		android:name="enableActivityBackgrounds"
+  		android:title="@string/enableBackgroundsTitle"
+  		android:summary="@string/enableBackgroundsDescription">
+  	</CheckBoxPreference>
   	<CheckBoxPreference
   		android:key="slidingButtonsAnimationKey"
   		android:name="slidingButtonsanimation"

@@ -10,8 +10,6 @@ import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 
-import android.preference.DialogPreference;
-import android.preference.Preference;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -39,6 +37,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private CheckBoxPreference sendIncompleteInstances;
 	private CheckBoxPreference userApplicationDebugging;
 	private ListPreference formThemeColor;
+	private CheckBoxPreference enableActivityBackgrounds;
 	
 	private EditText et;
 	private SharedPreferences prefs;
@@ -50,6 +49,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS_KEY__ = "getAvailableFormsListFromServletAddress";
 	public static String __LAST_SERVER_LIST_CHECK_KEY__ = "lastTimeApplicationCheckedForANewListOfFormsInTheServer";
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
+	public static String __ENABLE_ACTIVITY_BACKGROUNDS_KEY__ = "enableActivityBackgroundsKey";
 	
 	// persistance preference keys
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
@@ -87,8 +87,9 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __DEFAULT_PACKAGE_MANIFEST_FILENAME__ = "manifest.xml";
 	public static String __DEFAULT_FORM_FILENAME__ = "form.xml";
 	
-	// default animation states
+	// default visual states
 	public static boolean __DEFAULT_SLIDING_BUTTONS_ANIMATION__ = true;
+	public static boolean __DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__ = true;
 	
 	// swipe
 	public static final int SWIPE_MIN_DISTANCE = 70;
@@ -127,6 +128,8 @@ public class GBSharedPreferences extends PreferenceActivity {
 		userApplicationDebugging = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_DEBUGGING_FEATURES_KEY__);
 		sendIncompleteInstances = (CheckBoxPreference) findPreference(GBSharedPreferences.__SEND_INCOMPLETE_KEY__);
 		formThemeColor = (ListPreference) findPreference (GBSharedPreferences.__FORM_THEME_COLOR__);
+		enableActivityBackgrounds = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_ACTIVITY_BACKGROUNDS_KEY__);
+		
 		
 		// default baseServerAddress
 		setEditTextDefaultConfig(baseServerAddress, 
@@ -163,9 +166,12 @@ public class GBSharedPreferences extends PreferenceActivity {
 		setEditTextDefaultConfig(packagesPath, GBSharedPreferences.__DEFAULT_PACKAGES_PATH__);
 		
 		// default animations setting
-		//slidingButtonsAnimationEnabled.setDefaultValue(GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
 		slidingButtonsAnimationEnabled.setChecked(prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__));
+
+		// default enable backgrounds setting
+		enableActivityBackgrounds.setChecked(prefs.getBoolean(GBSharedPreferences.__ENABLE_ACTIVITY_BACKGROUNDS_KEY__, 
+				GBSharedPreferences.__DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__));
 		
 		photoSizeBigEnable.setChecked(prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, 
 				GBSharedPreferences.__DEFAULT_FORM_PHOTO_SIZE_BIG__));

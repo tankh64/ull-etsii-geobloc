@@ -92,7 +92,7 @@ public class JavaInstances implements IJavaToDatabaseInstance {
 		c.moveToFirst();
 		while (!c.isAfterLast()) {
 			dbi = new DbFormInstance();
-			dbi.loadFrom(instancesDb, c);
+			dbi.loadFrom(formsDb, c);
 			list.add((IInstanceDefinition)dbi);
 			c.moveToNext();
 		}
