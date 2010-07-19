@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="instance_tag">gb_instance</string>
+	<string name="formId_tag">gb_formId</string>
+	<string name="formVersion_tag">gb_formVersion</string>
+	<string name="device_tag">gb_device</string>
+	<string name="id_tag">id</string>
+	<string name="value_tag"></string>
+	<string name="dataPage_tag">gb_dataPage</string>
+	<string name="imagePage_tag">gb_photoPage</string>
+	<string name="videoPage_tag">gb_videoPage</string>
+	<string name="textbox_tag">gb_field</string>
+	<string name="checkbox_tag">gb_checkbox</string>
+	<string name="threeStateCheckbox_tag">gb_checkboxthree</string>
+	<string name="singleChoiceList_tag">gb_singleChoiceList</string>
+	<string name="multipleChoiceList_tag">gb_multipleChoiceList</string>
+	<string name="selectedItem_tag">selected_value</string>
+	<string name="selectedItems_tag">selected_values</string>
+	<string name="listItem_tag">gb_listItem</string>
+	<string name="binary_tag">gb_binary</string>
+	<string name="locationPage_tag">gb_location</string>
+	<string name="location_tag">gb_location</string>
+	<string name="longitude_tag">longitude</string>
+	<string name="latitude_tag">latitude</string>
+</resources>

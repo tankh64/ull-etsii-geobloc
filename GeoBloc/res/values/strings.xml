@@ -63,7 +63,7 @@
 	<string name="formsPath">Directorio de formularios</string>
 	<string name="formsPathDescription">Dirección de almacenamiento SD donde se guardarán los formularios</string>
 	
-	<string name="sharedAdvancedPreferencesTitle">Preferencias avanzadas</string>
+	<string name="sharedAdvancedPreferencesTitle">Preferencias Avanzadas</string>
 	<string name="dateOfLastServerFormsListQuery">Fecha de última actualización de formularios</string>
 	<string name="enableUserDebuggingFeatures">Depuración a nivel de usuario</string>
 	<string name="enableUserDebuggingFeaturesDescription">Permite ver opciones deshabilitadas por defecto</string>
@@ -80,7 +80,9 @@
 	<string name="instanceAllowSendIncomplete">Enviar instancias no completas</string>
 	<string name="instanceAllowSendIncompleteDescription">Permitir el envío de instancias sin marcar como completas.</string> 
 
-	<string name="animationsCategory">Preferencias de Animaciones</string>
+	<string name="visualPreferencesTitle">Preferencias Visuales</string>
+	<string name="enableBackgroundsTitle">Habilitar fondos</string>
+	<string name="enableBackgroundsDescription">Desactivando se aumenta la velocidad de carga.</string>
 	<string name="slidingButtonsAnimation">Botones Deslizantes</string>
 	<string name="slidingButtonsAnimationDescription">Los botones sólo aparecerán cuando se pueda realizar una acción con ellos.</string>
 	

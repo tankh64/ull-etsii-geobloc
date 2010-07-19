@@ -154,6 +154,9 @@ public class DbFormInstance implements IInstanceDefinition {
 			form = DbForm.loadFrom(formsDb, c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__)));
 		else 
 			form = null;
+		if (formLocalId == 0) {
+			Log.e(LOG_TAG, "Something is going terribly wrong. This instance's formLocalId returned zero. We're not saving well");
+		}
 		label=c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__));
 		packagePath = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__));
 		compressedPackageFileLocation = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__));
@@ -336,7 +339,7 @@ public class DbFormInstance implements IInstanceDefinition {
 		if (id != -1)
 			cv.put(DbFormInstance.__LOCALPACKAGESDB_ID__, id);
 		if (form != null)
-			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, form.getForm_id());
+			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, form.getForm_local_id());
 		else
 			cv.put(DbFormInstance.__LOCALPACKAGESDB_FORM_ID_KEY__, formLocalId);
 		cv.put(DbFormInstance.__LOCALPACKAGES_DB_FORM_ID_KEY__, formId);

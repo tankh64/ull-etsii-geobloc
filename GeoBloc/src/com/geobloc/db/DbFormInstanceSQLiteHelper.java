@@ -19,7 +19,7 @@ public class DbFormInstanceSQLiteHelper extends SQLiteOpenHelper {
 	private static final String LOG_TAG = "DbFormInstanceSQLiteHelper";
 	
 	private static final String DATABASE_NAME = "geoblocInstances.db";
-	private static final int SCHEMA_VERSION = 11;
+	private static final int SCHEMA_VERSION = 12;
 	
 	private Context context;
 	
