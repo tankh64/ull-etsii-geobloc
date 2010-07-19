@@ -33,8 +33,11 @@ import com.geobloc.shared.IJavaToDatabaseForm;
 import com.geobloc.shared.IJavaToDatabaseInstance;
 import com.geobloc.shared.Utilities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,7 +73,9 @@ public class FormInstanceList extends ListActivity {
         public static final String FILE_PATH = "filepath";
         public static final String LOCAL_ID = "localId";
 
-
+        private static final int DIALOG_ERROR = 1;
+        // mensaje de error en strError
+        private String strError = "Desconocido";
         
         private static class EfficientAdapter extends BaseAdapter {
             private LayoutInflater mInflater;
@@ -192,6 +197,7 @@ public class FormInstanceList extends ListActivity {
         try {
         	listInstance = (ArrayList<IInstanceDefinition>) instanceInterface.getListOfLocalInstances();
         } catch (Exception ex) {
+        	ErrorMessage("Error al cargar la lista de Instancias");
         	Log.e(TAG, ex.getMessage());
         }
         
@@ -237,5 +243,28 @@ public class FormInstanceList extends ListActivity {
     	
     	super.onDestroy();
     }
+    
+	private void ErrorMessage (String localError) {
+		strError = localError;
+		showDialog(DIALOG_ERROR);
+	}
+	
+	@Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case DIALOG_ERROR:
+            return new AlertDialog.Builder(FormInstanceList.this)
+            .setIcon(R.drawable.alert_dialog_icon)
+            .setTitle("Error")
+            .setMessage(strError)
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+         		   finish();
+                }
+            })
+            .create();
+        }
+        return null;
+        }
     
 }
