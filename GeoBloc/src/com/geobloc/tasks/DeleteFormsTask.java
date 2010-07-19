@@ -46,7 +46,6 @@ public class DeleteFormsTask extends AsyncTask<Long, Integer, String> {
 		File f;
 		int i = 0;
 		for (long id : params) {
-			publishProgress(i, params.length);
 			// load form
 			dbf = DbForm.loadFrom(db, id);
 			f = new File(dbf.getForm_file_path());
@@ -75,6 +74,7 @@ public class DeleteFormsTask extends AsyncTask<Long, Integer, String> {
 				}
 			}
 			i++;
+			publishProgress(i, params.length);
 		}
 		return report;
 	}
