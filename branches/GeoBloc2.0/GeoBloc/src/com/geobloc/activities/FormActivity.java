@@ -961,7 +961,12 @@ public class FormActivity extends Activity {
 	
 	@Override
 	protected void onDestroy () {
-		instanceInterface.close();
+		try {
+			instanceInterface.close();
+		} catch (Exception e) {
+			ErrorMessage("Error al cerrar la interfaz de instancias");
+			e.printStackTrace();
+		}
 		super.onDestroy();
 	}
 	
