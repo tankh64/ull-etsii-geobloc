@@ -104,9 +104,9 @@ public class FormsManager extends Activity {
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if ((enableBackgrounds) && (localStorageBitmap == null)) {
-				localStorageBitmap = Utilities.scaleDownToContainer(res, R.drawable.local_storage, deleteView.getMeasuredHeight(), deleteView.getMeasuredWidth());
-				bmp = new BitmapDrawable(res, localStorageBitmap);
+			if ((enableBackgrounds) && (localFormsBitmap == null)) {
+				localFormsBitmap = Utilities.scaleDownToContainer(res, R.drawable.local_forms, deleteView.getMeasuredHeight(), deleteView.getMeasuredWidth());
+				bmp = new BitmapDrawable(res, localFormsBitmap);
 				bmp.setGravity(Gravity.CENTER);
 				deleteView.setBackgroundDrawable(bmp);
 			}
@@ -273,7 +273,7 @@ public class FormsManager extends Activity {
 	private View deleteView;
 	private Bitmap connectivityBitmap;
 	private Bitmap noConnectivityBitmap;
-	private Bitmap localStorageBitmap;
+	private Bitmap localFormsBitmap;
 	private BitmapDrawable bmp;
 	
 	private SharedPreferences prefs;
@@ -605,7 +605,7 @@ public class FormsManager extends Activity {
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			View view = inflater.inflate(R.layout.forms_manager_list_item, parent, false);
-			FormsManager.DbFormWrapper wrapper = new FormsManager.DbFormWrapper(context, view, this);// = new DbFormWrapper(view, this);
+			FormsManager.DbFormWrapper wrapper = new FormsManager.DbFormWrapper(view, this);// = new DbFormWrapper(view, this);
 			
 			view.setTag(wrapper);
 			wrapper.populateFrom(cursor);
@@ -826,7 +826,6 @@ public class FormsManager extends Activity {
 	}
 
     public class DbFormWrapper {
-    	private Context context;
     	private DbForm dbf = null;
     	private long id;
     	private int version;
@@ -843,7 +842,7 @@ public class FormsManager extends Activity {
     	private DbFormWrapper myself;
 
     	
-    	public DbFormWrapper (Context context, View view, final DbFormAdapter adapter) {
+    	public DbFormWrapper (View view, final DbFormAdapter adapter) {
     		this.adapter = adapter;
     		myself = this;
     		row = view;

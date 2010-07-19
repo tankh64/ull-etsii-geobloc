@@ -48,17 +48,6 @@
   </TextView>
   
     <!-- On the right bottom corner, the form's status (update avaiable(green), current version, new(yellow) -->
-   <!-- 
-  <TextView
-  	android:id="@+id/forms_manager_list_itemFormStatusInfoTextView"
-  	android:textStyle="bold"
-  	android:layout_alignParentRight="true"
-  	android:paddingRight="7dp"
-  	android:layout_below="@id/forms_manager_list_itemFormNameTextView"
-  	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content">
-  </TextView>
-  -->
   <TextView
   	android:id="@+id/forms_manager_list_itemFormStatusTextView"
   	android:textStyle="bold"

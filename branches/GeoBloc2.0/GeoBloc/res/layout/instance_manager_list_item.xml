@@ -19,7 +19,9 @@
   	android:layout_width="fill_parent"
   	android:layout_height="wrap_content"
   	android:textSize="18sp"
-  	android:textStyle="bold">
+  	android:textStyle="bold"
+  	android:textColor="#FFFFFF"
+  	android:singleLine="true">
   </TextView>
   
   <!-- Lower right corner, Completed? -->
@@ -29,7 +31,9 @@
   	android:paddingRight="7dp"
   	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
   	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content">
+  	android:layout_height="wrap_content"
+  	android:textSize="16sp"
+  	android:textStyle="bold">
   </TextView>
   <TextView
   	android:id="@+id/instance_manager_list_itemFormInstanceCompletedTextView"
@@ -38,7 +42,9 @@
   	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
   	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
   	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content">
+  	android:layout_height="wrap_content"
+  	android:textSize="16sp"
+  	android:textColor="#FFFFFF">
   </TextView>
   <!-- Below the form instance name, the dates -->
   <TextView
@@ -47,7 +53,10 @@
   	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
   	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
   	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content">
+  	android:layout_height="wrap_content"
+  	android:singleLine="true"
+  	android:textColor="#FFFFFF"
+  	android:textStyle="italic">
   </TextView>  
 
 </RelativeLayout>
