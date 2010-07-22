@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gb_form SYSTEM "http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTDv1.3.dtd">
+
+<gb_form>
+  <gb_name>test0</gb_name>
+  <gb_version>10</gb_version>
+  <gb_date>
+    <gb_dateDay>5</gb_dateDay>
+    <gb_dateMonth>7</gb_dateMonth>
+    <gb_dateYear>2010</gb_dateYear>
+  </gb_date>
+  <gb_formDescription>LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG</gb_formDescription>
+  <gb_dataPage id="page01">
+    <gb_pageName>page1</gb_pageName>
+    <gb_label id="label01">
+      <gb_labelText>Etiqueta de prueba</gb_labelText>
+    </gb_label>
+  </gb_dataPage>
+</gb_form>
+

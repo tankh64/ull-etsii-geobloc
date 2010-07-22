@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gb_form SYSTEM "http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTDv1.3.dtd">
+
+<gb_form>
+  <gb_name>test1</gb_name>
+  <gb_version>1.0</gb_version>
+  <gb_date>
+    <gb_dateDay>5</gb_dateDay>
+    <gb_dateMonth>7</gb_dateMonth>
+    <gb_dateYear>2010</gb_dateYear>
+  </gb_date>
+  <gb_formDescription>Formulario básico de prueba</gb_formDescription>
+  <gb_dataPage id="page01">
+    <gb_pageName>page1</gb_pageName>
+    <gb_label id="label01">
+      <gb_labelText>Etiqueta de prueba en pagina 1</gb_labelText>
+    </gb_label>
+    <gb_field id="field01" type="string" linesNumber="1" isRequired="false">
+      <gb_description>Descripción del campo de prueba</gb_description>
+      <gb_fieldLabel>Campo de texto de prueba</gb_fieldLabel>
+      <gb_fieldDefaultValue>Valor por defecto</gb_fieldDefaultValue>
+    </gb_field>
+    <gb_list id="single01" type="single" isRequired="false">
+      <gb_description>Descripción de la single list</gb_description>
+      <gb_listLabel>Single list de prueba</gb_listLabel>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Opción A</gb_listItemLabel>
+        <gb_listItemValue>Valor 1</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Opción B</gb_listItemLabel>
+        <gb_listItemValue>Valor 2</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+  </gb_dataPage>
+  <gb_dataPage id="page02">
+    <gb_pageName>page2</gb_pageName>
+    <gb_label id="label02">
+      <gb_labelText>Etiqueta de prueba en pagina 2</gb_labelText>
+    </gb_label>
+    <gb_list id="multiple01" type="multiple" isRequired="true">
+      <gb_listLabel>Multiple list de prueba</gb_listLabel>
+      <gb_listItem selected="true">
+        <gb_listItemLabel>Opción A</gb_listItemLabel>
+        <gb_listItemValue>Valor 1</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Opción B</gb_listItemLabel>
+        <gb_listItemValue>Valor 2</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+  </gb_dataPage>
+</gb_form>
+

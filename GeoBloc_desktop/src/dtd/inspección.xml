@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gb_form SYSTEM "http://ull-etsii-geobloc.googlecode.com/files/GeoBlocFormsDTDv1.4.dtd">
+
+<gb_form>
+  <gb_name>Inspección común de edificación</gb_name>
+  <gb_version>2</gb_version>
+  <gb_date>
+    <gb_dateDay>19</gb_dateDay>
+    <gb_dateMonth>7</gb_dateMonth>
+    <gb_dateYear>2010</gb_dateYear>
+  </gb_date>
+  <gb_formDescription>Formulario de demostración de la aplicación</gb_formDescription>
+  <gb_dataPage id="page01">
+    <gb_pageName>Inspector</gb_pageName>
+    <gb_label id="label01">
+      <gb_labelText>Datos del inspector</gb_labelText>
+    </gb_label>
+    <gb_field id="field01" type="string" linesNumber="1" isRequired="false">
+      <gb_fieldLabel>Nombre</gb_fieldLabel>
+    </gb_field>
+    <gb_field id="field02" type="string" linesNumber="2" isRequired="false">
+      <gb_fieldLabel>Apellidos</gb_fieldLabel>
+    </gb_field>
+    <gb_list id="list01" type="single" isRequired="false">
+      <gb_listLabel>Sexo</gb_listLabel>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Hombre</gb_listItemLabel>
+        <gb_listItemValue>H</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Mujer</gb_listItemLabel>
+        <gb_listItemValue>M</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+    <gb_field id="field03" type="integer" linesNumber="1" isRequired="true">
+      <gb_description>DNI sin letra</gb_description>
+      <gb_fieldLabel>NIF</gb_fieldLabel>
+    </gb_field>
+  </gb_dataPage>
+  <gb_dataPage id="page02">
+    <gb_pageName>Incidencia</gb_pageName>
+    <gb_label id="label02">
+      <gb_labelText>Datos de la edificación</gb_labelText>
+    </gb_label>
+    <gb_field id="field04" type="string" linesNumber="3" isRequired="true">
+      <gb_description>Dirección completa de la edificación observada</gb_description>
+      <gb_fieldLabel>Dirección</gb_fieldLabel>
+    </gb_field>
+    <gb_list id="list02" type="multiple" isRequired="false">
+      <gb_listLabel>Defectos</gb_listLabel>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Fachada</gb_listItemLabel>
+        <gb_listItemValue>1</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Accesos</gb_listItemLabel>
+        <gb_listItemValue>2</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Alumbrado</gb_listItemLabel>
+        <gb_listItemValue>3</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+    <gb_list id="list03" type="combo" isRequired="false">
+      <gb_listLabel>Gravedad</gb_listLabel>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Alta</gb_listItemLabel>
+        <gb_listItemValue>3</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Moderada</gb_listItemLabel>
+        <gb_listItemValue>2</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem selected="false">
+        <gb_listItemLabel>Baja</gb_listItemLabel>
+        <gb_listItemValue>1</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+  </gb_dataPage>
+  <gb_photoPage id="page03" isRequired="false">
+    <gb_pageName>Imágenes</gb_pageName>
+  </gb_photoPage>
+</gb_form>
+

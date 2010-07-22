@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Elements struct -->
+<!ELEMENT gb_form (gb_name, gb_version, gb_date, gb_formDescription, (gb_dataPage|gb_photoPage|gb_videoPage|gb_audioPage|gb_locationPage)+)>
+    <!ELEMENT gb_name (#PCDATA)>
+    <!ELEMENT gb_version (#PCDATA)>
+    <!ELEMENT gb_date (gb_dateDay, gb_dateMonth, gb_dateYear)>
+        <!ELEMENT gb_dateDay (#PCDATA)>
+        <!ELEMENT gb_dateMonth (#PCDATA)>
+        <!ELEMENT gb_dateYear (#PCDATA)>
+    <!ELEMENT gb_formDescription (#PCDATA)>
+
+    <!ELEMENT gb_dataPage (gb_pageName,(gb_label|gb_field|gb_list|gb_checkbox|gb_checkboxthree)+)>
+        <!ELEMENT gb_pageName (#PCDATA)>
+        <!ELEMENT gb_label (gb_description?, gb_labelText)>
+            <!ELEMENT gb_description (#PCDATA)>
+            <!ELEMENT gb_labelText (#PCDATA)>
+        <!ELEMENT gb_field (gb_description?, gb_fieldLabel, gb_fieldDefaultValue?)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_fieldLabel (#PCDATA)>
+            <!ELEMENT gb_fieldDefaultValue (#PCDATA)>
+        <!ELEMENT gb_checkbox (gb_description?, gb_checkboxText, gb_checkboxDefaultValue?)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_checkboxText (#PCDATA)>
+            <!ELEMENT gb_checkboxDefaultValue (#PCDATA)>
+            <!-- 0, 1 or 2-->
+        <!ELEMENT gb_list (gb_description?, gb_listLabel, gb_listItem+)>
+            <!-- <gb_description> -->
+            <!ELEMENT gb_listLabel (#PCDATA)>
+            <!ELEMENT gb_listItem (gb_listItemLabel, gb_listItemValue)>
+                <!ELEMENT gb_listItemLabel (#PCDATA)>
+                <!ELEMENT gb_listItemValue (#PCDATA)>
+
+
+	<!ELEMENT gb_photoPage (gb_pageName, gb_description)>
+
+	<!ELEMENT gb_videoPage (gb_pageName, gb_description)>
+
+	<!ELEMENT gb_audioPage (gb_pageName, gb_description)>
+
+	<!ELEMENT gb_locationPage (gb_pageName, gb_description)>
+
+
+<!-- Attributes -->
+<!ATTLIST gb_dataPage
+    id CDATA #REQUIRED
+>
+
+<!ATTLIST gb_photoPage
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_videoPage
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_audioPage
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_locationPage
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_label
+    id CDATA #REQUIRED
+>
+
+<!ATTLIST gb_field
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+    type (string|integer|float) #REQUIRED
+    linesNumber CDATA "1"
+>
+
+<!ATTLIST gb_list
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+    type (single|multiple|combo) #REQUIRED
+>
+
+<!ATTLIST gb_listItem
+    selected (true|false) "false"
+>
+
+<!ATTLIST gb_checkbox
+    id CDATA #REQUIRED
+    isRequired (true|false) "false"
+>
+
+<!ATTLIST gb_label
+    id CDATA #REQUIRED
+>
