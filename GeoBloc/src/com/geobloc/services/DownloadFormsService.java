@@ -55,6 +55,7 @@ public class DownloadFormsService extends Service {
 	private DbForm dbf;
 	private String report;
 	private String serverResponses;
+	private HashMap<String, String> headers;
 	
 	public static final String BROADCAST_ACTION=
 		"com.geobloc.services.DownloadFormsServiceEvent";
@@ -140,7 +141,7 @@ public class DownloadFormsService extends Service {
 				}
 				// detect previously used filenames
 				// This could be useful when switching from one server to another
-				filename = dbf.getForm_id();
+				filename = dbf.getForm_id().toLowerCase().replaceAll(" ", "_");
 				while (map.containsKey(filename)) {
 					filename += "A";
 				}
@@ -176,8 +177,10 @@ public class DownloadFormsService extends Service {
 					if (dbf.getServer_state() >= DbForm.__FORM_STATE_LOCAL__)
 						pm.eraseFile(dbf.getForm_file_name());
 					requestUrl = url;
-					requestUrl += "?id=" + dbf.getForm_id();
-					response = get.performHttpGetRequest(attempts, requestUrl, httpClient, null);
+					headers = new HashMap<String, String>();
+					headers.put("gb_form_name", dbf.getForm_id());
+					//requestUrl += "?id=" + dbf.getForm_id();
+					response = get.performHttpGetRequest(attempts, requestUrl, httpClient, headers);
 					serverResponses += "Response for item with id=" + dbf.getForm_id() + ":\n";
 					serverResponses += response + "\n\n";
 					report += " - " + dbf.getForm_name() + " ";

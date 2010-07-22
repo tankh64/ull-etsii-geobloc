@@ -47,20 +47,23 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.geobloc.R;
+import com.geobloc.animations.DeleteItemsAnimation;
+import com.geobloc.animations.UploadInstancesAnimation;
 import com.geobloc.db.DbFormInstance;
 import com.geobloc.db.DbFormInstanceSQLiteHelper;
 import com.geobloc.db.DbFormSQLiteHelper;
 import com.geobloc.listeners.IStandardTaskListener;
+import com.geobloc.persistance.GeoBlocPackageManager;
 import com.geobloc.persistance.SDFilePersistance;
 import com.geobloc.services.UploadInstancesService;
 import com.geobloc.shared.GBSharedPreferences;
 import com.geobloc.shared.Utilities;
-import com.geobloc.tasks.DeleteFormsTask;
 import com.geobloc.tasks.DeleteInstancesTask;
+import com.geobloc.widget.ExpandableTextView;
 import com.geobloc.widget.ProgressItem;
 
 /**
- * New Activity which will allow the user to upload completed instances of forms or erase them.
+ * Activity which will allow the user to upload completed instances of forms or erase them.
  * User will also be able to see which instances are pending of being marked as "complete".
  * In other words, the user will know about all the instances he's been working on, completed and not completed.
  * 
@@ -90,10 +93,13 @@ public class InstanceManager extends Activity {
 	private GestureDetector gestureDetector;
 	private View.OnTouchListener gestureListener;	
 	
-	private boolean enableButtonSetAnimation = true;
+	private boolean enableButtonSetAnimation = false;
 	private boolean enableBackgrounds = false;
+	private boolean enableViewAnimations = false;
 	private RelativeLayout deleteButtonSet;
 	private RelativeLayout sendButtonSet;
+	
+	private GeoBlocPackageManager pm;
 	
 	class MyGestureDetector extends SimpleOnGestureListener {
 		
@@ -114,22 +120,26 @@ public class InstanceManager extends Activity {
                 	if ((currentPage+1) == __NUMBER_OF_PAGES__) {
                 		// bounce right
                 		flipper.startAnimation(bounceRight);
-                		return false;
+                		//return false;
+                		return true;
                 	}
                 	flipper.setInAnimation(slideLeftIn);
                     flipper.setOutAnimation(slideLeftOut);
                 	flipper.showNext();
                 	currentPage++;
+                	return true;
                 }  else if (e2.getX() - e1.getX() > GBSharedPreferences.SWIPE_MIN_DISTANCE && Math.abs(velocityX) > GBSharedPreferences.SWIPE_THRESHOLD_VELOCITY) {
                 	if (currentPage == 0) {
                 		// bounce left
                 		flipper.startAnimation(bounceLeft);
-                		return false;
+                		//return false;
+                		return true;
                 	}
                 	flipper.setInAnimation(slideRightIn);
                     flipper.setOutAnimation(slideRightOut);
                 	flipper.showPrevious();
                 	currentPage--;
+                	return true;
                 }
             } catch (Exception e) {
                 // nothing
@@ -137,16 +147,26 @@ public class InstanceManager extends Activity {
             return false;
 		}
 	}
-	
+
 	private void initConfig(Bundle savedInstanceState) {
 		//Hide the title bar
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.forms_manager);
-		
-        // set content view, get preferences and resources
+    	// set content view, get preferences and resources
 		setContentView(R.layout.instance_manager);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		res = this.getResources();
+		
+        pm = new GeoBlocPackageManager();
+        
+		serverDebugInfo = "";
+        enableButtonSetAnimation = prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
+				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
+        enableBackgrounds = prefs.getBoolean(GBSharedPreferences. __ENABLE_ACTIVITY_BACKGROUNDS_KEY__, 
+				GBSharedPreferences.__DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__);
+        enableViewAnimations = prefs.getBoolean(GBSharedPreferences.__ENABLE_VIEW_ANIMATIONS_KEY__, 
+        		GBSharedPreferences.__DEFAULT_ENABLE_VIEW_ANIMATIONS__);
+        
+        
 		
 		// get views
 		this.flipper = (ViewFlipper)findViewById(R.id.instanceManager_viewFlipper);
@@ -171,7 +191,6 @@ public class InstanceManager extends Activity {
         deleteList.setOnTouchListener(gestureListener);
 		sendList.setOnTouchListener(gestureListener);
 		
-		serverDebugInfo = "";
 		
 		// create and add header to internet dependent list
 		this.connectivityListItem = new ProgressItem(getBaseContext());
@@ -205,10 +224,7 @@ public class InstanceManager extends Activity {
 		deleteAdapter = new DbFormInstanceAdapter(this, deleteCursor, 1, deleteButtonSet, enableButtonSetAnimation);
 		deleteList.setAdapter(deleteAdapter);
 		
-        enableButtonSetAnimation = prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
-				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
-        enableBackgrounds = prefs.getBoolean(GBSharedPreferences. __ENABLE_ACTIVITY_BACKGROUNDS_KEY__, 
-				GBSharedPreferences.__DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__);
+       
         
         if (enableButtonSetAnimation) {
         	deleteButtonSet.setVisibility(View.GONE);
@@ -316,6 +332,13 @@ public class InstanceManager extends Activity {
 		doUnbindServices();
 	}
 	
+	private void refreshLists() {
+		sendCursor.requery();
+		instancesAdapter.notifyDataSetChanged();
+		deleteCursor.requery();
+		deleteAdapter.notifyDataSetChanged();
+	}
+	
 	private ServiceConnection onUploadService = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className,
 				IBinder rawBinder) {
@@ -349,7 +372,7 @@ public class InstanceManager extends Activity {
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
 
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(final Context context, final Intent intent) {
 			boolean update = intent.getBooleanExtra("update", false);
 			boolean success = !intent.getBooleanExtra("result", false);
 			if (update) {
@@ -362,19 +385,38 @@ public class InstanceManager extends Activity {
 				
 				serverDebugInfo = intent.getStringExtra("serverResponse");
 				instancesAdapter.uncheckAllItems();
-				sendCursor.requery();
-				instancesAdapter.notifyDataSetChanged();
-				deleteCursor.requery();
-				deleteAdapter.notifyDataSetChanged();
+				
 				if (!success) {
+					refreshLists();
 					connectivityListItem.setText(getString(R.string.formsManager_errosEncounteredDuringDownload));
 					connectivityListItem.setBackgroundColor(Color.RED);				
 				}
 				else {
 					connectivityListItem.setText(getString(R.string.ready));
 					connectivityListItem.setBackgroundColor(res.getColor(R.color.TransparentGreen));
+					if (enableViewAnimations) {
+						Animation upload = new UploadInstancesAnimation();
+						upload.setAnimationListener(new Animation.AnimationListener() {
+							@Override
+							public void onAnimationEnd(Animation animation) {
+								refreshLists();
+								Utilities.showTitleAndMessageDialog(context, getString(R.string.report), intent.getStringExtra("report"));
+							}
+							@Override
+							public void onAnimationRepeat(Animation animation) {	
+							}
+							@Override
+							public void onAnimationStart(Animation animation) {
+							}
+						});
+						sendList.startAnimation(upload);
+					}
+					else {
+						refreshLists();
+						Utilities.showTitleAndMessageDialog(context, getString(R.string.report), intent.getStringExtra("report"));
+					}
 				}
-				Utilities.showTitleAndMessageDialog(context, getString(R.string.report), intent.getStringExtra("report"));
+				
 			}
 		}
 		
@@ -442,6 +484,7 @@ public class InstanceManager extends Activity {
 			//Long[] taskArray = new Long[completedInstancesCheckedItems.size()];
 			//int i = 0;
 			this.connectivityListItem.getProgressBar().setVisibility(View.VISIBLE);
+			this.connectivityListItem.getProgressBar().setProgress(0);
 			Long[] array = new Long[instancesAdapter.getListOfCheckedIds().size()];
 			for (int i = 0; i < array.length; i++)
 				array[i] = instancesAdapter.getListOfCheckedIds().get(i);
@@ -464,15 +507,31 @@ public class InstanceManager extends Activity {
 		}
 
 		@Override
-		public void taskComplete(Object result) {
+		public void taskComplete(final Object result) {
 			deleteProgressListItem.getText().setVisibility(View.GONE);
 			deleteProgressListItem.getBar().setVisibility(View.GONE);
 			deleteProgressListItem.getProgressBar().setVisibility(View.GONE);
-			sendCursor.requery();
-			instancesAdapter.notifyDataSetChanged();
-			deleteCursor.requery();
-			deleteAdapter.notifyDataSetChanged();
-			Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+			if (enableViewAnimations) {
+				Animation delete = new DeleteItemsAnimation();
+				delete.setAnimationListener(new Animation.AnimationListener() {
+					@Override
+					public void onAnimationStart(Animation animation) {	
+					}
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						refreshLists();
+						Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+					}
+				});
+				deleteList.startAnimation(delete);
+			}
+			else {
+				refreshLists();
+				Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+			}
 		}
 		
 	}
@@ -483,6 +542,7 @@ public class InstanceManager extends Activity {
 			deleteProgressListItem.getText().setText(getString(R.string.deleting));
 			deleteProgressListItem.getBar().setVisibility(View.VISIBLE);
 			deleteProgressListItem.getProgressBar().setVisibility(View.VISIBLE);
+			deleteProgressListItem.getProgressBar().setProgress(0);
 			DeleteInstancesTaskListener taskListener = new DeleteInstancesTaskListener(this);
 			DeleteInstancesTask deleteTask = new DeleteInstancesTask();
 			deleteTask.setContext(this);
@@ -501,6 +561,7 @@ public class InstanceManager extends Activity {
 	class DbFormInstanceAdapter extends CursorAdapter {
 		
 		private ArrayList<Long> checkedItems;
+		private ArrayList<Long> openItems;
 		private ViewGroup buttonSet;
 		private Context context;
 		private int mode;
@@ -513,12 +574,12 @@ public class InstanceManager extends Activity {
 			this.mode = mode;
 			this.enableButtonSetAnimation = enableSlidingButtons;
 			checkedItems = new ArrayList<Long>();
+			openItems = new ArrayList<Long>();
 		}
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 			DbFormInstanceWrapper wrapper = (DbFormInstanceWrapper) view.getTag();
-			//wrapper.setMode(1);
 			wrapper.populateFrom(cursor);
 			wrapperLogic(wrapper);
 		}
@@ -534,10 +595,16 @@ public class InstanceManager extends Activity {
 			return view;
 		}
 		
+		/**
+		 * Checks whether there are elements selected.
+		 * @return True if there is at least one element selected from the list.
+		 */
 		public boolean areThereElementsSelected() {
 			return (checkedItems.size() > 0);
 		}
-		
+		/**
+		 * @return ArrayList with the database IDs of the selected list items.
+		 */
 		public ArrayList<Long> getListOfCheckedIds() {
 			return checkedItems;
 		}
@@ -553,6 +620,14 @@ public class InstanceManager extends Activity {
 					Utilities.toggleSlidingAnimation(buttonSet, false);
 			}
 			
+			this.notifyDataSetChanged();
+		}
+		
+		/**
+		 * Closes all items descriptions.
+		 */
+		public void closeAllItems() {
+			openItems.clear();
 			this.notifyDataSetChanged();
 		}
 		
@@ -577,7 +652,11 @@ public class InstanceManager extends Activity {
 			}
 			this.notifyDataSetChanged();
 		}
-		
+		/**
+		 * Adds or removes items to the selected items list. It also triggers animations when 
+		 * necessary.
+		 * @param wrapper {@link DbFormInstanceWrapper} of the item to toggle.
+		 */
 		private void toggleSelected(DbFormInstanceWrapper wrapper) {
 			switch (mode) {
 				case 0:
@@ -622,6 +701,17 @@ public class InstanceManager extends Activity {
 			}
 		}
 		
+		private void toggleOpen (DbFormInstanceWrapper wrapper) {
+			if (!openItems.contains(wrapper.getId())) {
+				openItems.add(wrapper.getId());
+				wrapper.getContents().setOpen(true);
+			}
+			else {
+				openItems.remove(wrapper.getId());
+				wrapper.getContents().setOpen(false);
+			}
+		}
+		
 		private void wrapperLogic(DbFormInstanceWrapper wrapper) {
 			switch (mode) {
 			case 0:
@@ -642,10 +732,19 @@ public class InstanceManager extends Activity {
 				wrapper.getCb().setChecked(false);
 				wrapper.getRow().setBackgroundColor(R.color.Transparent);
 			}
-			
+			/*
+			 * Open / Closed logic
+			 */
+			if (openItems.contains(wrapper.getId())) {
+				wrapper.getContents().setOpen(true);
+			}
+			else
+				wrapper.getContents().setOpen(false);
 			/*
 			 * State logic
 			 */
+			wrapper.getContents().getTitle().setTextColor(Color.WHITE);
+			wrapper.getContents().getBody().setTextColor(Color.WHITE);
 			if (!wrapper.isComplete()) {
 				wrapper.getCompleted().setText(R.string.instanceManager_list_itemFormInstanceCompleteNo);
 				wrapper.getCompleted().setTextColor(Color.RED);
@@ -666,8 +765,8 @@ public class InstanceManager extends Activity {
 				wrapper.getRow().setBackgroundColor(R.color.Transparent);
 			}
 			
+			wrapper.getContents().setVisibility(View.GONE);
 			wrapper.getCompleted().setVisibility(View.GONE);
-			wrapper.getCompletedText().setVisibility(View.GONE);
 		}
 	}
 		
@@ -678,39 +777,47 @@ public class InstanceManager extends Activity {
 		private long id;
 		private int position;
 		private String packagePath;
+		private String packageZIPpath;
 		private boolean complete;
 		private CheckBox cb = null;
 		private TextView name = null;
 		private TextView createdDate = null;
-		private TextView completedText = null;
 		private TextView completed = null;
+		private ExpandableTextView contents = null;
 		private View row = null;
 		
-		DbFormInstanceWrapper (final View view, DbFormInstanceAdapter adapter) {
+		DbFormInstanceWrapper (final View view, final DbFormInstanceAdapter adapter) {
 			row = view;
 			row.setLongClickable(true);
 			row.setOnTouchListener(gestureListener);
+			row.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					adapter.toggleSelected(myself);				
+				}
+			});
 			myself = this;
 			this.adapter = adapter;
 		}
 		
 		void populateFrom(Cursor c) {
-			
+			/*
 			//DUE TO PERFORMANCE ISSUES WE CANNOT USE THIS CODE
 			if (dbi == null)
 				dbi = new DbFormInstance();
 			dbi.loadFrom(formsDb, c);
+			*/
 			
 			position = c.getPosition();
 			id = c.getLong(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_ID__));
 			getName().setText(c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_LABEL_KEY__)));
 			packagePath = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_PATH_KEY__));
+			packageZIPpath = c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_COMPRESSEDPACKAGEFILE_KEY__));
 			int completedAux = c.getInt(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_COMPLETED_KEY__));
 			complete = (completedAux == 1);
 			/*
 			 * LIST ITEM DISPLAY LOGIC
 			 */
-			getCompletedText().setVisibility(View.VISIBLE);
 			getCreatedDate().setText(getString(R.string.instanceManager_list_itemFormInstanceCreatedDateText) + " " + c.getString(c.getColumnIndex(DbFormInstance.__LOCALPACKAGESDB_CREATEDDATE_KEY__)));
 			
 			
@@ -735,47 +842,69 @@ public class InstanceManager extends Activity {
 		public CheckBox getCb() {
 			if (cb == null) {
 				cb = (CheckBox) row.findViewById(R.id.instance_manager_list_itemCb);
+				
 				cb.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						adapter.toggleSelected(myself);
 					}
 				});
+				
 			}
 			return cb;
 		}
 		
 		public TextView getName() {
 			if (name == null)  {
-				name = (TextView) row.findViewById(R.id.instance_manager_list_itemFormInstanceNameTextView);
+				name = (TextView) row.findViewById(R.id.instance_manager_list_itemInstanceNameTextView);
+				/*
 				name.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						adapter.toggleSelected(myself);	
 					}
 				});
+				*/
 			}
 			return name;
 		}
 
 		public TextView getCreatedDate() {
 			if (createdDate == null)
-				createdDate = (TextView) row.findViewById(R.id.instance_manager_list_itemFormInstanceCreated);
+				createdDate = (TextView) row.findViewById(R.id.instance_manager_list_itemInstanceCreated);
 			return createdDate;
 		}
 
 		public TextView getCompleted() {
 			if (completed == null)
-				completed = (TextView) row.findViewById(R.id.instance_managerlist_itemFormInstanceCompletedInfoTextView);
+				completed = (TextView) row.findViewById(R.id.instance_manager_list_itemInstanceCompletedInfoTextView);
 			return completed;
 		}
-
-		public TextView getCompletedText() {
-			if (completedText == null)
-				completedText = (TextView) row.findViewById(R.id.instance_manager_list_itemFormInstanceCompletedTextView);
-			return completedText;
-		}
 		
+		public ExpandableTextView getContents() {
+			if (contents == null) {
+				contents = (ExpandableTextView) row.findViewById(R.id.instance_manager_list_itemInstanceContentsExpTextView);
+				contents.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						adapter.toggleOpen(myself);
+						pm.openPackage(packagePath);
+						
+						String s = "";
+						s += " - 1 " + res.getString(R.string.instanceManager_instanceFile) + ".\n";
+						// subtract instance.xml and form.xml
+						int data = pm.getAllFilenames().size() -2;
+						// if there is a ZIP, subtract it
+						if (packageZIPpath != null)
+							data--;
+						s += " - " + data + " " + res.getString(R.string.instanceManager_dataFiles) + ".\n";
+						getContents().getBody().setText(s);
+						
+					}
+				});
+			}
+			return contents;
+		}
 		
 	}
 	
@@ -786,6 +915,7 @@ public class InstanceManager extends Activity {
 	else
 		return false;
 	}
+	
 	
 	/*
 	 * MENUS & CONTEXT MENUS

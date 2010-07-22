@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,55 +37,30 @@ public class SimpleHttpGet {
 	
 	private String url;
 	private HttpClient httpClient;
-	private HttpParams params;
+	private HashMap<String, String> header;
 	
-	/*
-	private String executeHttpGetRequest(String url, HttpClient httpClient, HttpParams params) throws Exception {
-		String resp = "Error!";
-		try {
-			HttpGet request = new HttpGet();
-			request.setURI(new URI(url));
-			if (params != null)
-				request.setParams(params);
-			HttpResponse response = httpClient.execute(request);
-			resp = EntityUtils.toString(response.getEntity());
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			if (e.getMessage() != null)
-				resp = e.getMessage();
-		}
-		return resp;
-	}
-	*/
 	
 	private String executeHttpGetRequest() throws Exception {
 		String resp = "Error!";
 		//try {
 			HttpGet request = new HttpGet();
 			request.setURI(new URI(url));
-			if (params != null)
-				request.setParams(params);
+			if (header != null) {
+				Iterator it = header.entrySet().iterator();
+				while (it.hasNext()) {
+					Map.Entry e = (Map.Entry)it.next();
+					request.setHeader((String)e.getKey(), (String)e.getValue());
+				}
+			}
 			HttpResponse response = httpClient.execute(request);
 			resp = EntityUtils.toString(response.getEntity());
-		/*
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			if (e.getMessage() != null)
-				resp = e.getMessage();
-		}
-		*/
 		return resp;
 	}
 	
-	public String performHttpGetRequest(int noAttempts, String url, HttpClient httpClient, HttpParams params) {
+	public String performHttpGetRequest(int noAttempts, String url, HttpClient httpClient, HashMap<String, String> header) {
 		this.url = url;
 		this.httpClient = httpClient;
-		this.params = params;
-		
-		// boolean to check for Exception
-		//boolean exception = false;
+		this.header = header;
 
 		// boolean to exit loop (success or failure)
 		boolean done = false;
@@ -90,8 +68,6 @@ public class SimpleHttpGet {
 		String response = null;
 		
 		for (int i = 1; (!done && (i <= noAttempts)); i++) {
-			// tell the handler in which attempt we are
-			//handler.sendEmptyMessage(i);
 			try {
 				response = executeHttpGetRequest();
 				// should be enough to check
@@ -105,7 +81,6 @@ public class SimpleHttpGet {
 				e.printStackTrace();
 				if (e.getMessage() != null)
 					response = e.getMessage();
-				//response = null;
 			}
 		}
 		return response;

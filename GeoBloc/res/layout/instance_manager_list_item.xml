@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/com.geobloc"
   android:id="@+id/forms_downloader_list_itemParentView"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
@@ -13,7 +14,7 @@
   </CheckBox>
   <!-- Top -->
   <TextView
-  	android:id="@+id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:id="@+id/instance_manager_list_itemInstanceNameTextView"
   	android:layout_toRightOf="@id/instance_manager_list_itemCb"
   	android:layout_alignParentTop="true"
   	android:layout_width="fill_parent"
@@ -23,39 +24,39 @@
   	android:textColor="#FFFFFF"
   	android:singleLine="true">
   </TextView>
-  
+  <!-- ExpandableTextView with the instance's contents -->
+  <com.geobloc.widget.ExpandableTextView
+	android:id="@+id/instance_manager_list_itemInstanceContentsExpTextView"
+	app:expandableTextViewTitle="@string/contents"
+	app:expandableTextViewOpen="false"
+	android:layout_below="@id/instance_manager_list_itemInstanceNameTextView"
+	android:layout_toRightOf="@id/instance_manager_list_itemCb"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+  </com.geobloc.widget.ExpandableTextView>
   <!-- Lower right corner, Completed? -->
   <TextView
-  	android:id="@+id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
+  	android:id="@+id/instance_manager_list_itemInstanceCompletedInfoTextView"
   	android:layout_alignParentRight="true"
   	android:paddingRight="7dp"
-  	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:layout_below="@id/instance_manager_list_itemInstanceContentsExpTextView"
   	android:layout_width="wrap_content"
   	android:layout_height="wrap_content"
   	android:textSize="16sp"
   	android:textStyle="bold">
   </TextView>
-  <TextView
-  	android:id="@+id/instance_manager_list_itemFormInstanceCompletedTextView"
-  	android:text="@string/instanceManager_list_itemFormInstanceCompletedTextViewText"
-  	android:paddingRight="2dp"
-  	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
-  	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
-  	android:layout_width="wrap_content"
-  	android:layout_height="wrap_content"
-  	android:textSize="16sp"
-  	android:textColor="#FFFFFF">
-  </TextView>
+
   <!-- Below the form instance name, the dates -->
   <TextView
-  	android:id="@+id/instance_manager_list_itemFormInstanceCreated"
+  	android:id="@+id/instance_manager_list_itemInstanceCreated"
   	android:layout_toRightOf="@id/instance_manager_list_itemCb"
-  	android:layout_toLeftOf="@id/instance_managerlist_itemFormInstanceCompletedInfoTextView"
-  	android:layout_below="@id/instance_manager_list_itemFormInstanceNameTextView"
+  	android:layout_toLeftOf="@id/instance_manager_list_itemInstanceCompletedInfoTextView"
+  	android:layout_below="@id/instance_manager_list_itemInstanceContentsExpTextView"
   	android:layout_width="wrap_content"
   	android:layout_height="wrap_content"
   	android:singleLine="true"
   	android:textColor="#FFFFFF"
+  	android:textSize="16sp"
   	android:textStyle="italic">
   </TextView>  
 

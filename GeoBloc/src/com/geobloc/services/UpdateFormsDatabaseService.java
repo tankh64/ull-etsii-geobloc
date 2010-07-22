@@ -112,13 +112,18 @@ public class UpdateFormsDatabaseService extends Service {
 					HashMap<String, Boolean> map = DbForm.getLocalHashMap(db);
 					for (int i = 0; i < array.length(); i++) {
 						json = array.getJSONObject(i);
-						dbf = DbForm.findByFormId(db, json.getString(DbForm.__SERVER_FORM_ID_KEY__));
+						//String id = json.getString(DbForm.__SERVER_FORM_ID_KEY__);
+						String id = json.getString(DbForm.__SERVER_FORM_NAME_KEY__);
+						dbf = DbForm.findByFormId(db, id);
 						DateFormat df = DateFormat.getDateInstance();
 						if (dbf == null) {
 							// it's not in the database
 							dbf = new DbForm();
 							dbf.setForm_name(json.getString(DbForm.__SERVER_FORM_NAME_KEY__));
-							dbf.setForm_id(json.getString(DbForm.__SERVER_FORM_ID_KEY__));
+							// this was changed the last day, form_id no longer exists in the server
+							// to avoid excessive changes, we set form_id as the new server's name
+							//dbf.setForm_id(json.getString(DbForm.__SERVER_FORM_ID_KEY__));
+							dbf.setForm_id(json.getString(DbForm.__SERVER_FORM_NAME_KEY__));
 							dbf.setForm_version(json.getInt(DbForm.__SERVER_FORM_VERSION_KEY__));
 							dbf.setServer_state(DbForm.__FORM_SERVER_STATE_NEW__);
 							dbf.setForm_file_path(null);

@@ -7,7 +7,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -87,7 +90,7 @@ public class HttpFileMultipartPost {
 	 * @param httpClient {@link HttpClient} object to perform the internet request.
 	 * @return An {@link HttpResponse} Object if the request was performed or null if something went wrong internally.
 	 */
-	public HttpResponse executeMultipartPackagePost(IInstanceDefinition instance, List<File> files, String url, HttpClient httpClient) 
+	public HttpResponse executeMultipartPackagePost(IInstanceDefinition instance, List<File> files, String url, HttpClient httpClient, HashMap<String, String> header) 
 	throws Exception     {
 		try {
 			HttpPost postRequest = new HttpPost(url);
@@ -104,6 +107,11 @@ public class HttpFileMultipartPost {
 			}
             
 			postRequest.setEntity(multipartContent);
+			Iterator it = header.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry e = (Map.Entry)it.next();
+				postRequest.setHeader((String)e.getKey(), (String)e.getValue());
+			}
 			HttpResponse res = httpClient.execute(postRequest);
 			
 			httpClient.getConnectionManager().closeExpiredConnections();

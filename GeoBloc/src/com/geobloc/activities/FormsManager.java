@@ -3,10 +3,9 @@
  */
 package com.geobloc.activities;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -16,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,7 +27,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,18 +39,15 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.geobloc.R;
-import com.geobloc.animations.FormsDownloaderListViewAnimation;
+import com.geobloc.animations.DeleteItemsAnimation;
+import com.geobloc.animations.UpdateFormsAnimation;
 import com.geobloc.db.DbForm;
 import com.geobloc.db.DbFormSQLiteHelper;
 import com.geobloc.listeners.IStandardTaskListener;
@@ -64,6 +60,8 @@ import com.geobloc.widget.ExpandableTextView;
 import com.geobloc.widget.ProgressItem;
 
 /**
+ * Activity which will allow the user to refresh the current data on the server, download or update new 
+ * forms and erase forms.
  * @author Dinesh Harjani (goldrunner192287@gmail.com)
  *
  */
@@ -96,6 +94,7 @@ public class FormsManager extends Activity {
 	
 	private boolean enableButtonSetAnimation = false;
 	private boolean enableBackgrounds = false;
+	private boolean enableViewAnimations = false;
 	private ViewGroup updateButtonSet;
 	private ViewGroup deleteButtonSet;
 	//private RelativeLayout completedInstancesButtonSet;
@@ -160,6 +159,8 @@ public class FormsManager extends Activity {
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__);
 		enableBackgrounds = prefs.getBoolean(GBSharedPreferences. __ENABLE_ACTIVITY_BACKGROUNDS_KEY__, 
 				GBSharedPreferences.__DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__);
+		enableViewAnimations = prefs.getBoolean(GBSharedPreferences.__ENABLE_VIEW_ANIMATIONS_KEY__, 
+        		GBSharedPreferences.__DEFAULT_ENABLE_VIEW_ANIMATIONS__);
 		
 		// load views
 		this.flipper = (ViewFlipper)findViewById(R.id.formsManager_viewFlipper);
@@ -328,6 +329,13 @@ public class FormsManager extends Activity {
 
 	}
 	
+	private void refreshLists() {
+		formsCursor.requery();
+		formsAdapter.notifyDataSetChanged();
+		deleteFormsCursor.requery();
+		deleteFormsAdapter.notifyDataSetChanged();
+	}
+	
 	private ServiceConnection onUpdateService = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className,
 				IBinder rawBinder) {
@@ -387,21 +395,14 @@ public class FormsManager extends Activity {
 				serverConnectivityListItem.setBackgroundColor(Color.RED);
 			}
 			else {
-				/*
-				// I wonder why this doesn't work... none of them do, and they should
-				formsAdapter.notifyDataSetInvalidated();
-				formsAdapter.notifyDataSetChanged();
-				*/
 				lastUpdateDateTextView.setText(getString(R.string.formsManager_downlaodLastListDate) + " " + prefs.getString(GBSharedPreferences.__LAST_SERVER_LIST_CHECK_KEY__, ""));
 				formsCursor.requery();
 				formsAdapter.notifyDataSetChanged();
-				/*
-				formsAdapter = new DbFormAdapter(formsCursor);
-				serverList.setAdapter(formsAdapter);
-				*/
 				serverConnectivityListItem.setText(getString(R.string.ready));
 				serverConnectivityListItem.setBackgroundColor(res.getColor(R.color.TransparentGreen));
-				animateServerList();
+				if (enableViewAnimations) {
+					animateServerList();
+				}
 			}		
 		}
 	};
@@ -421,10 +422,7 @@ public class FormsManager extends Activity {
 				serverConnectivityListItem.getBar().setVisibility(View.GONE);
 				serverConnectivityListItem.getProgressBar().setVisibility(View.GONE);
 				serverDebugInfo = intent.getStringExtra("serverResponse");
-				formsCursor.requery();
-				formsAdapter.notifyDataSetChanged();
-				deleteFormsCursor.requery();
-				deleteFormsAdapter.notifyDataSetChanged();
+				refreshLists();
 				if (!success) {
 					serverConnectivityListItem.setText(getString(R.string.formsManager_errosEncounteredDuringDownload));
 					serverConnectivityListItem.setBackgroundColor(Color.RED);				
@@ -490,6 +488,7 @@ public class FormsManager extends Activity {
 			if (canPerformInternetAction()) {
 				this.serverConnectivityListItem.setText(getString(R.string.downloading));
 				this.serverConnectivityListItem.getProgressBar().setVisibility(View.VISIBLE);
+				this.serverConnectivityListItem.getProgressBar().setProgress(0);
 				Long[] array = new Long[formsAdapter.getListOfCheckedIds().size()];
 				for (int i = 0; i < array.length; i++)
 					array[i] = formsAdapter.getListOfCheckedIds().get(i);
@@ -517,15 +516,33 @@ public class FormsManager extends Activity {
 		}
 
 		@Override
-		public void taskComplete(Object result) {
+		public void taskComplete(final Object result) {
 			deleteProgressListItem.getText().setVisibility(View.GONE);
 			deleteProgressListItem.getBar().setVisibility(View.GONE);
 			deleteProgressListItem.getProgressBar().setVisibility(View.GONE);
-			formsCursor.requery();
-			formsAdapter.notifyDataSetChanged();
-			deleteFormsCursor.requery();
-			deleteFormsAdapter.notifyDataSetChanged();
-			Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+			
+			//animateDeleteList();
+			if (enableViewAnimations) {
+				Animation delete = new DeleteItemsAnimation();
+				delete.setAnimationListener(new Animation.AnimationListener() {
+					@Override
+					public void onAnimationStart(Animation animation) {	
+					}
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						refreshLists();
+						Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+					}
+				});
+				deleteFormsList.startAnimation(delete);
+			}
+			else {
+				refreshLists();
+				Utilities.showTitleAndMessageDialog(context, getString(R.string.report), (String)result);
+			}
 		}
 		
 	}
@@ -536,6 +553,7 @@ public class FormsManager extends Activity {
 			deleteProgressListItem.getText().setText(getString(R.string.deleting));
 			deleteProgressListItem.getBar().setVisibility(View.VISIBLE);
 			deleteProgressListItem.getProgressBar().setVisibility(View.VISIBLE);
+			deleteProgressListItem.getProgressBar().setProgress(0);
 			DeleteFormsTaskListener taskListener = new DeleteFormsTaskListener(this);
 			DeleteFormsTask deleteTask = new DeleteFormsTask();
 			deleteTask.setContext(this);
@@ -552,7 +570,7 @@ public class FormsManager extends Activity {
 	}
 	
 	private void animateServerList()     {
-		serverList.startAnimation(new FormsDownloaderListViewAnimation());
+		serverList.startAnimation(new UpdateFormsAnimation());
 	}
 	
 	public void formsManagerOnClickListener (View target) {
@@ -671,7 +689,7 @@ public class FormsManager extends Activity {
 		/**
 		 * Adds or removes items to the selected items list. It also triggers animations when 
 		 * necessary.
-		 * @param wrapper DbFormWrapper of the item to toggle.
+		 * @param wrapper {@link DbFormWrapper} of the item to toggle.
 		 */
 		public void toggleSelected(DbFormWrapper wrapper) {
 			switch (mode) {
@@ -777,6 +795,7 @@ public class FormsManager extends Activity {
 			wrapper.getFormVersionTitle().setTextColor(Color.WHITE);
 			wrapper.getFormDescription().getTitle().setTextColor(Color.WHITE);
 			wrapper.getFormDescription().getBody().setTextColor(Color.WHITE);
+			wrapper.getFormDate().setTextColor(Color.WHITE);
 			if (wrapper.getState() > DbForm.__FORM_SERVER_STATE_MORE_RECENT_AVAILABLE__) {
 				wrapper.getCb().setEnabled(false);
 				wrapper.getRow().setBackgroundColor(res.getColor(R.color.TransparentGray));
@@ -785,6 +804,7 @@ public class FormsManager extends Activity {
 				wrapper.getFormVersionTitle().setTextColor(Color.BLACK);
 				wrapper.getFormDescription().getTitle().setTextColor(Color.BLACK);
 				wrapper.getFormDescription().getBody().setTextColor(Color.BLACK);
+				wrapper.getFormDate().setTextColor(Color.BLACK);
 			}
 			switch (wrapper.getState()) {
 				case DbForm.__FORM_SERVER_STATE_NEW__:
@@ -835,6 +855,7 @@ public class FormsManager extends Activity {
     	private TextView formVersion;
     	private TextView status;
     	private TextView formVersionTitle;
+    	private TextView formDate;
     	private ExpandableTextView formDescription;
     	private View row = null;
     	private DbFormAdapter adapter = null;
@@ -850,18 +871,26 @@ public class FormsManager extends Activity {
     	}
     	
     	public void populateFrom(Cursor c) {
-    		/*
-    		 * DUE TO PERFORMANCE ISSUES WE CANNOT USE THIS CODE
+    		
+    		//DUE TO PERFORMANCE ISSUES WE CANNOT USE THIS CODE
     		if (dbf == null)
     			dbf = new DbForm();
     		dbf.loadFrom(c);
-    		*/
+    		
     		id = c.getLong(c.getColumnIndex(DbForm.__LOCALFORMSDB_ID_KEY__));
     		version = c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_VERSION_KEY__));
     		getFormName().setText(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_NAME_KEY__)));
     		getFormVersion().setText(c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_VERSION_KEY__)) + ".0");
     		state = c.getInt(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_SERVERSTATE_KEY__));
     		getFormDescription().getBody().setText(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_DESCRIPTION_KEY__)));
+    		DateFormat df = DateFormat.getDateInstance();
+    		try {
+    			Date form_date = df.parse(c.getString(c.getColumnIndex(DbForm.__LOCALFORMSDB_FORM_DATE_KEY__)));
+    			getFormDate().setText(getString(R.string.date) + ": " + df.format(form_date));
+    		}
+    		catch (Exception e) {
+    			getFormDate().setText(getString(R.string.date) + ": " + getString(R.string.notAvailable));
+    		}
     		
     		getCb().setEnabled(true);
     		getRow().setBackgroundColor(Color.TRANSPARENT);
@@ -935,6 +964,12 @@ public class FormsManager extends Activity {
 				});
     		}
     		return formDescription;
+    	}
+    	
+    	public TextView getFormDate() {
+    		if (formDate == null)
+    			formDate = (TextView) row.findViewById(R.id.forms_manager_list_itemFormDate);
+    		return formDate;
     	}
     }
 	
