@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gb_form SYSTEM 'D:\Clases\Proyecto\GeoBloc_desktop\src\dtd\GeoBlocFormsDTDv1.3.dtd'>
+<gb_form>
+  <gb_name>Element drawing test</gb_name>
+  <gb_version>2.0</gb_version>
+  <gb_date>
+    <gb_dateDay>10</gb_dateDay>
+    <gb_dateMonth>2</gb_dateMonth>
+    <gb_dateYear>2010</gb_dateYear>
+  </gb_date>
+  <gb_formDescription>Drawing test for all kind of elements</gb_formDescription>
+  <gb_dataPage id="page01">
+    <gb_pageName>PAGE 1</gb_pageName>
+    <gb_label id="label01">
+      <gb_labelText>Label1</gb_labelText>
+    </gb_label>
+    <gb_field id="field01" type="string" linesNumber="1" isRequired="false">
+      <gb_fieldLabel>Field 1</gb_fieldLabel>
+    </gb_field>
+    <gb_field id="field02" type="integer" linesNumber="2" isRequired="true">
+      <gb_fieldLabel>Field 2</gb_fieldLabel>
+      <gb_fieldDefaultValue>500</gb_fieldDefaultValue>
+    </gb_field>
+    <gb_list id="list01" type="single" isRequired="false">
+      <gb_listLabel>Single List 1</gb_listLabel>
+      <gb_listItem>
+        <gb_listItemLabel>Radio 1</gb_listItemLabel>
+        <gb_listItemValue>R1</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem>
+        <gb_listItemLabel>Radio 2</gb_listItemLabel>
+        <gb_listItemValue>R2</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+    <gb_list id="list02" type="multiple" isRequired="false">
+      <gb_listLabel>Multiple List 1</gb_listLabel>
+      <gb_listItem>
+        <gb_listItemLabel>Checkbox 1</gb_listItemLabel>
+        <gb_listItemValue>CB1</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem>
+        <gb_listItemLabel>Checkbox 2</gb_listItemLabel>
+        <gb_listItemValue>CB2</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+    <gb_list id="list03" type="combo" isRequired="false">
+      <gb_listLabel>Combo Box 1</gb_listLabel>
+      <gb_listItem>
+        <gb_listItemLabel>Combo 1</gb_listItemLabel>
+        <gb_listItemValue>C1</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem>
+        <gb_listItemLabel>Combo 2</gb_listItemLabel>
+        <gb_listItemValue>C2</gb_listItemValue>
+      </gb_listItem>
+      <gb_listItem>
+        <gb_listItemLabel>Combo 3</gb_listItemLabel>
+        <gb_listItemValue>C3</gb_listItemValue>
+      </gb_listItem>
+    </gb_list>
+  </gb_dataPage>
+</gb_form>
+
