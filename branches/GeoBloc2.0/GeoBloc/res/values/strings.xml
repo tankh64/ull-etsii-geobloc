@@ -12,6 +12,8 @@
 	<string name="TextView01">Formulario %s cargado</string>
 	
 	<!-- Mensajes genéricos -->
+	<string name="contents">Contenido</string>
+	<string name="date">Fecha</string>
 	<string name="contextMenu">Menú Contextual</string>
 	<string name="debugging">Depuración</string>
 	<string name="ready">Listo</string>
@@ -81,8 +83,10 @@
 	<string name="instanceAllowSendIncompleteDescription">Permitir el envío de instancias sin marcar como completas.</string> 
 
 	<string name="visualPreferencesTitle">Preferencias Visuales</string>
-	<string name="enableBackgroundsTitle">Habilitar fondos</string>
+	<string name="enableBackgroundsTitle">Habilitar Fondos</string>
 	<string name="enableBackgroundsDescription">Desactivando se aumenta la velocidad de carga.</string>
+	<string name="enableViewAnimations">Habilitar Animaciones</string>
+	<string name="enableViewAnimationsDescription">Al actualizar la lista de formularios, al eliminar y al enviar instancias.</string>
 	<string name="slidingButtonsAnimation">Botones Deslizantes</string>
 	<string name="slidingButtonsAnimationDescription">Los botones sólo aparecerán cuando se pueda realizar una acción con ellos.</string>
 	
@@ -119,12 +123,17 @@
 	<string name="instanceManager_markIncomplete">Marcar Incompleto</string>
 	<string name="instanceManager_list_itemFormInstanceCreatedDateText">Creado: </string>
 	<string name="instanceManager_list_itemFormInstanceCompletedDateText">Completado: </string>
-	<string name="instanceManager_list_itemFormInstanceCompletedTextViewText">Completado: </string>
-	<string name="instanceManager_list_itemFormInstanceCompleteYes">Si</string>
-	<string name="instanceManager_list_itemFormInstanceCompleteNo">No</string>
+	<string name="instanceManager_list_itemFormInstanceCompleteYes">Completo</string>
+	<string name="instanceManager_list_itemFormInstanceCompleteNo">No completo</string>
 	<string name="instanceManager_itemUploadedSuccessfully">fue enviado correctamente.</string>
 	<string name="instanceManager_itemUploadEncounteredErrors">no pudo ser enviado.</string>
 	<string name="instanceManager_debugShowInstanceFile">Mostrar instance.xml</string>
+	<string name="instanceManager_unknownFiles">archivos desconocidos</string>
+	<string name="instanceManager_instanceFile">instancia</string>
+	<string name="instanceManager_audioFiles">clips de audio</string>
+	<string name="instanceManager_videoFiles">vídeos</string>
+	<string name="instanceManager_imageFiles">imágenes</string>
+	<string name="instanceManager_dataFiles">archivos de datos</string>
 	
 	<!-- Subtítulos de las páginas -->
 	<string name="new_form">Nuevo Formulario</string> <!-- Lista de Esquemas de Formularios -->

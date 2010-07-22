@@ -11,10 +11,12 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import com.geobloc.R;
 import com.geobloc.shared.GBSharedPreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -239,4 +241,5 @@ public class GeoBlocPackageManager {
 	public boolean isPackageEmpty() {
 		return (directory.list().length == 0);
 	}
+
 }

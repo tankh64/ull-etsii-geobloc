@@ -27,11 +27,14 @@
         	android:label="@string/sharedPreferencesTitle">
         </activity>
 		<activity
-			android:label="@string/formsManagerButton" android:name=".activities.FormsManager">
+			android:label="@string/formsManagerButton"
+			android:name=".activities.FormsManager"
+			android:screenOrientation="portrait">
 		</activity>
 		<activity
 			android:name=".activities.InstanceManager"
-			android:label="@string/instanceManagerButton">
+			android:label="@string/instanceManagerButton"
+			android:screenOrientation="portrait">
 		</activity>
 		<service
 			android:name=".services.UpdateFormsDatabaseService">

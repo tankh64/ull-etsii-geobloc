@@ -38,6 +38,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	private CheckBoxPreference userApplicationDebugging;
 	private ListPreference formThemeColor;
 	private CheckBoxPreference enableActivityBackgrounds;
+	private CheckBoxPreference enableViewAnimations;
 	
 	private EditText et;
 	private SharedPreferences prefs;
@@ -50,6 +51,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	public static String __LAST_SERVER_LIST_CHECK_KEY__ = "lastTimeApplicationCheckedForANewListOfFormsInTheServer";
 	public static String __NUMBER_OF_INTERNET_ATTEMPTS_KEY__ = "numberOfInternetConnectionAttempts";
 	public static String __ENABLE_ACTIVITY_BACKGROUNDS_KEY__ = "enableActivityBackgroundsKey";
+	public static String __ENABLE_VIEW_ANIMATIONS_KEY__ = "enableViewAnimationsKey";
 	
 	// persistance preference keys
 	public static String __PACKAGES_PATH_KEY__ = "packagesPath";
@@ -78,7 +80,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	
 	public static String __DEFAULT_UPLOAD_PACKAGES_SERVLET_ADDRESS__ = "putInstance";
 	public static String __DEFAULT_GET_AVAILABLE_FORMS_LIST_SERVLET_ADDRESS__ = "getFormsList";
-	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "sendFormServlet";
+	public static String __DEFAULT_DOWNLOAD_FORMS_SERVLET_ADRESS__ = "getForm";
 	// default directory paths
 	public static String __DEFAULT_FORMS_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/forms/";
 	public static String __DEFAULT_PACKAGES_PATH__ = Environment.getExternalStorageDirectory()+"/GeoBloc/packages/";
@@ -89,6 +91,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 	
 	// default visual states
 	public static boolean __DEFAULT_SLIDING_BUTTONS_ANIMATION__ = true;
+	public static boolean __DEFAULT_ENABLE_VIEW_ANIMATIONS__ = true;
 	public static boolean __DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__ = true;
 	
 	// swipe
@@ -129,7 +132,7 @@ public class GBSharedPreferences extends PreferenceActivity {
 		sendIncompleteInstances = (CheckBoxPreference) findPreference(GBSharedPreferences.__SEND_INCOMPLETE_KEY__);
 		formThemeColor = (ListPreference) findPreference (GBSharedPreferences.__FORM_THEME_COLOR__);
 		enableActivityBackgrounds = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_ACTIVITY_BACKGROUNDS_KEY__);
-		
+		enableViewAnimations = (CheckBoxPreference) findPreference(GBSharedPreferences.__ENABLE_VIEW_ANIMATIONS_KEY__);
 		
 		// default baseServerAddress
 		setEditTextDefaultConfig(baseServerAddress, 
@@ -168,7 +171,10 @@ public class GBSharedPreferences extends PreferenceActivity {
 		// default animations setting
 		slidingButtonsAnimationEnabled.setChecked(prefs.getBoolean(GBSharedPreferences.__SLIDING_BUTTONS_ANIMATION_KEY__, 
 				GBSharedPreferences.__DEFAULT_SLIDING_BUTTONS_ANIMATION__));
-
+		enableViewAnimations.setChecked(prefs.getBoolean(GBSharedPreferences.__ENABLE_VIEW_ANIMATIONS_KEY__, 
+				GBSharedPreferences.__DEFAULT_ENABLE_VIEW_ANIMATIONS__));
+		
+		
 		// default enable backgrounds setting
 		enableActivityBackgrounds.setChecked(prefs.getBoolean(GBSharedPreferences.__ENABLE_ACTIVITY_BACKGROUNDS_KEY__, 
 				GBSharedPreferences.__DEFAULT_ENABLE_ACTIVITY_BACKGROUNDS__));

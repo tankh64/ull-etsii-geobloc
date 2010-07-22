@@ -5,6 +5,7 @@ package com.geobloc.services;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -55,6 +56,7 @@ public class UploadInstancesService extends Service {
 	private String packagesPath;
 	
 	private GeoBlocPackageManager pm;
+	private HashMap<String, String> headers;
 	
 	public static final String BROADCAST_ACTION=
 		"com.geobloc.services.UploadInstancesServiceEvent";
@@ -153,17 +155,25 @@ public class UploadInstancesService extends Service {
 			List<File> files = new ArrayList<File>();
 			files.add(new File(dbi.getCompressedPackageFileLocation()));
 			String myUrl = url;
+			headers = new HashMap<String, String>();
+			headers.put("id", dbi.getInstance_form_id());
+			headers.put("version", Long.toString(dbi.getInstance_form_version()));
+			headers.put("device", Utilities.getDeviceID(getBaseContext()));
+			/*
 			myUrl += "?id=" + dbi.getInstance_form_id() + "&version=" + dbi.getInstance_form_version();
-			
 			myUrl += "&device=" + Utilities.getDeviceID(getBaseContext());
-			if (dbi.isComplete())
-				myUrl += "&complete=1";
-			else
-				myUrl += "&complete=0";
-			
+			*/
+			if (dbi.isComplete()) {
+				//myUrl += "&complete=1";
+				headers.put("complete", "1");
+			}
+			else {
+				//myUrl += "&complete=0";
+				headers.put("complete", "1");
+			}
 			try {
 				Log.d(LOG_TAG, "Sending instance with localId='" + dbi.getInstance_local_id() + "'.");
-				HttpResponse response = post.executeMultipartPackagePost(dbi, files, myUrl, httpClient);
+				HttpResponse response = post.executeMultipartPackagePost(dbi, files, myUrl, httpClient, headers);
 				// check response error code
 				if (response == null) {
 					throw new Exception();

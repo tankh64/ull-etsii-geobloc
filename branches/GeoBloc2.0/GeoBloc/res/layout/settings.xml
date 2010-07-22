@@ -93,6 +93,12 @@
   		android:summary="@string/enableBackgroundsDescription">
   	</CheckBoxPreference>
   	<CheckBoxPreference
+  		android:key="enableViewAnimationsKey"
+  		android:name="enableViewAnimations"
+  		android:title="@string/enableViewAnimations"
+  		android:summary="@string/enableViewAnimationsDescription">
+  	</CheckBoxPreference>
+  	<CheckBoxPreference
   		android:key="slidingButtonsAnimationKey"
   		android:name="slidingButtonsanimation"
   		android:title="@string/slidingButtonsAnimation"

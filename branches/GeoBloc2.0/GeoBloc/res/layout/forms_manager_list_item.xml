@@ -59,7 +59,7 @@
   	android:layout_height="wrap_content"
   	android:textSize="16sp">
   </TextView>
-  <!-- Below the version is an Expandable List to show the form's description -->
+  <!-- Below the version is an Expandable text to show the form's description -->
   <com.geobloc.widget.ExpandableTextView
 	android:id="@+id/forms_manager_list_itemFormDescriptionExpTextView"
 	app:expandableTextViewTitle="@string/description"
@@ -69,4 +69,14 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content">
   </com.geobloc.widget.ExpandableTextView>  
+  <!-- Below the expandable text is the form's date-->
+  <TextView
+  	android:id="@+id/forms_manager_list_itemFormDate"
+  	android:textSize="16sp"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:singleLine="true"
+  	android:layout_below="@id/forms_manager_list_itemFormDescriptionExpTextView"
+	android:layout_toRightOf="@id/forms_manager_list_itemCb">
+  </TextView>
 </RelativeLayout>
