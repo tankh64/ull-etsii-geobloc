@@ -3,6 +3,10 @@ package com.geobloc.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.geobloc.prompt.QuestionPrompt;
+
+import android.view.View;
+
 /**
  * represents a form
  * 
@@ -92,6 +96,10 @@ public class FormClass {
 	
 	public int getNumQuestionsOfPage (int numPage) {
 		return ((FormDataPage)listPages.get(numPage)).getNumQuestions();
+	}
+	
+	public void setAnswer (int page, int question, Object answer) {
+		((FormDataPage)listPages.get(page)).getQuestion(question).setAnswer(answer);
 	}
 
 }

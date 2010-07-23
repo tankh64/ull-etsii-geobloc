@@ -1,5 +1,6 @@
 package com.geobloc.widget;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import android.content.Context;
@@ -31,7 +32,7 @@ public class MultipleListWidget extends LinearLayout implements IQuestionWidget 
 	private static String TAG = "ListWidget";
 	
 	private MultipleListQuestionPrompt mListQ;
-	private Vector<Integer> vSelected;	/* Seleccionados */
+	private ArrayList<Integer> vSelected;	/* Seleccionados */
 
 	public MultipleListWidget(Context context) {
 		super(context);
@@ -56,16 +57,17 @@ public class MultipleListWidget extends LinearLayout implements IQuestionWidget 
         Text.setText(((MultipleListQuestionPrompt)qP).getQuestionTitle()+":  ");
         addView(Text);
         
-        CheckBox rCheckBox;
+        ThreeStateCheckBox rCheckBox;
         int size = ((MultipleListQuestionPrompt)qP).getSizeOfList();
         for (int i=0; i<size; i++) {
-        	rCheckBox = new CheckBox (getContext());
+        	rCheckBox = new ThreeStateCheckBox (getContext());
         	rCheckBox.setId(i+1);
     		rCheckBox.setText(((MultipleListQuestionPrompt)qP).getItem(i).getLabel());
     		
     		addView(rCheckBox);
-        }		
-		
+        }
+        // El array de seleccionado a size
+        vSelected = new ArrayList<Integer>(size);
 	}
 
 	@Override
@@ -83,7 +85,17 @@ public class MultipleListWidget extends LinearLayout implements IQuestionWidget 
 		/* La respuesta pueden ser varios, asi que debo recorrer todos los hijos
 		 * que sean CheckBox
 		 */
+		vSelected.clear();
+		ThreeStateCheckBox rCheckBox;
+		for (int i=0; i<this.getChildCount(); i++) {
+			rCheckBox = (ThreeStateCheckBox) this.getChildAt(i);
+			vSelected.set(i, rCheckBox.getState());//  
+		}
 		
+		// Ahora tengo todos los seleccionados
+		for (int i=0; i<vSelected.size(); i++) {
+			
+		}
 		return null;
 	}
 	

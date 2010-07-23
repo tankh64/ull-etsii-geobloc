@@ -76,8 +76,13 @@ public class XMLBuilder {
 					field = new FormTextField("gb_checkboxthree");
 				// and add the fields; prompt interface makes it very easy
 				field.addTag("id", prompt.getQuestionId());
-				if (prompt.getAnswer() != null)
-					field.addTag("value", (String)prompt.getAnswer());
+				if (prompt.getAnswer() != null) {
+					/** Parche mio y MUY malo :-D */
+					if (prompt.getType() == QuestionType.GB_DATAINPUT)
+						field.addTag("value", (String)prompt.getAnswer());
+					else 
+						field.addTag("value", ((Integer)prompt.getAnswer()).toString());
+				}
 				else
 					field.addTag("value", "");
 				// finally, we add it to the XML
@@ -88,7 +93,10 @@ public class XMLBuilder {
 					field = new FormTextField("gb_singleChoiceList");
 					field.addTag("id", prompt.getQuestionId());
 					ItemList answer = (ItemList) prompt.getAnswer();
-					field.addTag("selected_value", answer.getId());
+					// Otro parche (Jorge)
+					if (answer != null) {
+						field.addTag("selected_value", answer.getId());
+					}
 					xml.addField(field);
 				}
 				else {

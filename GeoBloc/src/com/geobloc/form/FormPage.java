@@ -41,4 +41,5 @@ public class FormPage {
 		this.type = mtype;
 	}
 
+	
 }

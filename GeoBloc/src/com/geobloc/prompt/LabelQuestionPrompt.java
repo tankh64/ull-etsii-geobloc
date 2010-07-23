@@ -58,6 +58,12 @@ public class LabelQuestionPrompt extends QuestionPrompt {
 	public Object getAnswer() {
 		return getQuestionTitle();
 	}
+
+
+	@Override
+	public void setAnswer(Object answer) {
+		//nothing
+	}
 	
 
 }

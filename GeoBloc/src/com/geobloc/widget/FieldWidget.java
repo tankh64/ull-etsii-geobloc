@@ -24,7 +24,7 @@ public class FieldWidget extends LinearLayout implements IQuestionWidget {
 	
 	TextView Text;
 	EditText ed;
-	DataInputQuestionPrompt qP;
+	public DataInputQuestionPrompt qP;
 	
 	public FieldWidget(Context context) {
 		super(context);

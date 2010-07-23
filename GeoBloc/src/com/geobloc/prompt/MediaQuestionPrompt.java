@@ -23,4 +23,10 @@ public class MediaQuestionPrompt extends QuestionPrompt {
 	public Object getAnswer() {
 		return null;
 	}
+
+	@Override
+	public void setAnswer(Object answer) {
+		// TODO Auto-generated method stub
+		
+	}
 }

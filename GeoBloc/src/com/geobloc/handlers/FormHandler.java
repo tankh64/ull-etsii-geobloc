@@ -118,4 +118,12 @@ public class FormHandler {
 	public FormClass getForm() {
 		return defForm;
 	}
+	
+	
+	/**
+	 * Sets the answer of a question
+	 */
+	public void setAnswerOfQuestionAtPage(Object answer, int question, int page) {
+		defForm.setAnswer(page, question, answer);
+	}
 }

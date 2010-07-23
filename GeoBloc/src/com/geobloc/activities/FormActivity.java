@@ -20,6 +20,7 @@ import com.geobloc.shared.IJavaToDatabaseForm;
 import com.geobloc.shared.IJavaToDatabaseInstance;
 import com.geobloc.shared.Utilities;
 import com.geobloc.tasks.LoadFormTask;
+import com.geobloc.widget.FieldWidget;
 import com.geobloc.widget.LocationWidget;
 import com.geobloc.widget.PhotoWidget;
 import com.geobloc.widget.IQuestionWidget;
@@ -114,6 +115,7 @@ public class FormActivity extends Activity {
     private static final int DIALOG_ERROR = 1;
     // mensaje de error en strError
     private String strError = "Desconocido";
+    private static final int DIALOG_SAVE = 2;
     
 	private class FormsLoader_FormsTaskListener implements IStandardTaskListener {
 
@@ -266,9 +268,7 @@ public class FormActivity extends Activity {
 	public void initConfig () {
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
-		Log.v(TAG, "Photo Big Size");
 		Utilities.photoSizeBigEnable = prefs.getBoolean(GBSharedPreferences.__FORM_PHOTO_SIZE_BIG__, false);
-		Log.v(TAG, "Photo Big Size Done");
 	}
 	
 	@Override
@@ -348,7 +348,7 @@ public class FormActivity extends Activity {
 	    	   myInstance.setForm_definition(formDefinition);
 	      } catch (Exception e) {
 	    	  ErrorMessage("Error al crear la nueva instancia de formulario");
-	            e.printStackTrace();
+	          e.printStackTrace();
 	      }
 		
 		inflateFirstPage();
@@ -427,8 +427,12 @@ public class FormActivity extends Activity {
 										
 										pageCamera = viewFlipper.getDisplayedChild() + 1;
 										
+										Log.e (TAG, myInstance.getPackage_path());
 										if (Utilities.photoSizeBigEnable) {
-											intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+											/** Obtenesmos el PATH del paquete */
+											/** TODO GeoBloc PackageManager */
+											//intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+											intent.putExtra(MediaStore.EXTRA_OUTPUT, myInstance.getPackage_path());
 											intent.putExtra("PAGE_NUMBER", viewFlipper.getDisplayedChild());
 											startActivityForResult(intent, CAMERA_PHOTO_ACTIVITY);
 										} else {
@@ -903,6 +907,18 @@ public class FormActivity extends Activity {
                 }
             })
             .create();
+
+        case DIALOG_SAVE:
+        	return new AlertDialog.Builder(FormActivity.this)
+        	.setIcon(R.drawable.alert_dialog_icon)
+        	.setTitle("Guardado")
+        	.setMessage("Formulario "+formH.getNameForm()+" guardado correctamente")
+        	.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        		public void onClick(DialogInterface dialog, int whichButton) {
+        			//finish();
+        		}
+        	})
+        	.create();
         }
         return null;
 	}
@@ -914,9 +930,12 @@ public class FormActivity extends Activity {
 	 */
 	private void saveForm () {
 		/*
-		 * Debo recorrer todo el formulario (visual)
+		 * Debo recorrer todo el formulario y preguntar por el visual
 		 * y guardar los datos que contiene.
 		 */
+		IQuestionWidget wdget;
+		Object answer;
+			
 		for (int page = 1; page < viewFlipper.getChildCount(); page++) {
 			View child = viewFlipper.getChildAt(page);
 			
@@ -930,19 +949,30 @@ public class FormActivity extends Activity {
 					IQuestionWidget widget = (IQuestionWidget) ((LinearLayout)child).getChildAt(i);
 					
 					switch (widget.getType()) {
-						case FIELD:	Log.i(TAG, "Respuesta: "+widget.getAnswer());
+						case LABEL: break;
+						case FIELD:	Log.i(TAG, "Pág."+page+" -> Field con respuesta: "+widget.getAnswer());
+									answer = widget.getAnswer();
+									formH.setAnswerOfQuestionAtPage(answer, i, page-1);
+									break;
+						case CHECKBOX:
+									Log.i(TAG, "Pág."+page+" -> CheckBox con respuesta: "+widget.getAnswer());
+									answer = widget.getAnswer();
+									formH.setAnswerOfQuestionAtPage(answer, i, page-1);
+									break;
+						case CHECKBOXTHREE:
+									Log.i(TAG, "Pág."+page+" -> CheckBoxThree con respuesta: "+widget.getAnswer());
+									answer = widget.getAnswer();
+									formH.setAnswerOfQuestionAtPage(answer, i, page-1);
+									break;
+						case SINGLELIST:
+									Log.i(TAG, "Pág."+page+" -> SingleList ");
+									answer = widget.getAnswer();
+									formH.setAnswerOfQuestionAtPage(answer, i, page-1);
 									break;
 					}
 				}
 			}
-			
 
-			
-			/*switch (((IQuestionWidget)child).getType()) {
-			case FIELD:
-						break;
-				//CHECKBOX, CHECKBOXTHREE, LABEL, SINGLELIST, MULTIPLELIST, PHOTO, VIDEO, LOCATION
-			}*/
 		}
 		
 		/**
@@ -952,9 +982,10 @@ public class FormActivity extends Activity {
 			myInstance.setDate(new Date());
 			instanceInterface.saveInstance(myInstance, formH.getForm());
 			saved = true;
+			showDialog(DIALOG_SAVE);
 		} catch (Exception e) {
 			ErrorMessage("Error al guardar la instancia");
-			 e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
