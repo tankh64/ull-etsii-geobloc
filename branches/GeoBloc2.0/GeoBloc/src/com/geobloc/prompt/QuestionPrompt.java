@@ -71,4 +71,6 @@ public abstract class QuestionPrompt {
 	 * @return
 	 */
 	public abstract Object getAnswer ();
+	
+	public abstract void setAnswer (Object answer);
 }

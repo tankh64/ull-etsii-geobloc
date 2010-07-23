@@ -65,6 +65,11 @@ public class CheckboxQuestionPrompt extends QuestionPrompt {
 		this.state = value;
 	}
 	
+	private void setValue (Object value) {
+		Integer in = (Integer) value;
+		this.state = in;
+	}
+	
 	private int getValue () {
 		return this.state;
 	}
@@ -72,5 +77,10 @@ public class CheckboxQuestionPrompt extends QuestionPrompt {
 	@Override
 	public Object getAnswer() {
 		return getValue();
+	}
+
+	@Override
+	public void setAnswer(Object answer) {
+		setValue (answer);
 	}
 }

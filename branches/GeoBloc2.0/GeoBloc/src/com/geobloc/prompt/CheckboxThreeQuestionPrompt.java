@@ -72,4 +72,9 @@ public class CheckboxThreeQuestionPrompt extends QuestionPrompt {
 	public Object getAnswer() {
 		return getValue();
 	}
+
+	@Override
+	public void setAnswer(Object answer) {
+		setValue ((Integer)answer);
+	}
 }

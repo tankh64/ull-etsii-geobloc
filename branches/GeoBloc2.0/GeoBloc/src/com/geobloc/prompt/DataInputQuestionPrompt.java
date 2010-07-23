@@ -106,4 +106,11 @@ public class DataInputQuestionPrompt extends QuestionPrompt {
 	public Object getAnswer() {
 		return getQuestionInput();
 	}
+
+	@Override
+	public void setAnswer(Object answer) {
+		Log.i(TAG, "primero la respuesta es     "+input);
+		input = (String)answer;
+		Log.i(TAG, "Establecemos la respuesta a "+input);
+	}
 }

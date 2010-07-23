@@ -87,10 +87,34 @@ public class SingleListQuestionPrompt extends QuestionPrompt {
 		return listItem.get(pos);
 	}
 
-
 	@Override
 	public Object getAnswer() {
-		return listItem.get(selected);
+		if (selected != -1) 
+			return listItem.get(selected);
+		Log.i(TAG, "No existe ninguno del singleList seleccionado");
+		return null;
+	}
+
+	/**
+	 * Answer contiene el "ItemList" seleccionado
+	 */
+	@Override
+	public void setAnswer(Object answer) {
+		ItemList item = (ItemList)answer;
+		String id = item.getId();
+		if ((id == null) || (id.length() == 0)) {
+			Log.e(TAG, "Id of sigleList NULL or empty");
+			selected = -1;
+			return;
+		}
+		for (int i=0; i<listItem.size(); i++) {
+			if (id.equalsIgnoreCase(listItem.get(i).getId())) {
+				selected = i;
+				return;
+			}
+		}
+		selected = -1;	// Ninguno seleccionado
+		return;
 	}
 
 }

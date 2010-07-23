@@ -23,8 +23,8 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 	
 	/** items from the list */
 	private List<ItemList> listItem;
-	
-	private HashMap<ItemList, Boolean> mapSelected;
+	/* Lista de la seleccion de los Items (0,1,2) */
+	private ArrayList<Integer> vSelected;
 	
 	// Deberá tener la lista de opciones ...
 	
@@ -45,8 +45,7 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 		this.setType();
 		
 		listItem = new ArrayList();
-		
-		mapSelected = new HashMap<ItemList, Boolean>();
+		vSelected = new ArrayList<Integer>();
 	}
 
 
@@ -82,6 +81,7 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 	 */
 	public void addItemToList (ItemList item) {
 		listItem.add(item);
+		vSelected.add(0);	// Añadimos como no seleccionado
 	}
 	
 	public int getSizeOfList () {
@@ -97,9 +97,9 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 	public Object getAnswer() {
 		List<ItemList> selectedItems = new ArrayList<ItemList>();
 
-		for (int i=0; i<listItem.size(); i++) {
+		/*for (int i=0; i<vSelected.size(); i++) {
 			// Si el ID está seleccionado, lo insertamos en la lista de seleccionados
-			if (mapSelected.containsKey(listItem.get(i).getId())) {
+			if (vSelected.get(i) != 0) {
 				selectedItems.add(listItem.get(i));
 				Log.v(TAG, "Está seleccionado -"+listItem.get(i).getId()+
 						"- <"+listItem.get(i).getLabel()+
@@ -110,8 +110,17 @@ public class MultipleListQuestionPrompt extends QuestionPrompt {
 						"- <"+listItem.get(i).getLabel()+
 						">"+listItem.get(i).getValue());
 			}
-		}
+		}*/
 		return selectedItems;
+	}
+
+
+	@Override
+	public void setAnswer(Object answer) {
+		// Answer será una Lista de ItemList
+		List<ItemList> lista = (List<ItemList>) answer;
+		
+		
 	}
 
 }
